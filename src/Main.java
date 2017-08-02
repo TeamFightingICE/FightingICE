@@ -5,6 +5,11 @@ import manager.DisplayManager;
 
 public class Main {
 
+	/**
+	 *
+	 * 使用ライブラリ
+	 * LWJGL 3.1.2
+	 * */
 	public static void main(String[] options) {
 
 		Game game = new Game();

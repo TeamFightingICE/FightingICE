@@ -102,8 +102,8 @@ public class DisplayManager {
 		double currentTime = 0;
 		double lastTime = 0;
 		double elapsedTime = 0;
-
 		glfwSetTime(0.0);
+
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -114,22 +114,24 @@ public class DisplayManager {
 		// Set the clear color
 		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 
+		//初期化
+		gm.initialize();
+
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while (!glfwWindowShouldClose(this.window)) {
 			currentTime = glfwGetTime();
 			elapsedTime = currentTime - lastTime;
+			gm.update();
 
-			//FPS
+			// FPSに従って描画
 			if (elapsedTime >= 1.0 / fps) {
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the
-				// framebuffer
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-				glClearColor((float)(0.0f + Math.random()), (float)(0.0f + Math.random()), (float)(0.0f + Math.random()), 0.0f);
 				// バックバッファに描画する
 				// render();
 
-				glfwSwapBuffers(this.window); // バックバッファとフロントバッファを入れ替える
+				glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
 				lastTime = glfwGetTime();
 			}
 
