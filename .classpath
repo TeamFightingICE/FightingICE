@@ -2,5 +2,28 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-bgfx.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-egl.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-glfw.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-jawt.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-lmdb.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-nanovg.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-nfd.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-nuklear.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-openal.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opencl.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengl.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengles.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-bgfx-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-glfw-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-lmdb-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-nanovg-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-nfd-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-nuklear-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-openal-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-opengl-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-opengles-natives-windows.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
