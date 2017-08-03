@@ -64,9 +64,10 @@ public class DisplayManager {
 		// Setup a key callback. It will be called every time a key is pressed,
 		// repeated or released.
 		glfwSetKeyCallback(this.window, (window, key, scancode, action, mods) -> {
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+			if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
 				glfwSetWindowShouldClose(window, true); // We will detect this
 														// in the rendering loop
+			}
 		});
 
 		// Get the thread stack and push a new frame
@@ -114,30 +115,41 @@ public class DisplayManager {
 		// Set the clear color
 		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 
-		//初期化
+		// 初期化
 		gm.initialize();
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while (!glfwWindowShouldClose(this.window)) {
-			currentTime = glfwGetTime();
-			elapsedTime = currentTime - lastTime;
+
+			// ゲーム終了の場合,リソースを解放してループを抜ける
+			/*
+			 * if(gm.isExit){
+			 * gm.close();
+			 * break; }
+			 */
+			// ゲーム状態の更新
 			gm.update();
 
-			// FPSに従って描画
-			if (elapsedTime >= 1.0 / fps) {
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			if (this.enableWindow) {
+				currentTime = glfwGetTime();
+				elapsedTime = currentTime - lastTime;
 
-				// バックバッファに描画する
-				// render();
+				// FPSに従って描画
+				if (elapsedTime >= 1.0 / fps) {
+					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-				glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
-				lastTime = glfwGetTime();
+					// バックバッファに描画する
+					// gm.render();
+
+					glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
+					lastTime = glfwGetTime();
+				}
+
+				// Poll for window events. The key callback above will only be
+				// invoked during this call.
+				glfwPollEvents();
 			}
-
-			// Poll for window events. The key callback above will only be
-			// invoked during this call.
-			glfwPollEvents();
 		}
 	}
 
