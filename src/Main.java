@@ -19,11 +19,7 @@ public class Main {
 			displayManager.disableWindow();
 		}
 
-		short width = 300;
-		short height= 600;
-		byte fps = 60;
-
-		displayManager.start(game, width, height, fps);
+		displayManager.start(game);
 
 
 	}
