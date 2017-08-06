@@ -13,9 +13,14 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import setting.GameSetting;
+
 public class DisplayManager {
 
+	/** ウィンドウの表示が有効かどうか*/
 	private boolean enableWindow;
+
+	/** GLFWで使用されるwindow作成用の変数*/
 	private long window;
 
 	public DisplayManager() {
@@ -25,22 +30,23 @@ public class DisplayManager {
 	/**
 	 * ゲームをスタートさせる 1. OpenGL及びwindowの初期化 2. ゲームのメインループ 3. windowをクローズする
 	 */
-	public void start(GameManager game, short width, short height, byte fps) {
+	public void start(GameManager game) {
 
 		if (enableWindow) {
 			// Window, OpenGLの初期化
-			initialize(width, height);
+			initialize();
 		}
 
 		// メインループ
-		gameLoop(game, fps);
+		gameLoop(game);
 
 		// ゲームの終了処理
 		close();
 
 	}
 
-	private void initialize(short width, short height) {
+	/**ウィンドウを作成する際の初期化処理を行う*/
+	private void initialize() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -56,6 +62,8 @@ public class DisplayManager {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 		// windowの作成
+		short width = GameSetting.STAGE_WIDTH;
+		short height = GameSetting.STAGE_HEIGHT;
 		this.window = glfwCreateWindow(width, height, "FightingICE", NULL, NULL);
 		if (this.window == NULL) {
 			throw new RuntimeException("Failed to create the GLFW window");
@@ -64,7 +72,7 @@ public class DisplayManager {
 		// Setup a key callback. It will be called every time a key is pressed,
 		// repeated or released.
 		glfwSetKeyCallback(this.window, (window, key, scancode, action, mods) -> {
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+			if (windowCloseRequest(key, action)) {
 				glfwSetWindowShouldClose(window, true); // We will detect this
 														// in the rendering loop
 			}
@@ -97,8 +105,11 @@ public class DisplayManager {
 
 	/**
 	 * ゲームのメインループの処理を行う
+	 *
+	 * @param gm
+	 *            ゲームマネージャー
 	 */
-	private void gameLoop(GameManager gm, byte fps) {
+	private void gameLoop(GameManager gm) {
 
 		double currentTime = 0;
 		double lastTime = 0;
@@ -124,9 +135,7 @@ public class DisplayManager {
 
 			// ゲーム終了の場合,リソースを解放してループを抜ける
 			/*
-			 * if(gm.isExit){
-			 * gm.close();
-			 * break; }
+			 * if(gm.isExit){ gm.close(); break; }
 			 */
 			// ゲーム状態の更新
 			gm.update();
@@ -136,8 +145,12 @@ public class DisplayManager {
 				elapsedTime = currentTime - lastTime;
 
 				// FPSに従って描画
-				if (elapsedTime >= 1.0 / fps) {
+				if (elapsedTime >= 1.0 / GameSetting.FPS) {
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+					// デバッグ用
+					// glClearColor((float)Math.random(), (float)Math.random(),
+					// (float)Math.random(), 0.0f);
 
 					// バックバッファに描画する
 					// gm.render();
@@ -153,6 +166,7 @@ public class DisplayManager {
 		}
 	}
 
+	/** ゲームの終了処理を行い,ウィンドウを閉じる. */
 	private void close() {
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(this.window);
@@ -165,6 +179,20 @@ public class DisplayManager {
 
 	public void disableWindow() {
 		this.enableWindow = false;
+	}
+
+	/**
+	 * ウィンドウを閉じる要求を出す.<br>
+	 * return文内に指定されたキーと操作の組み合わせが満たされたとき,windowを閉じる要求を出す.
+	 *
+	 * @param key
+	 *            指定キー
+	 * @param action
+	 *            keyに対する操作 (e.g. Press, Release)
+	 * @return windowを閉じる要求が出されたかどうか
+	 */
+	private boolean windowCloseRequest(int key, int action) {
+		return key == GLFW_KEY_DELETE && action == GLFW_RELEASE;
 	}
 
 }
