@@ -1,10 +1,10 @@
-package gamestate;
+package gamescene;
 
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
 
-public class Launcher extends GameState {
+public class Replay extends GameScene {
 
 	@Override
 	public void initialize(GraphicManager gm, SoundManager sm, InputManager<?> im) {
