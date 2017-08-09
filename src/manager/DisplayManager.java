@@ -17,10 +17,10 @@ import setting.GameSetting;
 
 public class DisplayManager {
 
-	/** ウィンドウの表示が有効かどうか*/
+	/** ウィンドウの表示が有効かどうか */
 	private boolean enableWindow;
 
-	/** GLFWで使用されるwindow作成用の変数*/
+	/** GLFWで使用されるwindow作成用の変数 */
 	private long window;
 
 	public DisplayManager() {
@@ -45,7 +45,7 @@ public class DisplayManager {
 
 	}
 
-	/**ウィンドウを作成する際の初期化処理を行う*/
+	/** ウィンドウを作成する際の初期化処理を行う */
 	private void initialize() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
@@ -126,17 +126,18 @@ public class DisplayManager {
 		// Set the clear color
 		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 
-		// 初期化
+		// ゲームマネージャ初期化
 		gm.initialize();
 
 		// Run the rendering loop until the user has attempted to close
-		// the window or has pressed the ESCAPE key.
+		// the window or has pressed the DELETE key.
 		while (!glfwWindowShouldClose(this.window)) {
-
 			// ゲーム終了の場合,リソースを解放してループを抜ける
-			/*
-			 * if(gm.isExit){ gm.close(); break; }
-			 */
+			if (gm.isExit()) {
+				gm.close();
+				break;
+			}
+
 			// ゲーム状態の更新
 			gm.update();
 

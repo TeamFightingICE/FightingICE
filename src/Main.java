@@ -12,7 +12,7 @@ public class Main {
 	 * */
 	public static void main(String[] options) {
 
-		Game game = new Game();
+		Game game = new Game(options);
 		DisplayManager displayManager = new DisplayManager();
 
 		if(Arrays.asList(options).contains("--disable-window")){
