@@ -79,4 +79,8 @@ public abstract class GameManager {
 		return this.isExitFlag;
 	}
 
+	public void render(){
+		graphicManager.render();
+	}
+
 }

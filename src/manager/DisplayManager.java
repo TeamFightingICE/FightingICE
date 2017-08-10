@@ -147,14 +147,14 @@ public class DisplayManager {
 
 				// FPSに従って描画
 				if (elapsedTime >= 1.0 / GameSetting.FPS) {
-					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 					// デバッグ用
 					// glClearColor((float)Math.random(), (float)Math.random(),
 					// (float)Math.random(), 0.0f);
 
 					// バックバッファに描画する
-					// gm.render();
+				    gm.render();
 
 					glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
 					lastTime = glfwGetTime();
