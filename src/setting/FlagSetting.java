@@ -2,9 +2,11 @@ package setting;
 
 public class FlagSetting {
 
-	public boolean automationFlag = false;
+	boolean automationFlag = false;
 
 	boolean allCombinationFlag = false;
+
+	boolean enableBackground = true;
 
 	boolean py4j = false;
 
