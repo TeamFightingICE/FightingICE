@@ -19,6 +19,11 @@ public class Image {
 		this.bimg = image.getBufferedImage();
 	}
 
+	public Image(int id, BufferedImage bimg){
+		this.textureId = id;
+		this.bimg = new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());
+	}
+
 	public int getTextureId(){
 		return this.textureId;
 	}
