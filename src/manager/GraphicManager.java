@@ -35,14 +35,14 @@ public class GraphicManager {
 
 	}
 
-	public void drawImage(Image p, int x, int y, boolean direction) {
-		ImageTask task = new ImageTask(p, x, y, direction);
+	public void drawImage(Image img, int x, int y, boolean direction) {
+		ImageTask task = new ImageTask(img, x, y, direction);
 		this.renderTaskList.add(task);
 	}
 
 
-	public void drawImage(Image p, int x, int y, int sizeX, int sizeY, boolean direction) {
-		ImageTask task = new ImageTask(p, x, y, sizeX, sizeY, direction);
+	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction) {
+		ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
 		this.renderTaskList.add(task);
 	}
 
