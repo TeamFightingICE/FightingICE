@@ -51,13 +51,13 @@ public class GraphicManager {
 		this.renderTaskList.add(task);
 	}
 
-	public void drawQuad(int x, int y, int sizeX, int sizeY, double red, double green, double blue) {
-		QuadTask task = new QuadTask(QuadTask.MODE_FILLED_QUAD, x, y, sizeX, sizeY, red, green, blue);
+	public void drawQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
+		QuadTask task = new QuadTask(QuadTask.FILLED_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 		this.renderTaskList.add(task);
 	}
 
-	public void drawLineQuad(int x, int y, int sizeX, int sizeY, double red, double green, double blue) {
-		QuadTask task = new QuadTask(QuadTask.MODE_LINE_QUAD, x, y, sizeX, sizeY, red, green, blue);
+	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
+		QuadTask task = new QuadTask(QuadTask.LINE_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 		this.renderTaskList.add(task);
 	}
 
