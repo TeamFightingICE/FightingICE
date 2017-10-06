@@ -93,6 +93,8 @@ public class ImageFont {
 			// get 0-255 characters and then custom characters
 			BufferedImage fontImage = getFontImage((char) i);
 
+			System.out.println(fontImage.getType());
+			this.fontImage[i] = new Image();
 			this.fontImage[i] = ResourceLoader.getInstance().loadTextureFromBufferedImage(fontImage);
 		}
 

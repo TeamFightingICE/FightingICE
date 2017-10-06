@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 
 import javax.imageio.ImageIO;
 
@@ -68,23 +69,23 @@ public class ResourceLoader {
 		}
 		buffer.flip();
 		
+		final IntBuffer textureIdBuffer = IntBuffer.allocate(1);
 		// Generate a texture ID
-		int textureId = glGenTextures();
-		System.out.println("aaa");
-	
+		glGenTextures(textureIdBuffer);
+
 		// Bind the ID to the context
-		glBindTexture(GL_TEXTURE_2D, textureId);
-		
+		glBindTexture(GL_TEXTURE_2D, textureIdBuffer.get(0));
+
 		// Setup texture scaling filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		
+
 		// Send texture data to OpenGL
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, bimg.getWidth(), bimg.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
 				buffer);
 		buffer = null;
 
-		return new Image(textureId, bimg);
+		return new Image(textureIdBuffer.get(0), bimg);
 	}
 
 }
