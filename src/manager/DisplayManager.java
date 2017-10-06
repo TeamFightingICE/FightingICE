@@ -31,7 +31,6 @@ public class DisplayManager {
 	 * ゲームをスタートさせる 1. OpenGL及びwindowの初期化 2. ゲームのメインループ 3. windowをクローズする
 	 */
 	public void start(GameManager game) {
-
 		if (enableWindow) {
 			// Window, OpenGLの初期化
 			initialize();
@@ -124,7 +123,8 @@ public class DisplayManager {
 		GL.createCapabilities();
 
 		// Set the clear color
-		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		initGL();
 
 		// ゲームマネージャ初期化
 		gm.initialize();
@@ -148,6 +148,19 @@ public class DisplayManager {
 				// FPSに従って描画
 				if (elapsedTime >= 1.0 / GameSetting.FPS) {
 
+				/*	glBegin(GL_TRIANGLES);
+					glVertex3f(-0.6f,0.2f,0.5f);
+					glVertex3f(0.6f,-0.4f,-0.5f);
+					glVertex3f(0.8f,0.6f,0.0f);
+			glEnd();*/
+					/*glColor3f(1.0f, 1.0f, 1.0f);
+					glBegin(GL_QUADS);
+					glVertex2f(-0.8f, -0.8f);
+					glVertex2f(-0.8f, 0.8f);
+					glVertex2f(0.8f, 0.8f);
+					glVertex2f(0.8f, -0.8f);
+					//System.out.println("描画");
+					glEnd();*/
 
 					// デバッグ用
 					// glClearColor((float)Math.random(), (float)Math.random(),
@@ -194,6 +207,18 @@ public class DisplayManager {
 	 */
 	private boolean windowCloseRequest(int key, int action) {
 		return key == GLFW_KEY_DELETE && action == GLFW_RELEASE;
+	}
+
+	private void initGL(){
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+
+		glMatrixMode(GL_MODELVIEW);
+		glOrtho(0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 1, -1);
+
+		// Enable Blending for transparent textures
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 }

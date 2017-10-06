@@ -21,13 +21,12 @@ public class GraphicManager {
 	public GraphicManager() {
 		renderTaskList = new LinkedList<RenderTask>();
 		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-		imageFont = new ImageFont(awtFont, true);
+		//imageFont = new ImageFont(awtFont, true);
 
 	}
 
 	public void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		while (!renderTaskList.isEmpty()) {
 			renderTaskList.removeFirst().render();
 		}

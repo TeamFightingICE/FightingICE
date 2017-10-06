@@ -29,10 +29,11 @@ public class Menu extends GameScene {
 		//処理...
 		//次シーンに遷移するとき
 		Launcher launch = new Launcher();  //次のシーンのコンストラクタ作成
-		this.setTransitioFlag(true);    //現在のシーンからの遷移要求をtrueに
-		this.setNextGameScene(launch);       //次のシーンをセットする
+	//	this.setTransitioFlag(true);    //現在のシーンからの遷移要求をtrueに
+	//	this.setNextGameScene(launch);       //次のシーンをセットする
 		//System.out.println(this.gameSceneName);
-		System.out.println("Menu update");
+		gm.drawQuad(100, 100, 250, 260, 0.0f, 0.0f, 1.0f, 0.0f);
+		//System.out.println("Menu update");
 
 
 	}

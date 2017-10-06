@@ -24,7 +24,7 @@ public abstract class GameManager {
 	private boolean isExitFlag;
 
 	/** フィールドの初期化を行うコンストラクタ */
-	public GameManager() {
+	public GameManager() {	
 		this.graphicManager = new GraphicManager();
 		this.inputManager = new Input();
 		this.soundManager = new SoundManager();

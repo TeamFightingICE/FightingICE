@@ -11,7 +11,6 @@ public class Main {
 	 * LWJGL 3.1.2
 	 * */
 	public static void main(String[] options) {
-
 		Game game = new Game(options);
 		DisplayManager displayManager = new DisplayManager();
 

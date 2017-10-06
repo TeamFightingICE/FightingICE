@@ -22,7 +22,7 @@ public class ImageFont {
 		this.font = font;
 		this.antiAliasing = antiAliasing;
 		this.fontImage = new Image[256];
-
+		
 		createFont();
 	}
 
@@ -93,7 +93,6 @@ public class ImageFont {
 			// get 0-255 characters and then custom characters
 			BufferedImage fontImage = getFontImage((char) i);
 
-			this.fontImage[i] = new Image();
 			this.fontImage[i] = ResourceLoader.getInstance().loadTextureFromBufferedImage(fontImage);
 		}
 

@@ -2,8 +2,6 @@ package render;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import org.lwjgl.opengl.GL11;
-
 public class QuadTask extends RenderTask {
 
 	public static final byte FILLED_QUAD = 0;
@@ -41,36 +39,37 @@ public class QuadTask extends RenderTask {
 		this.green = g;
 		this.blue = b;
 		this.alpha = alpha;
+		System.out.println(r + " " + g + " " + b);
 	}
 
 	@Override
 	public void render() {
-		GL11.glColor3f(red, green, blue);
+		glColor3f(red, green, blue);
 
 		switch (mode) {
 		case FILLED_QUAD:
 			// draw quad
-			glBegin(GL11.GL_QUADS); {
-			GL11.glVertex2i(posX, posY);
-			GL11.glVertex2i(posX + sizeX, posY);
-			GL11.glVertex2i(posX + sizeX, posY + sizeY);
-			GL11.glVertex2i(posX, posY + sizeY);
-		}
+			glBegin(GL_QUADS);
+			glVertex2i(posX, posY);
+			glVertex2i(posX + sizeX, posY);
+			glVertex2i(posX + sizeX, posY + sizeY);
+			glVertex2i(posX, posY + sizeY);
+
+			System.out.println("描画");
 			glEnd();
 			break;
 
 		default:
-			glBegin(GL11.GL_LINE_LOOP); {
-			GL11.glVertex2i(posX, posY);
-			GL11.glVertex2i(posX + sizeX, posY);
-			GL11.glVertex2i(posX + sizeX, posY + sizeY);
-			GL11.glVertex2i(posX, posY + sizeY);
-		}
+			glBegin(GL_LINE_LOOP);
+			glVertex2i(posX, posY);
+			glVertex2i(posX + sizeX, posY);
+			glVertex2i(posX + sizeX, posY + sizeY);
+			glVertex2i(posX, posY + sizeY);
 			glEnd();
 			break;
 		}
 
-		GL11.glColor3d(1, 1, 1);
+		//glColor3d(1, 1, 1);
 	}
 
 }
