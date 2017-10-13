@@ -2,11 +2,10 @@ package manager;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.Font;
 import java.util.LinkedList;
 
 import image.Image;
-import image.ImageFont;
+import image.LetterImage;
 import render.ImageTask;
 import render.QuadTask;
 import render.RenderTask;
@@ -16,13 +15,11 @@ public class GraphicManager {
 
 	private LinkedList<RenderTask> renderTaskList;
 
-	private ImageFont imageFont;
+	private LetterImage letterImage;
 
 	public GraphicManager() {
-		renderTaskList = new LinkedList<RenderTask>();
-		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-		imageFont = new ImageFont(awtFont, true);
-
+		this.renderTaskList = new LinkedList<RenderTask>();
+		this.letterImage = new LetterImage();
 	}
 
 	public void render() {
@@ -46,7 +43,7 @@ public class GraphicManager {
 	}
 
 	public void drawString(String string, int x, int y) {
-		StringTask task = new StringTask(imageFont, string, x, y);
+		StringTask task = new StringTask(letterImage, string, x, y);
 		this.renderTaskList.add(task);
 	}
 
@@ -58,6 +55,10 @@ public class GraphicManager {
 	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
 		QuadTask task = new QuadTask(QuadTask.LINE_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 		this.renderTaskList.add(task);
+	}
+
+	public void setLetterFont(LetterImage lf){
+		this.letterImage = lf;
 	}
 
 }

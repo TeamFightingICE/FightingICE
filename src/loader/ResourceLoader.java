@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.IntBuffer;
 
 import javax.imageio.ImageIO;
 
@@ -51,7 +50,7 @@ public class ResourceLoader {
 				.order(ByteOrder.nativeOrder());
 
 		// Iterate through all the pixels and add them to the ByteBuffer
-		for (int y = 0; y < bimg.getHeight(); y++) {
+	/*	for (int y = 0; y < bimg.getHeight(); y++) {
 			for (int x = 0; x < bimg.getWidth(); x++) {
 				// Select the pixel
 				int pixel = pixels[y * bimg.getWidth() + x];
@@ -67,25 +66,24 @@ public class ResourceLoader {
 
 			}
 		}
-		buffer.flip();
-		
-		final IntBuffer textureIdBuffer = IntBuffer.allocate(1);
+		buffer.flip();*/
+
 		// Generate a texture ID
-		glGenTextures(textureIdBuffer);
+		int textureId = glGenTextures();
 
 		// Bind the ID to the context
-		glBindTexture(GL_TEXTURE_2D, textureIdBuffer.get(0));
+		glBindTexture(GL_TEXTURE_2D, textureId);
 
 		// Setup texture scaling filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		// Send texture data to OpenGL
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, bimg.getWidth(), bimg.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 256, 256/*bimg.getWidth(), bimg.getHeight()*/, 0, GL_RGBA, GL_UNSIGNED_BYTE,
 				buffer);
 		buffer = null;
 
-		return new Image(textureIdBuffer.get(0), bimg);
+		return new Image(textureId, bimg);
 	}
 
 }

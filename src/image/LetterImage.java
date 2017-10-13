@@ -9,25 +9,28 @@ import java.awt.image.BufferedImage;
 
 import loader.ResourceLoader;
 
-public class ImageFont {
+public class LetterImage {
 
 	private Font font;
 
 	private boolean antiAliasing;
 
-	private Image[] fontImage;
+	private Image[] letterImage;
 
+	public LetterImage() {
+		
+	}
 
-	public ImageFont(Font font, boolean antiAliasing){
+	public LetterImage(Font font, boolean antiAliasing){
 		this.font = font;
 		this.antiAliasing = antiAliasing;
-		this.fontImage = new Image[256];
-		
+		this.letterImage = new Image[256];
+
 		createFont();
 	}
 
 	public Image getCharacter(char whatChar){
-		return fontImage[whatChar];
+		return letterImage[whatChar];
 	}
 
 	/**
@@ -83,19 +86,16 @@ public class ImageFont {
 	}
 
 	/**
-	 * Create and store the font
-	 *
-	 * @param customCharsArray Characters that should be also added to the cache.
+	 * 英数字及び記号文字のイメージを作成し，OpenGLにそのテクスチャを転送する．
+	 * ASCIIコード表から必要な部分のみを抽出
 	 */
 	private void createFont() {
 
-		for (int i = 0; i < 256 ; i++) {
-			// get 0-255 characters and then custom characters
+		for (int i = 32; i <= 126 ; i++) {
+			// get 32-126 characters and then custom letters
 			BufferedImage fontImage = getFontImage((char) i);
 
-			System.out.println(fontImage.getType());
-			this.fontImage[i] = new Image();
-			this.fontImage[i] = ResourceLoader.getInstance().loadTextureFromBufferedImage(fontImage);
+			this.letterImage[i] = ResourceLoader.getInstance().loadTextureFromBufferedImage(fontImage);
 		}
 
 	}

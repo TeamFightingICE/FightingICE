@@ -32,7 +32,8 @@ public class Menu extends GameScene {
 	//	this.setTransitioFlag(true);    //現在のシーンからの遷移要求をtrueに
 	//	this.setNextGameScene(launch);       //次のシーンをセットする
 		//System.out.println(this.gameSceneName);
-		gm.drawQuad(100, 100, 250, 260, 0.0f, 0.0f, 1.0f, 0.0f);
+		//gm.drawQuad(100, 100, 250, 260, 0.0f, 0.0f, 1.0f, 0.0f);
+		gm.drawString("Hello, World", 200, 200);
 		//System.out.println("Menu update");
 
 

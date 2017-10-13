@@ -5,11 +5,11 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.GL11;
 
 import image.Image;
-import image.ImageFont;
+import image.LetterImage;
 
 public class StringTask extends RenderTask {
 
-	private ImageFont imageFont;
+	private LetterImage imageFont;
 	private String str;
 	private int posX;
 	private int posY;
@@ -21,7 +21,7 @@ public class StringTask extends RenderTask {
 		this.posY = -1;
 	}
 
-	public StringTask(ImageFont imageFont, String str, int x, int y) {
+	public StringTask(LetterImage imageFont, String str, int x, int y) {
 		this.imageFont = imageFont;
 		this.str = str;
 		this.posX = x;
