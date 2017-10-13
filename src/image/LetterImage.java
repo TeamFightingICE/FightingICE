@@ -36,52 +36,50 @@ public class LetterImage {
 	/**
 	 * Create a standard Java2D BufferedImage of the given character
 	 *
-	 * @param ch
+	 * @param letter
 	 *            The character to create a BufferedImage for
 	 *
 	 * @return A BufferedImage containing the character
 	 */
-	private BufferedImage getFontImage(char ch) {
-		// Create a temporary image to extract the character's size
-		BufferedImage tempFontImage = new BufferedImage(1, 1,
+	private BufferedImage getLetterImage(char letter) {
+		// Create a temporary image to extract the letter's size
+		BufferedImage tempLetterImage = new BufferedImage(256, 256,
 				BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) tempFontImage.createGraphics();
+		Graphics2D g = (Graphics2D) tempLetterImage.createGraphics();
 
 		if (antiAliasing) {
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 		g.setFont(font);
-		FontMetrics tempFontMetrics = g.getFontMetrics();
+		FontMetrics fontMetrics = g.getFontMetrics();
 
-		int charwidth = tempFontMetrics.charWidth(ch);
-		int charheight = tempFontMetrics.getHeight();
-		if (charwidth <= 0) {
-			charwidth = 1;
+		int letterWidth = fontMetrics.charWidth(letter);
+		int letterHeight = fontMetrics.getHeight();
+		if (letterWidth <= 0) {
+			letterWidth = 1;
 		}
-		if (charheight <= 0) {
-			charheight = font.getSize();
+		if (letterHeight <= 0) {
+			letterHeight = font.getSize();
 		}
-		tempFontImage = null;
+		tempLetterImage = null;
 
 		// Create another image holding the character we are creating
-		BufferedImage charImage;
-		charImage = new BufferedImage(charwidth, charheight,
+		BufferedImage letterImage = new BufferedImage(letterWidth,  letterHeight,
 				BufferedImage.TYPE_INT_ARGB);
-		Graphics2D gt = (Graphics2D) charImage.createGraphics();
+		g = (Graphics2D) letterImage.createGraphics();
 
-		if (antiAliasing == true) {
-			gt.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		if (antiAliasing) {
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 		}
-		gt.setFont(font);
-		FontMetrics fontMetrics = g.getFontMetrics();
-		gt.setColor(Color.WHITE);
+		g.setFont(font);
+		g.setColor(Color.WHITE);
 
-		gt.drawString(String.valueOf(ch), 0, 0
+		g.drawString(String.valueOf(letter), 0, 0
 				+ fontMetrics.getAscent());
 
-		return charImage;
+		return letterImage;
 
 	}
 
@@ -93,7 +91,7 @@ public class LetterImage {
 
 		for (int i = 32; i <= 126 ; i++) {
 			// get 32-126 characters and then custom letters
-			BufferedImage fontImage = getFontImage((char) i);
+			BufferedImage fontImage = getLetterImage((char) i);
 
 			this.letterImage[i] = ResourceLoader.getInstance().loadTextureFromBufferedImage(fontImage);
 		}

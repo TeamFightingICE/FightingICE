@@ -50,7 +50,7 @@ public class ResourceLoader {
 				.order(ByteOrder.nativeOrder());
 
 		// Iterate through all the pixels and add them to the ByteBuffer
-	/*	for (int y = 0; y < bimg.getHeight(); y++) {
+		for (int y = 0; y < bimg.getHeight(); y++) {
 			for (int x = 0; x < bimg.getWidth(); x++) {
 				// Select the pixel
 				int pixel = pixels[y * bimg.getWidth() + x];
@@ -66,7 +66,7 @@ public class ResourceLoader {
 
 			}
 		}
-		buffer.flip();*/
+		buffer.flip();
 
 		// Generate a texture ID
 		int textureId = glGenTextures();
@@ -79,7 +79,7 @@ public class ResourceLoader {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		// Send texture data to OpenGL
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 256, 256/*bimg.getWidth(), bimg.getHeight()*/, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, bimg.getWidth(), bimg.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
 				buffer);
 		buffer = null;
 

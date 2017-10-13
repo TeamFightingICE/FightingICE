@@ -33,7 +33,7 @@ public class StringTask extends RenderTask {
 		int nowPositionX = posX;
 
 		for (int i = 0; i < str.length(); i++) {
-			Image img = imageFont.getCharacter(str.charAt(i));
+			Image img = imageFont.getLetterImage(str.charAt(i));
 			draw(img, nowPositionX, posY);
 
 			nowPositionX += img.getBufferedImage().getWidth();
