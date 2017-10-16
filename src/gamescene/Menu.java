@@ -39,13 +39,13 @@ public class Menu extends GameScene {
 		//gm.drawQuad(100, 100, 250, 260, 0.0f, 0.0f, 1.0f, 0.0f);
 		//System.out.println("Menu update");
 		/*if(count < 500){
-			gm.drawString("Hello World", ++x, y);
+			gm.drawQuad(++x, y, 10, 10, 1.0f, 0.0f, 0.0f, 0.0f);
 		} else if(count < 1000){
-			gm.drawString("Hello World", x, ++y);
+			gm.drawQuad(x, ++y, 10, 10, 1.0f, 0.0f, 0.0f, 0.0f);
 		} else if(count < 1500){
-			gm.drawString("Hello World", --x, y);
+			gm.drawQuad(--x, y, 10, 10, 1.0f, 0.0f, 0.0f, 0.0f);
 		}else if(count < 2000){
-			gm.drawString("Hello World", x, --y);
+			gm.drawQuad(x, --y, 10, 10, 1.0f, 0.0f, 0.0f, 0.0f);
 		} else {
 			count = 0;
 		}
