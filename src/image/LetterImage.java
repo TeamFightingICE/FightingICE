@@ -74,6 +74,7 @@ public class LetterImage {
 		g.setColor(Color.WHITE);
 
 		g.drawString(String.valueOf(letter), 0, 0 + fontMetrics.getAscent());
+		g.dispose();
 
 		return letterImage;
 

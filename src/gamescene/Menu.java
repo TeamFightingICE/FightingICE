@@ -7,6 +7,10 @@ import manager.SoundManager;
 
 public class Menu extends GameScene {
 
+	/*int x = 100;
+	int y = 100;
+	int count = 0;*/
+
 	public Menu(){
 		//以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.MENU;
@@ -20,7 +24,7 @@ public class Menu extends GameScene {
 	public void initialize(GraphicManager gm, SoundManager sm, InputManager<?> im) {
 		System.out.println("Menu initialize");
 
-
+		//gm.drawString("Hello World", 100, 100);
 	}
 
 	@Override
@@ -33,8 +37,21 @@ public class Menu extends GameScene {
 	//	this.setNextGameScene(launch);       //次のシーンをセットする
 		//System.out.println(this.gameSceneName);
 		//gm.drawQuad(100, 100, 250, 260, 0.0f, 0.0f, 1.0f, 0.0f);
-		gm.drawString("Hello, World", 200, 200);
 		//System.out.println("Menu update");
+		/*if(count < 500){
+			gm.drawString("Hello World", ++x, y);
+		} else if(count < 1000){
+			gm.drawString("Hello World", x, ++y);
+		} else if(count < 1500){
+			gm.drawString("Hello World", --x, y);
+		}else if(count < 2000){
+			gm.drawString("Hello World", x, --y);
+		} else {
+			count = 0;
+		}
+		count++;
+		*/
+
 
 
 	}

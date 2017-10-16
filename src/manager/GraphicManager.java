@@ -23,7 +23,9 @@ public class GraphicManager {
 	}
 
 	public void render() {
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		System.out.println(renderTaskList.size());
 		while (!renderTaskList.isEmpty()) {
 			renderTaskList.removeFirst().render();
 		}

@@ -145,29 +145,11 @@ public class DisplayManager {
 				currentTime = glfwGetTime();
 				elapsedTime = currentTime - lastTime;
 
+				// バックバッファに描画する
+			    gm.render();
+
 				// FPSに従って描画
 				if (elapsedTime >= 1.0 / GameSetting.FPS) {
-
-				/*	glBegin(GL_TRIANGLES);
-					glVertex3f(-0.6f,0.2f,0.5f);
-					glVertex3f(0.6f,-0.4f,-0.5f);
-					glVertex3f(0.8f,0.6f,0.0f);
-			glEnd();*/
-					/*glColor3f(1.0f, 1.0f, 1.0f);
-					glBegin(GL_QUADS);
-					glVertex2f(-0.8f, -0.8f);
-					glVertex2f(-0.8f, 0.8f);
-					glVertex2f(0.8f, 0.8f);
-					glVertex2f(0.8f, -0.8f);
-					//System.out.println("描画");
-					glEnd();*/
-
-					// デバッグ用
-					// glClearColor((float)Math.random(), (float)Math.random(),
-					// (float)Math.random(), 0.0f);
-
-					// バックバッファに描画する
-				    gm.render();
 
 					glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
 					lastTime = glfwGetTime();
