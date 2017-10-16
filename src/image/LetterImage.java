@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import loader.ResourceLoader;
 
@@ -15,7 +16,7 @@ public class LetterImage {
 
 	private boolean antiAliasing;
 
-	private Image[] letterImage;
+	private HashMap<Character, Image> letterImageMap;
 
 	public LetterImage() {
 
@@ -24,13 +25,13 @@ public class LetterImage {
 	public LetterImage(Font font, boolean antiAliasing) {
 		this.font = font;
 		this.antiAliasing = antiAliasing;
-		this.letterImage = new Image[96];
+		this.letterImageMap = new HashMap<Character, Image>();
 
-		createFont();
+		createLetterImage();
 	}
 
 	public Image getLetterImage(char letter) {
-		return letterImage[letter];
+		return letterImageMap.get(letter);
 	}
 
 	/**
@@ -81,13 +82,13 @@ public class LetterImage {
 	/**
 	 * 英数字及び記号文字のイメージを作成し，OpenGLにそのテクスチャを転送する． ASCIIコード表から必要な部分のみを抽出
 	 */
-	private void createFont() {
+	private void createLetterImage() {
 
 		for (int i = 32; i <= 126; i++) {
 			// get 32-126 characters and then custom letters
 			BufferedImage bi = getLetterBufferedImage((char) i);
 
-			this.letterImage[i] = ResourceLoader.getInstance().loadTextureFromBufferedImage(bi);
+			this.letterImageMap.put((char) i, ResourceLoader.getInstance().loadTextureFromBufferedImage(bi));
 		}
 
 	}
