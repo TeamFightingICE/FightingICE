@@ -31,7 +31,6 @@ public class DisplayManager {
 	 * ゲームをスタートさせる 1. OpenGL及びwindowの初期化 2. ゲームのメインループ 3. windowをクローズする
 	 */
 	public void start(GameManager game) {
-
 		if (enableWindow) {
 			// Window, OpenGLの初期化
 			initialize();
@@ -124,7 +123,8 @@ public class DisplayManager {
 		GL.createCapabilities();
 
 		// Set the clear color
-		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		initGL();
 
 		// ゲームマネージャ初期化
 		gm.initialize();
@@ -145,16 +145,11 @@ public class DisplayManager {
 				currentTime = glfwGetTime();
 				elapsedTime = currentTime - lastTime;
 
+				// バックバッファに描画する
+			    gm.render();
+
 				// FPSに従って描画
 				if (elapsedTime >= 1.0 / GameSetting.FPS) {
-					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-					// デバッグ用
-					// glClearColor((float)Math.random(), (float)Math.random(),
-					// (float)Math.random(), 0.0f);
-
-					// バックバッファに描画する
-					// gm.render();
 
 					glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
 					lastTime = glfwGetTime();
@@ -194,6 +189,18 @@ public class DisplayManager {
 	 */
 	private boolean windowCloseRequest(int key, int action) {
 		return key == GLFW_KEY_DELETE && action == GLFW_RELEASE;
+	}
+
+	private void initGL(){
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+
+		glMatrixMode(GL_MODELVIEW);
+		glOrtho(0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 1, -1);
+
+		// Enable Blending for transparent textures
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 }
