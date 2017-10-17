@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.LinkedList;
 
+import image.CharacterActionImage;
 import image.Image;
 import image.LetterImage;
 import render.ImageTask;
@@ -17,9 +18,16 @@ public class GraphicManager {
 
 	private LetterImage letterImage;
 
+	private LinkedList<CharacterActionImage> imageContainer;
+
 	public GraphicManager() {
 		this.renderTaskList = new LinkedList<RenderTask>();
 		this.letterImage = new LetterImage();
+		this.imageContainer = new LinkedList<CharacterActionImage>();
+	}
+
+	public LinkedList<CharacterActionImage> getImageContainer(){
+		return this.imageContainer;
 	}
 
 	public void render() {

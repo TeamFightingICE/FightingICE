@@ -1,6 +1,7 @@
 package gamescene;
 
 import enumerate.GameSceneName;
+import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
@@ -25,7 +26,9 @@ public class Launcher extends GameScene {
 	@Override
 	public void update(GraphicManager gm, SoundManager sm, InputManager<?> im) {
 		System.out.println("Launcher update");
-		this.isGameEndFlag = true;
+		//this.isGameEndFlag = true;
+
+		ResourceLoader.getInstance().loadCharacterFile(gm.getImageContainer(), "ZEN");
 
 	}
 
