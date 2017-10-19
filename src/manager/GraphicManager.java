@@ -18,16 +18,26 @@ public class GraphicManager {
 
 	private LetterImage letterImage;
 
-	private LinkedList<CharacterActionImage> imageContainer;
+	/**各キャラクターの画像を格納するリスト*/
+	private LinkedList<CharacterActionImage> characterImageContainer;
+
+	/**波動拳の画像を格納するリスト*/
+	private LinkedList<Image> projectileImageContainer;
+
+	/**1～9までの画像を格納するリスト*/
+	private LinkedList<Image> counterTextImageContainer;
+
+	/**必殺技の画像を格納するリスト*/
+	private LinkedList<Image> ultimateAttackImageContainer;
 
 	public GraphicManager() {
 		this.renderTaskList = new LinkedList<RenderTask>();
 		this.letterImage = new LetterImage();
-		this.imageContainer = new LinkedList<CharacterActionImage>();
+		this.characterImageContainer = new LinkedList<CharacterActionImage>();
 	}
 
 	public LinkedList<CharacterActionImage> getImageContainer(){
-		return this.imageContainer;
+		return this.characterImageContainer;
 	}
 
 	public void render() {
