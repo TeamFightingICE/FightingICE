@@ -1,25 +1,21 @@
 package gamescene;
 
-import manager.GraphicManager;
-import manager.InputManager;
-import manager.SoundManager;
-
 public class Play extends GameScene {
 
 	@Override
-	public void initialize(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void initialize() {
 
 
 	}
 
 	@Override
-	public void update(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void update() {
 
 
 	}
 
 	@Override
-	public void close(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void close() {
 
 
 	}

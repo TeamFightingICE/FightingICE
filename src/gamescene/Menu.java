@@ -1,9 +1,6 @@
 package gamescene;
 
 import enumerate.GameSceneName;
-import manager.GraphicManager;
-import manager.InputManager;
-import manager.SoundManager;
 
 public class Menu extends GameScene {
 
@@ -21,14 +18,14 @@ public class Menu extends GameScene {
 	}
 
 	@Override
-	public void initialize(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void initialize() {
 		System.out.println("Menu initialize");
 
 		//gm.drawString("Hello World", 100, 100);
 	}
 
 	@Override
-	public void update(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void update() {
 
 		//処理...
 		//次シーンに遷移するとき
@@ -53,11 +50,10 @@ public class Menu extends GameScene {
 		*/
 
 
-
 	}
 
 	@Override
-	public void close(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void close() {
 		System.out.println("Menu close");
 
 	}

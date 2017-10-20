@@ -146,7 +146,7 @@ public class DisplayManager {
 				elapsedTime = currentTime - lastTime;
 
 				// バックバッファに描画する
-			    gm.render();
+			    GraphicManager.getInstance().render();
 
 				// FPSに従って描画
 				if (elapsedTime >= 1.0 / GameSetting.FPS) {

@@ -30,10 +30,18 @@ public class GraphicManager {
 	/**必殺技の画像を格納するリスト*/
 	private LinkedList<Image> ultimateAttackImageContainer;
 
-	public GraphicManager() {
+	private static  GraphicManager  graphicManager = new  GraphicManager();
+
+	private  GraphicManager() {
+		System.out.println("Create instance: " + GraphicManager.class.getName());
+
 		this.renderTaskList = new LinkedList<RenderTask>();
 		this.letterImage = new LetterImage();
 		this.characterImageContainer = new LinkedList<CharacterActionImage>();
+	}
+
+	public static  GraphicManager getInstance() {
+		return  graphicManager;
 	}
 
 	public LinkedList<CharacterActionImage> getImageContainer(){

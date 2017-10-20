@@ -1,10 +1,6 @@
 package gamescene;
 
 import enumerate.GameSceneName;
-import loader.ResourceLoader;
-import manager.GraphicManager;
-import manager.InputManager;
-import manager.SoundManager;
 
 public class Launcher extends GameScene {
 
@@ -18,22 +14,20 @@ public class Launcher extends GameScene {
 	}
 
 	@Override
-	public void initialize(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void initialize() {
 		System.out.println("Launcher initialize");
 
 	}
 
 	@Override
-	public void update(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void update() {
 		System.out.println("Launcher update");
 		//this.isGameEndFlag = true;
-
-		ResourceLoader.getInstance().loadCharacterFile(gm.getImageContainer(), "ZEN");
 
 	}
 
 	@Override
-	public void close(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void close() {
 
 	}
 
