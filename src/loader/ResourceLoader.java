@@ -38,68 +38,23 @@ public class ResourceLoader {
 
 		// 波動拳読み込み
 		loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
-				graphicPath + ResourceSetting.PROJECTILE_DIRECTORY, ResourceSetting.PROJECTILE_FILES);
+				graphicPath + ResourceSetting.PROJECTILE_DIRECTORY);
+		System.out.println("波動拳読み込み完了");
 		// 必殺技読み込み
 		loadImages(GraphicManager.getInstance().getUltimateAttackImageContainer(),
-				graphicPath + ResourceSetting.SUPER_DIRECTORY, ResourceSetting.SUPER_FILES);
+				graphicPath + ResourceSetting.SUPER_DIRECTORY);
+		System.out.println("必殺技読み込み完了");
 		// 1~4の文字カウンタ読み込み
 		loadImages(GraphicManager.getInstance().getCounterTextImageContainer(),
-				graphicPath + ResourceSetting.COUNTER_DIRECTORY, ResourceSetting.COUNTER_TEXT_FILES);
+				graphicPath + ResourceSetting.COUNTER_DIRECTORY);
 		// "Hit"文字読み込み
 		loadImages(GraphicManager.getInstance().getHitTextAttackImageContainer(),
-				graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY, ResourceSetting.HIT_TEXT_FILE);
+				graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
 		// アッパー画像読み込み
 		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY, characterName);
-		//ヒットエフェクト読み込み
-		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORIES);
+		// ヒットエフェクト読み込み
+		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
 
-	}
-
-	/**
-	 * ディレクトリから画像を読み込み、リストに格納する
-	 *
-	 * @param container
-	 *            画像を格納するリスト
-	 * @param path
-	 *            読み込む画像までのパス
-	 * @param resourceName
-	 *            読み込む画像のファイル名が格納されている配列
-	 */
-	private void loadImages(ArrayList<Image> container, String path, String[] resourceName) {
-		for (int i = 0; i < resourceName.length; i++) {
-			container.add(loadImage(path + resourceName[i]));
-		}
-	}
-
-	/**
-	 * アッパーの画像を読み込み、2次元配列に格納する
-	 *
-	 * @param path
-	 *            読み込む画像までのパス
-	 * @param characterName
-	 *            P1, P2の使用キャラクタ名が格納された配列
-	 */
-	private void loadUpperImages(String path, String[] characterName) {
-		String[][] upper = { ResourceSetting.UPPER_FILES.clone(), ResourceSetting.UPPER_FILES.clone() };
-
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < upper[i].length; j++) {
-				upper[i][j] += characterName[i].equals("ZEN") ? ".png" : "_" + characterName[i] + ".png";
-				GraphicManager.getInstance().getUpperImageContainer()[i][j] = loadImage(path + upper[i][j]);
-			}
-		}
-	}
-
-	/**
-	 * 攻撃が当たったときに描画するエフェクトの画像を読み込み、2次元配列に格納する
-	 */
-	private void loadHitEffectImage(String path) {
-		for (int i = 0; i < ResourceSetting.HIT_DIRECTORIES.length; i++) {
-			for (int j = 0; j < ResourceSetting.HIT_FILES.length; j++) {
-				GraphicManager.getInstance().getHitEffectImageContaier()[i][j] = loadImage(
-						path + ResourceSetting.HIT_FILES[j]);
-			}
-		}
 	}
 
 	/**
@@ -210,6 +165,71 @@ public class ResourceLoader {
 		buffer = null;
 
 		return new Image(textureId, bimg);
+	}
+
+	/**
+	 * ディレクトリから画像を読み込み、リストに格納する
+	 *
+	 * @param container
+	 *            画像を格納するリスト
+	 * @param path
+	 *            読み込む画像までのパス
+	 * @param resourceName
+	 *            読み込む画像のファイル名が格納されている配列
+	 */
+	private void loadImages(ArrayList<Image> container, String path) {
+		File[] files = new File(path).listFiles();
+		for (File file : files) {
+			container.add(loadImage(file.getPath()));
+		}
+	}
+
+	/**
+	 * アッパーの画像を読み込み、2次元配列に格納する
+	 *
+	 * @param path
+	 *            読み込む画像までのパス
+	 * @param characterName
+	 *            P1, P2の使用キャラクタ名が格納された配列
+	 */
+	private void loadUpperImages(String path, String[] characterName) {
+		for (int i = 0; i < 2; i++) {
+			String tempPath = path;
+			
+			switch (characterName[i]) {
+			case "ZEN":
+				tempPath += "ZEN/";
+				break;
+			case "GARNET":
+				tempPath += "GARNET/";
+				break;
+			default:
+				tempPath += "LUD/";
+			}
+
+			File[] files = new File(tempPath).listFiles();
+			for (int j = 0; j < files.length; j++) {
+				System.out.println(files[j].getPath());
+				GraphicManager.getInstance().getUpperImageContainer()[i][j] = loadImage(files[j].getPath());
+			}
+		}
+	}
+
+	/**
+	 * 攻撃が当たったときに描画するエフェクトの画像を読み込み、2次元配列に格納する
+	 *
+	 * @param path
+	 *            読み込む画像までのパス
+	 */
+	private void loadHitEffectImage(String path) {
+		File[] dir = new File(path).listFiles();
+		for (int i = 0; i < dir.length; i++) {
+			File[] files = new File(dir[i].getPath()).listFiles();
+
+			for (int j = 0; j < files.length; j++) {
+				GraphicManager.getInstance().getHitEffectImageContaier()[i][j] = loadImage(files[j].getPath());
+			}
+		}
 	}
 
 }

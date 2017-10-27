@@ -2,7 +2,7 @@ package core;
 
 import java.awt.Font;
 
-import gamescene.Menu;
+import gamescene.Launcher;
 import image.LetterImage;
 import manager.GameManager;
 import manager.GraphicManager;
@@ -19,8 +19,9 @@ public class Game extends GameManager {
 		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
 		GraphicManager.getInstance().setLetterFont(new LetterImage(awtFont, true));
 
-		Menu menu = new Menu();
-		this.startGame(menu);
+		//Menu menu = new Menu();
+		Launcher launcher = new Launcher();
+		this.startGame(launcher);
 
 	}
 
