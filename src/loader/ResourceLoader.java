@@ -10,12 +10,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import image.CharacterActionImage;
 import image.Image;
+import manager.GraphicManager;
+import setting.ResourceSetting;
 
 /** キャラクターの設定ファイルや画像等のリソースをロードするためのシングルトンなクラス */
 public class ResourceLoader {
@@ -28,6 +29,77 @@ public class ResourceLoader {
 
 	public static ResourceLoader getInstance() {
 		return resourceLoader;
+	}
+
+	public void loadResource(String[] characterName) {
+		// String motionFilePath = "./data/character/" + characterName +
+		// "/Motion.csv";
+		String graphicPath = "./data/graphics/";
+
+		// 波動拳読み込み
+		loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
+				graphicPath + ResourceSetting.PROJECTILE_DIRECTORY, ResourceSetting.PROJECTILE_FILES);
+		// 必殺技読み込み
+		loadImages(GraphicManager.getInstance().getUltimateAttackImageContainer(),
+				graphicPath + ResourceSetting.SUPER_DIRECTORY, ResourceSetting.SUPER_FILES);
+		// 1~4の文字カウンタ読み込み
+		loadImages(GraphicManager.getInstance().getCounterTextImageContainer(),
+				graphicPath + ResourceSetting.COUNTER_DIRECTORY, ResourceSetting.COUNTER_TEXT_FILES);
+		// "Hit"文字読み込み
+		loadImages(GraphicManager.getInstance().getHitTextAttackImageContainer(),
+				graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY, ResourceSetting.HIT_TEXT_FILE);
+		// アッパー画像読み込み
+		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY, characterName);
+		//ヒットエフェクト読み込み
+		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORIES);
+
+	}
+
+	/**
+	 * ディレクトリから画像を読み込み、リストに格納する
+	 *
+	 * @param container
+	 *            画像を格納するリスト
+	 * @param path
+	 *            読み込む画像までのパス
+	 * @param resourceName
+	 *            読み込む画像のファイル名が格納されている配列
+	 */
+	private void loadImages(ArrayList<Image> container, String path, String[] resourceName) {
+		for (int i = 0; i < resourceName.length; i++) {
+			container.add(loadImage(path + resourceName[i]));
+		}
+	}
+
+	/**
+	 * アッパーの画像を読み込み、2次元配列に格納する
+	 *
+	 * @param path
+	 *            読み込む画像までのパス
+	 * @param characterName
+	 *            P1, P2の使用キャラクタ名が格納された配列
+	 */
+	private void loadUpperImages(String path, String[] characterName) {
+		String[][] upper = { ResourceSetting.UPPER_FILES.clone(), ResourceSetting.UPPER_FILES.clone() };
+
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < upper[i].length; j++) {
+				upper[i][j] += characterName[i].equals("ZEN") ? ".png" : "_" + characterName[i] + ".png";
+				GraphicManager.getInstance().getUpperImageContainer()[i][j] = loadImage(path + upper[i][j]);
+			}
+		}
+	}
+
+	/**
+	 * 攻撃が当たったときに描画するエフェクトの画像を読み込み、2次元配列に格納する
+	 */
+	private void loadHitEffectImage(String path) {
+		for (int i = 0; i < ResourceSetting.HIT_DIRECTORIES.length; i++) {
+			for (int j = 0; j < ResourceSetting.HIT_FILES.length; j++) {
+				GraphicManager.getInstance().getHitEffectImageContaier()[i][j] = loadImage(
+						path + ResourceSetting.HIT_FILES[j]);
+			}
+		}
 	}
 
 	/**
@@ -46,29 +118,27 @@ public class ResourceLoader {
 		}
 	}
 
-	public void loadCharacterFile(LinkedList<CharacterActionImage> ic, String characterName){
-		BufferedReader br = openReadFile("./data/character/"+characterName+"/Motion.csv");
+	public void loadCharacterFile(String path, String characterName) {
+		BufferedReader br = openReadFile("./data/character/" + characterName + "/Motion.csv");
 
-		try{
+		try {
 			String line;
 			br.readLine(); // ignore header
 
-			while((line = br.readLine()) != null){
-				String[] st = line.split(",",0);
+			while ((line = br.readLine()) != null) {
+				String[] st = line.split(",", 0);
 
-//ここで必要なデータをMotion.csvから読み込み
+				// ここで必要なデータをMotion.csvから読み込み
 
 			}
 
 			br.close();
 
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
-
-
 
 	/**
 	 * 画像を読み込み，読み込んだ画像の情報を返す

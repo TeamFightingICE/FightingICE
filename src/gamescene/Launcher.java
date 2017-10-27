@@ -1,6 +1,7 @@
 package gamescene;
 
 import enumerate.GameSceneName;
+import loader.ResourceLoader;
 
 public class Launcher extends GameScene {
 
@@ -23,6 +24,8 @@ public class Launcher extends GameScene {
 	public void update() {
 		System.out.println("Launcher update");
 		//this.isGameEndFlag = true;
+		String[] characterName = {"ZEN", "GARNET"};
+		ResourceLoader.getInstance().loadResource(characterName);
 
 	}
 
