@@ -1,6 +1,5 @@
 package manager;
 
-import core.Input;
 import gamescene.GameScene;
 
 public abstract class GameManager {
@@ -11,17 +10,11 @@ public abstract class GameManager {
 	 */
 	private GameScene currentGameScene;
 
-	/** AIやキーボード等の入力関連のタスクを管理するマネージャー
-	 * inputManagerはシングルトンなクラスで宣言するため、ここにインスタンスを作成するべきではない
-	 * 伊藤君と話し合って修正する*/
-	protected InputManager<?> inputManager;
-
 	/** ゲームの終了要求があったかを表すフラグ */
 	private boolean isExitFlag;
 
 	/** フィールドの初期化を行うコンストラクタ */
 	public GameManager() {
-		this.inputManager = new Input();//伊藤君と話し合って修正する
 		this.currentGameScene = null;
 		this.isExitFlag = false;
 	}
@@ -32,7 +25,7 @@ public abstract class GameManager {
 
 	/** 現在のゲームシーンの更新を行う */
 	public void update() {
-		inputManager.update();  //伊藤君と話し合って修正する
+		InputManager.getInstance().update();
 
 		if (!currentGameScene.isGameEnd()) {
 			if (currentGameScene.isTransition()) {

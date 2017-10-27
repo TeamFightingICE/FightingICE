@@ -1,6 +1,8 @@
 package gamescene;
 
 import enumerate.GameSceneName;
+import manager.InputManager;
+import struct.Key;
 
 public class Menu extends GameScene {
 
@@ -26,7 +28,9 @@ public class Menu extends GameScene {
 
 	@Override
 	public void update() {
-
+		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
+		if(key.A==true)
+			System.out.println("pless z");
 		//処理...
 		//次シーンに遷移するとき
 		Launcher launch = new Launcher();  //次のシーンのコンストラクタ作成

@@ -70,12 +70,13 @@ public class DisplayManager {
 
 		// Setup a key callback. It will be called every time a key is pressed,
 		// repeated or released.
-		glfwSetKeyCallback(this.window, (window, key, scancode, action, mods) -> {
-			if (windowCloseRequest(key, action)) {
-				glfwSetWindowShouldClose(window, true); // We will detect this
-														// in the rendering loop
-			}
-		});
+//		glfwSetKeyCallback(this.window, (window, key, scancode, action, mods) -> {
+//			if (windowCloseRequest(key, action)) {
+//				glfwSetWindowShouldClose(window, true); // We will detect this
+//														// in the rendering loop
+//			}
+//		});
+		glfwSetKeyCallback(this.window, InputManager.getInstance().getKeyboard());
 
 		// Get the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
