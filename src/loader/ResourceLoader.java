@@ -47,9 +47,13 @@ public class ResourceLoader {
 		// 1~4の文字カウンタ読み込み
 		loadImages(GraphicManager.getInstance().getCounterTextImageContainer(),
 				graphicPath + ResourceSetting.COUNTER_DIRECTORY);
+
 		// "Hit"文字読み込み
-		loadImages(GraphicManager.getInstance().getHitTextAttackImageContainer(),
-				graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
+				loadImages(GraphicManager.getInstance().getHitTextImageContainer(),
+						graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
+		// 背景画像読み込み
+		loadImages(GraphicManager.getInstance().getBackgroundImage(),
+				graphicPath + ResourceSetting.BACKGROUND_DIRECTORY);
 		// アッパー画像読み込み
 		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY, characterName);
 		// ヒットエフェクト読み込み
@@ -73,8 +77,8 @@ public class ResourceLoader {
 		}
 	}
 
-	public void loadCharacterFile(String path, String characterName) {
-		BufferedReader br = openReadFile("./data/character/" + characterName + "/Motion.csv");
+	public void loadCharacterImage(String path, String characterName) {
+		BufferedReader br = openReadFile("./data/characters/" + characterName + "/Motion.csv");
 
 		try {
 			String line;
@@ -195,7 +199,7 @@ public class ResourceLoader {
 	private void loadUpperImages(String path, String[] characterName) {
 		for (int i = 0; i < 2; i++) {
 			String tempPath = path;
-			
+
 			switch (characterName[i]) {
 			case "ZEN":
 				tempPath += "ZEN/";

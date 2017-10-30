@@ -33,6 +33,11 @@ public class ResourceSetting {
 	public static final String HIT_TEXT_DIRECTORY = "hitText/";
 
 	/**
+	 * Directory for background picture.
+	 */
+	public static final String BACKGROUND_DIRECTORY = "background/";
+
+	/**
 	 * Name of the file for Background Music.
 	 */
 	public static final String BGM_FILE = "BGM0.wav";

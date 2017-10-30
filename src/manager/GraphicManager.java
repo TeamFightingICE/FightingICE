@@ -40,7 +40,7 @@ public class GraphicManager {
 	/** 攻撃ヒット時に描画するエフェクトの画像を格納する2次元配列*/
 	private Image[][] hitEffectImageContainer;
 
-	private Image backGroundImage;
+	private ArrayList<Image> backGroundImage;
 
 
 
@@ -64,6 +64,7 @@ public class GraphicManager {
 
 		this.upperImageContainer = new Image[2][3];
 		this.hitEffectImageContainer = new Image[4][4];
+		this.backGroundImage  = new ArrayList<Image>();
 
 	}
 
@@ -87,7 +88,7 @@ public class GraphicManager {
 		return this.ultimateAttackImageContainer;
 	}
 
-	public ArrayList<Image> getHitTextAttackImageContainer(){
+	public ArrayList<Image> getHitTextImageContainer(){
 		return this.hitTextImageContainer;
 	}
 
@@ -99,7 +100,9 @@ public class GraphicManager {
 		return this.hitEffectImageContainer;
 	}
 
-
+	public ArrayList<Image> getBackgroundImage(){
+		return this.backGroundImage;
+	}
 
 
 	public void render() {
