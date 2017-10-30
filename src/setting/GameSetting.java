@@ -6,10 +6,10 @@ public class GameSetting {
 	public static final int STAGE_HEIGHT = 640;
 	public static final int FPS = 60;
 
-	private static final String[] CHARACTER = { "ZEN", "GARNET", "LUD" };
+	public static final String[] CHARACTERS = { "ZEN", "GARNET", "LUD" };
 
-	public static final int ROUNDFRAMENUMBER = 3600;
-	public static final int BREAKTIMEFRAMENUMBER = 70;
+	public static final int ROUND_FRAME_NUMBER = 3600;
+	public static final int BREAKTIME_FRAME_NUMBER = 70;
 
 	public static final int GRAVITY = 1;
 	public static final int FRICTION = 1;
