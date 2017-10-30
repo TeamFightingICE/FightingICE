@@ -2,13 +2,13 @@ package setting;
 
 public class FlagSetting {
 
-	boolean automationFlag = false;
+	public static boolean automationFlag = false;
 
-	boolean allCombinationFlag = false;
+	public static boolean allCombinationFlag = false;
 
-	boolean enableBackground = true;
+	public static boolean enableBackground = true;
 
-	boolean py4j = false;
+	public static boolean py4j = false;
 
 	public static boolean debugActionFlag = false;
 
