@@ -1,14 +1,9 @@
 package fighting;
 
 public class Attack {
-	/**
-	 * Refresh the information per frame,and check the result of attack
-	 */
+//要:コメントの打ち直し
 	//private HitArea hitAreaNow;
 
-	/**
-	 * The number of frame
-	 */
 	private	int nowFrame;
 
 	/**
@@ -46,9 +41,6 @@ public class Attack {
 	 */
 	private	int hitDamage, guardDamage;
 
-	/**
-	 * ExEnergy value
-	 */
 	private	int startAddEnergy, hitAddEnergy, guardAddEnergy, giveEnergy;
 
 	/**
@@ -72,18 +64,10 @@ public class Attack {
 	private	boolean downProperty;
 
 	/**
-	 * ImageHandle
-	 */
-	//private	render.Image image;
-
-	/**
 	 * The number of frame for the recovery after being hit
 	 */
 	private	int stunFrameNumber;
 
-	/**
-	 * Allow the overlap of stun frames
-	 */
 	private boolean allowOverlapStunFrame;
 
 }
