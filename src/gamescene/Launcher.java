@@ -1,9 +1,7 @@
 package gamescene;
 
 import enumerate.GameSceneName;
-import image.Image;
 import loader.ResourceLoader;
-import manager.GraphicManager;
 
 public class Launcher extends GameScene {
 	int count = 0;
@@ -23,6 +21,7 @@ public class Launcher extends GameScene {
 
 		String[] characterName = {"ZEN", "GARNET"};
 		ResourceLoader.getInstance().loadResource(characterName);
+		System.out.println("done");
 
 	}
 
@@ -30,9 +29,9 @@ public class Launcher extends GameScene {
 	public void update() {
 		//System.out.println("Launcher update");
 		//this.isGameEndFlag = true;
-		
-		Image img = new Image(GraphicManager.getInstance().getProjectileImageContainer().get(count++));
-		GraphicManager.getInstance().drawImage(img, 200, 200, true);
+
+		//Image img = new Image(GraphicManager.getInstance().getProjectileImageContainer().get(count++));
+		//GraphicManager.getInstance().drawImage(img, 200, 200, true);
 		if(count >=6){
 			count = 0;
 		}

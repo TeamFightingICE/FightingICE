@@ -46,7 +46,7 @@ public class GraphicManager {
 
 
 
-	private static  GraphicManager  graphicManager = new  GraphicManager();
+	private static  GraphicManager  graphicManager = new GraphicManager();
 
 	private  GraphicManager() {
 		System.out.println("Create instance: " + GraphicManager.class.getName());
@@ -72,7 +72,7 @@ public class GraphicManager {
 		return  graphicManager;
 	}
 
-	public ArrayList<CharacterActionImage> getImageContainer(){
+	public ArrayList<CharacterActionImage> getCharacterImageContainer(){
 		return this.characterImageContainer;
 	}
 
