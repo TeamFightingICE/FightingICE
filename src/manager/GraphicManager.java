@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.LinkedList;
 
+import image.CharacterActionImage;
 import image.Image;
 import image.LetterImage;
 import render.ImageTask;
@@ -17,15 +18,40 @@ public class GraphicManager {
 
 	private LetterImage letterImage;
 
-	public GraphicManager() {
+	/**各キャラクターの画像を格納するリスト*/
+	private LinkedList<CharacterActionImage> characterImageContainer;
+
+	/**波動拳の画像を格納するリスト*/
+	private LinkedList<Image> projectileImageContainer;
+
+	/**1～9までの画像を格納するリスト*/
+	private LinkedList<Image> counterTextImageContainer;
+
+	/**必殺技の画像を格納するリスト*/
+	private LinkedList<Image> ultimateAttackImageContainer;
+
+	private static  GraphicManager  graphicManager = new  GraphicManager();
+
+	private  GraphicManager() {
+		System.out.println("Create instance: " + GraphicManager.class.getName());
+
 		this.renderTaskList = new LinkedList<RenderTask>();
 		this.letterImage = new LetterImage();
+		this.characterImageContainer = new LinkedList<CharacterActionImage>();
+	}
+
+	public static  GraphicManager getInstance() {
+		return  graphicManager;
+	}
+
+	public LinkedList<CharacterActionImage> getImageContainer(){
+		return this.characterImageContainer;
 	}
 
 	public void render() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		System.out.println(renderTaskList.size());
+		//System.out.println(renderTaskList.size());
 		while (!renderTaskList.isEmpty()) {
 			renderTaskList.removeFirst().render();
 		}

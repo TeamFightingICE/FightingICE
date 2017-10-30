@@ -1,9 +1,6 @@
 package gamescene;
 
 import enumerate.GameSceneName;
-import manager.GraphicManager;
-import manager.InputManager;
-import manager.SoundManager;
 
 public class GameScene {
 
@@ -42,13 +39,13 @@ public class GameScene {
 		this.nextGameScene = nextGameScene;
 	}
 
-	public void initialize(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void initialize() {
 	}
 
-	public void update(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void update() {
 	}
 
-	public void close(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void close() {
 	}
 
 	/**

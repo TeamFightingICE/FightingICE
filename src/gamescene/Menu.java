@@ -1,9 +1,8 @@
 package gamescene;
 
 import enumerate.GameSceneName;
-import manager.GraphicManager;
 import manager.InputManager;
-import manager.SoundManager;
+import struct.Key;
 
 public class Menu extends GameScene {
 
@@ -21,15 +20,17 @@ public class Menu extends GameScene {
 	}
 
 	@Override
-	public void initialize(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void initialize() {
 		System.out.println("Menu initialize");
 
 		//gm.drawString("Hello World", 100, 100);
 	}
 
 	@Override
-	public void update(GraphicManager gm, SoundManager sm, InputManager<?> im) {
-
+	public void update() {
+		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
+		if(key.A==true)
+			System.out.println("pless z");
 		//処理...
 		//次シーンに遷移するとき
 		Launcher launch = new Launcher();  //次のシーンのコンストラクタ作成
@@ -53,11 +54,10 @@ public class Menu extends GameScene {
 		*/
 
 
-
 	}
 
 	@Override
-	public void close(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void close() {
 		System.out.println("Menu close");
 
 	}
