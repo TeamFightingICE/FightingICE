@@ -1,24 +1,36 @@
 package struct;
 
 public class HitArea {
-	/**
-	 * Value of arena`s left boundary
-	 */
-	private int L;
 
-	/**
-	 * Value of arena`s right boundary
-	 */
-	private int R;
+	private int left;
 
-	/**
-	 * Value of arena`s top boundary
-	 */
-	private int T;
+	private int right;
 
-	/**
-	 * Value of arena`s bottom boundary
-	 */
-	private int B;
+	private int top;
+
+	private int bottom;
+
+	public void move(int speedX,int speedY){
+		left += speedX;
+		right += speedX;
+		top += speedY;
+		bottom += speedY;
+	}
+
+	public int getleft() {
+		return left;
+	}
+
+	public int getright() {
+		return right;
+	}
+
+	public int gettop() {
+		return top;
+	}
+
+	public int getbottom() {
+		return bottom;
+	}
 
 }
