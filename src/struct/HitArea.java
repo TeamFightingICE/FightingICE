@@ -10,7 +10,7 @@ public class HitArea {
 
 	private int bottom;
 
-	public void move(int speedX,int speedY){
+	public void move(int speedX, int speedY) {
 		left += speedX;
 		right += speedX;
 		top += speedY;
