@@ -1,21 +1,19 @@
 package image;
 
-import enumerate.Action;
-
 public class CharacterActionImage {
 
 	private String characterName;
 
-	private Action action;
+	private String actionName;
 
 	private int frameNumber;
 
 	private Image[] actionImage;
 
 
-	public CharacterActionImage(String characterName, Action action, int frameNumber, Image[] actionImage){
+	public CharacterActionImage(String characterName, String actionName, int frameNumber, Image[] actionImage){
 		this.characterName = characterName;
-		this.action = action;
+		this.actionName = actionName;
 		this.frameNumber = frameNumber;
 		this.actionImage = actionImage;
 	}
@@ -25,8 +23,8 @@ public class CharacterActionImage {
 		return this.characterName;
 	}
 
-	public Action getAction(){
-		return this.action;
+	public String getActionName(){
+		return this.actionName;
 	}
 
 	public int getFrameNumber(){

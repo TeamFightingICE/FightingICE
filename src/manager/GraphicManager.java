@@ -2,6 +2,7 @@ package manager;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import image.CharacterActionImage;
@@ -19,39 +20,95 @@ public class GraphicManager {
 	private LetterImage letterImage;
 
 	/**各キャラクターの画像を格納するリスト*/
-	private LinkedList<CharacterActionImage> characterImageContainer;
+	private ArrayList<CharacterActionImage> characterImageContainer;
 
 	/**波動拳の画像を格納するリスト*/
-	private LinkedList<Image> projectileImageContainer;
-
-	/**1～9までの画像を格納するリスト*/
-	private LinkedList<Image> counterTextImageContainer;
+	private ArrayList<Image> projectileImageContainer;
 
 	/**必殺技の画像を格納するリスト*/
-	private LinkedList<Image> ultimateAttackImageContainer;
+	private ArrayList<Image> ultimateAttackImageContainer;
 
-	private static  GraphicManager  graphicManager = new  GraphicManager();
+	/**"Hit"の画像を格納するリスト*/
+	private ArrayList<Image> hitTextImageContainer;
+
+	/**1～9までの画像を格納するリスト*/
+	private ArrayList<Image> counterTextImageContainer;
+
+	/** アッパー画像を格納する2次元配列*/
+	private Image[][] upperImageContainer;
+
+	/** 攻撃ヒット時に描画するエフェクトの画像を格納する2次元配列*/
+	private Image[][] hitEffectImageContainer;
+
+	private ArrayList<Image> backGroundImage;
+
+
+
+
+
+	private static  GraphicManager  graphicManager = new GraphicManager();
 
 	private  GraphicManager() {
 		System.out.println("Create instance: " + GraphicManager.class.getName());
 
 		this.renderTaskList = new LinkedList<RenderTask>();
 		this.letterImage = new LetterImage();
-		this.characterImageContainer = new LinkedList<CharacterActionImage>();
+
+		this.characterImageContainer = new ArrayList<CharacterActionImage>();
+
+		this.projectileImageContainer = new ArrayList<Image>();
+		this.ultimateAttackImageContainer = new ArrayList<Image>();
+
+		this.counterTextImageContainer = new ArrayList<Image>();
+		this.hitTextImageContainer = new ArrayList<Image>();
+
+		this.upperImageContainer = new Image[2][3];
+		this.hitEffectImageContainer = new Image[4][4];
+		this.backGroundImage  = new ArrayList<Image>();
+
 	}
 
 	public static  GraphicManager getInstance() {
 		return  graphicManager;
 	}
 
-	public LinkedList<CharacterActionImage> getImageContainer(){
+	public ArrayList<CharacterActionImage> getCharacterImageContainer(){
 		return this.characterImageContainer;
 	}
+
+	public ArrayList<Image> getProjectileImageContainer(){
+		return this.projectileImageContainer;
+	}
+
+	public ArrayList<Image> getCounterTextImageContainer(){
+		return this.counterTextImageContainer;
+	}
+
+	public ArrayList<Image> getUltimateAttackImageContainer(){
+		return this.ultimateAttackImageContainer;
+	}
+
+	public ArrayList<Image> getHitTextImageContainer(){
+		return this.hitTextImageContainer;
+	}
+
+	public Image[][] getUpperImageContainer(){
+		return this.upperImageContainer;
+	}
+
+	public Image[][] getHitEffectImageContaier(){
+		return this.hitEffectImageContainer;
+	}
+
+	public ArrayList<Image> getBackgroundImage(){
+		return this.backGroundImage;
+	}
+
 
 	public void render() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//System.out.println(renderTaskList.size());
+
 		while (!renderTaskList.isEmpty()) {
 			renderTaskList.removeFirst().render();
 		}
