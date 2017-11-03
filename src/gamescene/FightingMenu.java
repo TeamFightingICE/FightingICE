@@ -4,13 +4,13 @@ import enumerate.GameSceneName;
 import manager.InputManager;
 import struct.Key;
 
-public class HomeMenu extends GameScene {
+public class FightingMenu extends GameScene {
 
 	/*int x = 100;
 	int y = 100;
 	int count = 0;*/
 
-	public HomeMenu(){
+	public FightingMenu(){
 		//以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.MENU;
 		this.isGameEndFlag = false;
