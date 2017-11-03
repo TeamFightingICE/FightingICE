@@ -41,7 +41,7 @@ public class HomeMenu extends GameScene {
 		mi[2] = new MenuItem("EXIT : ", 50, 310, 2);
 
 		cursorPosition = 0;
-		this.replayIndex = 0;
+		replayIndex = 0;
 
 		// get file list from the folder
 		String path = REPLAY_PATH;
@@ -52,8 +52,7 @@ public class HomeMenu extends GameScene {
 		int nFiles = files != null ? files.length : 0;
 		replayName = new String[nFiles];
 		// get replay's full path
-		int i;
-		for(i = 0 ; i < nFiles ; i++){
+		for(int i = 0 ; i < nFiles ; i++){
 			String buffer;
 			char[] charBuffer;
 			char[] fileFullPath;
@@ -72,8 +71,7 @@ public class HomeMenu extends GameScene {
 			 	replayName[i] = String.valueOf(fileFullPath);
 			}
 		}
-		int replayNumber = i;
-		if(replayNumber == 0){
+		if(nFiles == 0){
 			replayName = new String[1];
 			replayName[0] = "None";
 		}
@@ -83,29 +81,35 @@ public class HomeMenu extends GameScene {
 	public void update() {
 		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
 
+		if(key.U==true){
+			if(cursorPosition==0){
+				cursorPosition = mi[NUMBER_OF_ITEM-1].getCursorPosition();
+			}
+			else{
+				cursorPosition = mi[cursorPosition-1].getCursorPosition();
+			}
+
+		}
+
+		if(key.D==true){
+			if(cursorPosition==NUMBER_OF_ITEM-1){
+				cursorPosition = mi[0].getCursorPosition();
+			}
+			else{
+				cursorPosition = mi[cursorPosition+1].getCursorPosition();
+			}
+		}
+
 		switch(cursorPosition){
 		case 0:
-			if(key.U==true){
-				cursorPosition = mi[2].getCursorPosition();
-			}
-			if(key.D==true){
-				cursorPosition = mi[1].getCursorPosition();
-			}
 			if(key.A==true){
 				FightingMenu fightingMenu = new FightingMenu();  //次のシーンのコンストラクタ作成
 				this.setTransitioFlag(true);    //現在のシーンからの遷移要求をtrueに
 				this.setNextGameScene(fightingMenu);       //次のシーンをセットする
 			}
-
 			break;
 
 		case 1:
-			if(key.U==true){
-				cursorPosition = mi[0].getCursorPosition();
-			}
-			if(key.D==true){
-				cursorPosition = mi[2].getCursorPosition();
-			}
 			if(key.R==true){
 				if(replayIndex == replayName.length - 1) replayIndex = 0;
 				else replayIndex++;
@@ -120,12 +124,6 @@ public class HomeMenu extends GameScene {
 			break;
 
 		case 2:
-			if(key.U==true){
-				cursorPosition = mi[1].getCursorPosition();
-			}
-			if(key.D==true){
-				cursorPosition = mi[0].getCursorPosition();
-			}
 			if(key.A){
 				//終了処理を
 			}
