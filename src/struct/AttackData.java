@@ -10,19 +10,26 @@ public class AttackData {
 
 	// private HitArea hitAreaSetting;
 
-	private int settingSpeedX, settingSpeedY;
+	private int settingSpeedX;
+	private int settingSpeedY;
 
-	private int speedX, speedY;
+	private int speedX;
+	private int speedY;
 
 	private int startUp;
 
 	private int active;
 
-	private int hitDamage, guardDamage;
+	private int hitDamage;
+	private int guardDamage;
 
-	private int startAddEnergy, hitAddEnergy, guardAddEnergy, giveEnergy;
+	private int startAddEnergy;
+	private int hitAddEnergy;
+	private int guardAddEnergy;
+	private int giveEnergy;
 
-	private int impactX, impactY;
+	private int impactX;
+	private int impactY;
 
 	private int giveGuardRecov;
 
