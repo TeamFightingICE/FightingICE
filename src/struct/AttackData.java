@@ -2,13 +2,13 @@ package struct;
 
 public class AttackData {
 	// 要:コメントの打ち直し
-	// private HitArea hitAreaNow;
+	private HitArea hitAreaNow;
 
 	private int nowFrame;
 
 	private boolean playerNumber;
 
-	// private HitArea hitAreaSetting;
+	private HitArea hitAreaSetting;
 
 	private int settingSpeedX;
 	private int settingSpeedY;
@@ -36,6 +36,56 @@ public class AttackData {
 	private int attackType;
 
 	private boolean downProperty;
+
+	public AttackData() {
+		this.settingSpeedX = 0;
+		this.settingSpeedY = 0;
+		this.startUp = 0;
+		this.active = 0;
+		this.hitDamage = 0;
+		this.guardDamage = 0;
+		this.startAddEnergy = 0;
+		this.hitAddEnergy = 0;
+		this.guardAddEnergy = 0;
+		this.giveEnergy = 0;
+		this.impactX = 0;
+		this.impactY = 0;
+		this.giveGuardRecov = 0;
+		this.attackType = 0;
+		this.downProperty = false;
+	}
+
+	public AttackData(HitArea hitAreaInput, int speedXInput, int speedYInput, int invokeInput, int activeInput,
+			int hitDamegeInput, int guardDamageInput, int startAddEnergyInput, int hitAddEnergyInput,
+			int guardAddEnergyInput, int giveEnergyInput, int impactXInput, int impactYInput, int giveGuardRecovInput,
+			int attackTypeInput, boolean downPropInput) {
+		this.hitAreaNow = new HitArea();
+
+		this.hitAreaSetting = new HitArea();
+		// hitAreaSetting.HitArea(hitAreaInput);
+
+		this.settingSpeedX = speedXInput;
+		this.settingSpeedY = speedYInput;
+		this.startUp = invokeInput;
+		this.active = activeInput;
+		this.hitDamage = hitDamegeInput;
+		this.guardDamage = guardDamageInput;
+		this.startAddEnergy = startAddEnergyInput;
+		this.hitAddEnergy = hitAddEnergyInput;
+		this.guardAddEnergy = guardAddEnergyInput;
+		this.giveEnergy = giveEnergyInput;
+		this.impactX = impactXInput;
+		this.impactY = impactYInput;
+		this.giveGuardRecov = giveGuardRecovInput;
+		this.attackType = attackTypeInput;
+		this.downProperty = downPropInput;
+	}
+
+	/*
+	 * public AttackData(AttackData attack){
+	 *
+	 * }
+	 */
 
 	public boolean isPlayerNumber() {
 		return playerNumber;
