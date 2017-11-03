@@ -102,7 +102,11 @@ public class ResourceLoader {
 					File[] files = new File(dirPath).listFiles();
 					System.out.println(dirPath);
 					int num = 0;
-					for (int j = 0; j < actionImage.length; j++) {
+					for (int j = 0; j < files.length; j++) {
+						if(j >= frameNumber){
+							break;
+						}
+						
 						actionImage[j] = loadImage(files[j].getPath());
 						num++;
 					}

@@ -1,5 +1,5 @@
 motionName,frameNumber,speedX,speedY,hitAreaLeft,hitAreaRight,hitAreaUp,hitAreaDown,state,attack.hitAreaLeft,attack.hitAreaRight,attack.hitAreaUp,attack.hitAreaDown,attack.speedX,attack.speedY,attack.StartUp,attack.Active,attack.HitDamage,attack.GuardDamage,attack.StartAddEnergy,attack.HitAddEnergy,attack.GuardAddEnergy,attack.GiveEnergy,attack.ImpactX,attack.ImpactY,attack.GiveGuardRecov,attack.AttackType,attack.DownProp,cancelAbleFrame,cancelAbleMotionLevel,motionLevel,control,landingFlag,Image
-NEUTRAL,6,0,0,120,160,100,305,STAND,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,FALSE,-1,-1,10,TRUE,FALSE,STAND
+NEUTRAL,6,0,0,120,160,100,305,STAND,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,FALSE,-1,-1,10,TRUE,FALSE,NEUTRAL
 STAND,48,0,0,120,160,100,305,STAND,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,FALSE,-1,-1,10,TRUE,FALSE,STAND
 FORWARD_WALK,27,5,0,120,160,100,305,STAND,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,FALSE,-1,-1,10,TRUE,FALSE,FORWARD_WALK
 DASH,29,10,0,120,160,110,305,STAND,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,FALSE,-1,-1,10,TRUE,FALSE,DASH
