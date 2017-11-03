@@ -10,27 +10,41 @@ public class HitArea {
 
 	private int bottom;
 
+	public HitArea(int left, int right, int top, int bottom) {
+		this.left = left;
+		this.right = right;
+		this.top = top;
+		this.bottom = bottom;
+	}
+
+	public HitArea() {
+		this.left = -1;
+		this.right = -1;
+		this.top = -1;
+		this.bottom = -1;
+	}
+
 	public void move(int speedX, int speedY) {
-		left += speedX;
-		right += speedX;
-		top += speedY;
-		bottom += speedY;
+		this.left += speedX;
+		this.right += speedX;
+		this.top += speedY;
+		this.bottom += speedY;
 	}
 
-	public int getleft() {
-		return left;
+	public int getLeft() {
+		return this.left;
 	}
 
-	public int getright() {
-		return right;
+	public int getRight() {
+		return this.right;
 	}
 
-	public int gettop() {
-		return top;
+	public int getTop() {
+		return this.top;
 	}
 
-	public int getbottom() {
-		return bottom;
+	public int getBottom() {
+		return this.bottom;
 	}
 
 }
