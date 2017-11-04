@@ -1,6 +1,16 @@
 package loader;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_RGBA8;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -17,6 +27,7 @@ import javax.imageio.ImageIO;
 import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
+import setting.ResourceSetting;
 
 /** キャラクターの設定ファイルや画像等のリソースをロードするためのシングルトンなクラス */
 public class ResourceLoader {
@@ -32,13 +43,11 @@ public class ResourceLoader {
 	}
 
 	public void loadResource(String[] characterName) {
-		// String motionFilePath = "./data/character/" + characterName +
-		// "/Motion.csv";
 		String graphicPath = "./data/graphics/";
 		String characterGraphicPath = "./data/characters/";
 
 		// 波動拳読み込み
-		/*loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
+		loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
 				graphicPath + ResourceSetting.PROJECTILE_DIRECTORY);
 		System.out.println("波動拳読み込み完了");
 		// 必殺技読み込み
@@ -58,7 +67,7 @@ public class ResourceLoader {
 		// アッパー画像読み込み
 		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY, characterName);
 		// ヒットエフェクト読み込み
-		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);*/
+		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
 
 		loadCharacterImages(characterGraphicPath, characterName);
 
@@ -80,33 +89,39 @@ public class ResourceLoader {
 		}
 	}
 
-	public void loadCharacterImages(String path, String[] characterName) {
+	/**
+	 * キャラクターの画像を読み込み、リストに格納する
+	 *
+	 * @param path
+	 *            各キャラクターの画像が格納されているディレクトリまでのパス
+	 * @param characterNames
+	 *            P1, P2の使用キャラクターの名前が格納されている配列
+	 */
+	public void loadCharacterImages(String path, String[] characterNames) {
 		for (int i = 0; i < 2; i++) {
 			try {
-				BufferedReader br = openReadFile("./data/characters/" + characterName[i] + "/Motion.csv");
+				BufferedReader br = openReadFile(path + characterNames[i] + "/Motion.csv");
 
 				String line;
 				br.readLine(); // ignore header
 
 				while ((line = br.readLine()) != null) {
 					String[] data = line.split(",", 0);
-
 					String actionName = data[0];
 					int frameNumber = Integer.valueOf(data[1]);
 					String imageName = data[33];
+
 					Image[] actionImage = new Image[frameNumber];
-					String dirPath = path + characterName[i] + "/graphics/" + imageName;
-					System.out.println(actionName);
+					String dirPath = path + characterNames[i] + "/graphics/" + imageName;
 
 					// 指定キャラクターのグラフィックが格納されているディレクトリを取得
 					File[] files = new File(dirPath).listFiles();
-					System.out.println(dirPath);
 					int num = 0;
 					for (int j = 0; j < files.length; j++) {
-						if(j >= frameNumber){
+						if (j >= frameNumber) {
 							break;
 						}
-						
+
 						actionImage[j] = loadImage(files[j].getPath());
 						num++;
 					}
@@ -117,18 +132,16 @@ public class ResourceLoader {
 							actionImage[j] = actionImage[0];
 						}
 					}
-					CharacterActionImage temp = new CharacterActionImage(characterName[i], actionName, frameNumber,
+					CharacterActionImage temp = new CharacterActionImage(characterNames[i], actionName, frameNumber,
 							actionImage);
 					GraphicManager.getInstance().getCharacterImageContainer().add(temp);
 				}
 
 				br.close();
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	/**
