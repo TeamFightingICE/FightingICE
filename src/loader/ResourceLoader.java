@@ -95,7 +95,7 @@ public class ResourceLoader {
 	}
 
 	public AIController loadAI(String AIName) {
-		File file = new File("./data/ai" + AIName + ".jar");
+		File file = new File("./data/ai/" + AIName + ".jar");
 
 		try {
 			ClassLoader cl = URLClassLoader.newInstance(new URL[] { file.toURI().toURL() });

@@ -19,20 +19,29 @@ public class Launcher extends GameScene {
 	public void initialize() {
 		System.out.println("Launcher initialize");
 
-		String[] characterName = {"ZEN", "GARNET"};
-		ResourceLoader.getInstance().loadResource(characterName);
+		String[] characterName = { "ZEN", "GARNET" };
+		String[] temp = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
+		// ResourceLoader.getInstance().loadResource(characterName);
+
+		String[] name = { "NewFTGTestAI"};
+		for (int i = 0; i < temp.length; i++) {
+			ResourceLoader.getInstance().loadAI(name[i]);
+			System.out.println("Loaded " + temp[i]);
+			
+		}
 		System.out.println("done");
 
 	}
 
 	@Override
 	public void update() {
-		//System.out.println("Launcher update");
-		//this.isGameEndFlag = true;
+		// System.out.println("Launcher update");
+		// this.isGameEndFlag = true;
 
-		//Image img = new Image(GraphicManager.getInstance().getProjectileImageContainer().get(count++));
-		//GraphicManager.getInstance().drawImage(img, 200, 200, true);
-		if(count >=6){
+		// Image img = new
+		// Image(GraphicManager.getInstance().getProjectileImageContainer().get(count++));
+		// GraphicManager.getInstance().drawImage(img, 200, 200, true);
+		if (count >= 6) {
 			count = 0;
 		}
 
