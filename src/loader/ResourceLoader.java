@@ -18,12 +18,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import aiinterface.AIController;
+import aiinterface.AIInterface;
 import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
@@ -87,6 +92,36 @@ public class ResourceLoader {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public AIController loadAI(String AIName) {
+		File file = new File("./data/ai" + AIName + ".jar");
+
+		try {
+			ClassLoader cl = URLClassLoader.newInstance(new URL[] { file.toURI().toURL() });
+			Class<?> c = cl.loadClass(AIName);
+			AIInterface ai = (AIInterface) c.newInstance();
+			return new AIController(ai);
+		} catch (MalformedURLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public String[] loadFileNames(String directoryPath, String extension) {
+		File[] files = new File(directoryPath).listFiles();
+		String[] fileNames = new String[files.length];
+
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].getName().endsWith(extension)) {
+				String fileName = files[i].getName();
+				fileNames[i] = fileName.substring(0, fileName.lastIndexOf("."));
+			}
+		}
+
+		return fileNames;
+
 	}
 
 	/**
