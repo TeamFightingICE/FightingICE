@@ -75,7 +75,6 @@ public class ResourceLoader {
 		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
 
 		loadCharacterImages(characterGraphicPath, characterName);
-
 	}
 
 	/**
@@ -94,6 +93,14 @@ public class ResourceLoader {
 		}
 	}
 
+	/**
+	 * 指定されたAI名のjarファイルを読み込み、その情報を格納したコントローラを返す
+	 *
+	 * @param AIName
+	 *            読み込みたいAIの名前
+	 *
+	 * @return 読み込んだAIの情報を格納したコントローラ
+	 */
 	public AIController loadAI(String AIName) {
 		File file = new File("./data/ai/" + AIName + ".jar");
 
@@ -109,6 +116,16 @@ public class ResourceLoader {
 		}
 	}
 
+	/**
+	 * 指定したディレクトリに格納されている、すべてのファイルの拡張子を除いた名前を返す
+	 *
+	 * @param directoryPath
+	 *            参照したいファイルが格納されているディレクトリまでのパス
+	 * @param extension
+	 *            読み込みたいファイルの拡張子
+	 *
+	 * @return 読み込んだすべてのファイルの、拡張子を除いた名前が格納されている配列
+	 */
 	public String[] loadFileNames(String directoryPath, String extension) {
 		File[] files = new File(directoryPath).listFiles();
 		String[] fileNames = new String[files.length];
@@ -121,7 +138,6 @@ public class ResourceLoader {
 		}
 
 		return fileNames;
-
 	}
 
 	/**
