@@ -1,6 +1,16 @@
 package loader;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_RGBA8;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -8,15 +18,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import aiinterface.AIController;
+import aiinterface.AIInterface;
 import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
+import setting.ResourceSetting;
 
 /** キャラクターの設定ファイルや画像等のリソースをロードするためのシングルトンなクラス */
 public class ResourceLoader {
@@ -32,13 +48,11 @@ public class ResourceLoader {
 	}
 
 	public void loadResource(String[] characterName) {
-		// String motionFilePath = "./data/character/" + characterName +
-		// "/Motion.csv";
 		String graphicPath = "./data/graphics/";
 		String characterGraphicPath = "./data/characters/";
 
 		// 波動拳読み込み
-		/*loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
+		loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
 				graphicPath + ResourceSetting.PROJECTILE_DIRECTORY);
 		System.out.println("波動拳読み込み完了");
 		// 必殺技読み込み
@@ -58,10 +72,9 @@ public class ResourceLoader {
 		// アッパー画像読み込み
 		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY, characterName);
 		// ヒットエフェクト読み込み
-		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);*/
+		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
 
 		loadCharacterImages(characterGraphicPath, characterName);
-
 	}
 
 	/**
@@ -80,33 +93,86 @@ public class ResourceLoader {
 		}
 	}
 
-	public void loadCharacterImages(String path, String[] characterName) {
+	/**
+	 * 指定されたAI名のjarファイルを読み込み、その情報を格納したコントローラを返す
+	 *
+	 * @param AIName
+	 *            読み込みたいAIの名前
+	 *
+	 * @return 読み込んだAIの情報を格納したコントローラ
+	 */
+	public AIController loadAI(String AIName) {
+		File file = new File("./data/ai/" + AIName + ".jar");
+
+		try {
+			ClassLoader cl = URLClassLoader.newInstance(new URL[] { file.toURI().toURL() });
+			Class<?> c = cl.loadClass(AIName);
+			AIInterface ai = (AIInterface) c.newInstance();
+			return new AIController(ai);
+		} catch (MalformedURLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * 指定したディレクトリに格納されている、すべてのファイルの拡張子を除いた名前を返す
+	 *
+	 * @param directoryPath
+	 *            参照したいファイルが格納されているディレクトリまでのパス
+	 * @param extension
+	 *            読み込みたいファイルの拡張子
+	 *
+	 * @return 読み込んだすべてのファイルの、拡張子を除いた名前が格納されている配列
+	 */
+	public String[] loadFileNames(String directoryPath, String extension) {
+		File[] files = new File(directoryPath).listFiles();
+		String[] fileNames = new String[files.length];
+
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].getName().endsWith(extension)) {
+				String fileName = files[i].getName();
+				fileNames[i] = fileName.substring(0, fileName.lastIndexOf("."));
+			}
+		}
+
+		return fileNames;
+	}
+
+	/**
+	 * キャラクターの画像を読み込み、リストに格納する
+	 *
+	 * @param path
+	 *            各キャラクターの画像が格納されているディレクトリまでのパス
+	 * @param characterNames
+	 *            P1, P2の使用キャラクターの名前が格納されている配列
+	 */
+	public void loadCharacterImages(String path, String[] characterNames) {
 		for (int i = 0; i < 2; i++) {
 			try {
-				BufferedReader br = openReadFile("./data/characters/" + characterName[i] + "/Motion.csv");
+				BufferedReader br = openReadFile(path + characterNames[i] + "/Motion.csv");
 
 				String line;
 				br.readLine(); // ignore header
 
 				while ((line = br.readLine()) != null) {
 					String[] data = line.split(",", 0);
-
 					String actionName = data[0];
 					int frameNumber = Integer.valueOf(data[1]);
 					String imageName = data[33];
+
 					Image[] actionImage = new Image[frameNumber];
-					String dirPath = path + characterName[i] + "/graphics/" + imageName;
-					System.out.println(actionName);
+					String dirPath = path + characterNames[i] + "/graphics/" + imageName;
 
 					// 指定キャラクターのグラフィックが格納されているディレクトリを取得
 					File[] files = new File(dirPath).listFiles();
-					System.out.println(dirPath);
 					int num = 0;
 					for (int j = 0; j < files.length; j++) {
-						if(j >= frameNumber){
+						if (j >= frameNumber) {
 							break;
 						}
-						
+
 						actionImage[j] = loadImage(files[j].getPath());
 						num++;
 					}
@@ -117,18 +183,16 @@ public class ResourceLoader {
 							actionImage[j] = actionImage[0];
 						}
 					}
-					CharacterActionImage temp = new CharacterActionImage(characterName[i], actionName, frameNumber,
+					CharacterActionImage temp = new CharacterActionImage(characterNames[i], actionName, frameNumber,
 							actionImage);
 					GraphicManager.getInstance().getCharacterImageContainer().add(temp);
 				}
 
 				br.close();
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	/**
