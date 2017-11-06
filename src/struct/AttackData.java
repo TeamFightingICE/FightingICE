@@ -1,5 +1,7 @@
 package struct;
 
+import fighting.Attack;
+
 public class AttackData {
 	// 要:コメントの打ち直し
 	private HitArea hitAreaNow;
@@ -62,7 +64,7 @@ public class AttackData {
 		this.hitAreaNow = new HitArea();
 
 		this.hitAreaSetting = new HitArea();
-		// hitAreaSetting.HitArea(hitAreaInput);
+		//hitAreaSetting.HitArea(hitAreaInput);
 
 		this.settingSpeedX = speedXInput;
 		this.settingSpeedY = speedYInput;
@@ -81,11 +83,35 @@ public class AttackData {
 		this.downProperty = downPropInput;
 	}
 
-	/*
-	 * public AttackData(AttackData attack){
-	 *
-	 * }
-	 */
+	public AttackData(Attack attack){
+		if(attack == null){}
+		else{
+			hitAreaNow = new HitArea();
+			//hitAreaNow.setParameters(attack.getHitAreaNow());
+			playerNumber = attack.isPlayerNumber();
+
+			hitAreaSetting = new HitArea();
+			//hitAreaSetting.setParameters(attack.getHitAreaSetting());
+
+			settingSpeedX = attack.getSettingSpeedX();
+			settingSpeedY = attack.getSettingSpeedY();
+			speedX = attack.getSpeedX();
+			speedY = attack.getSpeedY();
+			startUp = attack.getStartUp();
+			active = attack.getActive();
+			hitDamage = attack.getHitDamage();
+			guardDamage = attack.getGuardDamage();
+			startAddEnergy = attack.getStartAddEnergy();
+			hitAddEnergy = attack.getHitAddEnergy();
+			guardAddEnergy = attack.getGuardAddEnergy();
+			giveEnergy = attack.getGiveEnergy();
+			impactX = attack.getImpactX();
+			impactY = attack.getImpactY();
+			giveGuardRecov = attack.getGiveGuardRecov();
+			attackType = attack.getAttackType();
+			downProperty = attack.isDownProperty();
+		}
+	}
 
 	public boolean isPlayerNumber() {
 		return playerNumber;
