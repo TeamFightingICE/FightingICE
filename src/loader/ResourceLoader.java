@@ -1,16 +1,6 @@
 package loader;
 
-import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_RGBA8;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -129,12 +119,18 @@ public class ResourceLoader {
 	public String[] loadFileNames(String directoryPath, String extension) {
 		File[] files = new File(directoryPath).listFiles();
 		String[] fileNames = new String[files.length];
+		boolean isExist = false;
 
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].getName().endsWith(extension)) {
 				String fileName = files[i].getName();
 				fileNames[i] = fileName.substring(0, fileName.lastIndexOf("."));
+				isExist = true;
 			}
+		}
+
+		if(!isExist){
+			fileNames = null;
 		}
 
 		return fileNames;

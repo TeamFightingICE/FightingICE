@@ -1,4 +1,4 @@
-package gamescene;
+package util;
 
 public class MenuItem {
 	private String string;

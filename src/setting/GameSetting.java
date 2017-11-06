@@ -7,6 +7,7 @@ public class GameSetting {
 	public static final int FPS = 60;
 
 	public static final String[] CHARACTERS = { "ZEN", "GARNET", "LUD" };
+	public static final int[] REPEAT_NUMBERS = { 1, 2, 3, 5, 10, 30, 50, 100 };
 
 	public static final int ROUND_FRAME_NUMBER = 3600;
 	public static final int BREAKTIME_FRAME_NUMBER = 70;
@@ -18,4 +19,7 @@ public class GameSetting {
 	public static final int ROUND_TIME = 60000;
 
 	public static final int ROUND_MAX = 3;
+
+	public static int p1MaxHp = 400;
+	public static int p2MaxHp = 400;
 }

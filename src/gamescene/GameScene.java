@@ -16,7 +16,7 @@ public class GameScene {
 	protected GameScene nextGameScene;
 
 	public GameScene() {
-		this.gameSceneName = GameSceneName.MENU;
+		this.gameSceneName = GameSceneName.HOME_MENU;
 		this.isGameEndFlag = false;
 		this.isTransitionFlag = false;
 		this.nextGameScene = null;

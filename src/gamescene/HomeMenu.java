@@ -6,6 +6,7 @@ import enumerate.GameSceneName;
 import manager.GraphicManager;
 import manager.InputManager;
 import struct.Key;
+import util.MenuItem;
 
 public class HomeMenu extends GameScene {
 
@@ -24,7 +25,7 @@ public class HomeMenu extends GameScene {
 
 	public HomeMenu(){
 		//以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
-		this.gameSceneName = GameSceneName.MENU;
+		this.gameSceneName = GameSceneName.HOME_MENU;
 		this.isGameEndFlag = false;
 		this.isTransitionFlag = false;
 		this.nextGameScene = null;
