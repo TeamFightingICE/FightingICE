@@ -45,3 +45,6 @@ FightingICE/log/out/*
 !.gitkeep
 FightingICE/debugData
 *.ini
+#intellJ
+/.idea/*
+*.iml
