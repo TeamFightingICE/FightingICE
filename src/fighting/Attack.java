@@ -39,84 +39,84 @@ public class Attack {
 	private boolean downProperty;
 
 	public boolean isPlayerNumber() {
-		return playerNumber;
+		return this.playerNumber;
 	}
 
 	public boolean isDownProperty() {
-		return downProperty;
+		return this.downProperty;
 	}
 
 	// get
 	public int getNowFrame() {
-		return nowFrame;
+		return this.nowFrame;
 	}
 
 	public int getPlayerNumber() {
-		return playerNumber ? 0 : 1;
+		return this.playerNumber ? 0 : 1;
 	}
 
 	public int getSpeedX() {
-		return speedX;
+		return this.speedX;
 	}
 
 	public int getSpeedY() {
-		return speedY;
+		return this.speedY;
 	}
 
 	public int getStartUp() {
-		return startUp;
+		return this.startUp;
 	}
 
 	public int getActive() {
-		return active;
+		return this.active;
 	}
 
 	public int getHitDamage() {
-		return hitDamage;
+		return this.hitDamage;
 	}
 
 	public int getGuardDamage() {
-		return guardDamage;
+		return this.guardDamage;
 	}
 
 	public int getStartAddEnergy() {
-		return startAddEnergy;
+		return this.startAddEnergy;
 	}
 
 	public int getHitAddEnergy() {
-		return hitAddEnergy;
+		return this.hitAddEnergy;
 	}
 
 	public int getGuardAddEnergy() {
-		return guardAddEnergy;
+		return this.guardAddEnergy;
 	}
 
 	public int getGiveEnergy() {
-		return giveEnergy;
+		return this.giveEnergy;
 	}
 
 	public int getImpactX() {
-		return impactX;
+		return this.impactX;
 	}
 
 	public int getImpactY() {
-		return impactY;
+		return this.impactY;
 	}
 
 	public int getGiveGuardRecov() {
-		return giveGuardRecov;
+		return this.giveGuardRecov;
 	}
 
 	public int getAttackType() {
-		return attackType;
+		return this.attackType;
 	}
 
 	public int getSettingSpeedX() {
-		return settingSpeedX;
+		return this.settingSpeedX;
 	}
 
 	public int getSettingSpeedY() {
-		return settingSpeedY;
+		return this.settingSpeedY;
 	}
 
 	// set

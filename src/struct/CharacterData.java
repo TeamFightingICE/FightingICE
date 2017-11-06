@@ -72,7 +72,8 @@ public class CharacterData {
 		this.action = character.getAction();
 		this.front = character.isFront();
 		this.control = character.isControl();
-		//this.attack = (character.getAttack() != null) ? new Attack(character.getAttack()) : null;
+		// this.attack = (character.getAttack() != null) ? new
+		// Attack(character.getAttack()) : null;
 		this.remainingFrame = character.getRemainingFrame();
 		this.currentCombo = (ArrayList<Action>) character.getCurrentCombo().clone();
 		this.lastCombo = character.getLastCombo();
@@ -106,64 +107,64 @@ public class CharacterData {
 	}
 
 	public boolean isFront() {
-		return front;
+		return this.front;
 	}
 
 	public boolean isControl() {
-		return control;
+		return this.control;
 	}
 
 	// getter
 	public int getHp() {
-		return hp;
+		return this.hp;
 	}
 
 	public int getEnergy() {
-		return energy;
+		return this.energy;
 	}
 
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	public int getLeft() {
-		return left;
+		return this.left;
 	}
 
 	public int getRight() {
-		return right;
+		return this.right;
 	}
 
 	public int getTop() {
-		return top;
+		return this.top;
 	}
 
 	public int getBottom() {
-		return bottom;
+		return this.bottom;
 	}
 
 	public int getSpeedX() {
-		return speedX;
+		return this.speedX;
 	}
 
 	public int getSpeedY() {
-		return speedY;
+		return this.speedY;
 	}
 
 	public State getState() {
-		return state;
+		return this.state;
 	}
 
 	public Action getAction() {
-		return action;
+		return this.action;
 	}
 
 	public int getRemainingFrame() {
-		return remainingFrame;
+		return this.remainingFrame;
 	}
 
 	/*
@@ -172,19 +173,19 @@ public class CharacterData {
 	 */
 
 	public int getGraphicCenterX() {
-		return graphicCenterX;
+		return this.graphicCenterX;
 	}
 
 	public int getGraphicCenterY() {
-		return graphicCenterY;
+		return this.graphicCenterY;
 	}
 
 	public int getGraphicSizeX() {
-		return graphicSizeX;
+		return this.graphicSizeX;
 	}
 
 	public int getGraphicSizeY() {
-		return graphicSizeY;
+		return this.graphicSizeY;
 	}
 
 	public ArrayList<Action> getCurrentCombo() {
