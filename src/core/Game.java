@@ -10,6 +10,7 @@ import manager.GameManager;
 import manager.GraphicManager;
 import setting.FlagSetting;
 import setting.GameSetting;
+import setting.LaunchSetting;
 import util.DeleteFiles;
 
 public class Game extends GameManager {
@@ -47,20 +48,20 @@ public class Game extends GameManager {
 							break; */
 					case "-n":
 					case "--number":
-						repeatNumber = Integer.parseInt(options[++i]);
+						LaunchSetting.repeatNumber = Integer.parseInt(options[++i]);
 						FlagSetting.automationFlag = true;
 						break;
 					case "--a1":
-						aiNames[0] = options[++i];
+						LaunchSetting.aiNames[0] = options[++i];
 						break;
 					case "--a2":
-						aiNames[1] = options[++i];
+						LaunchSetting.aiNames[1] = options[++i];
 						break;
 					case "--c1":
-						characterNames[0] = getCharacterName(options[++i]);
+						LaunchSetting.characterNames[0] = getCharacterName(options[++i]);
 						break;
 					case "--c2":
-						characterNames[1] = getCharacterName(options[++i]);
+						LaunchSetting.characterNames[1] = getCharacterName(options[++i]);
 						break;
 					case "-da":
 						FlagSetting.debugActionFlag = true;
@@ -81,16 +82,16 @@ public class Game extends GameManager {
 						FlagSetting.py4j = true;
 						break;
 					case "--port":
-						py4jPort = Integer.parseInt(options[++i]);
+						LaunchSetting.py4jPort = Integer.parseInt(options[++i]);
 						break;
 					case "--black-bg":
-						this.backgroundType = BackgroundType.Black;
+						LaunchSetting.backgroundType = BackgroundType.Black;
 						break;
 					case "--grey-bg":
-						this.backgroundType = BackgroundType.Grey;
+						LaunchSetting.backgroundType = BackgroundType.Grey;
 						break;
 					case "--inverted-player":
-						invertedPlayer = Integer.parseInt(options[++i]);
+						LaunchSetting.invertedPlayer = Integer.parseInt(options[++i]);
 						break;
 					case "--disable-window":
 					case "--mute":
@@ -103,8 +104,8 @@ public class Game extends GameManager {
 					case "--limithp":
 						// --limithp P1_HP P2_HP
 						FlagSetting.limitHpFlag = true;
-						GameSetting.p1MaxHp = Integer.parseInt(options[++i]);
-						GameSetting.p2MaxHp = Integer.parseInt(options[++i]);
+						LaunchSetting.maxHp[0] = Integer.parseInt(options[++i]);
+						LaunchSetting.maxHp[1] = Integer.parseInt(options[++i]);
 						break;
 					case "--err-log":
 						FlagSetting.outputErrorAndLogFlag = true;
@@ -121,7 +122,7 @@ public class Game extends GameManager {
 		//各マネージャの初期化
 		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
 		GraphicManager.getInstance().setLetterFont(new LetterImage(awtFont, true));
-		
+
 		createLogDirectories();
 
 		HomeMenu homeMenu = new HomeMenu();
@@ -137,7 +138,7 @@ public class Game extends GameManager {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Create logs directories if not present
 	 * */
