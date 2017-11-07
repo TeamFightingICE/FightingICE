@@ -21,8 +21,6 @@ public class FightingMenu extends GameScene {
 	private int[] playerIndexes;
 	private int[] characterIndexes;
 
-	private final String AI_PATH = "./data/ai/";
-
 	public FightingMenu() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.FIGHTING_MENU;
@@ -91,52 +89,58 @@ public class FightingMenu extends GameScene {
 			break;
 
 		case 3:
-			if (key.R == true) {
-				if (characterIndexes[0] == GameSetting.CHARACTERS.length - 1)
+			if (key.R) {
+				if (characterIndexes[0] == GameSetting.CHARACTERS.length - 1) {
 					characterIndexes[0] = 0;
-				else
+				} else {
 					characterIndexes[0]++;
+				}
 			}
-			if (key.L == true) {
-				if (characterIndexes[0] == 0)
+			if (key.L) {
+				if (characterIndexes[0] == 0) {
 					characterIndexes[0] = GameSetting.CHARACTERS.length - 1;
-				else
+				} else {
 					characterIndexes[0]--;
+				}
 			}
 			break;
 
 		case 4:
-			if (key.R == true) {
-				if (characterIndexes[1] == GameSetting.CHARACTERS.length - 1)
+			if (key.R) {
+				if (characterIndexes[1] == GameSetting.CHARACTERS.length - 1) {
 					characterIndexes[1] = 0;
-				else
+				} else {
 					characterIndexes[1]++;
+				}
 			}
-			if (key.L == true) {
-				if (characterIndexes[1] == 0)
+			if (key.L) {
+				if (characterIndexes[1] == 0) {
 					characterIndexes[1] = GameSetting.CHARACTERS.length - 1;
-				else
+				} else {
 					characterIndexes[1]--;
+				}
 			}
 			break;
 
 		case 5:
-			if (key.R == true) {
-				if (numberIndex == GameSetting.REPEAT_NUMBERS.length - 1)
+			if (key.R) {
+				if (numberIndex == GameSetting.REPEAT_NUMBERS.length - 1) {
 					numberIndex = 0;
-				else
+				} else {
 					numberIndex++;
+				}
 			}
-			if (key.L == true) {
-				if (numberIndex == 0)
+			if (key.L) {
+				if (numberIndex == 0) {
 					numberIndex = GameSetting.REPEAT_NUMBERS.length - 1;
-				else
+				} else {
 					numberIndex--;
+				}
 			}
 			break;
 
 		case 6:
-			if (key.A == true) {
+			if (key.A) {
 				HomeMenu homeMenu = new HomeMenu(); // 次のシーンのコンストラクタ作成
 				this.setTransitioFlag(true); // 現在のシーンからの遷移要求をtrueに
 				this.setNextGameScene(homeMenu); // 次のシーンをセットする
