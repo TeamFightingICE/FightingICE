@@ -1,6 +1,7 @@
 package core;
 
 import java.awt.Font;
+import java.io.File;
 
 import enumerate.BackgroundType;
 import gamescene.HomeMenu;
@@ -120,6 +121,8 @@ public class Game extends GameManager {
 		//各マネージャの初期化
 		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
 		GraphicManager.getInstance().setLetterFont(new LetterImage(awtFont, true));
+		
+		createLogDirectories();
 
 		HomeMenu homeMenu = new HomeMenu();
 		this.startGame(homeMenu);
@@ -134,6 +137,16 @@ public class Game extends GameManager {
 		}
 		return null;
 	}
+	
+	/**
+	 * Create logs directories if not present
+	 * */
+	private void createLogDirectories(){
+		new File("log").mkdir();
+		new File("log/replay").mkdir();
+		new File("log/point").mkdir();
+	}
+
 
 	@Override
 	public void close() {

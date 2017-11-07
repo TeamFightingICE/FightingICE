@@ -35,10 +35,14 @@ public class FightingMenu extends GameScene {
 		System.out.println("Menu initialize");
 		// Initialization
 
-		this.menuItems = new MenuItem[] { new MenuItem("PLAY : ", 50, 50, 0), new MenuItem("PLAYER1 : ", 75, 90, 1),
-				new MenuItem("PLAYER2 : ", 75, 130, 2), new MenuItem("CHARACTER1 : ", 75, 170, 3),
-				new MenuItem("CHARACTER2 : ", 75, 210, 4), new MenuItem("Repeat Count : ", 50, 260, 5),
-				new MenuItem("RETURN : ", 50, 310, 6) };
+		this.menuItems = new MenuItem[] {
+				new MenuItem("PLAY ", 50, 50, 0),
+				new MenuItem("PLAYER1 : ", 75, 90, 1),
+				new MenuItem("PLAYER2 : ", 75, 130, 2),
+				new MenuItem("CHARACTER1 : ", 75, 170, 3),
+				new MenuItem("CHARACTER2 : ", 75, 210, 4),
+				new MenuItem("Repeat Count : ", 50, 260, 5),
+				new MenuItem("RETURN ", 50, 310, 6) };
 
 		this.playerIndexes = new int[2];
 		this.characterIndexes = new int[2];
@@ -56,7 +60,7 @@ public class FightingMenu extends GameScene {
 	public void update() {
 		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
 
-		if (key.U == true) {
+		if (key.U) {
 			if (cursorPosition == 0) {
 				cursorPosition = menuItems[NUMBER_OF_ITEM - 1].getCursorPosition();
 			} else {
@@ -65,7 +69,7 @@ public class FightingMenu extends GameScene {
 
 		}
 
-		if (key.D == true) {
+		if (key.D) {
 			if (cursorPosition == NUMBER_OF_ITEM - 1) {
 				cursorPosition = menuItems[0].getCursorPosition();
 			} else {
@@ -75,17 +79,45 @@ public class FightingMenu extends GameScene {
 
 		switch (cursorPosition) {
 		case 0:
-			if (key.A == true) {
-				// Playの呼び出し処理
+			if (key.A) {
+				System.out.println("Play遷移 !");
+				// Launcherの次の遷移先を登録
+				// Launcher launcher = new Launcher(GameSceneName.PLAY);
 			}
 			break;
 
 		case 1:
-			// p1の操作方法
+			if (key.R) {
+				if (playerIndexes[0] == aiNames.length - 1) {
+					playerIndexes[0] = 0;
+				} else {
+					playerIndexes[0]++;
+				}
+			}
+			if (key.L) {
+				if (playerIndexes[0] == 0) {
+					playerIndexes[0] = aiNames.length - 1;
+				} else {
+					playerIndexes[0]--;
+				}
+			}
 			break;
 
 		case 2:
-			// p2の操作方法
+			if (key.R) {
+				if (playerIndexes[1] == aiNames.length - 1) {
+					playerIndexes[1] = 0;
+				} else {
+					playerIndexes[1]++;
+				}
+			}
+			if (key.L) {
+				if (playerIndexes[1] == 0) {
+					playerIndexes[1] = aiNames.length - 1;
+				} else {
+					playerIndexes[1]--;
+				}
+			}
 			break;
 
 		case 3:
@@ -158,10 +190,10 @@ public class FightingMenu extends GameScene {
 	public void drawScreen() {
 		GraphicManager.getInstance().drawString(menuItems[0].getString(), menuItems[0].getCoordinateX(),
 				menuItems[0].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[1].getString(), menuItems[1].getCoordinateX(),
-				menuItems[1].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[2].getString(), menuItems[2].getCoordinateX(),
-				menuItems[2].getCoordinateY());
+		GraphicManager.getInstance().drawString(menuItems[1].getString() + aiNames[playerIndexes[0]],
+				menuItems[1].getCoordinateX(), menuItems[1].getCoordinateY());
+		GraphicManager.getInstance().drawString(menuItems[2].getString() + aiNames[playerIndexes[1]],
+				menuItems[2].getCoordinateX(), menuItems[2].getCoordinateY());
 		GraphicManager.getInstance().drawString(menuItems[3].getString() + GameSetting.CHARACTERS[characterIndexes[0]],
 				menuItems[3].getCoordinateX(), menuItems[3].getCoordinateY());
 		GraphicManager.getInstance().drawString(menuItems[4].getString() + GameSetting.CHARACTERS[characterIndexes[1]],

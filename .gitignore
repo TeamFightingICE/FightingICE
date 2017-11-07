@@ -22,26 +22,26 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-# FightingICE
+# .
 .metadata
 .recommenders
 .classpath
 .project
 .settings
 bin
-FightingICE/data/ai/*
+data/ai/*
 !.gitkeep
-FightingICE/data/aiData/*
+data/aiData/*
 !.gitkeep
-FightingICE/log/point/*
+log/point/*
 !.gitkeep
-FightingICE/log/replay/*
+log/replay/*
 !.gitkeep
-FightingICE/log/err/*
+log/err/*
 !.gitkeep
-FightingICE/log/json/*
+log/json/*
 !.gitkeep
-FightingICE/log/out/*
+log/out/*
 !.gitkeep
-FightingICE/debugData
+debugData
 *.ini
