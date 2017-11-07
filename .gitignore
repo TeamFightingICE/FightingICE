@@ -45,3 +45,6 @@ log/out/*
 !.gitkeep
 debugData
 *.ini
+#intellJ
+/.idea/*
+*.iml
