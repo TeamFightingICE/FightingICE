@@ -11,7 +11,8 @@ public class Main {
 	 * LWJGL 3.1.2
 	 * */
 	public static void main(String[] options) {
-		Game game = new Game(options);
+		Game game = new Game();
+		game.setOptions(options);
 		DisplayManager displayManager = new DisplayManager();
 
 		if(Arrays.asList(options).contains("--disable-window")){

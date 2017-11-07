@@ -1,30 +1,27 @@
 package gamescene;
 
-import java.io.File;
-
 import enumerate.GameSceneName;
+import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import struct.Key;
+import util.MenuItem;
 
 public class HomeMenu extends GameScene {
 
 	// 表示する項目数
 	private final int NUMBER_OF_ITEM = 3;
-	MenuItem[] mi = new MenuItem[NUMBER_OF_ITEM];
-	private String[] replayName;
-
+	private MenuItem[] menuItems = new MenuItem[NUMBER_OF_ITEM];
+	private String[] replayNames;
 
 	// 現在のカーソル位置
 	private int cursorPosition;
 	// 現在選択されているreplayのIndex
 	private int replayIndex;
 
-	private final String REPLAY_PATH = "./log/replay/";
-
-	public HomeMenu(){
-		//以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
-		this.gameSceneName = GameSceneName.MENU;
+	public HomeMenu() {
+		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
+		this.gameSceneName = GameSceneName.HOME_MENU;
 		this.isGameEndFlag = false;
 		this.isTransitionFlag = false;
 		this.nextGameScene = null;
@@ -35,45 +32,18 @@ public class HomeMenu extends GameScene {
 	public void initialize() {
 		System.out.println("Menu initialize");
 		// Initialization
+		this.menuItems = new MenuItem[] { 
+				new MenuItem("FIGHT ", 50, 50, 0), 
+				new MenuItem("REPLAY : ", 50, 100, 1),
+				new MenuItem("EXIT ", 50, 310, 2) };
 
-		mi[0] = new MenuItem("FIGHT : ", 50, 50, 0);
-		mi[1] = new MenuItem("REPLAY : ", 50, 100, 1);
-		mi[2] = new MenuItem("EXIT : ", 50, 310, 2);
+		this.cursorPosition = 0;
+		this.replayIndex = 0;
 
-		cursorPosition = 0;
-		replayIndex = 0;
-
-		// get file list from the folder
-		String path = REPLAY_PATH;
-		File dir = new File(path);
-		File[] files = dir.listFiles();
-
-		files = dir.listFiles();
-		int nFiles = files != null ? files.length : 0;
-		replayName = new String[nFiles];
-		// get replay's full path
-		for(int i = 0 ; i < nFiles ; i++){
-			String buffer;
-			char[] charBuffer;
-			char[] fileFullPath;
-			File file = files[i];
-			buffer = file.toString();
-			// replay record is stored as dat file
-			if(buffer.endsWith(".dat")){
-				int pathLength = path.length();
-				buffer = files[i].toString();
-				charBuffer = buffer.toCharArray();
-				fileFullPath = new char[buffer.length()-path.length()-4];
-				for(int j = 0; j < (buffer.length() - path.length() - 4);j++){
-					fileFullPath[j] = charBuffer[pathLength];
-					pathLength++;
-				}
-			 	replayName[i] = String.valueOf(fileFullPath);
-			}
-		}
-		if(nFiles == 0){
-			replayName = new String[1];
-			replayName[0] = "None";
+		this.replayNames = ResourceLoader.getInstance().loadFileNames("./log/replay/", ".dat");
+		if (replayNames == null) {
+			replayNames = new String[1];
+			replayNames[0] = "None";
 		}
 	}
 
@@ -81,51 +51,55 @@ public class HomeMenu extends GameScene {
 	public void update() {
 		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
 
-		if(key.U==true){
-			if(cursorPosition==0){
-				cursorPosition = mi[NUMBER_OF_ITEM-1].getCursorPosition();
+		if (key.U) {
+			if (cursorPosition == 0) {
+				cursorPosition = menuItems[NUMBER_OF_ITEM - 1].getCursorPosition();
+			} else {
+				cursorPosition = menuItems[cursorPosition - 1].getCursorPosition();
 			}
-			else{
-				cursorPosition = mi[cursorPosition-1].getCursorPosition();
-			}
-
 		}
-
-		if(key.D==true){
-			if(cursorPosition==NUMBER_OF_ITEM-1){
-				cursorPosition = mi[0].getCursorPosition();
-			}
-			else{
-				cursorPosition = mi[cursorPosition+1].getCursorPosition();
+		if (key.D) {
+			if (cursorPosition == NUMBER_OF_ITEM - 1) {
+				cursorPosition = menuItems[0].getCursorPosition();
+			} else {
+				cursorPosition = menuItems[cursorPosition + 1].getCursorPosition();
 			}
 		}
 
-		switch(cursorPosition){
+		switch (cursorPosition) {
 		case 0:
-			if(key.A==true){
-				FightingMenu fightingMenu = new FightingMenu();  //次のシーンのコンストラクタ作成
-				this.setTransitioFlag(true);    //現在のシーンからの遷移要求をtrueに
-				this.setNextGameScene(fightingMenu);       //次のシーンをセットする
+			if (key.A) {
+				FightingMenu fightingMenu = new FightingMenu(); // 次のシーンのコンストラクタ作成
+				this.setTransitioFlag(true); // 現在のシーンからの遷移要求をtrueに
+				this.setNextGameScene(fightingMenu); // 次のシーンをセットする
 			}
 			break;
 
 		case 1:
-			if(key.R==true){
-				if(replayIndex == replayName.length - 1) replayIndex = 0;
-				else replayIndex++;
+			if (key.R) {
+				if (replayIndex == replayNames.length - 1) {
+					replayIndex = 0;
+				} else {
+					replayIndex++;
+				}
 			}
-			if(key.L==true){
-				if(replayIndex == 0) replayIndex = replayName.length - 1;
-				else replayIndex--;
+			if (key.L) {
+				if (replayIndex == 0) {
+					replayIndex = replayNames.length - 1;
+				} else {
+					replayIndex--;
+				}
 			}
-			if(key.A==true){
-				//リプレイの呼び出し処理を
+			if (key.A) {
+				System.out.println("Replay遷移 !");
+				// Launcherの次の遷移先を登録
+				// Launcher launcher = new Launcher(GameSceneName.REPLAY);
 			}
 			break;
 
 		case 2:
-			if(key.A){
-				//終了処理を
+			if (key.A) {
+				this.setGameEndFlag(true);
 			}
 
 			break;
@@ -139,11 +113,16 @@ public class HomeMenu extends GameScene {
 	}
 
 	public void drawScreen() {
-		GraphicManager.getInstance().drawString(mi[0].getString(), mi[0].getCoordinateX(), mi[0].getCoordinateY());
-		GraphicManager.getInstance().drawString(mi[1].getString() + replayName[replayIndex], mi[1].getCoordinateX(), mi[1].getCoordinateY());
-		GraphicManager.getInstance().drawString(mi[2].getString(), mi[2].getCoordinateX(), mi[2].getCoordinateY());
-		GraphicManager.getInstance().drawString("=>", mi[cursorPosition].getCoordinateX() - 30, mi[cursorPosition].getCoordinateY());
+		GraphicManager.getInstance().drawString(menuItems[0].getString(), menuItems[0].getCoordinateX(),
+				menuItems[0].getCoordinateY());
+		GraphicManager.getInstance().drawString(menuItems[1].getString() + replayNames[replayIndex],
+				menuItems[1].getCoordinateX(), menuItems[1].getCoordinateY());
+		GraphicManager.getInstance().drawString(menuItems[2].getString(), menuItems[2].getCoordinateX(),
+				menuItems[2].getCoordinateY());
+		GraphicManager.getInstance().drawString("=>", menuItems[cursorPosition].getCoordinateX() - 30,
+				menuItems[cursorPosition].getCoordinateY());
 	}
+
 	@Override
 	public void close() {
 		System.out.println("Menu close");

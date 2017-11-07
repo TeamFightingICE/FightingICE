@@ -1,16 +1,6 @@
 package loader;
 
-import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_RGBA8;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -99,7 +89,8 @@ public class ResourceLoader {
 	 * @param AIName
 	 *            読み込みたいAIの名前
 	 *
-	 * @return 読み込んだAIの情報を格納したコントローラ
+	 * @return 読み込んだAIの情報を格納したコントローラ<br>
+	 *         読み込んだAIが無ければnullを返す
 	 */
 	public AIController loadAI(String AIName) {
 		File file = new File("./data/ai/" + AIName + ".jar");
@@ -124,20 +115,25 @@ public class ResourceLoader {
 	 * @param extension
 	 *            読み込みたいファイルの拡張子
 	 *
-	 * @return 読み込んだすべてのファイルの、拡張子を除いた名前が格納されている配列
+	 * @return 読み込んだすべてのファイルの、拡張子を除いた名前が格納されている配列<br>
+	 *         読み込んだファイルが無ければnullを返す
 	 */
 	public String[] loadFileNames(String directoryPath, String extension) {
 		File[] files = new File(directoryPath).listFiles();
-		String[] fileNames = new String[files.length];
+		ArrayList<String> fileNames = new ArrayList<String>();
 
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].getName().endsWith(extension)) {
 				String fileName = files[i].getName();
-				fileNames[i] = fileName.substring(0, fileName.lastIndexOf("."));
+				fileNames.add(fileName.substring(0, fileName.lastIndexOf(".")));
 			}
 		}
 
-		return fileNames;
+		if (fileNames.size() == 0) {
+			return null;
+		} else {
+			return (String[]) fileNames.toArray(new String[fileNames.size()]);
+		}
 	}
 
 	/**

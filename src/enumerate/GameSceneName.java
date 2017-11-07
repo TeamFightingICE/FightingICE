@@ -1,7 +1,8 @@
 package enumerate;
 
 public enum GameSceneName {
-	MENU,
+	FIGHTING_MENU,
+	HOME_MENU,
 	LAUNCH,
 	PLAY,
 	RESULT,
