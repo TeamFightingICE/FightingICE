@@ -19,7 +19,4 @@ public class GameSetting {
 	public static final int ROUND_TIME = 60000;
 
 	public static final int ROUND_MAX = 3;
-
-	public static int p1MaxHp = 400;
-	public static int p2MaxHp = 400;
 }

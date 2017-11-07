@@ -86,18 +86,18 @@ public class ResourceLoader {
 	/**
 	 * 指定されたAI名のjarファイルを読み込み、その情報を格納したコントローラを返す
 	 *
-	 * @param AIName
+	 * @param aiName
 	 *            読み込みたいAIの名前
 	 *
 	 * @return 読み込んだAIの情報を格納したコントローラ<br>
 	 *         読み込んだAIが無ければnullを返す
 	 */
-	public AIController loadAI(String AIName) {
-		File file = new File("./data/ai/" + AIName + ".jar");
+	public AIController loadAI(String aiName) {
+		File file = new File("./data/ai/" + aiName + ".jar");
 
 		try {
 			ClassLoader cl = URLClassLoader.newInstance(new URL[] { file.toURI().toURL() });
-			Class<?> c = cl.loadClass(AIName);
+			Class<?> c = cl.loadClass(aiName);
 			AIInterface ai = (AIInterface) c.newInstance();
 			return new AIController(ai);
 		} catch (MalformedURLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {

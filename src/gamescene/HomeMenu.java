@@ -12,7 +12,7 @@ public class HomeMenu extends GameScene {
 	// 表示する項目数
 	private final int NUMBER_OF_ITEM = 3;
 	private MenuItem[] menuItems = new MenuItem[NUMBER_OF_ITEM];
-	private String[] replayNames;
+	private String[] allReplayNames;
 
 	// 現在のカーソル位置
 	private int cursorPosition;
@@ -40,10 +40,10 @@ public class HomeMenu extends GameScene {
 		this.cursorPosition = 0;
 		this.replayIndex = 0;
 
-		this.replayNames = ResourceLoader.getInstance().loadFileNames("./log/replay/", ".dat");
-		if (replayNames == null) {
-			replayNames = new String[1];
-			replayNames[0] = "None";
+		this.allReplayNames = ResourceLoader.getInstance().loadFileNames("./log/replay/", ".dat");
+		if (allReplayNames == null) {
+			allReplayNames = new String[1];
+			allReplayNames[0] = "None";
 		}
 	}
 
@@ -77,7 +77,7 @@ public class HomeMenu extends GameScene {
 
 		case 1:
 			if (key.R) {
-				if (replayIndex == replayNames.length - 1) {
+				if (replayIndex == allReplayNames.length - 1) {
 					replayIndex = 0;
 				} else {
 					replayIndex++;
@@ -85,7 +85,7 @@ public class HomeMenu extends GameScene {
 			}
 			if (key.L) {
 				if (replayIndex == 0) {
-					replayIndex = replayNames.length - 1;
+					replayIndex = allReplayNames.length - 1;
 				} else {
 					replayIndex--;
 				}
@@ -115,7 +115,7 @@ public class HomeMenu extends GameScene {
 	public void drawScreen() {
 		GraphicManager.getInstance().drawString(menuItems[0].getString(), menuItems[0].getCoordinateX(),
 				menuItems[0].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[1].getString() + replayNames[replayIndex],
+		GraphicManager.getInstance().drawString(menuItems[1].getString() + allReplayNames[replayIndex],
 				menuItems[1].getCoordinateX(), menuItems[1].getCoordinateY());
 		GraphicManager.getInstance().drawString(menuItems[2].getString(), menuItems[2].getCoordinateX(),
 				menuItems[2].getCoordinateY());
