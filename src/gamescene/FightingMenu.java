@@ -1,10 +1,13 @@
 package gamescene;
 
+import java.util.ArrayList;
+
 import enumerate.GameSceneName;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import setting.GameSetting;
+import setting.LaunchSetting;
 import struct.Key;
 import util.MenuItem;
 
@@ -13,7 +16,7 @@ public class FightingMenu extends GameScene {
 	// 表示する項目数
 	private final int NUMBER_OF_ITEM = 7;
 	private MenuItem[] menuItems;
-	private String[] allAiNames;
+	private ArrayList<String> allAiNames;
 
 	// 現在のカーソル位置
 	private int cursorPosition;
@@ -50,10 +53,7 @@ public class FightingMenu extends GameScene {
 		this.numberIndex = 0;
 
 		this.allAiNames = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
-		if (allAiNames == null) {
-			allAiNames = new String[1];
-			allAiNames[0] = "None";
-		}
+		this.allAiNames.add(0, "KeyBoard");
 	}
 
 	@Override
@@ -80,15 +80,30 @@ public class FightingMenu extends GameScene {
 		switch (cursorPosition) {
 		case 0:
 			if (key.A) {
-				System.out.println("Play遷移 !");
+				//Launch情報をセット
+				for(int i = 0; i < 2; i++){
+					LaunchSetting.aiNames[i] = allAiNames.get(playerIndexes[i]);
+					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[characterIndexes[i]];
+
+					if(LaunchSetting.aiNames[i].equals("KeyBoard")){
+						LaunchSetting.deviceTypes[i] = 0;
+					} else{
+						LaunchSetting.deviceTypes[i] = 1;
+					}
+
+				}
+				LaunchSetting.repeatNumber =  GameSetting.REPEAT_NUMBERS[numberIndex];
+
 				// Launcherの次の遷移先を登録
-				// Launcher launcher = new Launcher(GameSceneName.PLAY);
+				Launcher launcher = new Launcher(GameSceneName.PLAY);
+				this.setTransitioFlag(true);
+				this.setNextGameScene(launcher);
 			}
 			break;
 
 		case 1:
 			if (key.R) {
-				if (playerIndexes[0] == allAiNames.length - 1) {
+				if (playerIndexes[0] == allAiNames.size() - 1) {
 					playerIndexes[0] = 0;
 				} else {
 					playerIndexes[0]++;
@@ -96,7 +111,7 @@ public class FightingMenu extends GameScene {
 			}
 			if (key.L) {
 				if (playerIndexes[0] == 0) {
-					playerIndexes[0] = allAiNames.length - 1;
+					playerIndexes[0] = allAiNames.size() - 1;
 				} else {
 					playerIndexes[0]--;
 				}
@@ -105,7 +120,7 @@ public class FightingMenu extends GameScene {
 
 		case 2:
 			if (key.R) {
-				if (playerIndexes[1] == allAiNames.length - 1) {
+				if (playerIndexes[1] == allAiNames.size() - 1) {
 					playerIndexes[1] = 0;
 				} else {
 					playerIndexes[1]++;
@@ -113,7 +128,7 @@ public class FightingMenu extends GameScene {
 			}
 			if (key.L) {
 				if (playerIndexes[1] == 0) {
-					playerIndexes[1] = allAiNames.length - 1;
+					playerIndexes[1] = allAiNames.size() - 1;
 				} else {
 					playerIndexes[1]--;
 				}
@@ -190,9 +205,9 @@ public class FightingMenu extends GameScene {
 	public void drawScreen() {
 		GraphicManager.getInstance().drawString(menuItems[0].getString(), menuItems[0].getCoordinateX(),
 				menuItems[0].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[1].getString() + allAiNames[playerIndexes[0]],
+		GraphicManager.getInstance().drawString(menuItems[1].getString() + allAiNames.get(playerIndexes[0]),
 				menuItems[1].getCoordinateX(), menuItems[1].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[2].getString() + allAiNames[playerIndexes[1]],
+		GraphicManager.getInstance().drawString(menuItems[2].getString() + allAiNames.get(playerIndexes[1]),
 				menuItems[2].getCoordinateX(), menuItems[2].getCoordinateY());
 		GraphicManager.getInstance().drawString(menuItems[3].getString() + GameSetting.CHARACTERS[characterIndexes[0]],
 				menuItems[3].getCoordinateX(), menuItems[3].getCoordinateY());

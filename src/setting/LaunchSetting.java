@@ -14,7 +14,7 @@ public final class LaunchSetting {
 	public static String[] characterNames = { "ZEN", "ZEN" };
 
 	/**
-	 * 0: キーボード 1: (コントローラ) 2: AI
+	 * 0: キーボード 1: AI
 	 */
 	public static int[] deviceTypes = { 0, 0 };
 

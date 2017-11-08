@@ -1,7 +1,6 @@
 package gamescene;
 
 import enumerate.GameSceneName;
-import loader.ResourceLoader;
 
 public class Launcher extends GameScene {
 
@@ -32,17 +31,8 @@ public class Launcher extends GameScene {
 	public void initialize() {
 		System.out.println("Launcher initialize");
 
-		String[] characterName = { "ZEN", "GARNET" };
-		String[] temp = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
 		// ResourceLoader.getInstance().loadResource(characterName);
 
-		String[] name = { "NewFTGTestAI" };
-		for (int i = 0; i < temp.length; i++) {
-			ResourceLoader.getInstance().loadAI(name[i]);
-			System.out.println("Loaded " + temp[i]);
-
-		}
-		System.out.println("done");
 
 	}
 
