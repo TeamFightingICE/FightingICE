@@ -118,7 +118,7 @@ public class ResourceLoader {
 	 * @return 読み込んだすべてのファイルの、拡張子を除いた名前が格納されている配列<br>
 	 *         読み込んだファイルが無ければnullを返す
 	 */
-	public String[] loadFileNames(String directoryPath, String extension) {
+	public ArrayList<String> loadFileNames(String directoryPath, String extension) {
 		File[] files = new File(directoryPath).listFiles();
 		ArrayList<String> fileNames = new ArrayList<String>();
 
@@ -128,12 +128,8 @@ public class ResourceLoader {
 				fileNames.add(fileName.substring(0, fileName.lastIndexOf(".")));
 			}
 		}
+		return fileNames;
 
-		if (fileNames.size() == 0) {
-			return null;
-		} else {
-			return (String[]) fileNames.toArray(new String[fileNames.size()]);
-		}
 	}
 
 	/**

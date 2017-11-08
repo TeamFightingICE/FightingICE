@@ -30,7 +30,7 @@ public class GameData {
     private ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>> comboTable;
 
     public GameData(Character playerOne, Character playerTwo){
-
+/*
         this.characterNames[0] = playerOne.getName();
         this.characterNames[1] = playerTwo.getName();
 
@@ -77,7 +77,7 @@ public class GameData {
         this.comboTable.add(playerOne.getComboTable());
         this.comboTable.add(playerTwo.getComboTable());
 
-        simulator = new Simulator(this);
+        simulator = new Simulator(this);*/
 
     }
     /**Getter*/
