@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import informationcontainer.RoundResult;
 import input.KeyData;
+import struct.FrameData;
 
 public class Fighting {
 
@@ -17,15 +18,11 @@ public class Fighting {
 
 	private ArrayList<RoundResult> resultContainer;
 
-	private int currentRound;
-
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inoutCommands = new LinkedList<KeyData>();
 		this.resultContainer = new ArrayList<RoundResult>();
-
-		this.currentRound = 0;
 
 	}
 
@@ -41,12 +38,19 @@ public class Fighting {
 
 	}
 
+	public void processingFight() {
+
+	}
+
 	public Character[] getCharacters() {
 		return this.playerCharacters.clone();
 	}
 
-	public int getCurrentRound() {
-		return this.currentRound;
+	public FrameData createFrameData(){
+		return new FrameData();
 	}
 
+	public void initRound() {
+
+	}
 }
