@@ -2,6 +2,8 @@ package gamescene;
 
 import enumerate.GameSceneName;
 import loader.ResourceLoader;
+import manager.GraphicManager;
+import setting.GameSetting;
 
 public class Launcher extends GameScene {
 
@@ -31,6 +33,8 @@ public class Launcher extends GameScene {
 	@Override
 	public void initialize() {
 		System.out.println("Launcher initialize");
+
+		GraphicManager.getInstance().drawString("Now Loading...", GameSetting.STAGE_HEIGHT - 100, GameSetting.STAGE_HEIGHT / 2);
 	}
 
 	@Override
@@ -40,14 +44,14 @@ public class Launcher extends GameScene {
 		case "PLAY":
 			System.out.println("Play遷移");
 			Play play = new Play();
-			this.setTransitioFlag(true);
+			this.setTransitionFlag(true);
 			this.setNextGameScene(play);
 			break;
 
 		case "REPLAY":
 			System.out.println("Replay遷移");
 			Replay replay = new Replay();  //このコンストラクタでリプレイ再生時に使用するキャラをセットしないとつらい(
-			this.setTransitioFlag(true);
+			this.setTransitionFlag(true);
 			this.setNextGameScene(replay);
 			break;
 		default:

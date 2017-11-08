@@ -120,7 +120,7 @@ public class GameScene {
 	 * @param isTransition
 	 *            遷移要求があったかを表すフラグ
 	 */
-	public void setTransitioFlag(boolean isTransition) {
+	public void setTransitionFlag(boolean isTransition) {
 		this.isTransitionFlag = isTransition;
 	}
 

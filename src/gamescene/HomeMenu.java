@@ -72,7 +72,7 @@ public class HomeMenu extends GameScene {
 		case 0:
 			if (key.A) {
 				FightingMenu fightingMenu = new FightingMenu(); // 次のシーンのコンストラクタ作成
-				this.setTransitioFlag(true); // 現在のシーンからの遷移要求をtrueに
+				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 				this.setNextGameScene(fightingMenu); // 次のシーンをセットする
 			}
 			break;
@@ -95,7 +95,7 @@ public class HomeMenu extends GameScene {
 			if (key.A) {
 				// Launcherの次の遷移先を登録
 				Launcher launcher = new Launcher(GameSceneName.REPLAY);
-				this.setTransitioFlag(true); // 現在のシーンからの遷移要求をtrueに
+				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 				this.setNextGameScene(launcher); // 次のシーンをセットする
 			}
 			break;

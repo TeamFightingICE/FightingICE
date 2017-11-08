@@ -22,11 +22,11 @@ public class Result extends GameScene {
 	public static String Press_Key = "Press Z to continue";
 	static final int ROUND_MAX = 3;
 	int count = 0;
-	
+
 	int[][] scores = new int[2][ROUND_MAX];
-	
+
 	int count = 0;
-	
+
 	public void setScore(int[] score,int[] score2){
 		for(int i = 0 ; i < scores[0].length ; i++){
 			scores[0][i] = score[i];
@@ -35,7 +35,7 @@ public class Result extends GameScene {
 			scores[1][i] = score2[i];
 		}
 	}
-	
+
 	public void setScore(int[][] scores){
 		for(int i = 0 ; i < scores.length ; i++){
 			for(int j = 0; j < scores[i].length ; j++){
@@ -77,7 +77,7 @@ public class Result extends GameScene {
 			 }
 		}
 		gm.drawString(Press_Key,COORDINATE_X[0],COORDINATE_Y+800);
-		
+
 	}
 	public void setDevice(int[] deviceType,String[] aiName){
 		this.deviceType = deviceType;
@@ -85,14 +85,14 @@ public class Result extends GameScene {
 	}
 	public void outputResultLog(){
 		Calendar cal1 = Calendar.getInstance();
-		int year = cal1.get(Calendar.YEAR);        
-		int month = cal1.get(Calendar.MONTH) + 1;  
+		int year = cal1.get(Calendar.YEAR);
+		int month = cal1.get(Calendar.MONTH) + 1;
 		int day = cal1.get(Calendar.DATE);
 		int logDataCount = 0;
 
 		String[] deviceName = new String[deviceType.length];
 		int count = 0;
-		
+
 		for(int i = 0 ; i < deviceType.length ; i++){
 			if(deviceType[i] == Input.DEVICE_TYPE_AI){
 				deviceName[i] = aiName[count];
@@ -119,7 +119,7 @@ public class Result extends GameScene {
 		}
 	}
 }
-	
+
 	@Override
 	public void initialize(GraphicManager gm, SoundManager sm,
 			InputManager<?> im) {
@@ -142,8 +142,7 @@ public class Result extends GameScene {
 	}
 
 	@Override
-	public void close(GraphicManager gm, SoundManager sm,
-			InputManager<?> im) {
+	public void close() {
 
 		// TODO Auto-generated method stub
 	}
