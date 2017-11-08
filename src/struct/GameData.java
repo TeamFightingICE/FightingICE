@@ -7,137 +7,76 @@ import org.javatuples.Triplet;
 
 import enumerate.Action;
 import fighting.Character;
+import setting.LaunchSetting;
 import simulator.Simulator;
 
 public class GameData {
-    /**
-     * delete  private int "stageXMax,stageYMax,playerOneMaxEnergy,playerTwoMaxEnergy"
-     * ,GameData Function args"int stageX, int stageY"
-     * and public int getter "getMyMaxEnergy,getOpponentMaxEnergy"
-     */
+	/**
+	 * delete private int
+	 * "stageXMax,stageYMax,playerOneMaxEnergy,playerTwoMaxEnergy" ,GameData
+	 * Function args"int stageX, int stageY" and public int getter
+	 * "getMyMaxEnergy,getOpponentMaxEnergy"
+	 */
 
-    private Vector<MotionData> playerOneMotion;
+	private ArrayList<ArrayList<MotionData>> characterMotions;
 
-    private Vector<MotionData> playerTwoMotion;
+	private String[] characterNames = new String[2];
 
-    private String[] characterNames = new String[2];
+	private String[] aiNames = new String[2];
 
-    private String[] aiNames = new String[2];
+	private Simulator simulator;
 
-    private Simulator simulator;
+	private ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>> comboTable;
 
+	public GameData() {
+		this.characterMotions = new ArrayList<ArrayList<MotionData>>(2);
+		this.characterNames = new String[2];
+		this.aiNames = new String[2];
+		this.comboTable = new ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>>(2);
+	}
 
-    private ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>> comboTable;
+	public GameData(Character[] players) {
+		this();
 
-    public GameData(Character playerOne, Character playerTwo){
-/*
-        this.characterNames[0] = playerOne.getName();
-        this.characterNames[1] = playerTwo.getName();
+		for (int i = 0; i < 2; i++) {
+			this.characterMotions.add(new ArrayList<MotionData>());
+			this.characterNames[i] = LaunchSetting.characterNames[i];
+			this.aiNames[i] = LaunchSetting.aiNames[i];
 
-        this.aiNames[0] = "";
-        this.aiNames[1] = "";
+			// 各アクションのMotionDataを格納
+			for (Action act : Action.values()) {
+				// MotionData motionData = new
+				// MotionData(players[i].getMotion.get(act.ordinal()));
+				// characterMotions.get(i).add(motionData);
+			}
 
-        this.playerOneMotion = new Vector<MotionData>();
-        this.playerTwoMotion = new Vector<MotionData>();
+			// コンボテーブルを格納
+			// this.comboTable.add(players[i].getComboTable());
+		}
+		this.simulator = new Simulator(this);
+	}
 
-        for(Action act : Action.values()){
-            MotionData motionObjectOne = new MotionData(playerOne.getMotionVector().elementAt(act.ordinal()));
-            MotionData motionObjectTwo = new MotionData(playerTwo.getMotionVector().elementAt(act.ordinal()));
-            playerOneMotion.addElement(motionObjectOne);
-            playerTwoMotion.addElement(motionObjectTwo);
-        }
+	/** Getter */
 
-        this.comboTable = new ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>>(2);
-        this.comboTable.add(playerOne.getComboTable());
-        this.comboTable.add(playerTwo.getComboTable());
+	public ArrayList<MotionData> getCharacterMotionData(boolean playerNumber) {
+		return playerNumber ? new ArrayList<MotionData>(characterMotions.get(0))
+				: new ArrayList<MotionData>(characterMotions.get(1));
+	}
 
-        simulator = new Simulator(this);
+	public String getCharacterName(boolean playerNumber) {
+		return playerNumber ? this.characterNames[0] : this.characterNames[1];
+	}
 
-    }
+	public String getAiName(boolean playerNumber) {
+		return playerNumber ? this.aiNames[0] : this.aiNames[1];
+	}
 
-    public GameData(Character playerOne, Character playerTwo, String playerOneName, String playerTwoName){//
+	public Simulator getSimulator() {
+		return new Simulator(this.simulator);
+	}
 
-        this.characterNames[0] = playerOne.getName();
-        this.characterNames[1] = playerTwo.getName();
-
-        this.aiNames[0] = playerOneName;
-        this.aiNames[1] = playerTwoName;
-
-        this.playerOneMotion = new Vector<MotionData>();
-        this.playerTwoMotion = new Vector<MotionData>();
-
-        for(Action act : Action.values()){
-            MotionData motionObjectOne = new MotionData(playerOne.getMotionVector().elementAt(act.ordinal()));
-            MotionData motionObjectTwo = new MotionData(playerTwo.getMotionVector().elementAt(act.ordinal()));
-            playerOneMotion.addElement(motionObjectOne);
-            playerTwoMotion.addElement(motionObjectTwo);
-        }
-
-        this.comboTable = new ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>>(2);
-        this.comboTable.add(playerOne.getComboTable());
-        this.comboTable.add(playerTwo.getComboTable());
-
-        simulator = new Simulator(this);*/
-
-    }
-    /**Getter*/
-    public Vector<MotionData> getPlayerOneMotion() {
-        return playerOneMotion;
-    }
-
-
-    public Vector<MotionData> getPlayerTwoMotion() {
-        return playerTwoMotion;
-    }
-
-    public String getPlayerOneCharacterName(){
-        return characterNames[0];
-    }
-
-    public String getPlayerTwoCharacterName(){
-        return characterNames[1];
-    }
-
-
-    public String getPlayerOneAiName(){
-        return aiNames[0];
-    }
-
-
-    public String getPlayerTwoAiName(){
-        return aiNames[1];
-    }
-
-
-    public Vector<MotionData> getMyMotion(boolean playerNumber){
-        return playerNumber ? getPlayerOneMotion() : getPlayerTwoMotion();
-    }
-
-
-    public Vector<MotionData> getOpponentMotion(boolean playerNumber){
-        return playerNumber ? getPlayerTwoMotion() : getPlayerOneMotion();
-    }
-
-
-    public String getMyName(boolean playerNumber){
-        return playerNumber ? getPlayerOneCharacterName() : getPlayerTwoCharacterName();
-    }
-
-
-    public String getOpponentName(boolean playerNumber){
-        return playerNumber ? getPlayerTwoCharacterName() : getPlayerOneCharacterName();
-    }
-
-
-    public Simulator getSimulator(){
-        return this.simulator;
-    }
-
-
-    public ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>> getComboTable(){
-        return this.comboTable;
-    }
+	public ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>> getComboTable() {
+		return (ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>>) this.comboTable.clone();
+	}
 
 }
-
-
