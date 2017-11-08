@@ -26,4 +26,6 @@ public final class LaunchSetting {
 
 	public static BackgroundType backgroundType = BackgroundType.Image;
 
+	public static String replayName = "None";
+
 }

@@ -1,6 +1,7 @@
 package gamescene;
 
 import enumerate.GameSceneName;
+import loader.ResourceLoader;
 
 public class Launcher extends GameScene {
 
@@ -30,20 +31,31 @@ public class Launcher extends GameScene {
 	@Override
 	public void initialize() {
 		System.out.println("Launcher initialize");
-
-		// ResourceLoader.getInstance().loadResource(characterName);
-
-
 	}
 
 	@Override
 	public void update() {
-		// System.out.println("Launcher update");
-		// this.isGameEndFlag = true;
 
-		// Image img = new
-		// Image(GraphicManager.getInstance().getProjectileImageContainer().get(count++));
-		// GraphicManager.getInstance().drawImage(img, 200, 200, true);
+		switch (this.nextGameSceneName.name()) {
+		case "PLAY":
+			System.out.println("Play遷移");
+			Play play = new Play();
+			this.setTransitioFlag(true);
+			this.setNextGameScene(play);
+			break;
+
+		case "REPLAY":
+			System.out.println("Replay遷移");
+			Replay replay = new Replay();  //このコンストラクタでリプレイ再生時に使用するキャラをセットしないとつらい(
+			this.setTransitioFlag(true);
+			this.setNextGameScene(replay);
+			break;
+		default:
+			System.out.println("存在しないシーン名です");
+			this.setGameEndFlag(true);
+		}
+
+		ResourceLoader.getInstance().loadResource();
 
 	}
 
