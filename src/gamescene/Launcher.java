@@ -2,8 +2,6 @@ package gamescene;
 
 import enumerate.GameSceneName;
 import loader.ResourceLoader;
-import manager.GraphicManager;
-import setting.GameSetting;
 
 public class Launcher extends GameScene {
 
@@ -33,8 +31,6 @@ public class Launcher extends GameScene {
 	@Override
 	public void initialize() {
 		System.out.println("Launcher initialize");
-
-		GraphicManager.getInstance().drawString("Now Loading...", GameSetting.STAGE_HEIGHT - 100, GameSetting.STAGE_HEIGHT / 2);
 	}
 
 	@Override
@@ -59,6 +55,7 @@ public class Launcher extends GameScene {
 			this.setGameEndFlag(true);
 		}
 
+		//リソースのロード
 		ResourceLoader.getInstance().loadResource();
 
 	}

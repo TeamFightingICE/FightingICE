@@ -97,6 +97,7 @@ public class HomeMenu extends GameScene {
 				Launcher launcher = new Launcher(GameSceneName.REPLAY);
 				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 				this.setNextGameScene(launcher); // 次のシーンをセットする
+
 			}
 			break;
 
