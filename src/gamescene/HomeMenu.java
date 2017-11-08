@@ -37,7 +37,8 @@ public class HomeMenu extends GameScene {
 		this.menuItems = new MenuItem[] {
 				new MenuItem("FIGHT ", 50, 50, 0),
 				new MenuItem("REPLAY : ", 50, 100, 1),
-				new MenuItem("EXIT ", 50, 310, 2) };
+				new MenuItem("EXIT ", 50, 310, 2)
+				};
 
 		this.cursorPosition = 0;
 		this.replayIndex = 0;
@@ -71,7 +72,7 @@ public class HomeMenu extends GameScene {
 		case 0:
 			if (key.A) {
 				FightingMenu fightingMenu = new FightingMenu(); // 次のシーンのコンストラクタ作成
-				this.setTransitioFlag(true); // 現在のシーンからの遷移要求をtrueに
+				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 				this.setNextGameScene(fightingMenu); // 次のシーンをセットする
 			}
 			break;
@@ -92,9 +93,11 @@ public class HomeMenu extends GameScene {
 				}
 			}
 			if (key.A) {
-				System.out.println("Replay遷移 !");
 				// Launcherの次の遷移先を登録
-				// Launcher launcher = new Launcher(GameSceneName.REPLAY);
+				Launcher launcher = new Launcher(GameSceneName.REPLAY);
+				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+				this.setNextGameScene(launcher); // 次のシーンをセットする
+
 			}
 			break;
 

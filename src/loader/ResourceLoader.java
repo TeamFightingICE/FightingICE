@@ -22,6 +22,7 @@ import aiinterface.AIInterface;
 import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
+import setting.LaunchSetting;
 import setting.ResourceSetting;
 
 /** キャラクターの設定ファイルや画像等のリソースをロードするためのシングルトンなクラス */
@@ -37,7 +38,7 @@ public class ResourceLoader {
 		return resourceLoader;
 	}
 
-	public void loadResource(String[] characterName) {
+	public void loadResource() {
 		String graphicPath = "./data/graphics/";
 		String characterGraphicPath = "./data/characters/";
 
@@ -52,19 +53,24 @@ public class ResourceLoader {
 		// 1~4の文字カウンタ読み込み
 		loadImages(GraphicManager.getInstance().getCounterTextImageContainer(),
 				graphicPath + ResourceSetting.COUNTER_DIRECTORY);
-
+		System.out.println("文字カウンタ読み込み完了");
 		// "Hit"文字読み込み
 		loadImages(GraphicManager.getInstance().getHitTextImageContainer(),
 				graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
+		System.out.println("Hit文字読み込み完了");
 		// 背景画像読み込み
 		loadImages(GraphicManager.getInstance().getBackgroundImage(),
 				graphicPath + ResourceSetting.BACKGROUND_DIRECTORY);
+		System.out.println("背景読み込み完了");
 		// アッパー画像読み込み
-		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY, characterName);
+		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY);
+		System.out.println("アッパー読み込み完了");
 		// ヒットエフェクト読み込み
 		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
-
-		loadCharacterImages(characterGraphicPath, characterName);
+		System.out.println("ヒットエフェクト読み込み完了");
+		//キャラクター画像読み込み
+		loadCharacterImages(characterGraphicPath);
+		System.out.println("キャラクター画像読み込み完了");
 	}
 
 	/**
@@ -140,10 +146,10 @@ public class ResourceLoader {
 	 * @param characterNames
 	 *            P1, P2の使用キャラクターの名前が格納されている配列
 	 */
-	public void loadCharacterImages(String path, String[] characterNames) {
+	public void loadCharacterImages(String path) {
 		for (int i = 0; i < 2; i++) {
 			try {
-				BufferedReader br = openReadFile(path + characterNames[i] + "/Motion.csv");
+				BufferedReader br = openReadFile(path + LaunchSetting.characterNames[i] + "/Motion.csv");
 
 				String line;
 				br.readLine(); // ignore header
@@ -155,7 +161,7 @@ public class ResourceLoader {
 					String imageName = data[33];
 
 					Image[] actionImage = new Image[frameNumber];
-					String dirPath = path + characterNames[i] + "/graphics/" + imageName;
+					String dirPath = path + LaunchSetting.characterNames[i] + "/graphics/" + imageName;
 
 					// 指定キャラクターのグラフィックが格納されているディレクトリを取得
 					File[] files = new File(dirPath).listFiles();
@@ -175,8 +181,8 @@ public class ResourceLoader {
 							actionImage[j] = actionImage[0];
 						}
 					}
-					CharacterActionImage temp = new CharacterActionImage(characterNames[i], actionName, frameNumber,
-							actionImage);
+					CharacterActionImage temp = new CharacterActionImage(LaunchSetting.characterNames[i], actionName,
+							frameNumber, actionImage);
 					GraphicManager.getInstance().getCharacterImageContainer().add(temp);
 				}
 
@@ -284,11 +290,11 @@ public class ResourceLoader {
 	 * @param characterName
 	 *            P1, P2の使用キャラクタ名が格納された配列
 	 */
-	private void loadUpperImages(String path, String[] characterName) {
+	private void loadUpperImages(String path) {
 		for (int i = 0; i < 2; i++) {
 			String tempPath = path;
 
-			switch (characterName[i]) {
+			switch (LaunchSetting.characterNames[i]) {
 			case "ZEN":
 				tempPath += "ZEN/";
 				break;
@@ -301,7 +307,6 @@ public class ResourceLoader {
 
 			File[] files = new File(tempPath).listFiles();
 			for (int j = 0; j < files.length; j++) {
-				System.out.println(files[j].getPath());
 				GraphicManager.getInstance().getUpperImageContainer()[i][j] = loadImage(files[j].getPath());
 			}
 		}
