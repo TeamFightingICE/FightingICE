@@ -17,11 +17,15 @@ public class Fighting {
 
 	private ArrayList<RoundResult> resultContainer;
 
+	private int currentRound;
+
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inoutCommands = new LinkedList<KeyData>();
 		this.resultContainer = new ArrayList<RoundResult>();
+
+		this.currentRound = 0;
 
 	}
 
@@ -39,6 +43,10 @@ public class Fighting {
 
 	public Character[] getCharacters() {
 		return this.playerCharacters.clone();
+	}
+
+	public int getCurrentRound() {
+		return this.currentRound;
 	}
 
 }
