@@ -1,4 +1,4 @@
-package util;
+package informationcontainer;
 
 public class MenuItem {
 	private String string;

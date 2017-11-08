@@ -3,13 +3,13 @@ package gamescene;
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
+import informationcontainer.MenuItem;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.Key;
-import util.MenuItem;
 
 public class FightingMenu extends GameScene {
 

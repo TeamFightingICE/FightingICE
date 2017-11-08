@@ -3,11 +3,11 @@ package gamescene;
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
+import informationcontainer.MenuItem;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import struct.Key;
-import util.MenuItem;
 
 public class HomeMenu extends GameScene {
 
