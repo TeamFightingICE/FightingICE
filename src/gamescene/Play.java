@@ -1,7 +1,5 @@
 package gamescene;
 
-import java.util.LinkedList;
-
 import fighting.Fighting;
 import manager.GraphicManager;
 import setting.GameSetting;
@@ -11,8 +9,6 @@ import struct.GameData;
 public class Play extends GameScene {
 
 	private Fighting fighting;
-
-	private LinkedList<FrameData> framesData;
 
 	private int nowFrame;
 
@@ -31,7 +27,6 @@ public class Play extends GameScene {
 		this.fighting = new Fighting();
 		this.fighting.initialize();
 
-		this.framesData = new LinkedList<FrameData>();
 		this.nowFrame = 0;
 		this.elapsedBreakTime = 0;
 		this.currentRound = 0;
@@ -63,7 +58,7 @@ public class Play extends GameScene {
 
 			} else {
 				// round end
-				precessingRoundEnd();
+				processingRoundEnd();
 			}
 
 		} else {
@@ -84,7 +79,6 @@ public class Play extends GameScene {
 	}
 
 	private void processingBreakTime() {
-		// InputManagerからKeyDataを取得
 		// ダミーフレームをAIにセット
 
 		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
@@ -92,11 +86,22 @@ public class Play extends GameScene {
 	}
 
 	private void processingGame() {
-		// InputManagerからKeyDataを取得
+
+		fighting.processingFight(nowFrame);
+		FrameData frameData = fighting.createFrameData(nowFrame);
+		//AIにFrameDataをセット
+		//limithpモードで体力が尽きていたら、ラウンド終了処理
+//		if(/*体力尽きた*/){
+//			processingRoundEnd();
+//		}
+
+		//リプレイログ吐き出し
+		//画面をDrawerクラスで描画
 
 	}
 
-	private void precessingRoundEnd() {
+	private void processingRoundEnd() {
+
 
 	}
 
