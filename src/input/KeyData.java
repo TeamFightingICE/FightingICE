@@ -48,6 +48,10 @@ public class KeyData {
 	}
 
 
+	public KeyData() {
+		// TODO 自動生成されたコンストラクター・スタブ
+	}
+
 	/**
 	 * Returns the Key array of the two players.
 	 * @return the Key array of the two players

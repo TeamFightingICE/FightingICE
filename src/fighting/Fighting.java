@@ -1,12 +1,19 @@
 package fighting;
 
+import static org.lwjgl.opengl.GL11.*;
+
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import org.lwjgl.BufferUtils;
+
 import informationcontainer.RoundResult;
 import input.KeyData;
-import manager.InputManager;
+import setting.GameSetting;
+import struct.CharacterData;
 import struct.FrameData;
 
 public class Fighting {
@@ -19,11 +26,14 @@ public class Fighting {
 
 	private ArrayList<RoundResult> resultContainer;
 
+	private BufferedImage screen;
+
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inputCommands = new LinkedList<KeyData>();
 		this.resultContainer = new ArrayList<RoundResult>();
+		this.screen = null;
 
 	}
 
@@ -39,8 +49,7 @@ public class Fighting {
 
 	}
 
-	public void processingFight(int nowFrame) {
-		KeyData keyData = new KeyData(InputManager.getInstance().getKeyData());
+	public void processingFight(int nowFrame, KeyData keyData) {
 
 	}
 
@@ -48,11 +57,44 @@ public class Fighting {
 		return this.playerCharacters.clone();
 	}
 
-	public FrameData createFrameData(int nowFrame){
-		return new FrameData();
+	/**
+	 * 現在のフレームにおけるゲーム情報を格納したフレームデータを作成する<br>
+	 * 両キャラクターの情報, 現在のフレーム数, 現在のラウンド, 波動拳の情報を格納したリスト, 両キャラクターのキー情報, 画面のピクセル情報,
+	 * 画面のBufferedImage
+	 */
+	public FrameData createFrameData(int nowFrame, int round, KeyData keyData) {
+		CharacterData[] characterData = new CharacterData[] { new CharacterData(playerCharacters[0]),
+				new CharacterData(playerCharacters[1]) };
+
+		Deque<Attack> newAttackDeque = new LinkedList<Attack>();
+		for (LoopEffect loopEffect : this.projectileDeque) {
+			// newAttackDeque.addLast(loopEffect.getAttack());
+		}
+
+		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData, getDisplayByteBuffer(),
+				this.screen);
 	}
 
 	public void initRound() {
 
+	}
+
+	/**
+	 * Obtain RGB data of the screen in the form of ByteBuffer Warning: If the
+	 * window is disabled, will just returns a black buffer
+	 *
+	 * @return RGB data of the screen in the form of ByteBuffer
+	 */
+	private ByteBuffer getDisplayByteBuffer() {
+		// Allocate memory for the RGB data of the screen
+		ByteBuffer pixels = BufferUtils.createByteBuffer(3 * GameSetting.STAGE_WIDTH * GameSetting.STAGE_HEIGHT);
+		pixels.clear();
+
+		// Assign the RGB data of the screen to pixels, a ByteBuffer
+		// variable
+		glReadPixels(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+		pixels.rewind();
+
+		return pixels;
 	}
 }

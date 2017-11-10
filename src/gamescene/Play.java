@@ -1,7 +1,13 @@
 package gamescene;
 
+import java.util.ArrayList;
+
 import fighting.Fighting;
+import informationcontainer.RoundResult;
+import input.KeyData;
 import manager.GraphicManager;
+import manager.InputManager;
+import setting.FlagSetting;
 import setting.GameSetting;
 import struct.FrameData;
 import struct.GameData;
@@ -18,6 +24,12 @@ public class Play extends GameScene {
 
 	private boolean roundStartFlag;
 
+	private FrameData frameData;
+
+	private KeyData keyData;
+
+	private ArrayList<RoundResult> roundResults;
+
 	public Play() {
 
 	}
@@ -32,6 +44,10 @@ public class Play extends GameScene {
 		this.currentRound = 0;
 		this.roundStartFlag = true;
 
+		this.frameData = new FrameData();
+		this.keyData = new KeyData();
+		this.roundResults = new ArrayList<RoundResult>();
+
 		GameData gameData = new GameData(fighting.getCharacters());
 		// ((Input) im).initialize(deviceTypes, aiNames);
 		// ((Input) im).startAI(gameData);
@@ -41,28 +57,25 @@ public class Play extends GameScene {
 	@Override
 	public void update() {
 
-		if (currentRound < GameSetting.ROUND_MAX) {
+		if (this.currentRound < GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
-			if (roundStartFlag) {
+			if (this.roundStartFlag) {
 				initRound();
 
-			} else if (elapsedBreakTime < GameSetting.BREAKTIME_FRAME_NUMBER) {
+			} else if (this.elapsedBreakTime < GameSetting.BREAKTIME_FRAME_NUMBER) {
 				// break time
 				processingBreakTime();
-				elapsedBreakTime++;
-
-			} else if (nowFrame < GameSetting.ROUND_FRAME_NUMBER) {
-				// processing
-				processingGame();
-				nowFrame++;
+				this.elapsedBreakTime++;
 
 			} else {
-				// round end
-				processingRoundEnd();
+				// processing
+				processingGame();
+				this.nowFrame++;
 			}
 
 		} else {
-			Result result = new Result();
+			// BGMを止める
+			Result result = new Result(this.roundResults);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
 		}
@@ -70,10 +83,10 @@ public class Play extends GameScene {
 	}
 
 	private void initRound() {
-		fighting.initRound();
-		nowFrame = 0;
-		roundStartFlag = true;
-		elapsedBreakTime = 0;
+		this.fighting.initRound();
+		this.nowFrame = 0;
+		this.roundStartFlag = true;
+		this.elapsedBreakTime = 0;
 
 		// Input clear
 	}
@@ -86,23 +99,38 @@ public class Play extends GameScene {
 	}
 
 	private void processingGame() {
+		this.keyData = new KeyData(InputManager.getInstance().getKeyData());
 
-		fighting.processingFight(nowFrame);
-		FrameData frameData = fighting.createFrameData(nowFrame);
-		//AIにFrameDataをセット
-		//limithpモードで体力が尽きていたら、ラウンド終了処理
-//		if(/*体力尽きた*/){
-//			processingRoundEnd();
-//		}
+		this.fighting.processingFight(this.nowFrame, this.keyData);
+		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, this.keyData);
+		// AIにFrameDataをセット
+		// 体力が0orタイムオーバーならラウンド終了処理
+		if (isBeaten() || isTimeOver()) {
+			processingRoundEnd();
+		}
 
-		//リプレイログ吐き出し
-		//画面をDrawerクラスで描画
+		// リプレイログ吐き出し
+		// 画面をDrawerクラスで描画
 
 	}
 
 	private void processingRoundEnd() {
+		RoundResult roundResult = new RoundResult(this.frameData);
+		this.roundResults.add(roundResult);
 
+		// AIに結果を渡す sendRoundResult(p1Hp, p2Hp, frames);
 
+		this.currentRound++;
+		this.roundStartFlag = true;
+	}
+
+	private boolean isBeaten() {
+		return FlagSetting.limitHpFlag && (this.frameData.getMyCharacter(true).getHp() <= 0
+				|| this.frameData.getMyCharacter(false).getHp() <= 0);
+	}
+
+	private boolean isTimeOver() {
+		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
 	}
 
 	@Override
