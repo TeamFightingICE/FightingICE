@@ -4,13 +4,11 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 
 import org.lwjgl.BufferUtils;
 
-import informationcontainer.RoundResult;
 import input.KeyData;
 import setting.GameSetting;
 import struct.CharacterData;
@@ -24,20 +22,22 @@ public class Fighting {
 
 	private Deque<KeyData> inputCommands;
 
-	private ArrayList<RoundResult> resultContainer;
-
 	private BufferedImage screen;
 
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inputCommands = new LinkedList<KeyData>();
-		this.resultContainer = new ArrayList<RoundResult>();
 		this.screen = null;
 
 	}
 
 	public void initialize() {
+
+		for(int i = 0; i < 2; i++){
+			this.playerCharacters[i] = new Character();
+			//this.playerCharacters[i].initialize(初期化);
+		}
 
 		///// 旧Fighting処理内容/////
 
@@ -45,7 +45,7 @@ public class Fighting {
 		// SEロード
 		// 画像系ロード
 		// スクリーン画像取得
-		// 背景画像ロード
+		// 背景画像ロード←
 
 	}
 

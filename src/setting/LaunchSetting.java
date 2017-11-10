@@ -24,7 +24,7 @@ public final class LaunchSetting {
 
 	public static int invertedPlayer = 0;
 
-	public static BackgroundType backgroundType = BackgroundType.Image;
+	public static BackgroundType backgroundType = BackgroundType.IMAGE;
 
 	public static String replayName = "None";
 

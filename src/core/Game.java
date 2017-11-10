@@ -33,7 +33,7 @@ public class Game extends GameManager {
 		this.aiNames = new String[2];
 		this.characterNames = new String[2];
 		this.repeatNumber = 1;
-		this.backgroundType = BackgroundType.Image;
+		this.backgroundType = BackgroundType.IMAGE;
 		this.py4jPort = 4242;
 		this.invertedPlayer = 0;
 	}
@@ -85,10 +85,10 @@ public class Game extends GameManager {
 						LaunchSetting.py4jPort = Integer.parseInt(options[++i]);
 						break;
 					case "--black-bg":
-						LaunchSetting.backgroundType = BackgroundType.Black;
+						LaunchSetting.backgroundType = BackgroundType.BLACK;
 						break;
 					case "--grey-bg":
-						LaunchSetting.backgroundType = BackgroundType.Grey;
+						LaunchSetting.backgroundType = BackgroundType.GREY;
 						break;
 					case "--inverted-player":
 						LaunchSetting.invertedPlayer = Integer.parseInt(options[++i]);

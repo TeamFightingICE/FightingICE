@@ -3,6 +3,7 @@ package loader;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +23,7 @@ import aiinterface.AIInterface;
 import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
+import setting.GameSetting;
 import setting.LaunchSetting;
 import setting.ResourceSetting;
 
@@ -59,7 +61,7 @@ public class ResourceLoader {
 				graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
 		System.out.println("Hit文字読み込み完了");
 		// 背景画像読み込み
-		loadImages(GraphicManager.getInstance().getBackgroundImage(),
+		loadBackgroundImage(GraphicManager.getInstance().getBackgroundImage(),
 				graphicPath + ResourceSetting.BACKGROUND_DIRECTORY);
 		System.out.println("背景読み込み完了");
 		// アッパー画像読み込み
@@ -68,7 +70,7 @@ public class ResourceLoader {
 		// ヒットエフェクト読み込み
 		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
 		System.out.println("ヒットエフェクト読み込み完了");
-		//キャラクター画像読み込み
+		// キャラクター画像読み込み
 		loadCharacterImages(characterGraphicPath);
 		System.out.println("キャラクター画像読み込み完了");
 	}
@@ -190,6 +192,28 @@ public class ResourceLoader {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void loadBackgroundImage(ArrayList<Image> container, String path) {
+		BufferedImage bg = null;
+
+		switch (LaunchSetting.backgroundType) {
+		case BLACK:
+			bg = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_BYTE_BINARY,
+					new IndexColorModel(1, 1, new byte[] { 0 }, new byte[] { 0 }, new byte[] { 0 }));
+			container.add(loadTextureFromBufferedImage(bg));
+			break;
+
+		case GREY:
+			bg = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_BYTE_BINARY,
+					new IndexColorModel(1, 1, new byte[] { (byte) 128 }, new byte[] { (byte) 128 },
+							new byte[] { (byte) 128 }));
+			container.add(loadTextureFromBufferedImage(bg));
+
+		default:
+			loadImages(container, path);
+			break;
 		}
 	}
 
