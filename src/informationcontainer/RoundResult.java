@@ -1,5 +1,7 @@
 package informationcontainer;
 
+import struct.FrameData;
+
 public class RoundResult {
 
 	private int currentRound;
@@ -15,11 +17,16 @@ public class RoundResult {
 	}
 
 	public RoundResult(int round, int[] hp, int frame) {
-		this();
-
 		this.currentRound = round;
 		this.remainingHPs = hp;
 		this.elapsedFrame = frame;
+	}
+
+	public RoundResult(FrameData frameData) {
+		this.currentRound = frameData.getCurrentRound();
+		this.remainingHPs = new int[] { frameData.getMyCharacter(true).getHp(),
+				frameData.getMyCharacter(false).getHp() };
+		this.elapsedFrame = frameData.getCurrentFrameNumber();
 	}
 
 	public int getRound() {
@@ -30,7 +37,7 @@ public class RoundResult {
 		return new int[] { this.remainingHPs[0], this.remainingHPs[1] };
 	}
 
-	public int gerElapsedFrame(){
+	public int gerElapsedFrame() {
 		return this.elapsedFrame;
 	}
 

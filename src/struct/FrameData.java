@@ -134,7 +134,7 @@ public class FrameData {
 	 *
 	 * @return The number of remaining frames of the round.
 	 */
-	public long getRemainingFrameNumber() {
+	public int getRemainingFrameNumber() {
 		return (GameSetting.ROUND_FRAME_NUMBER - currentFrameNumber);
 	}
 
