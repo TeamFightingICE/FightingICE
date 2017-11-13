@@ -86,7 +86,7 @@ public class FrameData {
 
 		// make deep copy of the attacks list
 		this.projectileData = new LinkedList<Attack>();
-		for (Attack attack : frameData.projectileData) {
+		for (Attack attack : frameData.getProjectiles()) {
 			// this.projectileData.add(new Attack(attack));
 		}
 
