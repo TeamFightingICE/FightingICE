@@ -10,18 +10,32 @@ public class HitArea {
 
 	private int bottom;
 
+	public HitArea() {
+		this.left = 0;
+		this.right = 0;
+		this.top = 0;
+		this.bottom = 0;
+	}
+
+	public HitArea(HitArea hitArea) {
+		if (!(hitArea == null)) {
+			this.left = hitArea.getLeft();
+			this.right = hitArea.getRight();
+			this.top = hitArea.getTop();
+			this.bottom = hitArea.getBottom();
+		} else {
+			this.left = 0;
+			this.right = 0;
+			this.top = 0;
+			this.bottom = 0;
+		}
+	}
+
 	public HitArea(int left, int right, int top, int bottom) {
 		this.left = left;
 		this.right = right;
 		this.top = top;
 		this.bottom = bottom;
-	}
-
-	public HitArea() {
-		this.left = -1;
-		this.right = -1;
-		this.top = -1;
-		this.bottom = -1;
 	}
 
 	public void move(int speedX, int speedY) {
