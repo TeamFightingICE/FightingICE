@@ -39,7 +39,6 @@ public class QuadTask extends RenderTask {
 		this.green = g;
 		this.blue = b;
 		this.alpha = alpha;
-		System.out.println(r + " " + g + " " + b);
 	}
 
 	@Override
@@ -55,7 +54,6 @@ public class QuadTask extends RenderTask {
 			glVertex2i(posX + sizeX, posY + sizeY);
 			glVertex2i(posX, posY + sizeY);
 
-			System.out.println("描画");
 			glEnd();
 			break;
 

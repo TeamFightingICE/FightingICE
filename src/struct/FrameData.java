@@ -59,19 +59,16 @@ public class FrameData {
 		this.screenImage = null;
 	}
 
-
-
 	public FrameData(CharacterData[] characterData, int currentFrame, int currentRound, Deque<Attack> projectileData,
 			KeyData keyData, ByteBuffer displayByteBuffer, BufferedImage screenImage) {
-		this.characterData[0] = characterData[0];
-		this.characterData[1] = characterData[1];
+		this.characterData = new CharacterData[] { characterData[0], characterData[1] };
 		this.currentFrameNumber = currentFrame;
 		this.currentRound = currentRound;
 
 		// make deep copy of the attacks list
 		this.projectileData = new LinkedList<Attack>();
 		for (Attack attack : projectileData) {
-			//this.projectileData.add(new Attack(projectileData));
+			// this.projectileData.add(new Attack(projectileData));
 		}
 
 		this.keyData = keyData;
@@ -89,8 +86,8 @@ public class FrameData {
 
 		// make deep copy of the attacks list
 		this.projectileData = new LinkedList<Attack>();
-		for (Attack attack : frameData.projectileData){
-			//this.projectileData.add(new Attack(attack));
+		for (Attack attack : frameData.getProjectiles()) {
+			// this.projectileData.add(new Attack(attack));
 		}
 
 		this.keyData = new KeyData(frameData.getKeyData());
@@ -165,7 +162,7 @@ public class FrameData {
 		// create a deep copy of the attacks list
 		LinkedList<Attack> attackList = new LinkedList<Attack>();
 		for (Attack anAttack : this.projectileData) {
-		//	attackList.add(new Attack(anAttack));
+			// attackList.add(new Attack(anAttack));
 		}
 
 		return attackList;
@@ -180,7 +177,7 @@ public class FrameData {
 		LinkedList<Attack> attackList = new LinkedList<Attack>();
 		for (Attack attack : this.projectileData) {
 			if (attack.isPlayerNumber()) {
-				//attackList.add(new Attack(attack));
+				// attackList.add(new Attack(attack));
 			}
 		}
 		return attackList;
@@ -195,7 +192,7 @@ public class FrameData {
 		LinkedList<Attack> attackList = new LinkedList<Attack>();
 		for (Attack attack : this.projectileData) {
 			if (!attack.isPlayerNumber()) {
-			//	attackList.add(new Attack(attack));
+				// attackList.add(new Attack(attack));
 			}
 		}
 		return attackList;
@@ -291,7 +288,7 @@ public class FrameData {
 		return dst;
 	}
 
-	public BufferedImage getScreenImage(){
+	public BufferedImage getScreenImage() {
 		return this.screenImage;
 	}
 

@@ -4,13 +4,11 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 
 import org.lwjgl.BufferUtils;
 
-import informationcontainer.RoundResult;
 import input.KeyData;
 import setting.GameSetting;
 import struct.CharacterData;
@@ -24,32 +22,48 @@ public class Fighting {
 
 	private Deque<KeyData> inputCommands;
 
-	private ArrayList<RoundResult> resultContainer;
-
 	private BufferedImage screen;
 
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inputCommands = new LinkedList<KeyData>();
-		this.resultContainer = new ArrayList<RoundResult>();
 		this.screen = null;
 
 	}
 
 	public void initialize() {
 
+		for(int i = 0; i < 2; i++){
+			this.playerCharacters[i] = new Character();
+			//this.playerCharacters[i].initialize(初期化);
+		}
+
+		this.screen = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		this.projectileDeque = new LinkedList<LoopEffect>();
+		this.inputCommands = new LinkedList<KeyData>();
+
 		///// 旧Fighting処理内容/////
 
 		// BGMのロード
 		// SEロード
-		// 画像系ロード
-		// スクリーン画像取得
-		// 背景画像ロード
+		// 画像系ロード←Launcherでやってる
+		// スクリーン画像取得←ここでやる
+		// 背景画像ロード←Launcherでやってる
+		// スコア・経過時間の結果を格納する配列初期化←Playでやってる
+		// 波動拳格納リスト初期化←ここ
+	 // コマンド格納リスト初期化←ここ
+		// リプレイ用ファイルオープン←ここかPlay
+		// Json用ファイルオープン←未定
 
 	}
 
 	public void processingFight(int nowFrame, KeyData keyData) {
+		//1. キャラクターの状態の更新
+		//2. コマンドの実行・対戦処理
+		//3. 当たり判定の処理
+		//4. 攻撃パラメータの更新
+		//5. キャラクター情報の更新
 
 	}
 

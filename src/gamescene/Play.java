@@ -61,6 +61,7 @@ public class Play extends GameScene {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
 				initRound();
+				System.out.println("Round: " + currentRound);
 
 			} else if (this.elapsedBreakTime < GameSetting.BREAKTIME_FRAME_NUMBER) {
 				// break time
@@ -74,10 +75,12 @@ public class Play extends GameScene {
 			}
 
 		} else {
+			System.out.println("Result遷移");
 			// BGMを止める
 			Result result = new Result(this.roundResults);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
+
 		}
 
 	}
@@ -85,7 +88,7 @@ public class Play extends GameScene {
 	private void initRound() {
 		this.fighting.initRound();
 		this.nowFrame = 0;
-		this.roundStartFlag = true;
+		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 
 		// Input clear
