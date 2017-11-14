@@ -68,16 +68,6 @@ public class Motion {
 	public int attackActive;
 
 	/**
-	 * Not in use!
-	 */
-	public int attackInterval;
-
-	/**
-	 * Not in use!
-	 */
-	public int attackRepeat;
-
-	/**
 	 * The value of the damage to the unguarding opponent when it is hit by this
 	 * skill
 	 */
@@ -197,25 +187,25 @@ public class Motion {
 		this.attackSpeedX = Integer.valueOf(data[13]);
 		this.attackSpeedY = Integer.valueOf(data[14]);
 		this.attackStartUp = Integer.valueOf(data[15]);
-		this.attackInterval = Integer.valueOf(data[16]);
-		this.attackRepeat = Integer.valueOf(data[17]);
-		this.attackActive = Integer.valueOf(data[18]);
-		this.attackHitDamage = Integer.valueOf(data[19]);
-		this.attackGuardDamage = Integer.valueOf(data[20]);
-		this.attackStartAddEnergy = Integer.valueOf(data[21]);
-		this.attackHitAddEnergy = Integer.valueOf(data[22]);
-		this.attackGuardAddEnergy = Integer.valueOf(data[23]);
-		this.attackGiveEnergy = Integer.valueOf(data[24]);
-		this.attackImpactX = Integer.valueOf(data[25]);
-		this.attackImpactY = Integer.valueOf(data[26]);
-		this.attackGiveGuardRecov = Integer.valueOf(data[27]);
-		this.attackType = Integer.valueOf(data[28]);
-		this.attackDownProperty = Boolean.valueOf(data[29]);
-		this.cancelAbleFrame = Integer.valueOf(data[30]);
-		this.cancelAbleMotionLevel = Integer.valueOf(data[31]);
-		this.motionLevel = Integer.valueOf(data[32]);
-		this.control = Boolean.valueOf(data[33]);
-		this.landingFlag = Boolean.valueOf(data[34]);
+		this.attackActive = Integer.valueOf(data[16]);
+		this.attackHitDamage = Integer.valueOf(data[17]);
+		this.attackGuardDamage = Integer.valueOf(data[18]);
+		this.attackStartAddEnergy = Integer.valueOf(data[19]);
+		this.attackHitAddEnergy = Integer.valueOf(data[20]);
+		this.attackGuardAddEnergy = Integer.valueOf(data[21]);
+		this.attackGiveEnergy = Integer.valueOf(data[22]);
+		this.attackImpactX = Integer.valueOf(data[23]);
+		this.attackImpactY = Integer.valueOf(data[24]);
+		this.attackGiveGuardRecov = Integer.valueOf(data[25]);
+		this.attackType = Integer.valueOf(data[26]);
+		this.attackDownProperty = Boolean.valueOf(data[27]);
+		this.cancelAbleFrame = Integer.valueOf(data[28]);
+		this.cancelAbleMotionLevel = Integer.valueOf(data[29]);
+		this.motionLevel = Integer.valueOf(data[30]);
+		this.control = Boolean.valueOf(data[31]);
+		this.landingFlag = Boolean.valueOf(data[32]);
+		//data[33]は読み込む画像が入ったディレクトリ名
+		//
 
 		setMotionImage(characterName);
 	}

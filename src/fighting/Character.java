@@ -148,6 +148,7 @@ public class Character {
 		this.processedCommands = new LinkedList<Key>();
 		this.motionList = new ArrayList<Motion>();
 
+		setMotionList(characterName);
 		setComboTable(characterName);
 
 	}
