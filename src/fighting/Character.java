@@ -1,9 +1,12 @@
 package fighting;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import enumerate.Action;
 import enumerate.State;
+import struct.Key;
 
 public class Character {
 	private int hp;
@@ -46,9 +49,67 @@ public class Character {
 
 	private int graphicCenterY;
 
-	private ArrayList<Action> currentCombo = new ArrayList<Action>();
+	private ArrayList<Action> currentCombo;
 
 	private int lastCombo;
+
+	private Deque<Key> inputCommands;
+
+	private Deque<Key> processedCommands;
+
+	public Character() {
+		this.hp = 0;
+		this.energy = 0;
+		this.x = 0;
+		this.y = 0;
+		this.graphicSizeX = 0;
+		this.graphicSizeY = 0;
+		this.graphicCenterX = 0;
+		this.graphicCenterY = 0;
+		this.left = 0;
+		this.right = 0;
+		this.top = 0;
+		this.bottom = 0;
+		this.speedX = 0;
+		this.speedY = 0;
+		this.state = State.STAND;
+		this.action = Action.NEUTRAL;
+		this.front = true;
+		this.control = true;
+		this.attack = null;
+		this.remainingFrame = 0;
+		this.currentCombo = new ArrayList<Action>();
+		this.lastCombo = 0;
+	}
+
+	public Character(Character character) {
+		this.hp = character.getHp();
+		this.energy = character.getEnergy();
+		this.x = character.getX();
+		this.y = character.getY();
+		this.graphicSizeX = character.getGraphicSizeX();
+		this.graphicSizeY = character.getGraphicSizeY();
+		this.graphicCenterX = character.getGraphicCenterX();
+		this.graphicCenterY = character.getGraphicCenterY();
+		this.left = character.getLeft();
+		this.right = character.getRight();
+		this.top = character.getTop();
+		this.bottom = character.getBottom();
+		this.speedX = character.getSpeedX();
+		this.speedY = character.getSpeedY();
+		this.state = character.getState();
+		this.action = character.getAction();
+		this.front = character.isFront();
+		this.control = character.isControl();
+		this.attack = character.getAttack();
+		this.remainingFrame = character.getRemainingFrame();
+		this.currentCombo = character.getCurrentCombo();
+		this.lastCombo = character.getLastCombo();
+	}
+
+	public void initialize() {
+
+	}
 
 	public boolean isFront() {
 		return this.front;
@@ -58,7 +119,7 @@ public class Character {
 		return this.control;
 	}
 
-	// getter
+	////// Getter//////
 	public int getHp() {
 		return this.hp;
 	}
@@ -111,10 +172,9 @@ public class Character {
 		return this.remainingFrame;
 	}
 
-	/*
-	 * public Attack getAttack() { // create the deep copy of the attack to
-	 * ensure the attack object is // immutable return new Attack(attack); }
-	 */
+	public Attack getAttack() {
+		return new Attack(this.attack);
+	}
 
 	public int getGraphicCenterX() {
 		return this.graphicCenterX;
@@ -133,7 +193,12 @@ public class Character {
 	}
 
 	public ArrayList<Action> getCurrentCombo() {
-		return this.currentCombo;
+		ArrayList<Action> temp = new ArrayList<Action>();
+		for (Action action : this.currentCombo) {
+			temp.add(action);
+		}
+
+		return temp;
 	}
 
 	public int getLastCombo() {
@@ -144,7 +209,45 @@ public class Character {
 		return this.currentCombo.size();
 	}
 
-	// setter
+	/**
+	 * Returns a list storing keys of the action that the character will be
+	 * executing in the simulator
+	 *
+	 * @deprecated This method is used only for processing of the simulator. You
+	 *             should not use this method for AI development.
+	 *
+	 * @return A list storing keys of the action that the character will be
+	 *         executing in the simulator
+	 */
+	public Deque<Key> getInputCommand() {
+		LinkedList<Key> temp = new LinkedList<Key>();
+		for (Key key : this.inputCommands) {
+			temp.add(key);
+		}
+
+		return temp;
+	}
+
+	/**
+	 * Returns a list storing up to 30 keys that the character executed in the
+	 * simulator
+	 *
+	 * @deprecated This method is used only for processing of the simulator. You
+	 *             should not use this method for AI development.
+	 *
+	 * @return A list storing up to 30 keys that the character executed in the
+	 *         simulator
+	 */
+	public Deque<Key> getProcessedCommand() {
+		LinkedList<Key> temp = new LinkedList<Key>();
+		for (Key key : this.processedCommands) {
+			temp.add(key);
+		}
+
+		return temp;
+	}
+
+	////// Setter//////
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
@@ -223,6 +326,36 @@ public class Character {
 
 	public void setGraphicSizeY(int graphicSizeY) {
 		this.graphicSizeY = graphicSizeY;
+	}
+
+	/**
+	 * Sets a list storing keys of the action that the character will be
+	 * executing in the simulator
+	 *
+	 * @deprecated This method is used only for processing of the simulator. You
+	 *             should not use this method for AI development.
+	 *
+	 * @param inputCommands
+	 *            A list storing keys of the action that the character will be
+	 *            executing in the simulator
+	 */
+	public void setInputCommand(Deque<Key> inputCommands) {
+		this.inputCommands = inputCommands;
+	}
+
+	/**
+	 * Sets a list storing up to 30 keys that the character executed in the
+	 * simulator
+	 *
+	 * @deprecated This method is used only for processing of the simulator. You
+	 *             should not use this method for AI development.
+	 *
+	 * @param inputCommands
+	 *            A list storing up to 30 keys that the character executed in
+	 *            the simulator
+	 */
+	public void setProcessedCommand(Deque<Key> inputCommands) {
+		this.processedCommands = inputCommands;
 	}
 
 }

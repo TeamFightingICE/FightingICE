@@ -1,6 +1,8 @@
 package struct;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import enumerate.Action;
 import enumerate.State;
@@ -53,6 +55,10 @@ public class CharacterData {
 
 	private int lastCombo;
 
+	private Deque<Key> inputCommands;
+
+	private Deque<Key> processedCommands;
+
 	public CharacterData(Character character) {
 		this.hp = character.getHp();
 		this.energy = character.getEnergy();
@@ -102,7 +108,7 @@ public class CharacterData {
 		// this.attack = (characterData.getAttack() != null) ? new
 		// Attack(characterData.getAttack()) : null;
 		this.remainingFrame = characterData.getRemainingFrame();
-		this.currentCombo = (ArrayList<Action>) characterData.getCurrentCombo().clone();
+		this.currentCombo = characterData.getCurrentCombo();
 		this.lastCombo = characterData.getLastCombo();
 	}
 
@@ -114,7 +120,7 @@ public class CharacterData {
 		return this.control;
 	}
 
-	// getter
+	//////Getter//////
 	public int getHp() {
 		return this.hp;
 	}
@@ -167,10 +173,9 @@ public class CharacterData {
 		return this.remainingFrame;
 	}
 
-	/*
-	 * public Attack getAttack() { // create the deep copy of the attack to
-	 * ensure the attack object is // immutable return new Attack(attack); }
-	 */
+	public Attack getAttack() {
+		return new Attack(this.attack);
+	}
 
 	public int getGraphicCenterX() {
 		return this.graphicCenterX;
@@ -189,7 +194,12 @@ public class CharacterData {
 	}
 
 	public ArrayList<Action> getCurrentCombo() {
-		return this.currentCombo;
+		ArrayList<Action> temp = new ArrayList<Action>();
+		for (Action action : this.currentCombo) {
+			temp.add(action);
+		}
+
+		return temp;
 	}
 
 	public int getLastCombo() {
@@ -200,7 +210,45 @@ public class CharacterData {
 		return this.currentCombo.size();
 	}
 
-	// setter
+	/**
+	 * Returns a list storing keys of the action that the character will be executing in the
+	 * simulator
+	 *
+	 * @deprecated This method is used only for processing of the simulator. You
+	 *             should not use this method for AI development.
+	 *
+	 * @return A list storing keys of the action that the character will be executing in the
+	 *         simulator
+	 */
+	public Deque<Key> getInputCommand() {
+		LinkedList<Key> temp = new LinkedList<Key>();
+		for(Key key : this.inputCommands){
+			temp.add(key);
+		}
+
+		return temp;
+	}
+
+	/**
+	 * Returns a list storing up to 30 keys that the character executed in the
+	 * simulator
+	 *
+	 * @deprecated This method is used only for processing of the simulator. You
+	 *             should not use this method for AI development.
+	 *
+	 * @return A list storing up to 30 keys that the character executed in the
+	 *         simulator
+	 */
+	public Deque<Key> getProcessedCommand() {
+		LinkedList<Key> temp = new LinkedList<Key>();
+		for(Key key : this.processedCommands){
+			temp.add(key);
+		}
+
+		return temp;
+	}
+
+	//////Setter//////
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
@@ -279,6 +327,38 @@ public class CharacterData {
 
 	public void setGraphicSizeY(int graphicSizeY) {
 		this.graphicSizeY = graphicSizeY;
+	}
+
+	/**
+	 * Sets a list storing keys of the action that the character will be
+	 * executing in the simulator
+	 *
+	 * @deprecated This method is used only for processing of the simulator. You
+	 *             should not use this method for AI development.
+	 *
+	 * @param inputCommand
+	 *            A list storing keys of the action that the character will be executing in
+	 *            the simulator
+	 */
+	public void setInputCommand(Deque<Key> inputCommand) {
+		this.inputCommands = new LinkedList<Key>(inputCommand);
+	}
+
+
+
+	/**
+	 * Sets a list storing up to 30 keys that the character executed in the
+	 * simulator
+	 *
+	 * @deprecated This method is used only for processing of the simulator. You
+	 *             should not use this method for AI development.
+	 *
+	 * @param inputCommand
+	 *            A list storing up to 30 keys that the character executed in
+	 *            the simulator
+	 */
+	public void setProcessedCommand(Deque<Key> inputCommand) {
+		this.processedCommands = new LinkedList<Key>(inputCommand);
 	}
 
 }
