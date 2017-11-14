@@ -101,6 +101,7 @@ public class Attack {
 		this.downProperty = attack.isDownProperty();
 	}
 
+
 	/**
 	 * 攻撃オブジェクトの初期化を行う
 	 *
