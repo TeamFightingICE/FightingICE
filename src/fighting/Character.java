@@ -9,6 +9,8 @@ import enumerate.State;
 import struct.Key;
 
 public class Character {
+	private boolean playerNumber;
+
 	private int hp;
 
 	private int energy;
@@ -58,6 +60,7 @@ public class Character {
 	private Deque<Key> processedCommands;
 
 	public Character() {
+		this.playerNumber = true;
 		this.hp = 0;
 		this.energy = 0;
 		this.x = 0;
@@ -83,6 +86,7 @@ public class Character {
 	}
 
 	public Character(Character character) {
+		this.playerNumber = character.isPlayerNumber();
 		this.hp = character.getHp();
 		this.energy = character.getEnergy();
 		this.x = character.getX();
@@ -107,8 +111,12 @@ public class Character {
 		this.lastCombo = character.getLastCombo();
 	}
 
-	public void initialize() {
+	public void initialize(boolean playerNumber) {
 
+	}
+
+	public boolean isPlayerNumber() {
+		return this.playerNumber;
 	}
 
 	public boolean isFront() {
@@ -309,7 +317,7 @@ public class Character {
 	}
 
 	public void setAttack(Attack attack) {
-		// this.attack = (attack != null) ? new Attack(attack) : null;
+		this.attack = attack;
 	}
 
 	public void setGraphicCenterX(int graphicCenterX) {
