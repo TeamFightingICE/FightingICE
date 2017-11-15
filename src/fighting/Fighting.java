@@ -11,6 +11,7 @@ import org.lwjgl.BufferUtils;
 
 import input.KeyData;
 import setting.GameSetting;
+import setting.LaunchSetting;
 import struct.CharacterData;
 import struct.FrameData;
 
@@ -36,7 +37,7 @@ public class Fighting {
 
 		for(int i = 0; i < 2; i++){
 			this.playerCharacters[i] = new Character();
-			//this.playerCharacters[i].initialize(初期化);
+			this.playerCharacters[i].initialize(LaunchSetting.characterNames[i], i == 0);
 		}
 
 		this.screen = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -66,6 +67,8 @@ public class Fighting {
 		//5. キャラクター情報の更新
 
 	}
+
+
 
 	public Character[] getCharacters() {
 		return this.playerCharacters.clone();

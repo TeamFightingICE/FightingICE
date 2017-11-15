@@ -101,6 +101,32 @@ public class Attack {
 		this.downProperty = attack.isDownProperty();
 	}
 
+	public Attack(HitArea hitArea, int settingSpeedX, int settingSpeedY, int startUp, int active, int hitDamage,
+			int guardDamage, int startAddEnergy, int hitAddEnergy, int guardAddEnergy, int giveEnergy, int impactX,
+			int impactY, int giveGuardRecov, int attackType, boolean downProp) {
+
+		this.settingHitArea = hitArea;
+		this.settingSpeedX = settingSpeedX;
+		this.settingSpeedY = settingSpeedY;
+
+		this.currentHitArea = new HitArea();
+
+		this.startUp = startUp;
+		this.active = active;
+
+		this.hitDamage = hitDamage;
+		this.guardDamage = guardDamage;
+		this.startAddEnergy = startAddEnergy;
+		this.hitAddEnergy = hitAddEnergy;
+		this.guardAddEnergy = guardAddEnergy;
+		this.giveEnergy = giveEnergy;
+
+		this.impactX = impactX;
+		this.impactY = impactY;
+		this.giveGuardRecov = giveGuardRecov;
+		this.attackType = attackType;
+		this.downProperty = downProp;
+	}
 
 	/**
 	 * 攻撃オブジェクトの初期化を行う
@@ -145,7 +171,6 @@ public class Attack {
 		int top;
 		int bottom;
 
-		// when player faced right
 		if (direction) {
 			left = x + this.settingHitArea.getLeft();
 			right = x + this.settingHitArea.getRight();
@@ -153,6 +178,7 @@ public class Attack {
 			this.speedY = this.settingSpeedY;
 
 		} else {
+			// ちょっとバグが発生する可能性あり
 			left = x + size - this.settingHitArea.getRight();
 			right = x + size - this.settingHitArea.getLeft();
 			this.speedX = -this.settingSpeedX;

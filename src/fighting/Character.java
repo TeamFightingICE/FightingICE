@@ -169,17 +169,63 @@ public class Character {
 		this.hitConfirm = false;
 		resetCombo();
 
-		if(this.playerNumber){
+		if (this.playerNumber) {
 			this.front = true;
-			//初期の立ち位置
+			// 初期の立ち位置
 			this.x = 100;
 			this.y = 335;
-		}else{
+		} else {
 			this.front = false;
-			//初期の立ち位置
+			// 初期の立ち位置
 			this.x = 460;
 			this.y = 335;
 		}
+	}
+
+	/** 引数のアクションの情報(アクションによって変化するキャラクターの座標やエネルギーなど)をキャラクターにセットする */
+	public void runAction(Action executeAction, boolean resetFlag) {
+		Motion exeMotion = this.motionList.get(executeAction.ordinal());
+
+		if (this.action != executeAction) {
+			if (resetFlag) {
+				destroyAttackInstance();
+			}
+
+			this.remainingFrame = exeMotion.getFrameNumber();
+			this.hitConfirm = false;
+			this.energy += exeMotion.getAttackStartAddEnergy();
+		}
+
+		this.action = executeAction;
+		this.state = exeMotion.getState();
+		this.speedX = this.front ? exeMotion.getSpeedX() : -exeMotion.getSpeedX();
+		this.speedY = exeMotion.getSpeedY();
+		this.control = exeMotion.isControl();
+
+		createAttackInstance();
+	}
+
+	private void createAttackInstance() {
+		Motion motion = this.motionList.get(this.action.ordinal());
+
+		if (isActive(motion)) {
+			this.attack = new Attack(motion.getAttackHitArea(), motion.getAttackSpeedX(), motion.getAttackSpeedY(),
+					motion.getAttackStartUp(), motion.getAttackActive(), motion.getAttackHitDamage(),
+					motion.getAttackGuardDamage(), motion.getAttackStartAddEnergy(), motion.getAttackHitAddEnergy(),
+					motion.getAttackGuardAddEnergy(), motion.getAttackGiveEnergy(), motion.getAttackImpactX(),
+					motion.getAttackImpactY(), motion.getAttackGiveGuardRecov(), motion.getAttackType(),
+					motion.isAttackDownProperty());
+
+			this.attack.initialize(this.playerNumber, this.x, this.y, this.graphicSizeX, this.front);
+		}
+	}
+
+	private boolean isActive(Motion motion) {
+		return motion.getFrameNumber() - motion.getAttackStartUp() == this.remainingFrame;
+	}
+
+	public void destroyAttackInstance() {
+		this.attack = null;
 	}
 
 	public boolean isPlayerNumber() {
