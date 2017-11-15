@@ -1,12 +1,12 @@
 package struct;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import org.javatuples.Triplet;
 
 import enumerate.Action;
 import fighting.Character;
+import fighting.Motion;
 import setting.LaunchSetting;
 import simulator.Simulator;
 
@@ -26,13 +26,13 @@ public class GameData {
 
 	private Simulator simulator;
 
-	private ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>> comboTable;
+	private ArrayList<ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>> comboTable;
 
 	public GameData() {
 		this.characterMotions = new ArrayList<ArrayList<MotionData>>(2);
 		this.characterNames = new String[2];
 		this.aiNames = new String[2];
-		this.comboTable = new ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>>(2);
+		this.comboTable = new ArrayList<ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>>(2);
 	}
 
 	public GameData(Character[] players) {
@@ -44,14 +44,15 @@ public class GameData {
 			this.aiNames[i] = LaunchSetting.aiNames[i];
 
 			// 各アクションのMotionDataを格納
-			for (Action act : Action.values()) {
-				// MotionData motionData = new
-				// MotionData(players[i].getMotion.get(act.ordinal()));
-				// characterMotions.get(i).add(motionData);
+			ArrayList<MotionData> motionDataList = new ArrayList<MotionData>();
+			ArrayList<Motion> temp = players[i].getMotionList();
+			for (Motion motion : temp) {
+				motionDataList.add(new MotionData(motion));
 			}
+			this.characterMotions.add(motionDataList);
 
 			// コンボテーブルを格納
-			// this.comboTable.add(players[i].getComboTable());
+			this.comboTable.add(players[i].getComboTable());
 		}
 		this.simulator = new Simulator(this);
 	}
@@ -59,8 +60,14 @@ public class GameData {
 	/** Getter */
 
 	public ArrayList<MotionData> getCharacterMotionData(boolean playerNumber) {
-		return playerNumber ? new ArrayList<MotionData>(characterMotions.get(0))
-				: new ArrayList<MotionData>(characterMotions.get(1));
+		ArrayList<MotionData> temp = new ArrayList<MotionData>();
+		ArrayList<MotionData> copy = this.characterMotions.get(playerNumber ? 0 : 1);
+
+		for (MotionData motionData : copy) {
+			temp.add(motionData);
+		}
+
+		return temp;
 	}
 
 	public String getCharacterName(boolean playerNumber) {
@@ -75,8 +82,8 @@ public class GameData {
 		return new Simulator(this.simulator);
 	}
 
-	public ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>> getComboTable() {
-		return (ArrayList<Vector<Triplet<Vector<Action>, Vector<Action>, Integer>>>) this.comboTable.clone();
+	public ArrayList<ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>> getComboTable() {
+		return (ArrayList<ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>>) this.comboTable.clone();
 	}
 
 }

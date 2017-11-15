@@ -72,6 +72,8 @@ public class Character {
 
 	private Deque<Key> processedCommands;
 
+	private ArrayList<Motion> motionList;
+
 	public Character() {
 		this.playerNumber = true;
 		this.hp = 0;
@@ -144,7 +146,9 @@ public class Character {
 		this.comboTable = new ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>();
 		this.inputCommands = new LinkedList<Key>();
 		this.processedCommands = new LinkedList<Key>();
+		this.motionList = new ArrayList<Motion>();
 
+		setMotionList(characterName);
 		setComboTable(characterName);
 
 	}
@@ -249,6 +253,19 @@ public class Character {
 
 	public int getComboState() {
 		return this.currentCombo.size();
+	}
+
+	public ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> getComboTable() {
+		return (ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>) this.comboTable.clone();
+	}
+
+	public ArrayList<Motion> getMotionList() {
+		ArrayList<Motion> temp = new ArrayList<Motion>();
+		for(Motion motion : this.motionList){
+			temp.add(motion);
+		}
+
+		return temp;
 	}
 
 	/**
@@ -407,65 +424,17 @@ public class Character {
 	 *
 	 * @param characterName the character's name.
 	 */
-	/*private void setMotionVector(String characterName) {
+	private void setMotionList(String characterName) {
 		try{
-			File csv = new File("./data/character/"+characterName+"/Motion.csv");
-
-			BufferedReader br = new BufferedReader(new FileReader(csv));
-
-			Vector<MotionData> motionData = new Vector<MotionData>();
+			BufferedReader br = ResourceLoader.getInstance().openReadFile("./data/character/"+characterName+"/Motion.csv");
 
 			String line;
 			br.readLine(); // ignore header
 
-			while((line = br.readLine()) != null)
-			{
+			while((line = br.readLine()) != null){
 				String[] st = line.split(",",0);
-
-				MotionData tmp = new MotionData();
-
-				tmp.motionName = st[0];
-				tmp.frameNumber = Integer.valueOf(st[1]);
-				tmp.speedX = Integer.valueOf(st[2]);
-				tmp.speedY = Integer.valueOf(st[3]);
-				tmp.hit = new HitArea(Integer.valueOf(st[4]),Integer.valueOf(st[5]),Integer.valueOf(st[6]),Integer.valueOf(st[7]));
-				tmp.state= State.valueOf(st[8]);
-				tmp.attackHit = new HitArea(Integer.valueOf(st[9]),Integer.valueOf(st[10]),Integer.valueOf(st[11]),Integer.valueOf(st[12]));
-				tmp.attackSpeedX = Integer.valueOf(st[13]);
-				tmp.attackSpeedY = Integer.valueOf(st[14]);
-				tmp.attackStartUp = Integer.valueOf(st[15]);
-				tmp.attackInterval = Integer.valueOf(st[16]);
-				tmp.attackRepeat = Integer.valueOf(st[17]);
-				tmp.attackActive = Integer.valueOf(st[18]);
-				tmp.attackHitDamage = Integer.valueOf(st[19]);
-				tmp.attackGuardDamage = Integer.valueOf(st[20]);
-				tmp.attackStartAddEnergy = Integer.valueOf(st[21]);
-				tmp.attackHitAddEnergy = Integer.valueOf(st[22]);
-				tmp.attackGuardAddEnergy = Integer.valueOf(st[23]);
-				tmp.attackGiveEnergy = Integer.valueOf(st[24]);
-				tmp.attackImpactX = Integer.valueOf(st[25]);
-				tmp.attackImpactY = Integer.valueOf(st[26]);
-				tmp.attackGiveGuardRecov = Integer.valueOf(st[27]);
-				tmp.attackKnockBack = Integer.valueOf(st[28]);
-				tmp.attackHitStop = Integer.valueOf(st[29]);
-				tmp.attackType = Integer.valueOf(st[30]);
-				tmp.attackDownProperty =  Boolean.valueOf(st[31]);
-				tmp.attackImage = st[32];
-				tmp.cancelAbleFrame = Integer.valueOf(st[33]);
-				tmp.cancelAbleMotionLevel = Integer.valueOf(st[34]);
-				tmp.motionLevel = Integer.valueOf(st[35]);
-				tmp.control = Boolean.valueOf(st[36]);
-				tmp.landingFlag = Boolean.valueOf(st[37]);
-
-				motionData.addElement(tmp);
-			}
-
-			this.motionVector = new Vector<Motion>();
-
-			for(Action act : Action.values()){
-				Motion motionObject = new Motion();
-				motionObject.setParameters(motionData.elementAt(act.ordinal()),characterName,ic);
-				motionVector.addElement(motionObject);
+				Motion motion = new Motion(st, characterName);
+				this.motionList.add(motion);
 			}
 
 			br.close();
@@ -473,7 +442,7 @@ public class Character {
 		} catch(IOException e){
 			e.printStackTrace();
 		}
-	}*/
+	}
 
 	/**
 	 * Sets a list storing keys of the action that the character will be
