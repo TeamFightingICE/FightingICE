@@ -231,30 +231,37 @@ public class Character {
 	 * @return The character's hit box's most-right x-coordinate.
 	 */
 	public int getCharacterHitAreaRight() {
-
-		return motionList.get(this.action.ordinal()).getCharacterHitArea().getRight() + x;
+		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getRight() + x;
 	}
 
 	/**
 	 * @return The character's hit box's most-left x-coordinate.
 	 */
 	public int getCharacterHitAreaLeft() {
-		return motionList.get(this.action.ordinal()).getCharacterHitArea().getLeft() + x;
+		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getLeft() + x;
 	}
 
 	/**
 	 * @return The character's hit box's most-top y-coordinate.
 	 */
 	public int getCharacterHitAreaTop() {
-		return motionList.get(this.action.ordinal()).getCharacterHitArea().getTop() + y;
+		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getTop() + y;
 	}
 
 	/**
 	 * @return The character's hit box's most-bottom y-coordinate.
 	 */
 	public int getCharacterHitAreaBottom() {
-		return motionList.get(this.action.ordinal()).getCharacterHitArea().getBottom() + y;
+		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getBottom() + y;
 
+	}
+
+	public int getCharacterHitAreaCenterX() {
+		return (getCharacterHitAreaRight() + getCharacterHitAreaLeft()) / 2;
+	}
+
+	public int getCharacterHitAreaCenterY() {
+		return (getCharacterHitAreaTop() + getCharacterHitAreaBottom()) / 2;
 	}
 
 	/**
