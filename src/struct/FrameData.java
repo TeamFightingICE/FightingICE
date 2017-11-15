@@ -68,7 +68,7 @@ public class FrameData {
 		// make deep copy of the attacks list
 		this.projectileData = new LinkedList<Attack>();
 		for (Attack attack : projectileData) {
-			// this.projectileData.add(new Attack(projectileData));
+			 this.projectileData.add(new Attack(attack));
 		}
 
 		this.keyData = keyData;
@@ -86,8 +86,9 @@ public class FrameData {
 
 		// make deep copy of the attacks list
 		this.projectileData = new LinkedList<Attack>();
-		for (Attack attack : frameData.getProjectiles()) {
-			// this.projectileData.add(new Attack(attack));
+		Deque<Attack> temp = frameData.getProjectiles();
+		for (Attack attack : temp) {
+			 this.projectileData.add(new Attack(attack));
 		}
 
 		this.keyData = new KeyData(frameData.getKeyData());
