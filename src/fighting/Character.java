@@ -13,6 +13,8 @@ import org.javatuples.Triplet;
 import enumerate.Action;
 import enumerate.State;
 import loader.ResourceLoader;
+import setting.FlagSetting;
+import setting.LaunchSetting;
 import struct.Key;
 
 public class Character {
@@ -22,17 +24,11 @@ public class Character {
 
 	private int energy;
 
+	/** キャラクター画像の最も左端のx座標 */
 	private int x;
 
+	/** キャラクター画像の最も上端のy座標 */
 	private int y;
-
-	private int left;
-
-	private int right;
-
-	private int top;
-
-	private int bottom;
 
 	private int speedX;
 
@@ -50,6 +46,11 @@ public class Character {
 
 	private int remainingFrame;
 
+	/**
+	 * Attack hit confirm.<br>
+	 */
+	private boolean hitConfirm;
+
 	private int graphicSizeX;
 
 	private int graphicSizeY;
@@ -62,10 +63,6 @@ public class Character {
 
 	private int lastCombo;
 
-	/**
-	 * Combo table of this character.
-	 * May be NULL if the corresponding file is not found
-	 */
 	private ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> comboTable;
 
 	private Deque<Key> inputCommands;
@@ -84,14 +81,11 @@ public class Character {
 		this.graphicSizeY = 0;
 		this.graphicCenterX = 0;
 		this.graphicCenterY = 0;
-		this.left = 0;
-		this.right = 0;
-		this.top = 0;
-		this.bottom = 0;
 		this.speedX = 0;
 		this.speedY = 0;
 		this.state = State.STAND;
 		this.action = Action.NEUTRAL;
+		this.hitConfirm = false;
 		this.front = true;
 		this.control = true;
 		this.attack = null;
@@ -110,14 +104,11 @@ public class Character {
 		this.graphicSizeY = character.getGraphicSizeY();
 		this.graphicCenterX = character.getGraphicCenterX();
 		this.graphicCenterY = character.getGraphicCenterY();
-		this.left = character.getLeft();
-		this.right = character.getRight();
-		this.top = character.getTop();
-		this.bottom = character.getBottom();
 		this.speedX = character.getSpeedX();
 		this.speedY = character.getSpeedY();
 		this.state = character.getState();
 		this.action = character.getAction();
+		this.hitConfirm = character.isHitConfirm();
 		this.front = character.isFront();
 		this.control = character.isControl();
 		this.attack = character.getAttack();
@@ -153,6 +144,44 @@ public class Character {
 
 	}
 
+	/** 各ラウンドの開始時にキャラクター情報を初期化する */
+	public void roundInit() {
+		if (FlagSetting.limitHpFlag) {
+			this.hp = LaunchSetting.maxHp[this.playerNumber ? 0 : 1];
+		} else {
+			this.hp = 0;
+		}
+
+		if (FlagSetting.trainingModeFlag) {
+			this.hp = 9999;
+			this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
+		} else {
+			this.energy = 0;
+		}
+
+		this.speedX = 0;
+		this.speedY = 0;
+		this.state = State.STAND;
+		this.action = Action.NEUTRAL;
+		this.attack = null;
+		this.remainingFrame = 1;
+		this.control = false;
+		this.hitConfirm = false;
+		resetCombo();
+
+		if(this.playerNumber){
+			this.front = true;
+			//初期の立ち位置
+			this.x = 100;
+			this.y = 335;
+		}else{
+			this.front = false;
+			//初期の立ち位置
+			this.x = 460;
+			this.y = 335;
+		}
+	}
+
 	public boolean isPlayerNumber() {
 		return this.playerNumber;
 	}
@@ -182,22 +211,6 @@ public class Character {
 		return this.y;
 	}
 
-	public int getLeft() {
-		return this.left;
-	}
-
-	public int getRight() {
-		return this.right;
-	}
-
-	public int getTop() {
-		return this.top;
-	}
-
-	public int getBottom() {
-		return this.bottom;
-	}
-
 	public int getSpeedX() {
 		return this.speedX;
 	}
@@ -212,6 +225,46 @@ public class Character {
 
 	public Action getAction() {
 		return this.action;
+	}
+
+	/**
+	 * @return The character's hit box's most-right x-coordinate.
+	 */
+	public int getCharacterHitAreaRight() {
+
+		return motionList.get(this.action.ordinal()).getCharacterHitArea().getRight() + x;
+	}
+
+	/**
+	 * @return The character's hit box's most-left x-coordinate.
+	 */
+	public int getCharacterHitAreaLeft() {
+		return motionList.get(this.action.ordinal()).getCharacterHitArea().getLeft() + x;
+	}
+
+	/**
+	 * @return The character's hit box's most-top y-coordinate.
+	 */
+	public int getCharacterHitAreaTop() {
+		return motionList.get(this.action.ordinal()).getCharacterHitArea().getTop() + y;
+	}
+
+	/**
+	 * @return The character's hit box's most-bottom y-coordinate.
+	 */
+	public int getCharacterHitAreaBottom() {
+		return motionList.get(this.action.ordinal()).getCharacterHitArea().getBottom() + y;
+
+	}
+
+	/**
+	 * Returns a boolean value whether the motion hits the opponent or not
+	 *
+	 * @return hitConfirm A boolean value whether the motion hits the opponent
+	 *         (true) or not (false)
+	 */
+	public boolean isHitConfirm() {
+		return hitConfirm;
 	}
 
 	public int getRemainingFrame() {
@@ -261,7 +314,7 @@ public class Character {
 
 	public ArrayList<Motion> getMotionList() {
 		ArrayList<Motion> temp = new ArrayList<Motion>();
-		for(Motion motion : this.motionList){
+		for (Motion motion : this.motionList) {
 			temp.add(motion);
 		}
 
@@ -339,6 +392,16 @@ public class Character {
 		this.action = action;
 	}
 
+	/**
+	 * Sets hitConfirm whether the motion hits the opponent or not
+	 *
+	 * @param hitConfirm
+	 *            A boolean value whether the motion hits the opponent or not
+	 */
+	public void setHitConfirm(boolean hitConfirm) {
+		this.hitConfirm = hitConfirm;
+	}
+
 	public void setFront(boolean front) {
 		this.front = front;
 	}
@@ -349,22 +412,6 @@ public class Character {
 
 	public void setRemainingFrame(int remainingFrame) {
 		this.remainingFrame = remainingFrame;
-	}
-
-	public void setTop(int top) {
-		this.top = top;
-	}
-
-	public void setBottom(int bottom) {
-		this.bottom = bottom;
-	}
-
-	public void setLeft(int left) {
-		this.left = left;
-	}
-
-	public void setRight(int right) {
-		this.right = right;
 	}
 
 	public void setAttack(Attack attack) {
@@ -391,12 +438,14 @@ public class Character {
 	 *
 	 * Sets the combo table.
 	 *
-	 * @param characterName the name of the Character.
+	 * @param characterName
+	 *            the name of the Character.
 	 *
 	 */
 	private void setComboTable(String characterName) {
-		try{
-			BufferedReader br = ResourceLoader.getInstance().openReadFile("./data/character/"+characterName+"/ComboTable.csv");
+		try {
+			BufferedReader br = ResourceLoader.getInstance()
+					.openReadFile("./data/character/" + characterName + "/ComboTable.csv");
 
 			Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(br);
 			for (CSVRecord record : records) {
@@ -413,7 +462,7 @@ public class Character {
 			}
 
 			br.close();
-		} catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -422,24 +471,26 @@ public class Character {
 	 *
 	 * Sets motions.
 	 *
-	 * @param characterName the character's name.
+	 * @param characterName
+	 *            the character's name.
 	 */
 	private void setMotionList(String characterName) {
-		try{
-			BufferedReader br = ResourceLoader.getInstance().openReadFile("./data/character/"+characterName+"/Motion.csv");
+		try {
+			BufferedReader br = ResourceLoader.getInstance()
+					.openReadFile("./data/character/" + characterName + "/Motion.csv");
 
 			String line;
 			br.readLine(); // ignore header
 
-			while((line = br.readLine()) != null){
-				String[] st = line.split(",",0);
+			while ((line = br.readLine()) != null) {
+				String[] st = line.split(",", 0);
 				Motion motion = new Motion(st, characterName);
 				this.motionList.add(motion);
 			}
 
 			br.close();
 
-		} catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -472,6 +523,14 @@ public class Character {
 	 */
 	public void setProcessedCommand(Deque<Key> inputCommands) {
 		this.processedCommands = inputCommands;
+	}
+
+	/**
+	 * Reset combo's information.
+	 */
+	public void resetCombo() {
+		this.lastCombo = 0;
+		this.currentCombo.clear();
 	}
 
 }
