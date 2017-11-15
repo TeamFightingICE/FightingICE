@@ -204,7 +204,7 @@ public class Motion {
 		this.motionLevel = Integer.valueOf(data[30]);
 		this.control = Boolean.valueOf(data[31]);
 		this.landingFlag = Boolean.valueOf(data[32]);
-		//data[33]は読み込む画像が入ったディレクトリ名
+		// data[33]は読み込む画像が入ったディレクトリ名
 		//
 
 		setMotionImage(characterName);
@@ -298,6 +298,7 @@ public class Motion {
 
 	/**
 	 * Returns the horizontal speed of the attack hit box.
+	 *
 	 * @return The horizontal speed of the attack hit box
 	 */
 	public int getAttackSpeedX() {
@@ -306,6 +307,7 @@ public class Motion {
 
 	/**
 	 * Returns the vertical speed of the attack hit box.
+	 *
 	 * @return The vertical speed of the attack hit box
 	 */
 	public int getAttackSpeedY() {
@@ -314,6 +316,7 @@ public class Motion {
 
 	/**
 	 * Returns the number of startup frames.
+	 *
 	 * @return The number of startup frames
 	 */
 	public int getAttackStartUp() {
@@ -322,6 +325,7 @@ public class Motion {
 
 	/**
 	 * Returns the number of active frames.
+	 *
 	 * @return The number of active frames
 	 */
 	public int getAttackActive() {
@@ -329,16 +333,22 @@ public class Motion {
 	}
 
 	/**
-	 * Returns the value of the damage to the unguarding opponent when it is hit by this skill.
-	 * @return The value of the damage to the unguarding opponent when it is hit by this skill
+	 * Returns the value of the damage to the unguarding opponent when it is hit
+	 * by this skill.
+	 *
+	 * @return The value of the damage to the unguarding opponent when it is hit
+	 *         by this skill
 	 */
 	public int getAttackHitDamage() {
 		return attackHitDamage;
 	}
 
 	/**
-	 * Returns the value of the damage to the guarding opponent when it is hit by this skill.
-	 * @return The value of the damage to the guarding opponent when it is hit by this skill
+	 * Returns the value of the damage to the guarding opponent when it is hit
+	 * by this skill.
+	 *
+	 * @return The value of the damage to the guarding opponent when it is hit
+	 *         by this skill
 	 */
 	public int getAttackGuardDamage() {
 		return attackGuardDamage;
@@ -357,8 +367,11 @@ public class Motion {
 	}
 
 	/**
-	 * Returns the value of the energy added to the character when it uses this skill.
-	 * @return The value of the energy added to the character when it uses this skill
+	 * Returns the value of the energy added to the character when it uses this
+	 * skill.
+	 *
+	 * @return The value of the energy added to the character when it uses this
+	 *         skill
 	 */
 	public int getAttackStartAddEnergy() {
 		return attackStartAddEnergy;
@@ -376,48 +389,66 @@ public class Motion {
 	}
 
 	/**
-	 * Returns the value of the energy added to the character when this skill hits the opponent.
-	 * @return The value of the energy added to the character when this skill hits the opponent
+	 * Returns the value of the energy added to the character when this skill
+	 * hits the opponent.
+	 *
+	 * @return The value of the energy added to the character when this skill
+	 *         hits the opponent
 	 */
 	public int getAttackHitAddEnergy() {
 		return attackHitAddEnergy;
 	}
 
 	/**
-	 * Returns the value of the energy added to the character when this skill is guarded by the guarding opponent.
-	 * @return The value of the energy added to the character when this skill is guarded by the guarding opponent
+	 * Returns the value of the energy added to the character when this skill is
+	 * guarded by the guarding opponent.
+	 *
+	 * @return The value of the energy added to the character when this skill is
+	 *         guarded by the guarding opponent
 	 */
 	public int getAttackGuardAddEnergy() {
 		return attackGuardAddEnergy;
 	}
 
 	/**
-	 * Returns the value of the energy given to the opponent when it is hit by this skill.
-	 * @return The value of the energy given to the opponent when it is hit by this skill
+	 * Returns the value of the energy given to the opponent when it is hit by
+	 * this skill.
+	 *
+	 * @return The value of the energy given to the opponent when it is hit by
+	 *         this skill
 	 */
 	public int getAttackGiveEnergy() {
 		return attackGiveEnergy;
 	}
 
 	/**
-	 * Returns the change in the horizontal speed of the opponent when it is hit by this skill.
-	 * @return The change in the horizontal speed of the opponent when it is hit by this skill
+	 * Returns the change in the horizontal speed of the opponent when it is hit
+	 * by this skill.
+	 *
+	 * @return The change in the horizontal speed of the opponent when it is hit
+	 *         by this skill
 	 */
 	public int getAttackImpactX() {
 		return attackImpactX;
 	}
 
 	/**
-	 * Returns the change in the vertical speed of the opponent when it is hit by this skill.
-	 * @return The change in the vertical speed of the opponent when it is hit by this skill
+	 * Returns the change in the vertical speed of the opponent when it is hit
+	 * by this skill.
+	 *
+	 * @return The change in the vertical speed of the opponent when it is hit
+	 *         by this skill
 	 */
 	public int getAttackImpactY() {
 		return attackImpactY;
 	}
 
 	/**
-	 * Returns the number of frames that the guarding opponent needs to resume to its normal status when it is hit by this skill.
-	 * @return The number of frames that the guarding opponent needs to resume to its normal status when it is hit by this skill
+	 * Returns the number of frames that the guarding opponent needs to resume
+	 * to its normal status when it is hit by this skill.
+	 *
+	 * @return The number of frames that the guarding opponent needs to resume
+	 *         to its normal status when it is hit by this skill
 	 */
 	public int getAttackGiveGuardRecov() {
 		return attackGiveGuardRecov;
@@ -429,6 +460,7 @@ public class Motion {
 	 * 2 = middle,<br>
 	 * 3 = low,<br>
 	 * 4 = throw,<br>
+	 *
 	 * @return The value of the attack type
 	 */
 	public int getAttackType() {
@@ -437,6 +469,7 @@ public class Motion {
 
 	/**
 	 * Returns the flag whether this skill can push down the opponent when hit.
+	 *
 	 * @return The flag whether this skill can push down the opponent when hit
 	 */
 	public boolean isAttackDownProperty() {
@@ -552,7 +585,9 @@ public class Motion {
 
 	/**
 	 * Sets the horizontal speed of the attack hit box.
-	 * @param attackSpeedX The horizontal speed of the attack hit box
+	 *
+	 * @param attackSpeedX
+	 *            The horizontal speed of the attack hit box
 	 */
 	public void setAttackSpeedX(int attackSpeedX) {
 		this.attackSpeedX = attackSpeedX;
@@ -560,7 +595,9 @@ public class Motion {
 
 	/**
 	 * Sets the vertical speed of the attack hit box.
-	 * @param attackSpeedY The vertical speed of the attack hit box
+	 *
+	 * @param attackSpeedY
+	 *            The vertical speed of the attack hit box
 	 */
 	public void setAttackSpeedY(int attackSpeedY) {
 		this.attackSpeedY = attackSpeedY;
@@ -568,7 +605,9 @@ public class Motion {
 
 	/**
 	 * Sets the number of startup frames.
-	 * @param attackStartUp The number of startup frames
+	 *
+	 * @param attackStartUp
+	 *            The number of startup frames
 	 */
 	public void setAttackStartUp(int attackStartUp) {
 		this.attackStartUp = attackStartUp;
@@ -576,79 +615,117 @@ public class Motion {
 
 	/**
 	 * Sets the number of active frames.
-	 * @param attackActive The number of active frames
+	 *
+	 * @param attackActive
+	 *            The number of active frames
 	 */
 	public void setAttackActive(int attackActive) {
 		this.attackActive = attackActive;
 	}
 
 	/**
-	 * Sets the value of the damage to the unguarding opponent when it is hit by this skill.
-	 * @param attackHitDamage The value of the damage to the unguarding opponent when it is hit by this skill
+	 * Sets the value of the damage to the unguarding opponent when it is hit by
+	 * this skill.
+	 *
+	 * @param attackHitDamage
+	 *            The value of the damage to the unguarding opponent when it is
+	 *            hit by this skill
 	 */
 	public void setAttackHitDamage(int attackHitDamage) {
 		this.attackHitDamage = attackHitDamage;
 	}
 
 	/**
-	 * Sets the value of the damage to the guarding opponent when it is hit by this skill.
-	 * @param attackGuardDamage The value of the damage to the guarding opponent when it is hit by this skill
+	 * Sets the value of the damage to the guarding opponent when it is hit by
+	 * this skill.
+	 *
+	 * @param attackGuardDamage
+	 *            The value of the damage to the guarding opponent when it is
+	 *            hit by this skill
 	 */
 	public void setAttackGuardDamage(int attackGuardDamage) {
 		this.attackGuardDamage = attackGuardDamage;
 	}
 
 	/**
-	 * Sets the value of the energy added to the character when it uses this skill
-	 * @param attackStartAddEnergy The value of the energy added to the character when it uses this skill.
+	 * Sets the value of the energy added to the character when it uses this
+	 * skill
+	 *
+	 * @param attackStartAddEnergy
+	 *            The value of the energy added to the character when it uses
+	 *            this skill.
 	 */
 	public void setAttackStartAddEnergy(int attackStartAddEnergy) {
 		this.attackStartAddEnergy = attackStartAddEnergy;
 	}
 
 	/**
-	 * Sets the value of the energy added to the character when this skill hits the opponent.
-	 * @param attackHitAddEnergy The value of the energy added to the character when this skill hits the opponent
+	 * Sets the value of the energy added to the character when this skill hits
+	 * the opponent.
+	 *
+	 * @param attackHitAddEnergy
+	 *            The value of the energy added to the character when this skill
+	 *            hits the opponent
 	 */
 	public void setAttackHitAddEnergy(int attackHitAddEnergy) {
 		this.attackHitAddEnergy = attackHitAddEnergy;
 	}
 
 	/**
-	 * Sets the value of the energy added to the character when this skill is guarded by the guarding opponent.
-	 * @param attackGuardAddEnergy The value of the energy added to the character when this skill is guarded by the guarding opponent
+	 * Sets the value of the energy added to the character when this skill is
+	 * guarded by the guarding opponent.
+	 *
+	 * @param attackGuardAddEnergy
+	 *            The value of the energy added to the character when this skill
+	 *            is guarded by the guarding opponent
 	 */
 	public void setAttackGuardAddEnergy(int attackGuardAddEnergy) {
 		this.attackGuardAddEnergy = attackGuardAddEnergy;
 	}
 
 	/**
-	 * Sets the value of the energy given to the opponent when it is hit by this skill.
-	 * @param attackGiveEnergy The value of the energy given to the opponent when it is hit by this skill
+	 * Sets the value of the energy given to the opponent when it is hit by this
+	 * skill.
+	 *
+	 * @param attackGiveEnergy
+	 *            The value of the energy given to the opponent when it is hit
+	 *            by this skill
 	 */
 	public void setAttackGiveEnergy(int attackGiveEnergy) {
 		this.attackGiveEnergy = attackGiveEnergy;
 	}
 
 	/**
-	 * Sets the change in the horizontal speed of the opponent when it is hit by this skill.
-	 * @param attackImpactX The change in the horizontal speed of the opponent when it is hit by this skill
+	 * Sets the change in the horizontal speed of the opponent when it is hit by
+	 * this skill.
+	 *
+	 * @param attackImpactX
+	 *            The change in the horizontal speed of the opponent when it is
+	 *            hit by this skill
 	 */
 	public void setAttackImpactX(int attackImpactX) {
 		this.attackImpactX = attackImpactX;
 	}
 
 	/**
-	 * Sets the change in the vertical speed of the opponent when it is hit by this skill
-	 * @param attackImpactY The change in the vertical speed of the opponent when it is hit by this skill
+	 * Sets the change in the vertical speed of the opponent when it is hit by
+	 * this skill
+	 *
+	 * @param attackImpactY
+	 *            The change in the vertical speed of the opponent when it is
+	 *            hit by this skill
 	 */
 	public void setAttackImpactY(int attackImpactY) {
 		this.attackImpactY = attackImpactY;
 	}
 
 	/**
-	 * Sets the number of frames that the guarding opponent needs to resume to its normal status after being hit by this skill.
-	 * @param attackGiveGuardRecov The number of frames that the guarding opponent needs to resume to its normal status after being hit by this skill
+	 * Sets the number of frames that the guarding opponent needs to resume to
+	 * its normal status after being hit by this skill.
+	 *
+	 * @param attackGiveGuardRecov
+	 *            The number of frames that the guarding opponent needs to
+	 *            resume to its normal status after being hit by this skill
 	 */
 	public void setAttackGiveGuardRecov(int attackGiveGuardRecov) {
 		this.attackGiveGuardRecov = attackGiveGuardRecov;
@@ -660,12 +737,13 @@ public class Motion {
 	 * 2 = middle,<br>
 	 * 3 = low,<br>
 	 * 4 = throw,<br>
-	 * @param attackType The value of the attack type
+	 *
+	 * @param attackType
+	 *            The value of the attack type
 	 */
 	public void setAttackType(int attackType) {
 		this.attackType = attackType;
 	}
-
 
 	/**
 	 * Sets the {@link #control} flag. If the flag is false, a character using
@@ -679,8 +757,12 @@ public class Motion {
 	}
 
 	/**
-	 * Sets the flag whether this skill can push down the opponent when it is hit by this skill.
-	 * @param attackDownProperty The flag whether this skill can push down the opponent when it is hit by this skill
+	 * Sets the flag whether this skill can push down the opponent when it is
+	 * hit by this skill.
+	 *
+	 * @param attackDownProperty
+	 *            The flag whether this skill can push down the opponent when it
+	 *            is hit by this skill
 	 */
 	public void setAttackDownProperty(boolean attackDownProperty) {
 		this.attackDownProperty = attackDownProperty;

@@ -255,6 +255,19 @@ public class Character {
 		return this.currentCombo.size();
 	}
 
+	public ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> getComboTable() {
+		return (ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>) this.comboTable.clone();
+	}
+
+	public ArrayList<Motion> getMotionList() {
+		ArrayList<Motion> temp = new ArrayList<Motion>();
+		for(Motion motion : this.motionList){
+			temp.add(motion);
+		}
+
+		return temp;
+	}
+
 	/**
 	 * Returns a list storing keys of the action that the character will be
 	 * executing in the simulator
