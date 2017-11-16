@@ -59,16 +59,29 @@ public class Fighting {
 
 	}
 
-	public void processingFight(int nowFrame, KeyData keyData) {
-		//1. キャラクターの状態の更新
+	public void processingFight(int currentFrame, KeyData keyData) {
+		//1. キャラクターの状態の更新←ここ5でやったほうがよくない？
 		//2. コマンドの実行・対戦処理
+		processingCommands(currentFrame, keyData);
 		//3. 当たり判定の処理
 		//4. 攻撃パラメータの更新
 		//5. キャラクター情報の更新
 
 	}
 
+	private void processingCommands(int currentFrame, KeyData keyData) {
+		this.inputCommands.addLast(keyData);
 
+		if(this.inputCommands.size() > GameSetting.INPUT_LIMIT){
+			this.inputCommands.removeFirst();
+		}
+
+		for(int i = 0; i < 2; i++){
+			if(!this.inputCommands.isEmpty()){
+				//Action executeAction =
+			}
+		}
+	}
 
 	public Character[] getCharacters() {
 		return this.playerCharacters.clone();

@@ -205,6 +205,7 @@ public class Character {
 		createAttackInstance();
 	}
 
+	/** アクションのアタックオブジェクト(当たり判定を伴ったヒットボックス)を作成する*/
 	private void createAttackInstance() {
 		Motion motion = this.motionList.get(this.action.ordinal());
 
