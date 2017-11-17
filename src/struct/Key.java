@@ -64,4 +64,30 @@ public class Key {
 		this.D = false;
 		this.L = false;
 	}
+
+	/**
+	 * Returns the value indicating the direction key input by the player using the numeric keypad.
+	 *
+	 * @param isFront
+	 *           The boolean value representing the player's orientation
+	 * @return The correct direction value from the numeric keypad.
+	 */
+	public int getLever(boolean isFront) {
+		int lever = 5;
+
+		if (this.U){
+			lever += 3;
+		}
+		if (this.D){
+			lever -= 3;
+		}
+		if (this.L){
+			lever += isFront ? -1 : 1;
+		}
+		if (this.R){
+			lever += isFront ? 1 : -1;
+		}
+
+		return lever;
+	}
 }
