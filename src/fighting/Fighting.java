@@ -70,6 +70,7 @@ public class Fighting {
 		// 2. コマンドの実行・対戦処理
 		processingCommands(currentFrame, keyData);
 		// 3. 当たり判定の処理
+		calculationHit(currentFrame);
 		// 4. 攻撃パラメータの更新
 		// 5. キャラクター情報の更新
 
@@ -92,6 +93,11 @@ public class Fighting {
 				}
 			}
 		}
+	}
+
+	private void calculationHit(int currentFrame) {
+
+
 	}
 
 	/** 入力されたアクションが実行可能かどうかを返す */
@@ -139,6 +145,8 @@ public class Fighting {
 	}
 
 	public void initRound() {
+		this.projectileDeque.clear();
+		this.inputCommands.clear();
 
 	}
 
