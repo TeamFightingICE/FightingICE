@@ -16,6 +16,7 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.CharacterData;
 import struct.FrameData;
+import struct.ScreenData;
 
 public class Fighting {
 
@@ -27,14 +28,14 @@ public class Fighting {
 
 	private BufferedImage screen;
 
-	private CommandTable command;
+	private CommandTable commandTable;
 
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inputCommands = new LinkedList<KeyData>();
 		this.screen = null;
-		this.command = new CommandTable();
+		this.commandTable = new CommandTable();
 
 	}
 
@@ -84,7 +85,7 @@ public class Fighting {
 
 		for (int i = 0; i < 2; i++) {
 			if (!this.inputCommands.isEmpty()) {
-				Action executeAction = this.command.convertKeyToAction(this.playerCharacters[i], this.inputCommands);
+				Action executeAction = this.commandTable.convertKeyToAction(this.playerCharacters[i], this.inputCommands);
 
 				if (ableAction(this.playerCharacters[i], executeAction)) {
 					this.playerCharacters[i].runAction(executeAction, true);
@@ -111,6 +112,7 @@ public class Fighting {
 		}
 	}
 
+	/**P1, P2のキャラクター情報が格納された配列を返す*/
 	public Character[] getCharacters() {
 		return this.playerCharacters.clone();
 	}
@@ -129,8 +131,11 @@ public class Fighting {
 			// newAttackDeque.addLast(loopEffect.getAttack());
 		}
 
-		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData, getDisplayByteBuffer(),
-				this.screen);
+		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData);
+	}
+
+	public ScreenData getScreenData() {
+		return new ScreenData(getDisplayByteBuffer(), this.screen);
 	}
 
 	public void initRound() {
