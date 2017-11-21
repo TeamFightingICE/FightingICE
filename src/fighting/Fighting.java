@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import org.lwjgl.BufferUtils;
 
+import command.CommandTable;
 import enumerate.Action;
 import input.KeyData;
 import setting.GameSetting;
@@ -26,14 +27,14 @@ public class Fighting {
 
 	private BufferedImage screen;
 
-	private Command command;
+	private CommandTable command;
 
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inputCommands = new LinkedList<KeyData>();
 		this.screen = null;
-		this.command = new Command();
+		this.command = new CommandTable();
 
 	}
 

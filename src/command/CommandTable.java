@@ -1,18 +1,19 @@
-package fighting;
+package command;
 
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import enumerate.Action;
+import fighting.Character;
 import input.KeyData;
 import struct.Key;
 
-public class Command {
+public class CommandTable {
 
 	private HashMap<String, Action> skilltable;
 
-	public Command() {
+	public CommandTable() {
 		this.skilltable = new HashMap<String, Action>();
 		setSkillTable();
 	}
