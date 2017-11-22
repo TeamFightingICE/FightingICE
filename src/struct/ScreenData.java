@@ -1,10 +1,16 @@
 package struct;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
+
+import org.lwjgl.BufferUtils;
+
+import setting.GameSetting;
 
 public class ScreenData {
 
@@ -23,16 +29,15 @@ public class ScreenData {
 		this.screenImage = null;
 	}
 
-	public ScreenData( ByteBuffer displayByteBuffer, BufferedImage screenImage){
-		this.displayByteBuffer = displayByteBuffer;
+	public ScreenData(BufferedImage screenImage) {
+		this.displayByteBuffer = createDisplayByteBuffer();
 		this.screenImage = screenImage;
 	}
 
-	public ScreenData(ScreenData screenData){
+	public ScreenData(ScreenData screenData) {
 		this.displayByteBuffer = screenData.getDisplayByteBuffer();
 		this.screenImage = screenData.getScreenImage();
 	}
-
 
 	/**
 	 * Obtains RGB data of the screen in the form of ByteBuffer<br>
@@ -108,5 +113,23 @@ public class ScreenData {
 		return this.screenImage;
 	}
 
+	/**
+	 * Obtain RGB data of the screen in the form of ByteBuffer Warning: If the
+	 * window is disabled, will just returns a black buffer
+	 *
+	 * @return RGB data of the screen in the form of ByteBuffer
+	 */
+	private ByteBuffer createDisplayByteBuffer() {
+		// Allocate memory for the RGB data of the screen
+		ByteBuffer pixels = BufferUtils.createByteBuffer(3 * GameSetting.STAGE_WIDTH * GameSetting.STAGE_HEIGHT);
+		pixels.clear();
+
+		// Assign the RGB data of the screen to pixels, a ByteBuffer
+		// variable
+		glReadPixels(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+		pixels.rewind();
+
+		return pixels;
+	}
 
 }

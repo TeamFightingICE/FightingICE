@@ -1,13 +1,8 @@
 package fighting;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import java.awt.image.BufferedImage;
-import java.nio.ByteBuffer;
 import java.util.Deque;
 import java.util.LinkedList;
-
-import org.lwjgl.BufferUtils;
 
 import command.CommandTable;
 import enumerate.Action;
@@ -240,31 +235,12 @@ public class Fighting {
 	}
 
 	public ScreenData getScreenData() {
-		return new ScreenData(getDisplayByteBuffer(), this.screen);
+		return new ScreenData(this.screen);
 	}
 
 	public void initRound() {
 		this.projectileDeque.clear();
 		this.inputCommands.clear();
 
-	}
-
-	/**
-	 * Obtain RGB data of the screen in the form of ByteBuffer Warning: If the
-	 * window is disabled, will just returns a black buffer
-	 *
-	 * @return RGB data of the screen in the form of ByteBuffer
-	 */
-	private ByteBuffer getDisplayByteBuffer() {
-		// Allocate memory for the RGB data of the screen
-		ByteBuffer pixels = BufferUtils.createByteBuffer(3 * GameSetting.STAGE_WIDTH * GameSetting.STAGE_HEIGHT);
-		pixels.clear();
-
-		// Assign the RGB data of the screen to pixels, a ByteBuffer
-		// variable
-		glReadPixels(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-		pixels.rewind();
-
-		return pixels;
 	}
 }
