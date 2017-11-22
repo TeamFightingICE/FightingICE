@@ -223,6 +223,7 @@ public class Character {
 
 			// ガード時のサウンド鳴らす
 		} else {
+			// 投げ技のときの処理
 			if (attack.getAttackType() == 4) {
 				if (this.state != State.AIR && this.state != State.DOWN) {
 					runAction(Action.THROW_SUFFER, false);
@@ -235,6 +236,8 @@ public class Character {
 					setEnergy(this.energy + attack.getGiveEnergy());
 					opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
 				}
+
+				// 投げ技以外
 			} else {
 				setHp(this.hp - attack.getHitDamage() - opponent.getComboDamage());
 				setEnergy(this.energy + attack.getGiveEnergy());

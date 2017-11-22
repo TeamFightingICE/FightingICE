@@ -12,7 +12,9 @@ import org.lwjgl.BufferUtils;
 import command.CommandTable;
 import enumerate.Action;
 import enumerate.State;
+import image.Image;
 import input.KeyData;
+import manager.GraphicManager;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.CharacterData;
@@ -28,6 +30,8 @@ public class Fighting {
 	private Deque<KeyData> inputCommands;
 
 	private BufferedImage screen;
+
+	private LinkedList<LinkedList<HitEffect>> hitEffects;
 
 	private CommandTable commandTable;
 
@@ -45,6 +49,7 @@ public class Fighting {
 		for (int i = 0; i < 2; i++) {
 			this.playerCharacters[i] = new Character();
 			this.playerCharacters[i].initialize(LaunchSetting.characterNames[i], i == 0);
+			this.hitEffects.add(new LinkedList<HitEffect>());
 		}
 
 		this.screen = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -98,7 +103,75 @@ public class Fighting {
 	}
 
 	private void calculationHit(int currentFrame) {
+		boolean[] isHit = { false, false };
 
+		// 波動拳の処理
+		int dequeSize = this.projectileDeque.size();
+		for (int i = 0; i < dequeSize; i++) {
+			LoopEffect projectile = this.projectileDeque.removeFirst();
+			int opponentIndex = projectile.getAttack().isPlayerNumber() ? 1 : 0;
+
+			if (detectionHit(this.playerCharacters[opponentIndex], projectile.getAttack())) {
+				int myIndex = opponentIndex == 0 ? 1 : 0;
+				this.playerCharacters[opponentIndex].hitAttack(this.playerCharacters[myIndex], projectile.getAttack());
+
+			} else {
+				this.projectileDeque.addLast(projectile);
+			}
+		}
+
+		// 通常攻撃の処理
+		for (int i = 0; i < 2; i++) {
+			int opponentIndex = i == 0 ? 1 : 0;
+			Attack attack = this.playerCharacters[i].getAttack();
+
+			if (detectionHit(this.playerCharacters[opponentIndex], attack)) {
+				isHit[i] = true;
+				// コンボの処理
+				processingCombo(currentFrame, i);
+				// HP等のパラメータの更新
+				this.playerCharacters[i].hitAttack(this.playerCharacters[opponentIndex], attack);
+
+			} else if (this.playerCharacters[i].getAttack() != null) {
+				this.playerCharacters[i].resetCombo();
+			}
+		}
+
+		// エフェクト関係の処理
+		for (int i = 0; i < 2; i++) {
+			if (playerCharacters[i].getAttack() != null) {
+				// 現在のコンボに応じたエフェクトをセット
+				Image[] effect = GraphicManager.getInstance().getHitEffectImageContaier()[Math
+						.max(playerCharacters[i].getComboState() - 1, 0)];
+				this.hitEffects.get(i).add(new HitEffect(playerCharacters[i].getAttack(), effect, isHit[i]));
+
+				// アッパーの処理
+				if (playerCharacters[i].getAction() == Action.STAND_F_D_DFB) {
+					Image[] upper = GraphicManager.getInstance().getUpperImageContainer()[i];
+					this.hitEffects.get(i).add(new HitEffect(playerCharacters[i].getAttack(), upper, true, false));
+				}
+			}
+
+			if (isHit[i]) {
+				this.playerCharacters[i].setHitConfirm(true);
+				this.playerCharacters[i].destroyAttackInstance();
+			}
+		}
+	}
+
+	/** 自身の攻撃が相手に当たった時, コンボの遷移処理及び相手のコンボのブレイク処理を行う */
+	private void processingCombo(int currentFrame, int myIndex) {
+		int opponentIndex = myIndex == 0 ? 1 : 0;
+		Action action = this.playerCharacters[myIndex].getAction();
+
+		// 次のコンボに遷移
+		this.playerCharacters[myIndex].nextCombo(currentFrame);
+		// 自身のコンボブレイカーによって相手のコンボがブレイクできたか
+		if (this.playerCharacters[opponentIndex].isComboBreakable()
+				&& this.playerCharacters[opponentIndex].getComboBreakers().contains(action)) {
+			this.playerCharacters[opponentIndex].breakCombo();
+			this.playerCharacters[opponentIndex].resetCombo();
+		}
 	}
 
 	/** 入力されたアクションが実行可能かどうかを返す */
@@ -160,7 +233,7 @@ public class Fighting {
 
 		Deque<Attack> newAttackDeque = new LinkedList<Attack>();
 		for (LoopEffect loopEffect : this.projectileDeque) {
-			// newAttackDeque.addLast(loopEffect.getAttack());
+			newAttackDeque.addLast(loopEffect.getAttack());
 		}
 
 		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData);

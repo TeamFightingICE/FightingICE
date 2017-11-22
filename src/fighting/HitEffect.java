@@ -6,7 +6,7 @@ public class HitEffect extends Effect {
 	/**
 	 * a boolean value which indicate if a hit is active or not.
 	 */
-	private boolean isActive;
+	private boolean isHit;
 
 	/**
 	 * Horizontal variation.
@@ -42,7 +42,7 @@ public class HitEffect extends Effect {
 	 *            a boolean value which indicate if variations must be applied.
 	 */
 	private void initialize(boolean isActive, boolean variation) {
-		this.isActive = isActive;
+		this.isHit = isActive;
 		this.variationX = variation ? (int) (Math.random() * 30) - 15 : 0;
 		this.variationY = variation ? (int) (Math.random() * 30) - 15 : 0;
 	}
@@ -51,8 +51,8 @@ public class HitEffect extends Effect {
 	 *
 	 * @return hit's state.
 	 */
-	public boolean isActive() {
-		return this.isActive;
+	public boolean isHit() {
+		return this.isHit;
 	}
 
 	/**
