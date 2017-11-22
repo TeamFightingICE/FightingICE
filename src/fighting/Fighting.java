@@ -11,6 +11,7 @@ import org.lwjgl.BufferUtils;
 
 import command.CommandTable;
 import enumerate.Action;
+import enumerate.State;
 import input.KeyData;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -86,7 +87,8 @@ public class Fighting {
 
 		for (int i = 0; i < 2; i++) {
 			if (!this.inputCommands.isEmpty()) {
-				Action executeAction = this.commandTable.convertKeyToAction(this.playerCharacters[i], this.inputCommands);
+				Action executeAction = this.commandTable.convertKeyToAction(this.playerCharacters[i],
+						this.inputCommands);
 
 				if (ableAction(this.playerCharacters[i], executeAction)) {
 					this.playerCharacters[i].runAction(executeAction, true);
@@ -96,7 +98,6 @@ public class Fighting {
 	}
 
 	private void calculationHit(int currentFrame) {
-
 
 	}
 
@@ -118,7 +119,32 @@ public class Fighting {
 		}
 	}
 
-	/**P1, P2のキャラクター情報が格納された配列を返す*/
+	/**
+	 * Calculate collision.
+	 *
+	 * @param character
+	 *            Character you want to check.
+	 * @param attack
+	 *            Attack you want to check.
+	 * @return <em>True</em> if the character is hit. <em>False</em> otherwise.
+	 *
+	 * @see Character
+	 * @see Attack
+	 */
+	private boolean detectionHit(Character character, Attack attack) {
+		if (attack == null || character.getState() == State.DOWN) {
+			return false;
+		} else if (character.getCharacterHitAreaLeft() <= attack.getCurrentHitArea().getRight()
+				&& character.getCharacterHitAreaRight() >= attack.getCurrentHitArea().getLeft()
+				&& character.getCharacterHitAreaBottom() <= attack.getCurrentHitArea().getBottom()
+				&& character.getCharacterHitAreaTop() >= attack.getCurrentHitArea().getTop()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/** P1, P2のキャラクター情報が格納された配列を返す */
 	public Character[] getCharacters() {
 		return this.playerCharacters.clone();
 	}

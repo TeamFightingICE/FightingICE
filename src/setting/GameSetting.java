@@ -19,4 +19,6 @@ public class GameSetting {
 	public static final int ROUND_TIME = 60000;
 
 	public static final int ROUND_MAX = 3;
+
+	public static final int  COMBO_LIMIT = 30;
 }
