@@ -73,6 +73,7 @@ public class Fighting {
 		// 3. 当たり判定の処理
 		calculationHit(currentFrame);
 		// 4. 攻撃パラメータの更新
+		updateAttackParameter();
 		// 5. キャラクター情報の更新
 
 	}
@@ -97,6 +98,7 @@ public class Fighting {
 		}
 	}
 
+	/** 攻撃の当たり判定と,それに伴うキャラクターのパラメータ・コンボ状態の更新を行う */
 	private void calculationHit(int currentFrame) {
 		boolean[] isHit = { false, false };
 
@@ -134,22 +136,47 @@ public class Fighting {
 
 		// エフェクト関係の処理
 		for (int i = 0; i < 2; i++) {
-			if (playerCharacters[i].getAttack() != null) {
+			if (this.playerCharacters[i].getAttack() != null) {
 				// 現在のコンボに応じたエフェクトをセット
 				Image[] effect = GraphicManager.getInstance().getHitEffectImageContaier()[Math
-						.max(playerCharacters[i].getComboState() - 1, 0)];
-				this.hitEffects.get(i).add(new HitEffect(playerCharacters[i].getAttack(), effect, isHit[i]));
+						.max(this.playerCharacters[i].getComboState() - 1, 0)];
+				this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), effect, isHit[i]));
 
 				// アッパーの処理
 				if (playerCharacters[i].getAction() == Action.STAND_F_D_DFB) {
 					Image[] upper = GraphicManager.getInstance().getUpperImageContainer()[i];
-					this.hitEffects.get(i).add(new HitEffect(playerCharacters[i].getAttack(), upper, true, false));
+					this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), upper, true, false));
 				}
 			}
 
 			if (isHit[i]) {
 				this.playerCharacters[i].setHitConfirm(true);
 				this.playerCharacters[i].destroyAttackInstance();
+			}
+		}
+	}
+
+	/**
+	 * 攻撃オブジェクトのパラメータ更新を行う.
+	 */
+	private void updateAttackParameter() {
+		// update coordinate of Attacks(long distance)
+		int dequeSize = this.projectileDeque.size();
+		for (int i = 0; i < dequeSize; i++) {
+
+			// if attack's nowFrame reach end of duration, remove it.
+			LoopEffect projectile = this.projectileDeque.removeFirst();
+			if (projectile.getAttack().updateProjectileAttack()) {
+				this.projectileDeque.addLast(projectile);
+			}
+		}
+
+		// update coordinate of Attacks(short distance)
+		for (int i = 0; i < 2; ++i) {
+			if (this.playerCharacters[i].getAttack() != null) {
+				if (!this.playerCharacters[i].getAttack().update(this.playerCharacters[i])) {
+					this.playerCharacters[i].destroyAttackInstance();
+				}
 			}
 		}
 	}
