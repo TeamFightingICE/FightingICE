@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -14,6 +17,7 @@ import enumerate.Action;
 import enumerate.State;
 import loader.ResourceLoader;
 import setting.FlagSetting;
+import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.Key;
 
@@ -202,10 +206,182 @@ public class Character {
 		this.speedY = exeMotion.getSpeedY();
 		this.control = exeMotion.isControl();
 
-		createAttackInstance();
+		// createAttackInstance();
 	}
 
-	/** アクションのアタックオブジェクト(当たり判定を伴ったヒットボックス)を作成する*/
+	/**
+	 *
+	 * Updates character's information.
+	 *
+	 */
+	public void update() {
+		moveX(this.speedX);
+		moveY(this.speedY);
+
+		frictionEffect();
+		gravityEffect();
+
+		if (this.energy > LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1]) {
+			this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
+		}
+
+		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
+			if (motionList.get(this.action.ordinal()).isLandingFlag()) {
+				runAction(Action.LANDING, true);
+				setSpeedY(0);
+
+				// 着地音を鳴らす
+			}
+
+			moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
+		}
+
+		for (int i = 0; i < 2; i++) {
+			this.remainingFrame = getRemainingFrame() - 1;
+
+			if (this.remainingFrame <= 0) {
+				if (this.action == Action.CHANGE_DOWN) {
+					runAction(Action.DOWN, true);
+				} else if (this.action == Action.DOWN) {
+					runAction(Action.RISE, true);
+				} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_WIDTH) {
+					runAction(Action.AIR, true);
+				} else {
+					runAction(Action.STAND, true);
+				}
+			}
+		}
+
+		createAttackInstance();
+
+		if (!this.inputCommands.isEmpty()) {
+			this.processedCommands.addLast(new Key(this.inputCommands.pop()));
+		} else {
+			this.processedCommands.addLast(new Key());
+		}
+
+		if (this.processedCommands.size() > GameSetting.INPUT_LIMIT)
+			this.processedCommands.removeFirst();
+	}
+
+	/** 攻撃がヒットしたときに,自身のパラメータや状態を更新する */
+	public void hitAttack(Character opponent, Attack attack) {
+
+		int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
+
+		if (isGuard(attack)) {
+			setHp(this.hp - attack.getGuardDamage() - opponent.getComboDamage());
+			setEnergy(this.energy + attack.getGiveEnergy());
+			setSpeedX(direction * attack.getImpactX() / 2); // 通常の半分のノックバック(旧より変更)
+			setRemainingFrame(attack.getGiveGuardRecov());
+			opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
+
+			// ガード時のサウンド鳴らす
+		} else {
+			// 投げ技のときの処理
+			if (attack.getAttackType() == 4) {
+				if (this.state != State.AIR && this.state != State.DOWN) {
+					runAction(Action.THROW_SUFFER, false);
+
+					if (opponent.getAction() != Action.THROW_SUFFER) {
+						opponent.runAction(Action.THROW_HIT, false);
+					}
+
+					setHp(this.hp - attack.getHitDamage());
+					setEnergy(this.energy + attack.getGiveEnergy());
+					opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
+				}
+
+				// 投げ技以外
+			} else {
+				setHp(this.hp - attack.getHitDamage() - opponent.getComboDamage());
+				setEnergy(this.energy + attack.getGiveEnergy());
+				setSpeedX(direction * attack.getImpactX());
+				setSpeedY(attack.getImpactY());
+				opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
+
+				if (attack.isDownProperty()) {
+					runAction(Action.CHANGE_DOWN, false);
+					setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
+					// ダウン時の音を鳴らす
+
+				} else {
+					switch (this.state) {
+					case STAND:
+						runAction(Action.STAND_RECOV, false);
+						break;
+
+					case CROUNCH:
+						runAction(Action.CROUCH_RECOV, false);
+						break;
+
+					case AIR:
+						runAction(Action.AIR_RECOV, false);
+						break;
+
+					default:
+						break;
+					}
+
+					// 通常のヒット音を鳴らす
+				}
+			}
+		}
+	}
+
+	/**
+	 * 攻撃が当たったときに自身がガードしていたかどうかを返す<br>
+	 * また, 自身をガードの種類に対応したリカバリー状態に変化させる
+	 */
+	private boolean isGuard(Attack attack) {
+		boolean isGuard = false;
+
+		switch (this.action) {
+		case STAND_GUARD:
+			if (attack.getAttackType() == 1 || attack.getAttackType() == 2) {
+				runAction(Action.STAND_GUARD_RECOV, false);
+				isGuard = true;
+			}
+			break;
+
+		case CROUCH_GUARD:
+			if (attack.getAttackType() == 1 || attack.getAttackType() == 3) {
+				runAction(Action.CROUCH_GUARD_RECOV, false);
+				isGuard = true;
+			}
+			break;
+
+		case AIR_GUARD:
+			if (attack.getAttackType() == 1 || attack.getAttackType() == 2) {
+				runAction(Action.STAND_GUARD_RECOV, false);
+				isGuard = true;
+			}
+			break;
+
+		case STAND_GUARD_RECOV:
+			runAction(Action.STAND_GUARD_RECOV, false);
+			isGuard = true;
+			break;
+
+		case CROUCH_GUARD_RECOV:
+			runAction(Action.CROUCH_GUARD_RECOV, false);
+			isGuard = true;
+			break;
+
+		case AIR_GUARD_RECOV:
+			runAction(Action.AIR_GUARD_RECOV, false);
+			isGuard = true;
+			break;
+
+		default:
+			isGuard = false;
+			break;
+		}
+
+		return isGuard;
+	}
+
+	/** アクションのアタックオブジェクト(当たり判定を伴ったヒットボックス)を作成する */
 	private void createAttackInstance() {
 		Motion motion = this.motionList.get(this.action.ordinal());
 
@@ -222,7 +398,69 @@ public class Character {
 	}
 
 	private boolean isActive(Motion motion) {
-		return motion.getFrameNumber() - motion.getAttackStartUp() == this.remainingFrame;
+		int startActive = motion.getFrameNumber() - motion.getAttackStartUp();
+		return (startActive <= this.remainingFrame) && (startActive - motion.getAttackActive() <= this.remainingFrame);
+	}
+
+	/**
+	 *
+	 * Move the character on the X-axis.
+	 *
+	 * @param relativePosition
+	 *            value in pixels.
+	 */
+	public void moveX(int relativePosition) {
+		setX(getX() + relativePosition);
+	}
+
+	/**
+	 *
+	 * Move the character on the Y-axis.
+	 *
+	 * @param relativePosition
+	 *            value in pixels.
+	 */
+	public void moveY(int relativePosition) {
+		setY(getY() + relativePosition);
+	}
+
+	/**
+	 *
+	 * キャラクターが床に接しているときに,摩擦の影響を与える
+	 *
+	 */
+	public void frictionEffect() {
+		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
+			if (this.speedX > 0) {
+				setSpeedX(this.speedX - GameSetting.FRICTION);
+			} else if (this.speedX < 0) {
+				setSpeedX(this.speedX + GameSetting.FRICTION);
+			}
+		}
+	}
+
+	/**
+	 *
+	 * キャラクターが空中にいるときに, 重力の影響を与える
+	 *
+	 */
+	public void gravityEffect() {
+		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
+			setSpeedY(0);
+		} else if (getHitAreaTop() <= 0) {
+			setSpeedY(GameSetting.GRAVITY);
+		} else {
+			setSpeedY(this.speedY + GameSetting.GRAVITY);
+		}
+	}
+
+	/**
+	 *
+	 * Defines character's orientation.
+	 *
+	 */
+	public void frontDecision(int opponentX) {
+		this.front = getHitAreaCenterX() <= opponentX;
 	}
 
 	public void destroyAttackInstance() {
@@ -277,38 +515,47 @@ public class Character {
 	/**
 	 * @return The character's hit box's most-right x-coordinate.
 	 */
-	public int getCharacterHitAreaRight() {
+	public int getHitAreaRight() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getRight() + x;
 	}
 
 	/**
 	 * @return The character's hit box's most-left x-coordinate.
 	 */
-	public int getCharacterHitAreaLeft() {
+	public int getHitAreaLeft() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getLeft() + x;
 	}
 
 	/**
 	 * @return The character's hit box's most-top y-coordinate.
 	 */
-	public int getCharacterHitAreaTop() {
+	public int getHitAreaTop() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getTop() + y;
 	}
 
 	/**
 	 * @return The character's hit box's most-bottom y-coordinate.
 	 */
-	public int getCharacterHitAreaBottom() {
+	public int getHitAreaBottom() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getBottom() + y;
 
 	}
 
-	public int getCharacterHitAreaCenterX() {
-		return (getCharacterHitAreaRight() + getCharacterHitAreaLeft()) / 2;
+	public int getHitAreaCenterX() {
+		return (getHitAreaRight() + getHitAreaLeft()) / 2;
 	}
 
-	public int getCharacterHitAreaCenterY() {
-		return (getCharacterHitAreaTop() + getCharacterHitAreaBottom()) / 2;
+	public int getHitAreaCenterY() {
+		return (getHitAreaTop() + getHitAreaBottom()) / 2;
+	}
+
+	/**
+	 *
+	 * Reverse horizontal speed.
+	 *
+	 */
+	public void reversalSpeedX() {
+		this.speedX = -(this.speedX / 2);
 	}
 
 	/**
@@ -585,6 +832,155 @@ public class Character {
 	public void resetCombo() {
 		this.lastCombo = 0;
 		this.currentCombo.clear();
+	}
+
+	/**
+	 *
+	 * Get all possible combo after the last attack.
+	 *
+	 * @return All possible combo after the last attack.
+	 */
+	private ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> currentPossibleCombos() {
+		if (this.currentCombo.isEmpty()) {
+			return this.comboTable;
+		}
+
+		ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> res = new ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>(
+				this.comboTable);
+		for (int i = 0; i < res.size(); ++i) {
+			Iterator<Action> it1 = res.get(i).getValue0().iterator();
+			Iterator<Action> it2 = this.currentCombo.iterator();
+
+			while (it1.hasNext() && it2.hasNext()) {
+				Action comboAction = it1.next();
+				Action action = it2.next();
+
+				if (comboAction != action) {
+					res.remove(i);
+					--i;
+					break;
+				}
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Move to the next combo state using current action
+	 *
+	 * @param nowFrame
+	 *            current frame number
+	 */
+	public void nextCombo(int nowFrame) {
+		if (this.motionList.get(this.action.ordinal()).getAttackType() == 0) {
+			return;
+		}
+
+		if (!this.isComboValid(nowFrame) || isComboCompleted()) {
+			resetCombo();
+		}
+
+		this.lastCombo = nowFrame + this.remainingFrame;
+		this.currentCombo.add(this.action);
+		if (currentPossibleCombos().isEmpty()) {
+			resetCombo();
+		}
+	}
+
+	/**
+	 *
+	 * Checks if a combo is possible.
+	 *
+	 * @param nowFrame
+	 *            the current frame.
+	 */
+	public void resetInvalidCombo(int nowFrame) {
+		if (!this.isComboValid(nowFrame)) {
+			this.resetCombo();
+		}
+	}
+
+	/**
+	 *
+	 * Break the current combo.
+	 *
+	 */
+	public void breakCombo() {
+		if (!isComboBreakable()) {
+			return;
+		}
+
+		ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> combos = this.currentPossibleCombos();
+		int damages = 0;
+		for (Triplet<ArrayList<Action>, ArrayList<Action>, Integer> triplet : combos) {
+			damages += triplet.getValue2();
+		}
+
+		damages /= combos.size();
+		setHp(this.hp - damages);
+		// this.resetCombo();
+	}
+
+	/**
+	 * Get damages provides by the current combo.
+	 *
+	 * @return damages provides by the current combo.
+	 */
+	public int getComboDamage() {
+		ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> combos = this.currentPossibleCombos();
+
+		if (this.isComboCompleted() && combos.size() > 0) {
+			return combos.get(0).getValue2();
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Get combo breakers.
+	 *
+	 * @return combo breakers.
+	 */
+	public Set<Action> getComboBreakers() {
+		Set<Action> res = new HashSet<Action>();
+		ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> combos = this.currentPossibleCombos();
+
+		for (Triplet<ArrayList<Action>, ArrayList<Action>, Integer> triplet : combos) {
+			res.addAll(triplet.getValue1());
+		}
+
+		return res;
+	}
+
+	/**
+	 * Get a boolean value whether the combo is still valid or not.
+	 *
+	 * @param nowFrame
+	 *            the current frame.
+	 *
+	 * @return <em>True</em> if the combo is still valid, <em>False</em>
+	 *         otherwise.
+	 */
+	public boolean isComboValid(int nowFrame) {
+		return (nowFrame - this.lastCombo) <= GameSetting.COMBO_LIMIT;
+	}
+
+	/**
+	 * Get a boolean value whether the combo is breakable or not.
+	 *
+	 * @return <em>True</em> if a combo is breakable, <em>False</em> otherwise.
+	 */
+	public boolean isComboBreakable() {
+		return this.currentCombo.size() >= 2 && this.currentCombo.size() <= 3;
+	}
+
+	/**
+	 * Get a boolean value whether the combo is completed or not.
+	 *
+	 * @return <em>True</em> if a combo is done, <em>False</em> otherwise.
+	 */
+	public boolean isComboCompleted() {
+		return this.currentCombo.size() == 4;
 	}
 
 }
