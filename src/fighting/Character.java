@@ -15,6 +15,7 @@ import org.javatuples.Triplet;
 
 import enumerate.Action;
 import enumerate.State;
+import image.Image;
 import loader.ResourceLoader;
 import setting.FlagSetting;
 import setting.GameSetting;
@@ -658,6 +659,15 @@ public class Character {
 		}
 
 		return temp;
+	}
+
+	/**
+	 * @return The current image handle.
+	 */
+	public Image getNowImage() {
+		Motion motion = motionList.get(this.action.ordinal());
+
+		return motion.getImage(Math.abs(this.remainingFrame) % motion.getFrameNumber());
 	}
 
 	////// Setter//////
