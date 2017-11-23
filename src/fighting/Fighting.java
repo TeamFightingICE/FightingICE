@@ -41,7 +41,6 @@ public class Fighting {
 	}
 
 	public void initialize() {
-
 		for (int i = 0; i < 2; i++) {
 			this.playerCharacters[i] = new Character();
 			this.playerCharacters[i].initialize(LaunchSetting.characterNames[i], i == 0);
@@ -68,14 +67,13 @@ public class Fighting {
 	}
 
 	public void processingFight(int currentFrame, KeyData keyData) {
-		// 1. キャラクターの状態の更新←ここ5でやったほうがよくない？
-		// 2. コマンドの実行・対戦処理
+		// 1. コマンドの実行・対戦処理
 		processingCommands(currentFrame, keyData);
-		// 3. 当たり判定の処理
+		// 2. 当たり判定の処理
 		calculationHit(currentFrame);
-		// 4. 攻撃パラメータの更新
+		// 3. 攻撃パラメータの更新
 		updateAttackParameter();
-		// 5. キャラクター情報の更新
+		// 4. キャラクター情報の更新
 		updateCharacter();
 
 	}
@@ -224,7 +222,7 @@ public class Fighting {
 	}
 
 	/**
-	 * Characters push each other.
+	 * 各キャラクターの現在の水平方向のスピード量に応じて, プッシュ処理を行う
 	 */
 	private void detectionPush() {
 		// whether the conflict of first and second player or not?
@@ -249,8 +247,7 @@ public class Fighting {
 	}
 
 	/**
-	 * A determination is made in case of a state such as that overlap almost
-	 * character to move the character.
+	 * 相手と位置が重なってしまった場合, 重ならないように各キャラクターの座標の更新処理を行う
 	 */
 	private void detectionFusion() {
 		// whether the conflict of first and second player or not?
@@ -275,6 +272,7 @@ public class Fighting {
 		}
 	}
 
+	/** 相手キャラクターとぶつかっている状態かを判定する */
 	private boolean isCollision() {
 		return this.playerCharacters[0].getHitAreaLeft() <= this.playerCharacters[1].getHitAreaRight()
 				&& this.playerCharacters[0].getHitAreaTop() <= this.playerCharacters[1].getHitAreaBottom()
@@ -283,7 +281,7 @@ public class Fighting {
 	}
 
 	/**
-	 * Effect when characters are in the end of stage.
+	 * ステージ端からキャラクターがはみ出ないように, 各キャラクターの座標の更新処理を行う
 	 */
 	private void decisionEndStage() {
 
@@ -341,24 +339,24 @@ public class Fighting {
 	}
 
 	/**
-	 * Calculate collision.
+	 * 攻撃が相手に当たったかどうかを判定する
 	 *
-	 * @param character
-	 *            Character you want to check.
+	 * @param opponent
+	 *            相手キャラクター.
 	 * @param attack
-	 *            Attack you want to check.
-	 * @return <em>True</em> if the character is hit. <em>False</em> otherwise.
+	 *            自身が出した攻撃.
+	 * @return <em>True</em> 攻撃が当たった <em>False</em> 攻撃が当たらなかった
 	 *
 	 * @see Character
 	 * @see Attack
 	 */
-	private boolean detectionHit(Character character, Attack attack) {
-		if (attack == null || character.getState() == State.DOWN) {
+	private boolean detectionHit(Character opponent, Attack attack) {
+		if (attack == null || opponent.getState() == State.DOWN) {
 			return false;
-		} else if (character.getHitAreaLeft() <= attack.getCurrentHitArea().getRight()
-				&& character.getHitAreaRight() >= attack.getCurrentHitArea().getLeft()
-				&& character.getHitAreaBottom() <= attack.getCurrentHitArea().getBottom()
-				&& character.getHitAreaTop() >= attack.getCurrentHitArea().getTop()) {
+		} else if (opponent.getHitAreaLeft() <= attack.getCurrentHitArea().getRight()
+				&& opponent.getHitAreaRight() >= attack.getCurrentHitArea().getLeft()
+				&& opponent.getHitAreaBottom() <= attack.getCurrentHitArea().getBottom()
+				&& opponent.getHitAreaTop() >= attack.getCurrentHitArea().getTop()) {
 			return true;
 		} else {
 			return false;
@@ -391,7 +389,13 @@ public class Fighting {
 		return new ScreenData(this.screen);
 	}
 
+	/** ラウンド開始時にキャラクター情報を初期化し, リストの中身をクリアーする */
 	public void initRound() {
+		for (int i = 0; i < 2; i++) {
+			this.playerCharacters[i].roundInit();
+			this.hitEffects.get(i).clear();
+		}
+
 		this.projectileDeque.clear();
 		this.inputCommands.clear();
 
