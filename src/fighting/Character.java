@@ -206,13 +206,68 @@ public class Character {
 		this.speedY = exeMotion.getSpeedY();
 		this.control = exeMotion.isControl();
 
+		// createAttackInstance();
+	}
+
+	/**
+	 *
+	 * Updates character's information.
+	 *
+	 */
+	public void update() {
+		moveX(this.speedX);
+		moveY(this.speedY);
+
+		frictionEffect();
+		gravityEffect();
+
+		if (this.energy > LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1]) {
+			this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
+		}
+
+		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
+			if (motionList.get(this.action.ordinal()).isLandingFlag()) {
+				runAction(Action.LANDING, true);
+				setSpeedY(0);
+
+				// 着地音を鳴らす
+			}
+
+			moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
+		}
+
+		for (int i = 0; i < 2; i++) {
+			this.remainingFrame = getRemainingFrame() - 1;
+
+			if (this.remainingFrame <= 0) {
+				if (this.action == Action.CHANGE_DOWN) {
+					runAction(Action.DOWN, true);
+				} else if (this.action == Action.DOWN) {
+					runAction(Action.RISE, true);
+				} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_WIDTH) {
+					runAction(Action.AIR, true);
+				} else {
+					runAction(Action.STAND, true);
+				}
+			}
+		}
+
 		createAttackInstance();
+
+		if (!this.inputCommands.isEmpty()) {
+			this.processedCommands.addLast(new Key(this.inputCommands.pop()));
+		} else {
+			this.processedCommands.addLast(new Key());
+		}
+
+		if (this.processedCommands.size() > GameSetting.INPUT_LIMIT)
+			this.processedCommands.removeFirst();
 	}
 
 	/** 攻撃がヒットしたときに,自身のパラメータや状態を更新する */
 	public void hitAttack(Character opponent, Attack attack) {
 
-		int direction = opponent.getCharacterHitAreaCenterX() <= getCharacterHitAreaCenterX() ? 1 : -1;
+		int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
 
 		if (isGuard(attack)) {
 			setHp(this.hp - attack.getGuardDamage() - opponent.getComboDamage());
@@ -347,6 +402,67 @@ public class Character {
 		return (startActive <= this.remainingFrame) && (startActive - motion.getAttackActive() <= this.remainingFrame);
 	}
 
+	/**
+	 *
+	 * Move the character on the X-axis.
+	 *
+	 * @param relativePosition
+	 *            value in pixels.
+	 */
+	public void moveX(int relativePosition) {
+		setX(getX() + relativePosition);
+	}
+
+	/**
+	 *
+	 * Move the character on the Y-axis.
+	 *
+	 * @param relativePosition
+	 *            value in pixels.
+	 */
+	public void moveY(int relativePosition) {
+		setY(getY() + relativePosition);
+	}
+
+	/**
+	 *
+	 * キャラクターが床に接しているときに,摩擦の影響を与える
+	 *
+	 */
+	public void frictionEffect() {
+		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
+			if (this.speedX > 0) {
+				setSpeedX(this.speedX - GameSetting.FRICTION);
+			} else if (this.speedX < 0) {
+				setSpeedX(this.speedX + GameSetting.FRICTION);
+			}
+		}
+	}
+
+	/**
+	 *
+	 * キャラクターが空中にいるときに, 重力の影響を与える
+	 *
+	 */
+	public void gravityEffect() {
+		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
+			setSpeedY(0);
+		} else if (getHitAreaTop() <= 0) {
+			setSpeedY(GameSetting.GRAVITY);
+		} else {
+			setSpeedY(this.speedY + GameSetting.GRAVITY);
+		}
+	}
+
+	/**
+	 *
+	 * Defines character's orientation.
+	 *
+	 */
+	public void frontDecision(int opponentX) {
+		this.front = getHitAreaCenterX() <= opponentX;
+	}
+
 	public void destroyAttackInstance() {
 		this.attack = null;
 	}
@@ -399,38 +515,47 @@ public class Character {
 	/**
 	 * @return The character's hit box's most-right x-coordinate.
 	 */
-	public int getCharacterHitAreaRight() {
+	public int getHitAreaRight() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getRight() + x;
 	}
 
 	/**
 	 * @return The character's hit box's most-left x-coordinate.
 	 */
-	public int getCharacterHitAreaLeft() {
+	public int getHitAreaLeft() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getLeft() + x;
 	}
 
 	/**
 	 * @return The character's hit box's most-top y-coordinate.
 	 */
-	public int getCharacterHitAreaTop() {
+	public int getHitAreaTop() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getTop() + y;
 	}
 
 	/**
 	 * @return The character's hit box's most-bottom y-coordinate.
 	 */
-	public int getCharacterHitAreaBottom() {
+	public int getHitAreaBottom() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getBottom() + y;
 
 	}
 
-	public int getCharacterHitAreaCenterX() {
-		return (getCharacterHitAreaRight() + getCharacterHitAreaLeft()) / 2;
+	public int getHitAreaCenterX() {
+		return (getHitAreaRight() + getHitAreaLeft()) / 2;
 	}
 
-	public int getCharacterHitAreaCenterY() {
-		return (getCharacterHitAreaTop() + getCharacterHitAreaBottom()) / 2;
+	public int getHitAreaCenterY() {
+		return (getHitAreaTop() + getHitAreaBottom()) / 2;
+	}
+
+	/**
+	 *
+	 * Reverse horizontal speed.
+	 *
+	 */
+	public void reversalSpeedX() {
+		this.speedX = -(this.speedX / 2);
 	}
 
 	/**

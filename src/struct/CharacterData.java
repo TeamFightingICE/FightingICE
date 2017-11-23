@@ -71,10 +71,10 @@ public class CharacterData {
 		this.graphicSizeY = character.getGraphicSizeY();
 		this.graphicCenterX = character.getGraphicCenterX();
 		this.graphicCenterY = character.getGraphicCenterY();
-		this.left = character.getCharacterHitAreaLeft();
-		this.right = character.getCharacterHitAreaRight();
-		this.top = character.getCharacterHitAreaTop();
-		this.bottom = character.getCharacterHitAreaBottom();
+		this.left = character.getHitAreaLeft();
+		this.right = character.getHitAreaRight();
+		this.top = character.getHitAreaTop();
+		this.bottom = character.getHitAreaBottom();
 		this.speedX = character.getSpeedX();
 		this.speedY = character.getSpeedY();
 		this.state = character.getState();

@@ -201,6 +201,10 @@ public class Attack {
 		return this.downProperty;
 	}
 
+	public boolean isProjectile() {
+		return (this.settingSpeedX + this.settingSpeedY) != 0;
+	}
+
 	// get
 	public int getCurrentFrame() {
 		return this.currentFrame;

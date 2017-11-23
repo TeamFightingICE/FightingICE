@@ -1,6 +1,7 @@
 package fighting;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -75,6 +76,7 @@ public class Fighting {
 		// 4. 攻撃パラメータの更新
 		updateAttackParameter();
 		// 5. キャラクター情報の更新
+		updateCharacter();
 
 	}
 
@@ -181,6 +183,130 @@ public class Fighting {
 		}
 	}
 
+	/**
+	 * キャラクターのパラメータや波動拳の情報を更新する
+	 */
+	private void updateCharacter() {
+		for (int i = 0; i < 2; ++i) {
+			// update each character.
+			this.playerCharacters[i].update();
+
+			// enque object attack if the data is missile decision
+			if (this.playerCharacters[i].getAttack() != null) {
+				if (this.playerCharacters[i].getAttack().isProjectile()) {
+
+					Attack attack = this.playerCharacters[i].getAttack();
+					ArrayList<Image> projectileImage = GraphicManager.getInstance().getProjectileImageContainer();
+					if (this.playerCharacters[i].getAction() == Action.STAND_D_DF_FC) {
+						projectileImage = GraphicManager.getInstance().getUltimateAttackImageContainer();
+					}
+
+					Image[] temp = new Image[projectileImage.size()];
+					for (int j = 0; i < temp.length; j++) {
+						temp[j] = projectileImage.get(j);
+					}
+					this.projectileDeque.addLast(new LoopEffect(attack, temp));
+					this.playerCharacters[i].destroyAttackInstance();
+				}
+			}
+
+			// change player's direction
+			if (playerCharacters[i].isControl()) {
+				playerCharacters[i].frontDecision(playerCharacters[i == 0 ? 1 : 0].getHitAreaCenterX());
+			}
+		}
+		// run pushing effect
+		detectionPush();
+		// run collision of first and second character.
+		detectionFusion();
+		// run effect when character's are in the end of stage.
+		decisionEndStage();
+	}
+
+	/**
+	 * Characters push each other.
+	 */
+	private void detectionPush() {
+		// whether the conflict of first and second player or not?
+		if (isCollision()) {
+			int direction = this.playerCharacters[0].isFront() ? 1 : -1;
+			int p1SpeedX = direction * this.playerCharacters[0].getSpeedX();
+			int p2SpeedX = -direction * this.playerCharacters[1].getSpeedX();
+
+			if (p1SpeedX > p2SpeedX) {
+				this.playerCharacters[1]
+						.moveX(this.playerCharacters[0].getSpeedX() - this.playerCharacters[1].getSpeedX());
+
+			} else if (p1SpeedX < -p2SpeedX) {
+				this.playerCharacters[0]
+						.moveX(this.playerCharacters[1].getSpeedX() - this.playerCharacters[0].getSpeedX());
+
+			} else {
+				this.playerCharacters[0].moveX(this.playerCharacters[1].getSpeedX());
+				this.playerCharacters[1].moveX(this.playerCharacters[0].getSpeedX());
+			}
+		}
+	}
+
+	/**
+	 * A determination is made in case of a state such as that overlap almost
+	 * character to move the character.
+	 */
+	private void detectionFusion() {
+		// whether the conflict of first and second player or not?
+		if (isCollision()) {
+			int direction = 0;
+
+			// if first player is left
+			if (this.playerCharacters[0].getHitAreaCenterX() < this.playerCharacters[1].getHitAreaCenterX()) {
+				direction = 1;
+				// if second player is left
+			} else if (this.playerCharacters[0].getHitAreaCenterX() > this.playerCharacters[1].getHitAreaCenterX()) {
+				direction = -1;
+			} else {
+				if (this.playerCharacters[0].isFront()) {
+					direction = 1;
+				} else {
+					direction = -1;
+				}
+			}
+			this.playerCharacters[0].moveX(-direction * 2);
+			this.playerCharacters[1].moveX(direction * 2);
+		}
+	}
+
+	private boolean isCollision() {
+		return this.playerCharacters[0].getHitAreaLeft() <= this.playerCharacters[1].getHitAreaRight()
+				&& this.playerCharacters[0].getHitAreaTop() <= this.playerCharacters[1].getHitAreaBottom()
+				&& playerCharacters[0].getHitAreaRight() >= this.playerCharacters[1].getHitAreaLeft()
+				&& this.playerCharacters[0].getHitAreaBottom() >= this.playerCharacters[1].getHitAreaTop();
+	}
+
+	/**
+	 * Effect when characters are in the end of stage.
+	 */
+	private void decisionEndStage() {
+
+		for (int i = 0; i < 2; ++i) {
+			// if action is down, character will be rebound.
+			// first player's effect
+			if (playerCharacters[i].getHitAreaRight() > GameSetting.STAGE_WIDTH) {
+				if (playerCharacters[i].getAction() == Action.DOWN) {
+					playerCharacters[i].reversalSpeedX();
+				}
+
+				playerCharacters[i].moveX(-playerCharacters[i].getHitAreaRight() + GameSetting.STAGE_WIDTH);
+
+			} else if (playerCharacters[i].getHitAreaLeft() < 0) {
+				if (playerCharacters[i].getAction() == Action.DOWN) {
+					playerCharacters[i].reversalSpeedX();
+				}
+
+				playerCharacters[i].moveX(-playerCharacters[i].getHitAreaLeft());
+			}
+		}
+	}
+
 	/** 自身の攻撃が相手に当たった時, コンボの遷移処理及び相手のコンボのブレイク処理を行う */
 	private void processingCombo(int currentFrame, int myIndex) {
 		int opponentIndex = myIndex == 0 ? 1 : 0;
@@ -229,10 +355,10 @@ public class Fighting {
 	private boolean detectionHit(Character character, Attack attack) {
 		if (attack == null || character.getState() == State.DOWN) {
 			return false;
-		} else if (character.getCharacterHitAreaLeft() <= attack.getCurrentHitArea().getRight()
-				&& character.getCharacterHitAreaRight() >= attack.getCurrentHitArea().getLeft()
-				&& character.getCharacterHitAreaBottom() <= attack.getCurrentHitArea().getBottom()
-				&& character.getCharacterHitAreaTop() >= attack.getCurrentHitArea().getTop()) {
+		} else if (character.getHitAreaLeft() <= attack.getCurrentHitArea().getRight()
+				&& character.getHitAreaRight() >= attack.getCurrentHitArea().getLeft()
+				&& character.getHitAreaBottom() <= attack.getCurrentHitArea().getBottom()
+				&& character.getHitAreaTop() >= attack.getCurrentHitArea().getTop()) {
 			return true;
 		} else {
 			return false;
