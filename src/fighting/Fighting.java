@@ -1,6 +1,5 @@
 package fighting;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -15,7 +14,6 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.CharacterData;
 import struct.FrameData;
-import struct.ScreenData;
 
 public class Fighting {
 
@@ -25,8 +23,6 @@ public class Fighting {
 
 	private Deque<KeyData> inputCommands;
 
-	private BufferedImage screen;
-
 	private LinkedList<LinkedList<HitEffect>> hitEffects;
 
 	private CommandTable commandTable;
@@ -35,7 +31,6 @@ public class Fighting {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inputCommands = new LinkedList<KeyData>();
-		this.screen = null;
 		this.commandTable = new CommandTable();
 
 	}
@@ -47,7 +42,6 @@ public class Fighting {
 			this.hitEffects.add(new LinkedList<HitEffect>());
 		}
 
-		this.screen = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inputCommands = new LinkedList<KeyData>();
 
@@ -167,6 +161,7 @@ public class Fighting {
 			// if attack's nowFrame reach end of duration, remove it.
 			LoopEffect projectile = this.projectileDeque.removeFirst();
 			if (projectile.getAttack().updateProjectileAttack()) {
+				projectile.update();
 				this.projectileDeque.addLast(projectile);
 			}
 		}
@@ -188,6 +183,7 @@ public class Fighting {
 		for (int i = 0; i < 2; ++i) {
 			// update each character.
 			this.playerCharacters[i].update();
+
 
 			// enque object attack if the data is missile decision
 			if (this.playerCharacters[i].getAttack() != null) {
@@ -211,6 +207,14 @@ public class Fighting {
 			// change player's direction
 			if (playerCharacters[i].isControl()) {
 				playerCharacters[i].frontDecision(playerCharacters[i == 0 ? 1 : 0].getHitAreaCenterX());
+			}
+
+			//エフェクトの更新
+			for(int j = 0; j < this.hitEffects.get(i).size(); j++){
+				if (!this.hitEffects.get(i).get(j).update()) {
+					this.hitEffects.get(i).remove(j);
+					--j;
+				}
 			}
 		}
 		// run pushing effect
@@ -385,10 +389,6 @@ public class Fighting {
 		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData);
 	}
 
-	public ScreenData getScreenData() {
-		return new ScreenData(this.screen);
-	}
-
 	/** ラウンド開始時にキャラクター情報を初期化し, リストの中身をクリアーする */
 	public void initRound() {
 		for (int i = 0; i < 2; i++) {
@@ -399,5 +399,34 @@ public class Fighting {
 		this.projectileDeque.clear();
 		this.inputCommands.clear();
 
+	}
+
+	public LinkedList<LinkedList<HitEffect>> getHitEffectList() {
+	//	LinkedList<LinkedList<HitEffect>> temp = new LinkedList<LinkedList<HitEffect>>();
+		LinkedList<LinkedList<HitEffect>> temp = new LinkedList<LinkedList<HitEffect>>(this.hitEffects);
+
+		/*for(int i = 0; i < 2; i++){
+			LinkedList<HitEffect> effects = new LinkedList<HitEffect>();
+
+			for(HitEffect effect : temp.get(i)){
+				effect = new HitEffect(effect.getAttack(), effect.getImages(), effect.isHit());
+				effects.add(effect);
+			}
+
+			temp.add(effects);
+		}*/
+
+		return temp;
+	}
+
+	public Deque<LoopEffect> getProjectileDeque() {
+		Deque<LoopEffect> temp = new LinkedList<LoopEffect>(this.projectileDeque);
+		/*Deque<LoopEffect> temp = new LinkedList<LoopEffect>();
+
+		for(LoopEffect loopEffect : this.projectileDeque){
+			temp.addLast(new LoopEffect(loopEffect.getAttack(), loopEffect.getImages()));
+		}*/
+
+		return temp;
 	}
 }

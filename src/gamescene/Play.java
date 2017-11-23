@@ -11,6 +11,8 @@ import setting.FlagSetting;
 import setting.GameSetting;
 import struct.FrameData;
 import struct.GameData;
+import struct.ScreenData;
+import util.ResourceDrawer;
 
 public class Play extends GameScene {
 
@@ -25,6 +27,8 @@ public class Play extends GameScene {
 	private boolean roundStartFlag;
 
 	private FrameData frameData;
+
+	private ScreenData screenData;
 
 	private KeyData keyData;
 
@@ -45,6 +49,7 @@ public class Play extends GameScene {
 		this.roundStartFlag = true;
 
 		this.frameData = new FrameData();
+		this.screenData = new ScreenData();
 		this.keyData = new KeyData();
 		this.roundResults = new ArrayList<RoundResult>();
 
@@ -106,6 +111,7 @@ public class Play extends GameScene {
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, this.keyData);
+		this.screenData = new ScreenData();
 		// AIにFrameDataをセット
 		// 体力が0orタイムオーバーならラウンド終了処理
 		if (isBeaten() || isTimeOver()) {
@@ -114,6 +120,9 @@ public class Play extends GameScene {
 
 		// リプレイログ吐き出し
 		// 画面をDrawerクラスで描画
+		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
+				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
+				this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
 
 	}
 

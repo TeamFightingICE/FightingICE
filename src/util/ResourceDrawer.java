@@ -1,20 +1,27 @@
 package util;
 
-import struct.FrameData;
+import java.awt.image.BufferedImage;
+import java.util.Deque;
+import java.util.LinkedList;
+
+import fighting.Character;
+import fighting.HitEffect;
+import fighting.LoopEffect;
 
 public class ResourceDrawer {
 
 	private static ResourceDrawer resourceDrawer = new ResourceDrawer();
 
-	private ResourceDrawer(){
+	private ResourceDrawer() {
 		System.out.println("Create instance: " + ResourceDrawer.class.getName());
 	}
 
-	public ResourceDrawer getInstance(){
+	public static ResourceDrawer getInstance() {
 		return resourceDrawer;
 	}
 
-	public void drawResource(FrameData frameData){
+	public void drawResource(Character[] characters, Deque<LoopEffect> projectiles,
+			LinkedList<LinkedList<HitEffect>> hitEffects, BufferedImage screen, int remainingFrame, int round) {
 
 	}
 
