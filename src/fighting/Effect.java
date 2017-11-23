@@ -43,6 +43,16 @@ public class Effect {
 
 	/**
 	 *
+	 * Returns effect's image.
+	 *
+	 * @return The effect's image.
+	 */
+	public Image[] getImages() {
+		return this.hitImages;
+	}
+
+	/**
+	 *
 	 * Returns attack related to this effect.
 	 *
 	 * @return The attack related to this effect.

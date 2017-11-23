@@ -15,6 +15,7 @@ import org.javatuples.Triplet;
 
 import enumerate.Action;
 import enumerate.State;
+import image.Image;
 import loader.ResourceLoader;
 import setting.FlagSetting;
 import setting.GameSetting;
@@ -126,7 +127,7 @@ public class Character {
 			// gSetting.txtは名前や内容変える可能性大
 			// graphicの情報も入れるか要検討
 			BufferedReader br = ResourceLoader.getInstance()
-					.openReadFile("./data/character/" + characterName + "/gSetting.txt");
+					.openReadFile("./data/characters/" + characterName + "/gSetting.txt");
 			String[] size = br.readLine().split(",", 0);
 			String[] center = br.readLine().split(",", 0);
 
@@ -311,7 +312,7 @@ public class Character {
 						runAction(Action.STAND_RECOV, false);
 						break;
 
-					case CROUNCH:
+					case CROUCH:
 						runAction(Action.CROUCH_RECOV, false);
 						break;
 
@@ -399,7 +400,7 @@ public class Character {
 
 	private boolean isActive(Motion motion) {
 		int startActive = motion.getFrameNumber() - motion.getAttackStartUp();
-		return (startActive <= this.remainingFrame) && (startActive - motion.getAttackActive() <= this.remainingFrame);
+		return (startActive < this.remainingFrame) && (startActive - motion.getAttackActive() <= this.remainingFrame);
 	}
 
 	/**
@@ -660,6 +661,15 @@ public class Character {
 		return temp;
 	}
 
+	/**
+	 * @return The current image handle.
+	 */
+	public Image getNowImage() {
+		Motion motion = motionList.get(this.action.ordinal());
+
+		return motion.getImage(Math.abs(this.remainingFrame) % motion.getFrameNumber());
+	}
+
 	////// Setter//////
 	public void setHp(int hp) {
 		this.hp = hp;
@@ -746,7 +756,7 @@ public class Character {
 	private void setComboTable(String characterName) {
 		try {
 			BufferedReader br = ResourceLoader.getInstance()
-					.openReadFile("./data/character/" + characterName + "/ComboTable.csv");
+					.openReadFile("./data/characters/" + characterName + "/ComboTable.csv");
 
 			Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(br);
 			for (CSVRecord record : records) {
@@ -778,7 +788,7 @@ public class Character {
 	private void setMotionList(String characterName) {
 		try {
 			BufferedReader br = ResourceLoader.getInstance()
-					.openReadFile("./data/character/" + characterName + "/Motion.csv");
+					.openReadFile("./data/characters/" + characterName + "/Motion.csv");
 
 			String line;
 			br.readLine(); // ignore header
@@ -786,7 +796,7 @@ public class Character {
 			while ((line = br.readLine()) != null) {
 				String[] st = line.split(",", 0);
 				Motion motion = new Motion(st, characterName);
-				this.motionList.add(motion);
+				this.motionList.add(motion);		
 			}
 
 			br.close();
