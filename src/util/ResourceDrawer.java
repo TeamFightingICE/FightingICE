@@ -128,7 +128,7 @@ public class ResourceDrawer {
 				positionX = area.getLeft() - (image.getWidth() * 1 / 6);
 			}
 
-			if (attack.getCurrentFrame() >= attack.getStartUp()) {
+			if (attack.getCurrentFrame() > attack.getStartUp()) {
 				BufferedImage tmpImage = image.getBufferedImage();
 				flipImage(tmpImage, attack.isPlayerNumber());
 
@@ -270,7 +270,7 @@ public class ResourceDrawer {
 		for (LoopEffect loopEffect : projectiles) {
 			Attack temp = loopEffect.getAttack();
 
-			if (temp.getCurrentFrame() >= temp.getStartUp()) {
+			if (temp.getCurrentFrame() > temp.getStartUp()) {
 				HitArea area = temp.getCurrentHitArea();
 
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),

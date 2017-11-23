@@ -32,6 +32,7 @@ public class Fighting {
 		this.projectileDeque = new LinkedList<LoopEffect>();
 		this.inputCommands = new LinkedList<KeyData>();
 		this.commandTable = new CommandTable();
+		this.hitEffects = new LinkedList<LinkedList<HitEffect>>();
 
 	}
 
@@ -169,6 +170,7 @@ public class Fighting {
 		// update coordinate of Attacks(short distance)
 		for (int i = 0; i < 2; ++i) {
 			if (this.playerCharacters[i].getAttack() != null) {
+				System.out.println(this.playerCharacters[i].getAction().name());
 				if (!this.playerCharacters[i].getAttack().update(this.playerCharacters[i])) {
 					this.playerCharacters[i].destroyAttackInstance();
 				}

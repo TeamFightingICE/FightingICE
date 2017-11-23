@@ -74,31 +74,33 @@ public class Attack {
 	}
 
 	public Attack(Attack attack) {
-		this.settingHitArea = attack.getSettingHitArea();
-		this.settingSpeedX = attack.getSettingSpeedX();
-		this.settingSpeedY = attack.getSettingSpeedY();
+		if (attack != null) {
+			this.settingHitArea = attack.getSettingHitArea();
+			this.settingSpeedX = attack.getSettingSpeedX();
+			this.settingSpeedY = attack.getSettingSpeedY();
 
-		this.currentHitArea = attack.getCurrentHitArea();
-		this.currentFrame = attack.getCurrentFrame();
-		this.playerNumber = attack.isPlayerNumber();
-		this.speedX = attack.getSpeedX();
-		this.speedY = attack.getSpeedY();
-		;
-		this.startUp = attack.getStartUp();
-		this.active = attack.getActive();
+			this.currentHitArea = attack.getCurrentHitArea();
+			this.currentFrame = attack.getCurrentFrame();
+			this.playerNumber = attack.isPlayerNumber();
+			this.speedX = attack.getSpeedX();
+			this.speedY = attack.getSpeedY();
+			;
+			this.startUp = attack.getStartUp();
+			this.active = attack.getActive();
 
-		this.hitDamage = attack.getHitDamage();
-		this.guardDamage = attack.getGuardDamage();
-		this.startAddEnergy = attack.getStartAddEnergy();
-		this.hitAddEnergy = attack.getHitAddEnergy();
-		this.guardAddEnergy = attack.getGuardAddEnergy();
-		this.giveEnergy = attack.getGiveEnergy();
+			this.hitDamage = attack.getHitDamage();
+			this.guardDamage = attack.getGuardDamage();
+			this.startAddEnergy = attack.getStartAddEnergy();
+			this.hitAddEnergy = attack.getHitAddEnergy();
+			this.guardAddEnergy = attack.getGuardAddEnergy();
+			this.giveEnergy = attack.getGiveEnergy();
 
-		this.impactX = attack.getImpactX();
-		this.impactY = attack.getImpactY();
-		this.giveGuardRecov = attack.getGiveGuardRecov();
-		this.attackType = attack.getAttackType();
-		this.downProperty = attack.isDownProperty();
+			this.impactX = attack.getImpactX();
+			this.impactY = attack.getImpactY();
+			this.giveGuardRecov = attack.getGiveGuardRecov();
+			this.attackType = attack.getAttackType();
+			this.downProperty = attack.isDownProperty();
+		}
 	}
 
 	public Attack(HitArea hitArea, int settingSpeedX, int settingSpeedY, int startUp, int active, int hitDamage,

@@ -2,7 +2,7 @@ package enumerate;
 
 public enum State {
 	STAND,
-	CROUNCH,
+	CROUCH,
 	AIR,
 	DOWN,
 }
