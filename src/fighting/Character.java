@@ -574,7 +574,7 @@ public class Character {
 	}
 
 	public Attack getAttack() {
-		return new Attack(this.attack);
+		return this.attack;
 	}
 
 	public int getGraphicCenterX() {

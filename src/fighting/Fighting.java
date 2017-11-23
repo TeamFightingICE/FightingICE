@@ -170,7 +170,6 @@ public class Fighting {
 		// update coordinate of Attacks(short distance)
 		for (int i = 0; i < 2; ++i) {
 			if (this.playerCharacters[i].getAttack() != null) {
-				System.out.println(this.playerCharacters[i].getAction().name());
 				if (!this.playerCharacters[i].getAttack().update(this.playerCharacters[i])) {
 					this.playerCharacters[i].destroyAttackInstance();
 				}
