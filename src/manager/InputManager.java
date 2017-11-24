@@ -3,6 +3,7 @@ package manager;
 import static org.lwjgl.glfw.GLFW.*;
 
 import aiinterface.AIController;
+import enumerate.GameSceneName;
 import input.KeyData;
 import input.Keyboard;
 import struct.Key;
@@ -17,6 +18,8 @@ public class InputManager<Data> {
 	private Keyboard keyboard;
 
 	private AIController[] ais;
+
+	private GameSceneName sceneName;
 
 	// static field
 	/** Default number of devices **/
@@ -34,6 +37,7 @@ public class InputManager<Data> {
 		System.out.println("Create instance: " + InputManager.class.getName());
 		keyboard = new Keyboard();
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
+		sceneName = GameSceneName.HOME_MENU;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
@@ -108,6 +112,14 @@ public class InputManager<Data> {
 
 	public void setKeyData(KeyData data) {
 		this.buffer = data;
+	}
+
+	public GameSceneName getSceneName() {
+		return this.sceneName;
+	}
+
+	public void setSceneName(GameSceneName sceneName) {
+		this.sceneName = sceneName;
 	}
 
 }
