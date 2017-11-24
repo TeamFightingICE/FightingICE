@@ -20,6 +20,7 @@ import loader.ResourceLoader;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import struct.HitArea;
 import struct.Key;
 
 public class Character {
@@ -245,7 +246,7 @@ public class Character {
 					runAction(Action.DOWN, true);
 				} else if (this.action == Action.DOWN) {
 					runAction(Action.RISE, true);
-				} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_WIDTH) {
+				} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
 					runAction(Action.AIR, true);
 				} else {
 					runAction(Action.STAND, true);
@@ -517,14 +518,18 @@ public class Character {
 	 * @return The character's hit box's most-right x-coordinate.
 	 */
 	public int getHitAreaRight() {
-		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getRight() + x;
+		HitArea area = this.motionList.get(this.action.ordinal()).getCharacterHitArea();
+
+		return this.front ? area.getRight() + x : this.graphicSizeX - area.getLeft() + x;
 	}
 
 	/**
 	 * @return The character's hit box's most-left x-coordinate.
 	 */
 	public int getHitAreaLeft() {
-		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getLeft() + x;
+		HitArea area = this.motionList.get(this.action.ordinal()).getCharacterHitArea();
+
+		return this.front ? area.getLeft() + x : this.graphicSizeX - area.getRight() + x;
 	}
 
 	/**
@@ -796,7 +801,7 @@ public class Character {
 			while ((line = br.readLine()) != null) {
 				String[] st = line.split(",", 0);
 				Motion motion = new Motion(st, characterName);
-				this.motionList.add(motion);		
+				this.motionList.add(motion);
 			}
 
 			br.close();
