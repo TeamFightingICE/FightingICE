@@ -206,7 +206,10 @@ public class Character {
 
 		this.action = executeAction;
 		this.state = exeMotion.getState();
-		this.speedX = this.front ? exeMotion.getSpeedX() : -exeMotion.getSpeedX();
+
+		if (exeMotion.getSpeedX() != 0) {
+			this.speedX = this.front ? exeMotion.getSpeedX() : -exeMotion.getSpeedX();
+		}
 		this.speedY += exeMotion.getSpeedY();
 		this.control = exeMotion.isControl();
 
@@ -221,6 +224,8 @@ public class Character {
 	public void update() {
 		moveX(this.speedX);
 		moveY(this.speedY);
+		if (playerNumber && action == Action.FOR_JUMP)
+			System.out.println(this.speedX);
 
 		frictionEffect();
 		gravityEffect();
@@ -240,21 +245,19 @@ public class Character {
 			moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
 		}
 
+		this.remainingFrame = getRemainingFrame() - 1;
 
-			this.remainingFrame = getRemainingFrame() - 1;
-
-			if (this.remainingFrame <= 0) {
-				if (this.action == Action.CHANGE_DOWN) {
-					runAction(Action.DOWN, true);
-				} else if (this.action == Action.DOWN) {
-					runAction(Action.RISE, true);
-				} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
-					runAction(Action.AIR, true);
-				} else {
-					runAction(Action.STAND, true);
-				}
+		if (this.remainingFrame <= 0) {
+			if (this.action == Action.CHANGE_DOWN) {
+				runAction(Action.DOWN, true);
+			} else if (this.action == Action.DOWN) {
+				runAction(Action.RISE, true);
+			} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
+				runAction(Action.AIR, true);
+			} else {
+				runAction(Action.STAND, true);
 			}
-
+		}
 
 		createAttackInstance();
 
