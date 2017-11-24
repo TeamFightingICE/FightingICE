@@ -67,7 +67,7 @@ public class QuadTask extends RenderTask {
 			break;
 		}
 
-		//glColor3d(1, 1, 1);
+		glColor3d(1, 1, 1);
 	}
 
 }

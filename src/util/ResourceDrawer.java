@@ -261,6 +261,7 @@ public class ResourceDrawer {
 			// 攻撃の当たり判定ボックスの描画
 			if (playerCharacters[i].getAttack() != null) {
 				HitArea area = playerCharacters[i].getAttack().getCurrentHitArea();
+				
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),
 						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
 			}

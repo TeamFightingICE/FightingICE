@@ -39,7 +39,6 @@ public class CommandTable {
 			pushC = nowKeyData.C;
 		}
 		
-		System.out.println(pushA);
 		input.addLast(temp);
 
 		int lever;
@@ -61,19 +60,9 @@ public class CommandTable {
 			for (int j = i; j >= 0; j--) {
 				inputLever += Integer.toString(commandList[j]);
 			}
+			
 			String string = character.getState().name() + inputLever;
-			/*
-			if(pushC){
-				System.out.println(string + "C");
-			}else if (pushB) {
-				System.out.println(string + "B");
-			}else if(pushA){
-				System.out.println(string + "A");
-			}else{
-				System.out.println(string + "N");
-			}
-			*/
-
+			
 			//アクションがスキルテーブルにあれば、そのアクションを返す
 			if (pushC && this.skilltable.containsKey(string + "C")) {
 				return this.skilltable.get(string + "C");
