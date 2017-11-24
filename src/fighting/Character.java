@@ -207,7 +207,7 @@ public class Character {
 		this.action = executeAction;
 		this.state = exeMotion.getState();
 		this.speedX = this.front ? exeMotion.getSpeedX() : -exeMotion.getSpeedX();
-		this.speedY = exeMotion.getSpeedY();
+		this.speedY += exeMotion.getSpeedY();
 		this.control = exeMotion.isControl();
 
 		// createAttackInstance();
@@ -254,7 +254,7 @@ public class Character {
 					runAction(Action.STAND, true);
 				}
 			}
-			
+
 
 		createAttackInstance();
 

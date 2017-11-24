@@ -38,7 +38,7 @@ public class CommandTable {
 			pushB = nowKeyData.B;
 			pushC = nowKeyData.C;
 		}
-		
+
 		input.addLast(temp);
 
 		int lever;
@@ -60,25 +60,31 @@ public class CommandTable {
 			for (int j = i; j >= 0; j--) {
 				inputLever += Integer.toString(commandList[j]);
 			}
-			
+
 			String string = character.getState().name() + inputLever;
-			
-			//アクションがスキルテーブルにあれば、そのアクションを返す
+
+			// アクションがスキルテーブルにあれば、そのアクションを返す
 			if (pushC && this.skilltable.containsKey(string + "C")) {
 				return this.skilltable.get(string + "C");
 			} else if (pushB && this.skilltable.containsKey(string + "B")) {
 				return this.skilltable.get(string + "B");
 			} else if (pushA && this.skilltable.containsKey(string + "A")) {
 				return this.skilltable.get(string + "A");
-			} else if(this.skilltable.containsKey(string + "N")){
+			} else if (this.skilltable.containsKey(string + "N")) {
 				return this.skilltable.get(string + "N");
 			}
 		}
 
-		//合致しなかった場合
-		return Action.STAND;
+		// 合致しなかった場合
+		switch (character.getState()) {
+		case AIR:
+			return Action.AIR;
+		case CROUCH:
+			return Action.CROUCH;
+		default:
+			return Action.STAND;
+		}
 	}
-
 
 	private void setSkillTable() {
 		////// AIR//////
