@@ -62,6 +62,7 @@ public class CommandTable {
 			}
 
 			String string = character.getState().name() + inputLever;
+			if(character.isPlayerNumber()) System.out.println(string);
 
 			// アクションがスキルテーブルにあれば、そのアクションを返す
 			if (pushC && this.skilltable.containsKey(string + "C")) {
