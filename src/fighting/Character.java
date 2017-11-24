@@ -140,6 +140,7 @@ public class Character {
 			e.printStackTrace();
 		}
 
+		this.playerNumber = playerNumber;
 		this.comboTable = new ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>();
 		this.inputCommands = new LinkedList<Key>();
 		this.processedCommands = new LinkedList<Key>();
@@ -180,6 +181,7 @@ public class Character {
 			// 初期の立ち位置
 			this.x = 100;
 			this.y = 335;
+
 		} else {
 			this.front = false;
 			// 初期の立ち位置
@@ -238,7 +240,7 @@ public class Character {
 			moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
 		}
 
-		for (int i = 0; i < 2; i++) {
+
 			this.remainingFrame = getRemainingFrame() - 1;
 
 			if (this.remainingFrame <= 0) {
@@ -252,7 +254,6 @@ public class Character {
 					runAction(Action.STAND, true);
 				}
 			}
-		}
 
 		createAttackInstance();
 

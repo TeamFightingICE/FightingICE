@@ -232,15 +232,18 @@ public class Fighting {
 	private void detectionPush() {
 		// whether the conflict of first and second player or not?
 		if (isCollision()) {
-			int direction = this.playerCharacters[0].isFront() ? 1 : -1;
+		/*	int direction = this.playerCharacters[0].isFront() ? 1 : -1;
 			int p1SpeedX = direction * this.playerCharacters[0].getSpeedX();
-			int p2SpeedX = -direction * this.playerCharacters[1].getSpeedX();
+			int p2SpeedX = -direction * this.playerCharacters[1].getSpeedX();*/
+			int p1SpeedX = Math.abs(this.playerCharacters[0].getSpeedX());
+			int p2SpeedX = Math.abs(this.playerCharacters[1].getSpeedX());
 
 			if (p1SpeedX > p2SpeedX) {
+				
 				this.playerCharacters[1]
 						.moveX(this.playerCharacters[0].getSpeedX() - this.playerCharacters[1].getSpeedX());
 
-			} else if (p1SpeedX < -p2SpeedX) {
+			} else if (p1SpeedX < p2SpeedX) {
 				this.playerCharacters[0]
 						.moveX(this.playerCharacters[1].getSpeedX() - this.playerCharacters[0].getSpeedX());
 
@@ -281,7 +284,7 @@ public class Fighting {
 	private boolean isCollision() {
 		return this.playerCharacters[0].getHitAreaLeft() <= this.playerCharacters[1].getHitAreaRight()
 				&& this.playerCharacters[0].getHitAreaTop() <= this.playerCharacters[1].getHitAreaBottom()
-				&& playerCharacters[0].getHitAreaRight() >= this.playerCharacters[1].getHitAreaLeft()
+				&& this.playerCharacters[0].getHitAreaRight() >= this.playerCharacters[1].getHitAreaLeft()
 				&& this.playerCharacters[0].getHitAreaBottom() >= this.playerCharacters[1].getHitAreaTop();
 	}
 
