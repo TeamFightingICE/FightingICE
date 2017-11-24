@@ -85,7 +85,7 @@ public class Fighting {
 			if (!this.inputCommands.isEmpty()) {
 				Action executeAction = this.commandTable.convertKeyToAction(this.playerCharacters[i],
 						this.inputCommands);
-
+				
 				if (ableAction(this.playerCharacters[i], executeAction)) {
 					this.playerCharacters[i].runAction(executeAction, true);
 				}
@@ -341,7 +341,7 @@ public class Fighting {
 			boolean checkFrame = nowMotion.getCancelAbleFrame() <= nowMotion.getFrameNumber()
 					- character.getRemainingFrame();
 			boolean checkAction = nowMotion.getCancelAbleMotionLevel() >= nextMotion.getMotionLevel();
-
+			
 			return character.isHitConfirm() && checkFrame && checkAction;
 		}
 	}

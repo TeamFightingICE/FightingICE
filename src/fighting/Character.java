@@ -254,6 +254,7 @@ public class Character {
 					runAction(Action.STAND, true);
 				}
 			}
+			
 
 		createAttackInstance();
 
@@ -572,7 +573,7 @@ public class Character {
 	 *         (true) or not (false)
 	 */
 	public boolean isHitConfirm() {
-		return hitConfirm;
+		return this.hitConfirm;
 	}
 
 	public int getRemainingFrame() {
