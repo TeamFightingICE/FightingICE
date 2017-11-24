@@ -42,6 +42,7 @@ public class StringTask extends RenderTask {
 
 	private void draw(Image img, int posX, int posY) {
 		GL11.glEnable(GL_TEXTURE_2D);
+		glColor3f(1.0f, 1.0f, 1.0f);
 
 		// Bind the texture
 		glBindTexture(GL_TEXTURE_2D, img.getTextureId());

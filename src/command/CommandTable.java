@@ -24,7 +24,8 @@ public class CommandTable {
 		boolean pushB = false;
 		boolean pushC = false;
 		int characterIndex = character.isPlayerNumber() ? 0 : 1;
-		Key nowKeyData = input.getLast().getKeys()[characterIndex];
+		KeyData temp = input.removeLast();
+		Key nowKeyData = temp.getKeys()[characterIndex];
 
 		// The decision as input only at the moment you press the button. Press
 		// keeps flick.
@@ -37,6 +38,9 @@ public class CommandTable {
 			pushB = nowKeyData.B;
 			pushC = nowKeyData.C;
 		}
+		
+		System.out.println(pushA);
+		input.addLast(temp);
 
 		int lever;
 		int commandLength = 0;
@@ -58,6 +62,17 @@ public class CommandTable {
 				inputLever += Integer.toString(commandList[j]);
 			}
 			String string = character.getState().name() + inputLever;
+			/*
+			if(pushC){
+				System.out.println(string + "C");
+			}else if (pushB) {
+				System.out.println(string + "B");
+			}else if(pushA){
+				System.out.println(string + "A");
+			}else{
+				System.out.println(string + "N");
+			}
+			*/
 
 			//アクションがスキルテーブルにあれば、そのアクションを返す
 			if (pushC && this.skilltable.containsKey(string + "C")) {

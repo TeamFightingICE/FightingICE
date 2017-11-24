@@ -20,6 +20,7 @@ import loader.ResourceLoader;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import struct.HitArea;
 import struct.Key;
 
 public class Character {
@@ -139,6 +140,7 @@ public class Character {
 			e.printStackTrace();
 		}
 
+		this.playerNumber = playerNumber;
 		this.comboTable = new ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>();
 		this.inputCommands = new LinkedList<Key>();
 		this.processedCommands = new LinkedList<Key>();
@@ -179,6 +181,7 @@ public class Character {
 			// 初期の立ち位置
 			this.x = 100;
 			this.y = 335;
+
 		} else {
 			this.front = false;
 			// 初期の立ち位置
@@ -237,7 +240,7 @@ public class Character {
 			moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
 		}
 
-		for (int i = 0; i < 2; i++) {
+
 			this.remainingFrame = getRemainingFrame() - 1;
 
 			if (this.remainingFrame <= 0) {
@@ -245,13 +248,13 @@ public class Character {
 					runAction(Action.DOWN, true);
 				} else if (this.action == Action.DOWN) {
 					runAction(Action.RISE, true);
-				} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_WIDTH) {
+				} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
 					runAction(Action.AIR, true);
 				} else {
 					runAction(Action.STAND, true);
 				}
 			}
-		}
+			
 
 		createAttackInstance();
 
@@ -517,14 +520,18 @@ public class Character {
 	 * @return The character's hit box's most-right x-coordinate.
 	 */
 	public int getHitAreaRight() {
-		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getRight() + x;
+		HitArea area = this.motionList.get(this.action.ordinal()).getCharacterHitArea();
+
+		return this.front ? area.getRight() + x : this.graphicSizeX - area.getLeft() + x;
 	}
 
 	/**
 	 * @return The character's hit box's most-left x-coordinate.
 	 */
 	public int getHitAreaLeft() {
-		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getLeft() + x;
+		HitArea area = this.motionList.get(this.action.ordinal()).getCharacterHitArea();
+
+		return this.front ? area.getLeft() + x : this.graphicSizeX - area.getRight() + x;
 	}
 
 	/**
@@ -566,7 +573,7 @@ public class Character {
 	 *         (true) or not (false)
 	 */
 	public boolean isHitConfirm() {
-		return hitConfirm;
+		return this.hitConfirm;
 	}
 
 	public int getRemainingFrame() {
@@ -574,7 +581,7 @@ public class Character {
 	}
 
 	public Attack getAttack() {
-		return new Attack(this.attack);
+		return this.attack;
 	}
 
 	public int getGraphicCenterX() {
@@ -796,7 +803,7 @@ public class Character {
 			while ((line = br.readLine()) != null) {
 				String[] st = line.split(",", 0);
 				Motion motion = new Motion(st, characterName);
-				this.motionList.add(motion);		
+				this.motionList.add(motion);
 			}
 
 			br.close();

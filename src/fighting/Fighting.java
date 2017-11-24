@@ -85,7 +85,7 @@ public class Fighting {
 			if (!this.inputCommands.isEmpty()) {
 				Action executeAction = this.commandTable.convertKeyToAction(this.playerCharacters[i],
 						this.inputCommands);
-
+				
 				if (ableAction(this.playerCharacters[i], executeAction)) {
 					this.playerCharacters[i].runAction(executeAction, true);
 				}
@@ -170,7 +170,6 @@ public class Fighting {
 		// update coordinate of Attacks(short distance)
 		for (int i = 0; i < 2; ++i) {
 			if (this.playerCharacters[i].getAttack() != null) {
-				System.out.println(this.playerCharacters[i].getAction().name());
 				if (!this.playerCharacters[i].getAttack().update(this.playerCharacters[i])) {
 					this.playerCharacters[i].destroyAttackInstance();
 				}
@@ -233,15 +232,18 @@ public class Fighting {
 	private void detectionPush() {
 		// whether the conflict of first and second player or not?
 		if (isCollision()) {
-			int direction = this.playerCharacters[0].isFront() ? 1 : -1;
+		/*	int direction = this.playerCharacters[0].isFront() ? 1 : -1;
 			int p1SpeedX = direction * this.playerCharacters[0].getSpeedX();
-			int p2SpeedX = -direction * this.playerCharacters[1].getSpeedX();
+			int p2SpeedX = -direction * this.playerCharacters[1].getSpeedX();*/
+			int p1SpeedX = Math.abs(this.playerCharacters[0].getSpeedX());
+			int p2SpeedX = Math.abs(this.playerCharacters[1].getSpeedX());
 
 			if (p1SpeedX > p2SpeedX) {
+				
 				this.playerCharacters[1]
 						.moveX(this.playerCharacters[0].getSpeedX() - this.playerCharacters[1].getSpeedX());
 
-			} else if (p1SpeedX < -p2SpeedX) {
+			} else if (p1SpeedX < p2SpeedX) {
 				this.playerCharacters[0]
 						.moveX(this.playerCharacters[1].getSpeedX() - this.playerCharacters[0].getSpeedX());
 
@@ -282,7 +284,7 @@ public class Fighting {
 	private boolean isCollision() {
 		return this.playerCharacters[0].getHitAreaLeft() <= this.playerCharacters[1].getHitAreaRight()
 				&& this.playerCharacters[0].getHitAreaTop() <= this.playerCharacters[1].getHitAreaBottom()
-				&& playerCharacters[0].getHitAreaRight() >= this.playerCharacters[1].getHitAreaLeft()
+				&& this.playerCharacters[0].getHitAreaRight() >= this.playerCharacters[1].getHitAreaLeft()
 				&& this.playerCharacters[0].getHitAreaBottom() >= this.playerCharacters[1].getHitAreaTop();
 	}
 
@@ -339,7 +341,7 @@ public class Fighting {
 			boolean checkFrame = nowMotion.getCancelAbleFrame() <= nowMotion.getFrameNumber()
 					- character.getRemainingFrame();
 			boolean checkAction = nowMotion.getCancelAbleMotionLevel() >= nextMotion.getMotionLevel();
-
+			
 			return character.isHitConfirm() && checkFrame && checkAction;
 		}
 	}
