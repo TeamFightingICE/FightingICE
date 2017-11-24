@@ -224,8 +224,6 @@ public class Character {
 	public void update() {
 		moveX(this.speedX);
 		moveY(this.speedY);
-		if (playerNumber && action == Action.FOR_JUMP)
-			System.out.println(this.speedX);
 
 		frictionEffect();
 		gravityEffect();
