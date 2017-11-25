@@ -121,6 +121,7 @@ public class Character {
 		this.remainingFrame = character.getRemainingFrame();
 		this.currentCombo = character.getCurrentCombo();
 		this.lastCombo = character.getLastCombo();
+		this.motionList = character.getMotionList();
 	}
 
 	public void initialize(String characterName, boolean playerNumber) {
@@ -464,8 +465,23 @@ public class Character {
 	 * Defines character's orientation.
 	 *
 	 */
-	public void frontDecision(int opponentX) {
-		this.front = getHitAreaCenterX() <= opponentX;
+	public void frontDecision(int opponentCenterX) {
+		if (this.front) {
+			if (getHitAreaCenterX() < opponentCenterX) {
+				this.front = true;
+			} else {
+				this.x = this.x - this.graphicSizeX + graphicCenterX * 2;
+				this.front = false;
+			}
+
+		} else {
+			if (getHitAreaCenterX() < opponentCenterX) {
+				this.x = this.x + this.graphicSizeX - graphicCenterX * 2;
+				this.front = true;
+			} else {
+				this.front = false;
+			}
+		}
 	}
 
 	public void destroyAttackInstance() {
