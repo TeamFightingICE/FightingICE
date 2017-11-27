@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import enumerate.Action;
+import enumerate.State;
 import fighting.Character;
 import input.KeyData;
 import struct.Key;
@@ -54,11 +55,13 @@ public class CommandTable {
 				commandList[commandLength] = lever;
 			}
 		}
-
+		
+		String copyInputLever = "";
 		for (int i = commandList.length - 1; i >= 0; i--) {
 			String inputLever = "";
 			for (int j = i; j >= 0; j--) {
 				inputLever += Integer.toString(commandList[j]);
+				copyInputLever = inputLever;
 			}
 
 			String string = character.getState().name() + inputLever;
@@ -77,14 +80,23 @@ public class CommandTable {
 		}
 
 		// 合致しなかった場合
-		switch (character.getState()) {
+		if(character.getState() == State.AIR){
+			return Action.AIR;
+		} else{
+			if(copyInputLever.equals("2")){
+				return Action.CROUCH;
+			}else {
+				return Action.STAND;
+			}
+		}
+		/*switch (character.getState()) {
 		case AIR:
 			return Action.AIR;
 		case CROUCH:
 			return Action.CROUCH;
 		default:
 			return Action.STAND;
-		}
+		}*/
 	}
 
 	private void setSkillTable() {

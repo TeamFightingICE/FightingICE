@@ -93,7 +93,7 @@ public class Character {
 		this.action = Action.NEUTRAL;
 		this.hitConfirm = false;
 		this.front = true;
-		this.control = true;
+		this.control = false;
 		this.attack = null;
 		this.remainingFrame = 0;
 		this.currentCombo = new ArrayList<Action>();
