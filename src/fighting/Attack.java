@@ -162,7 +162,7 @@ public class Attack {
 	 * @return 攻撃がまだアクティブかどうか
 	 */
 	public boolean update(Character character) {
-		setParameters(character.getX(), character.getY(), character.getGraphicCenterX(), character.isFront());
+		setParameters(character.getX(), character.getY(), character.getGraphicSizeX(), character.isFront());
 
 		return ++this.currentFrame <= this.active;
 	}

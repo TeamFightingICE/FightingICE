@@ -202,6 +202,7 @@ public class Fighting {
 						temp[j] = projectileImage.get(j);
 					}
 					this.projectileDeque.addLast(new LoopEffect(attack, temp));
+					System.out.println(projectileDeque.size());
 					this.playerCharacters[i].destroyAttackInstance();
 				}
 			}

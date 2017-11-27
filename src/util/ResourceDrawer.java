@@ -133,7 +133,7 @@ public class ResourceDrawer {
 				BufferedImage tmpImage = image.getBufferedImage();
 				flipImage(tmpImage, attack.isPlayerNumber());
 
-				int positionY = area.getTop() - (image.getHeight() - area.getBottom() - area.getTop()) / 2;
+				int positionY = area.getTop() - ((image.getHeight() - (area.getBottom() - area.getTop())) / 2);
 				screenGraphic.drawImage(tmpImage, positionX, positionY, image.getWidth(), image.getHeight(), null);
 
 				GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(), image.getHeight(),

@@ -222,12 +222,12 @@ public class CommandTable {
 			}
 		}
 
-		if (character.isPlayerNumber()) {
+		/*if (character.isPlayerNumber()) {
 			for (int i = 0; i < commandList.length; i++) {
 				System.out.print(commandList[i]);
 			}
 			System.out.println();
-		}
+		}*/
 
 		// return which command whether the inputed
 		// 789

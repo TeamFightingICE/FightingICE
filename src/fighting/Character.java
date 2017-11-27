@@ -407,7 +407,7 @@ public class Character {
 
 	private boolean isActive(Motion motion) {
 		int startActive = motion.getFrameNumber() - motion.getAttackStartUp();
-		return (startActive < this.remainingFrame) && (startActive - motion.getAttackActive() <= this.remainingFrame);
+		return startActive == this.remainingFrame;
 	}
 
 	/**
