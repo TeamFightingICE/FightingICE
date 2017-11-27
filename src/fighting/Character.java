@@ -253,7 +253,9 @@ public class Character {
 				runAction(Action.RISE, true);
 			} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
 				runAction(Action.AIR, true);
-			} else {
+			} else if(this.state == State.CROUCH){
+				runAction(Action.CROUCH, true);
+			}else{
 				runAction(Action.STAND, true);
 			}
 		}

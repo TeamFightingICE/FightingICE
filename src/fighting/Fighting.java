@@ -62,6 +62,7 @@ public class Fighting {
 	}
 
 	public void processingFight(int currentFrame, KeyData keyData) {
+
 		// 1. コマンドの実行・対戦処理
 		processingCommands(currentFrame, keyData);
 		// 2. 当たり判定の処理
@@ -83,9 +84,9 @@ public class Fighting {
 
 		for (int i = 0; i < 2; i++) {
 			if (!this.inputCommands.isEmpty()) {
-				Action executeAction = this.commandTable.convertKeyToAction(this.playerCharacters[i],
-						this.inputCommands);
-				
+				//Action executeAction = this.commandTable.convertKeyToAction(this.playerCharacters[i],this.inputCommands);
+
+				Action executeAction = this.commandTable.interpretationCommand(this.playerCharacters[i], this.inputCommands);
 				if (ableAction(this.playerCharacters[i], executeAction)) {
 					this.playerCharacters[i].runAction(executeAction, true);
 				}
@@ -197,7 +198,7 @@ public class Fighting {
 					}
 
 					Image[] temp = new Image[projectileImage.size()];
-					for (int j = 0; i < temp.length; j++) {
+					for (int j = 0; j < temp.length; j++) {
 						temp[j] = projectileImage.get(j);
 					}
 					this.projectileDeque.addLast(new LoopEffect(attack, temp));
@@ -239,7 +240,7 @@ public class Fighting {
 			int p2SpeedX = Math.abs(this.playerCharacters[1].getSpeedX());
 
 			if (p1SpeedX > p2SpeedX) {
-				
+
 				this.playerCharacters[1]
 						.moveX(this.playerCharacters[0].getSpeedX() - this.playerCharacters[1].getSpeedX());
 
@@ -336,17 +337,12 @@ public class Fighting {
 		if (character.getEnergy() < -nextMotion.getAttackStartAddEnergy()) {
 			return false;
 		} else if (character.isControl()) {
-			if(nextAction == Action.CROUCH) {
-				System.out.println("CROUCH");
-			}else{
-				System.out.println("No");
-			}
 			return true;
 		} else {
 			boolean checkFrame = nowMotion.getCancelAbleFrame() <= nowMotion.getFrameNumber()
 					- character.getRemainingFrame();
 			boolean checkAction = nowMotion.getCancelAbleMotionLevel() >= nextMotion.getMotionLevel();
-			
+
 			return character.isHitConfirm() && checkFrame && checkAction;
 		}
 	}
