@@ -141,7 +141,12 @@ public class Fighting {
 				// アッパーの処理
 				if (playerCharacters[i].getAction() == Action.STAND_F_D_DFB) {
 					Image[] upper = GraphicManager.getInstance().getUpperImageContainer()[i];
-					this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), upper, true, false));
+					Motion motion = this.playerCharacters[i].getMotionList().get(Action.STAND_F_D_DFB.ordinal());
+					
+					if(this.playerCharacters[i].isActive(motion)){
+						this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), upper, true, false));
+					}
+					
 				}
 			}
 

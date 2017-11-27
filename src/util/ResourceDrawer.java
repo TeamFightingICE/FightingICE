@@ -294,9 +294,9 @@ public class ResourceDrawer {
 					BufferedImage tmpImage = image.getBufferedImage();
 					flipImage(tmpImage, i != 0);
 
-					int positionX = area.getLeft() - (image.getWidth() - area.getRight() - area.getLeft()) / 2
+					int positionX = area.getLeft() - (image.getWidth() - area.getRight() + area.getLeft()) / 2
 							+ hitEffect.getXVariation();
-					int positionY = area.getTop() - (image.getHeight() - area.getBottom() - area.getTop()) / 2
+					int positionY = area.getTop() - (image.getHeight() - area.getBottom() + area.getTop()) / 2
 							+ hitEffect.getYVariation();
 					screenGraphic.drawImage(tmpImage, positionX, positionY, image.getWidth(), image.getHeight(), null);
 
