@@ -52,8 +52,9 @@ public class InputManager<Data> {
 	}
 
 	public void update() {
-		// DesplayManager内にある
-		// glfwPollEvents();
+		// Poll for window events. The key callback above will only be
+		// invoked during this call.
+		 glfwPollEvents();
 
 		Key[] keys = new Key[this.deviceTypes.length];
 		for (int i = 0; i < this.deviceTypes.length; i++) {
