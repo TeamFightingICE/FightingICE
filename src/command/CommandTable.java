@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import enumerate.Action;
+import enumerate.State;
 import fighting.Character;
 import input.KeyData;
 import struct.Key;
@@ -38,8 +39,7 @@ public class CommandTable {
 			pushB = nowKeyData.B;
 			pushC = nowKeyData.C;
 		}
-		
-		System.out.println(pushA);
+
 		input.addLast(temp);
 
 		int lever;
@@ -55,41 +55,49 @@ public class CommandTable {
 				commandList[commandLength] = lever;
 			}
 		}
-
+		
+		String copyInputLever = "";
 		for (int i = commandList.length - 1; i >= 0; i--) {
 			String inputLever = "";
 			for (int j = i; j >= 0; j--) {
 				inputLever += Integer.toString(commandList[j]);
+				copyInputLever = inputLever;
 			}
-			String string = character.getState().name() + inputLever;
-			/*
-			if(pushC){
-				System.out.println(string + "C");
-			}else if (pushB) {
-				System.out.println(string + "B");
-			}else if(pushA){
-				System.out.println(string + "A");
-			}else{
-				System.out.println(string + "N");
-			}
-			*/
 
-			//アクションがスキルテーブルにあれば、そのアクションを返す
+			String string = character.getState().name() + inputLever;
+			//if(character.isPlayerNumber()) System.out.println(string);
+
+			// アクションがスキルテーブルにあれば、そのアクションを返す
 			if (pushC && this.skilltable.containsKey(string + "C")) {
 				return this.skilltable.get(string + "C");
 			} else if (pushB && this.skilltable.containsKey(string + "B")) {
 				return this.skilltable.get(string + "B");
 			} else if (pushA && this.skilltable.containsKey(string + "A")) {
 				return this.skilltable.get(string + "A");
-			} else if(this.skilltable.containsKey(string + "N")){
+			} else if (this.skilltable.containsKey(string + "N")) {
 				return this.skilltable.get(string + "N");
 			}
 		}
 
-		//合致しなかった場合
-		return Action.STAND;
+		// 合致しなかった場合
+		if(character.getState() == State.AIR){
+			return Action.AIR;
+		} else{
+			if(copyInputLever.equals("2")){
+				return Action.CROUCH;
+			}else {
+				return Action.STAND;
+			}
+		}
+		/*switch (character.getState()) {
+		case AIR:
+			return Action.AIR;
+		case CROUCH:
+			return Action.CROUCH;
+		default:
+			return Action.STAND;
+		}*/
 	}
-
 
 	private void setSkillTable() {
 		////// AIR//////

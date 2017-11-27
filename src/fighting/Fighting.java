@@ -333,9 +333,14 @@ public class Fighting {
 		Motion nextMotion = character.getMotionList().get(nextAction.ordinal());
 		Motion nowMotion = character.getMotionList().get(character.getAction().ordinal());
 
-		if (character.getEnergy() < Math.abs(nextMotion.getAttackStartAddEnergy())) {
+		if (character.getEnergy() < -nextMotion.getAttackStartAddEnergy()) {
 			return false;
 		} else if (character.isControl()) {
+			if(nextAction == Action.CROUCH) {
+				System.out.println("CROUCH");
+			}else{
+				System.out.println("No");
+			}
 			return true;
 		} else {
 			boolean checkFrame = nowMotion.getCancelAbleFrame() <= nowMotion.getFrameNumber()

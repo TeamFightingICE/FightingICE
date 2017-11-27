@@ -93,7 +93,7 @@ public class Character {
 		this.action = Action.NEUTRAL;
 		this.hitConfirm = false;
 		this.front = true;
-		this.control = true;
+		this.control = false;
 		this.attack = null;
 		this.remainingFrame = 0;
 		this.currentCombo = new ArrayList<Action>();
@@ -121,6 +121,7 @@ public class Character {
 		this.remainingFrame = character.getRemainingFrame();
 		this.currentCombo = character.getCurrentCombo();
 		this.lastCombo = character.getLastCombo();
+		this.motionList = character.getMotionList();
 	}
 
 	public void initialize(String characterName, boolean playerNumber) {
@@ -206,8 +207,11 @@ public class Character {
 
 		this.action = executeAction;
 		this.state = exeMotion.getState();
-		this.speedX = this.front ? exeMotion.getSpeedX() : -exeMotion.getSpeedX();
-		this.speedY = exeMotion.getSpeedY();
+
+		if (exeMotion.getSpeedX() != 0) {
+			this.speedX = this.front ? exeMotion.getSpeedX() : -exeMotion.getSpeedX();
+		}
+		this.speedY += exeMotion.getSpeedY();
 		this.control = exeMotion.isControl();
 
 		// createAttackInstance();
@@ -240,21 +244,19 @@ public class Character {
 			moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
 		}
 
+		this.remainingFrame = getRemainingFrame() - 1;
 
-			this.remainingFrame = getRemainingFrame() - 1;
-
-			if (this.remainingFrame <= 0) {
-				if (this.action == Action.CHANGE_DOWN) {
-					runAction(Action.DOWN, true);
-				} else if (this.action == Action.DOWN) {
-					runAction(Action.RISE, true);
-				} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
-					runAction(Action.AIR, true);
-				} else {
-					runAction(Action.STAND, true);
-				}
+		if (this.remainingFrame <= 0) {
+			if (this.action == Action.CHANGE_DOWN) {
+				runAction(Action.DOWN, true);
+			} else if (this.action == Action.DOWN) {
+				runAction(Action.RISE, true);
+			} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
+				runAction(Action.AIR, true);
+			} else {
+				runAction(Action.STAND, true);
 			}
-			
+		}
 
 		createAttackInstance();
 
@@ -463,8 +465,23 @@ public class Character {
 	 * Defines character's orientation.
 	 *
 	 */
-	public void frontDecision(int opponentX) {
-		this.front = getHitAreaCenterX() <= opponentX;
+	public void frontDecision(int opponentCenterX) {
+		if (this.front) {
+			if (getHitAreaCenterX() < opponentCenterX) {
+				this.front = true;
+			} else {
+				this.x = this.x - this.graphicSizeX + graphicCenterX * 2;
+				this.front = false;
+			}
+
+		} else {
+			if (getHitAreaCenterX() < opponentCenterX) {
+				this.x = this.x + this.graphicSizeX - graphicCenterX * 2;
+				this.front = true;
+			} else {
+				this.front = false;
+			}
+		}
 	}
 
 	public void destroyAttackInstance() {

@@ -70,12 +70,13 @@ public class DisplayManager {
 
 		// Setup a key callback. It will be called every time a key is pressed,
 		// repeated or released.
-//		glfwSetKeyCallback(this.window, (window, key, scancode, action, mods) -> {
-//			if (windowCloseRequest(key, action)) {
-//				glfwSetWindowShouldClose(window, true); // We will detect this
-//														// in the rendering loop
-//			}
-//		});
+		// glfwSetKeyCallback(this.window, (window, key, scancode, action, mods)
+		// -> {
+		// if (windowCloseRequest(key, action)) {
+		// glfwSetWindowShouldClose(window, true); // We will detect this
+		// // in the rendering loop
+		// }
+		// });
 		glfwSetKeyCallback(this.window, InputManager.getInstance().getKeyboard());
 
 		// Get the thread stack and push a new frame
@@ -112,8 +113,6 @@ public class DisplayManager {
 	private void gameLoop(GameManager gm) {
 
 		double currentTime = 0;
-		double lastTime = 0;
-		double elapsedTime = 0;
 		glfwSetTime(0.0);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -139,27 +138,20 @@ public class DisplayManager {
 				break;
 			}
 
-			// ゲーム状態の更新
-			gm.update();
-
 			if (this.enableWindow) {
-				currentTime = glfwGetTime();
-				elapsedTime = currentTime - lastTime;
+				// ゲーム状態の更新
+				gm.update();
 
 				// バックバッファに描画する
-			    GraphicManager.getInstance().render();
+				GraphicManager.getInstance().render();
 
-				// FPSに従って描画
-				if (elapsedTime >= 1.0 / GameSetting.FPS) {
-
-					glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
-					lastTime = glfwGetTime();
-				}
+				glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
 
 				// Poll for window events. The key callback above will only be
 				// invoked during this call.
 				glfwPollEvents();
 			}
+
 		}
 	}
 
@@ -192,7 +184,7 @@ public class DisplayManager {
 		return key == GLFW_KEY_DELETE && action == GLFW_RELEASE;
 	}
 
-	private void initGL(){
+	private void initGL() {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 

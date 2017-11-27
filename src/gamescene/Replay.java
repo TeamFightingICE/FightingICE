@@ -1,9 +1,13 @@
 package gamescene;
 
+import enumerate.GameSceneName;
+import manager.InputManager;
+
 public class Replay extends GameScene {
 
 	@Override
 	public void initialize() {
+		InputManager.getInstance().setSceneName(GameSceneName.REPLAY);
 
 
 	}

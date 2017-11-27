@@ -2,6 +2,7 @@ package gamescene;
 
 import java.util.ArrayList;
 
+import enumerate.GameSceneName;
 import fighting.Fighting;
 import informationcontainer.RoundResult;
 import input.KeyData;
@@ -40,6 +41,7 @@ public class Play extends GameScene {
 
 	@Override
 	public void initialize() {
+		InputManager.getInstance().setSceneName(GameSceneName.PLAY);
 		this.fighting = new Fighting();
 		this.fighting.initialize();
 

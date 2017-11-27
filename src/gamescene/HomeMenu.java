@@ -32,7 +32,8 @@ public class HomeMenu extends GameScene {
 
 	@Override
 	public void initialize() {
-		System.out.println("Menu initialize");
+		System.out.println("Home Menu initialize");
+		InputManager.getInstance().setSceneName(GameSceneName.HOME_MENU);
 		// Initialization
 		this.menuItems = new MenuItem[] {
 				new MenuItem("FIGHT ", 50, 50, 0),

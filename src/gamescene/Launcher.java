@@ -2,6 +2,7 @@ package gamescene;
 
 import enumerate.GameSceneName;
 import loader.ResourceLoader;
+import manager.InputManager;
 
 public class Launcher extends GameScene {
 
@@ -31,6 +32,7 @@ public class Launcher extends GameScene {
 	@Override
 	public void initialize() {
 		System.out.println("Launcher initialize");
+		InputManager.getInstance().setSceneName(GameSceneName.LAUNCH);
 	}
 
 	@Override

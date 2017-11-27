@@ -85,6 +85,7 @@ public class ResourceDrawer {
 	public void drawCharacterImage(Character[] playerCharacters, Graphics2D screenGraphic) {
 
 		String[] names = { "P1", "P2" };
+
 		// draw players name
 		for (int i = 0; i < 2; ++i) {
 			// Draw a character to match the direction
@@ -92,14 +93,14 @@ public class ResourceDrawer {
 			// キャラクターの向いている方向に応じて,画像を反転させる
 			flipImage(image, playerCharacters[i].isFront());
 
-			screenGraphic.drawImage(image, playerCharacters[i].getX(), playerCharacters[i].getY(),
-					playerCharacters[i].getGraphicSizeX(), playerCharacters[i].getGraphicSizeY(), null);
-
 			int positionX = playerCharacters[i].getHitAreaLeft()
 					+ (playerCharacters[i].getHitAreaRight() - playerCharacters[i].getHitAreaLeft()) / 3;
 			int positionY = playerCharacters[i].getHitAreaTop() - 50;
 
 			GraphicManager.getInstance().drawString(names[i], positionX, positionY);
+
+			screenGraphic.drawImage(image, playerCharacters[i].getX(), playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
+					playerCharacters[i].getGraphicSizeY(), null);
 
 			GraphicManager.getInstance().drawImage(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
 					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
@@ -261,6 +262,7 @@ public class ResourceDrawer {
 			// 攻撃の当たり判定ボックスの描画
 			if (playerCharacters[i].getAttack() != null) {
 				HitArea area = playerCharacters[i].getAttack().getCurrentHitArea();
+
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),
 						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
 			}
@@ -307,7 +309,7 @@ public class ResourceDrawer {
 
 	private BufferedImage flipImage(BufferedImage image, boolean isFront) {
 		// Flip the image if we need to
-		if (isFront) {
+		if (!isFront) {
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 			tx.translate(-image.getWidth(null), 0);
 

@@ -2,7 +2,9 @@ package gamescene;
 
 import java.util.ArrayList;
 
+import enumerate.GameSceneName;
 import informationcontainer.RoundResult;
+import manager.InputManager;
 
 public class Result extends GameScene {
 
@@ -14,6 +16,11 @@ public class Result extends GameScene {
 
 	public Result(ArrayList<RoundResult> roundResults) {
 		this.roundResults = roundResults;
+	}
+
+	@Override
+	public void initialize() {
+		InputManager.getInstance().setSceneName(GameSceneName.RESULT);
 	}
 
 	/*
