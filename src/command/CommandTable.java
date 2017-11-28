@@ -55,48 +55,64 @@ public class CommandTable {
 				commandList[commandLength] = lever;
 			}
 		}
-		
-		String copyInputLever = "";
+
+		if (character.isPlayerNumber()) {
+			for (int i = 0; i < commandList.length; i++) {
+				System.out.print(commandList[i]);
+			}
+			System.out.println();
+		}
+
+		Action action = null;
+		String copy = "";
 		for (int i = commandList.length - 1; i >= 0; i--) {
 			String inputLever = "";
 			for (int j = i; j >= 0; j--) {
 				inputLever += Integer.toString(commandList[j]);
-				copyInputLever = inputLever;
 			}
 
-			String string = character.getState().name() + inputLever;
-			//if(character.isPlayerNumber()) System.out.println(string);
+			String string;
+			if (character.getState() == State.AIR) {
+				string = "AIR" + inputLever;
+			} else {
+				string = "STAND" + inputLever;
+			}
 
+			// System.out.println(string);
 			// アクションがスキルテーブルにあれば、そのアクションを返す
-			if (pushC && this.skilltable.containsKey(string + "C")) {
-				return this.skilltable.get(string + "C");
-			} else if (pushB && this.skilltable.containsKey(string + "B")) {
-				return this.skilltable.get(string + "B");
-			} else if (pushA && this.skilltable.containsKey(string + "A")) {
-				return this.skilltable.get(string + "A");
-			} else if (this.skilltable.containsKey(string + "N")) {
-				return this.skilltable.get(string + "N");
+			if (pushC && action == null) {
+				copy = string + "C";
+				action = this.skilltable.get(string + "C");
+				// break;
+			} else if (pushB && action == null) {
+				action = this.skilltable.get(string + "B");
+				copy = string + "B";
+				// break;
+			} else if (pushA && action == null) {
+				action = this.skilltable.get(string + "A");
+				copy = string + "A";
+				// break;
+			} else if (action == null) {
+				action = this.skilltable.get(string + "N");
+				copy = string;
+				// break;
 			}
 		}
 
-		// 合致しなかった場合
-		if(character.getState() == State.AIR){
-			return Action.AIR;
-		} else{
-			if(copyInputLever.equals("2")){
-				return Action.CROUCH;
-			}else {
+		if (action != null) {
+			System.out.println("該当あり: " + copy);
+			return action;
+		} else {
+			// 合致しなかった場合
+			System.out.println("該当なし: " + copy);
+			switch (character.getState()) {
+			case AIR:
+				return Action.AIR;
+			default:
 				return Action.STAND;
 			}
 		}
-		/*switch (character.getState()) {
-		case AIR:
-			return Action.AIR;
-		case CROUCH:
-			return Action.CROUCH;
-		default:
-			return Action.STAND;
-		}*/
+
 	}
 
 	private void setSkillTable() {
@@ -165,5 +181,184 @@ public class CommandTable {
 		this.skilltable.put("STAND9N", Action.FOR_JUMP);
 		this.skilltable.put("STAND8N", Action.JUMP);
 		this.skilltable.put("STAND5N", Action.STAND);
+	}
+
+	public Action interpretationCommand(Character character, Deque<KeyData> input) {
+		Key nowKeyData;
+		int[] commandList = { 5, 5, 5, 5 };
+		boolean pushA = false, pushB = false, pushC = false;
+		int charIndex = character.isPlayerNumber() ? 0 : 1;
+
+		KeyData temp;
+
+		// get current key state
+		temp = input.removeLast();
+		nowKeyData = new Key(temp.getKeys()[charIndex]);
+
+		// The decision as input only at the moment you press the button. Press
+		// keeps flick.
+		if (!input.isEmpty()) {
+			pushA = nowKeyData.A && !input.getLast().getKeys()[charIndex].A;
+			pushB = nowKeyData.B && !input.getLast().getKeys()[charIndex].B;
+			pushC = nowKeyData.C && !input.getLast().getKeys()[charIndex].C;
+		} else {
+			pushA = nowKeyData.A;
+			pushB = nowKeyData.B;
+			pushC = nowKeyData.C;
+		}
+
+		input.addLast(temp);
+
+		int lever;
+		int commandLength = 0;
+		for (Iterator<KeyData> i = input.descendingIterator(); i.hasNext() && commandLength < 3;) {
+
+			lever = i.next().getKeys()[charIndex].getLever(character.isFront());
+
+			if (lever != commandList[commandLength]) {
+				if (commandList[commandLength] != 5)
+					commandLength++;
+				commandList[commandLength] = lever;
+			}
+		}
+
+		/*if (character.isPlayerNumber()) {
+			for (int i = 0; i < commandList.length; i++) {
+				System.out.print(commandList[i]);
+			}
+			System.out.println();
+		}*/
+
+		// return which command whether the inputed
+		// 789
+		// 456
+		// 123
+		// AIR Action
+		if (character.getState() == State.AIR) {
+			if (pushB) {
+				// special move
+				if ((commandList[0] == 6 && commandList[1] == 3 && commandList[2] == 2))
+					return Action.AIR_D_DF_FB;// AIR236B
+				else if ((commandList[0] == 3 && commandList[1] == 2 && commandList[2] == 6)
+						|| (commandList[0] == 3 && commandList[1] == 2 && commandList[2] == 3 && commandList[3] == 6))
+					return Action.AIR_F_D_DFB;// AIR623B
+				else if (commandList[0] == 4 && commandList[1] == 1 && commandList[2] == 2)
+					return Action.AIR_D_DB_BB;// AIR214B
+				// normal move
+				else if (nowKeyData.getLever(character.isFront()) == 2)
+					return Action.AIR_DB;// AIR2B
+				else if (nowKeyData.getLever(character.isFront()) == 8)
+					return Action.AIR_UB;// AIR8B
+				else if (nowKeyData.getLever(character.isFront()) == 6)
+					return Action.AIR_FB;// AIR6B
+				else
+					return Action.AIR_B;// AIR5B
+			} else if (pushA) {
+				// special move
+				if ((commandList[0] == 6 && commandList[1] == 3 && commandList[2] == 2))
+					return Action.AIR_D_DF_FA;// AIR236A
+				else if ((commandList[0] == 3 && commandList[1] == 2 && commandList[2] == 6)
+						|| (commandList[0] == 3 && commandList[1] == 2 && commandList[2] == 3 && commandList[3] == 6))
+					return Action.AIR_F_D_DFA;// AIR623A
+				else if (commandList[0] == 4 && commandList[1] == 1 && commandList[2] == 2)
+					return Action.AIR_D_DB_BA;// AIR214A
+				// normal move
+				else if (nowKeyData.getLever(character.isFront()) == 2)
+					return Action.AIR_DA;// AIR2A
+				else if (nowKeyData.getLever(character.isFront()) == 8)
+					return Action.AIR_UA;// AIR8A
+				else if (nowKeyData.getLever(character.isFront()) == 6)
+					return Action.AIR_FA;// AIR6A
+				else
+					return Action.AIR_A;// AIR5A
+			} else if (nowKeyData.getLever(character.isFront()) == 4)
+				return Action.AIR_GUARD;// AIR4
+			else
+				return Action.AIR;// AIR5
+		}
+		// Ground Action
+		else {
+			// Super special move
+			if (pushC) {
+				if ((commandList[0] == 6 && commandList[1] == 3 && commandList[2] == 2))
+					return Action.STAND_D_DF_FC;// STAND236A
+			} else if (pushB) {
+				// special move
+				if ((commandList[0] == 6 && commandList[1] == 3 && commandList[2] == 2))
+					return Action.STAND_D_DF_FB;// STAND236B
+				else if ((commandList[0] == 3 && commandList[1] == 2 && commandList[2] == 6)
+						|| (commandList[0] == 3 && commandList[1] == 2 && commandList[2] == 3 && commandList[3] == 6))
+					return Action.STAND_F_D_DFB;// STAND623B
+				else if (commandList[0] == 4 && commandList[1] == 1 && commandList[2] == 2)
+					return Action.STAND_D_DB_BB;// STAND214B
+				// normal move
+				else if (nowKeyData.getLever(character.isFront()) == 3)
+					return Action.CROUCH_FB;// STAND3B
+				else if (nowKeyData.getLever(character.isFront()) == 2)
+					return Action.CROUCH_B;// STAND2B
+				else if (nowKeyData.getLever(character.isFront()) == 4)
+					return Action.THROW_B;// STAND4B
+				else if (nowKeyData.getLever(character.isFront()) == 6)
+					return Action.STAND_FB;// STAND6B
+				else
+					return Action.STAND_B;// STAND5B
+			} else if (pushA) {
+				// special move
+				if ((commandList[0] == 6 && commandList[1] == 3 && commandList[2] == 2)) {
+
+					return Action.STAND_D_DF_FA;// STAND236A
+				}
+
+				else if ((commandList[0] == 3 && commandList[1] == 2 && commandList[2] == 6)
+						|| (commandList[0] == 3 && commandList[1] == 2 && commandList[2] == 3 && commandList[3] == 6))
+					return Action.STAND_F_D_DFA;// STAND623A
+				else if (commandList[0] == 4 && commandList[1] == 1 && commandList[2] == 2)
+					return Action.STAND_D_DB_BA;// STAND214A
+				// normal move
+				else if (nowKeyData.getLever(character.isFront()) == 3)
+					return Action.CROUCH_FA;// CROUCH3A
+				else if (nowKeyData.getLever(character.isFront()) == 2)
+					return Action.CROUCH_A;// CROUCH2A
+				else if (nowKeyData.getLever(character.isFront()) == 4)
+					return Action.THROW_A;// THROW4A
+				else if (nowKeyData.getLever(character.isFront()) == 6)
+					return Action.STAND_FA;// STAND6A
+				else
+					return Action.STAND_A;// STAND5A
+			} else if (nowKeyData.getLever(character.isFront()) == 6) {
+				if (commandList[1] == 6)
+					return Action.DASH;// STAND66
+				else
+					return Action.FORWARD_WALK;// STAND6
+			} else if (nowKeyData.getLever(character.isFront()) == 4) {
+				if (commandList[1] == 4)
+					return Action.BACK_STEP;// STAND44
+				else
+					return Action.STAND_GUARD;// STAND4
+			} else {
+				if (nowKeyData.getLever(character.isFront()) == 1)
+					return Action.CROUCH_GUARD;// CROUCH1
+				else if (nowKeyData.getLever(character.isFront()) == 2) {
+					// System.out.println("該当あり: CROUCH");
+					return Action.CROUCH;// CROUCH2
+				}
+
+				else if (nowKeyData.getLever(character.isFront()) == 7)
+					return Action.BACK_JUMP;// STAND7
+				else if (nowKeyData.getLever(character.isFront()) == 9) {
+					return Action.FOR_JUMP;// STAND9
+				}
+
+				else if (nowKeyData.getLever(character.isFront()) == 8)
+					return Action.JUMP;// STAND8
+				else {
+					// System.out.println("該当あり: STAND");
+					return Action.STAND;// STAND
+				}
+
+			}
+		}
+		System.out.println("該当なし");
+		return Action.STAND;
 	}
 }

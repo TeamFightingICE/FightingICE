@@ -229,6 +229,11 @@ public class Character {
 		frictionEffect();
 		gravityEffect();
 
+		if (FlagSetting.trainingModeFlag) {
+			this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
+			this.hp = LaunchSetting.maxHp[this.playerNumber ? 0 : 1];
+		}
+
 		if (this.energy > LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1]) {
 			this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
 		}
@@ -253,6 +258,8 @@ public class Character {
 				runAction(Action.RISE, true);
 			} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
 				runAction(Action.AIR, true);
+			} else if (this.state == State.CROUCH) {
+				runAction(Action.CROUCH, true);
 			} else {
 				runAction(Action.STAND, true);
 			}
@@ -391,7 +398,7 @@ public class Character {
 	private void createAttackInstance() {
 		Motion motion = this.motionList.get(this.action.ordinal());
 
-		if (isActive(motion)) {
+		if (startActive(motion)) {
 			this.attack = new Attack(motion.getAttackHitArea(), motion.getAttackSpeedX(), motion.getAttackSpeedY(),
 					motion.getAttackStartUp(), motion.getAttackActive(), motion.getAttackHitDamage(),
 					motion.getAttackGuardDamage(), motion.getAttackStartAddEnergy(), motion.getAttackHitAddEnergy(),
@@ -403,9 +410,9 @@ public class Character {
 		}
 	}
 
-	private boolean isActive(Motion motion) {
+	public boolean startActive(Motion motion) {
 		int startActive = motion.getFrameNumber() - motion.getAttackStartUp();
-		return (startActive < this.remainingFrame) && (startActive - motion.getAttackActive() <= this.remainingFrame);
+		return startActive == this.remainingFrame;
 	}
 
 	/**
