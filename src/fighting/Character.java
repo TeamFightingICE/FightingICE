@@ -67,7 +67,7 @@ public class Character {
 
 	private ArrayList<Action> currentCombo;
 
-	private int lastCombo;
+	private int lastHitFrame;
 
 	private ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> comboTable;
 
@@ -76,6 +76,9 @@ public class Character {
 	private Deque<Key> processedCommands;
 
 	private ArrayList<Motion> motionList;
+
+	/** 攻撃の連続ヒット数*/
+	private int hitCount;
 
 	public Character() {
 		this.playerNumber = true;
@@ -97,7 +100,8 @@ public class Character {
 		this.attack = null;
 		this.remainingFrame = 0;
 		this.currentCombo = new ArrayList<Action>();
-		this.lastCombo = 0;
+		this.lastHitFrame = 0;
+		this.hitCount = 0;
 	}
 
 	public Character(Character character) {
@@ -120,8 +124,9 @@ public class Character {
 		this.attack = character.getAttack();
 		this.remainingFrame = character.getRemainingFrame();
 		this.currentCombo = character.getCurrentCombo();
-		this.lastCombo = character.getLastCombo();
+		this.lastHitFrame = character.getLastHitFrame();
 		this.motionList = character.getMotionList();
+		this.getHitCount();
 	}
 
 	public void initialize(String characterName, boolean playerNumber) {
@@ -175,6 +180,7 @@ public class Character {
 		this.remainingFrame = 1;
 		this.control = false;
 		this.hitConfirm = false;
+		this.hitCount = 0;
 		resetCombo();
 
 		if (this.playerNumber) {
@@ -278,12 +284,15 @@ public class Character {
 	}
 
 	/** 攻撃がヒットしたときに,自身のパラメータや状態を更新する */
-	public void hitAttack(Character opponent, Attack attack) {
+	public void hitAttack(Character opponent, Attack attack, int currentFrame) {
 
 		int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
+		opponent.setHitCount(opponent.getHitCount() + 1);
+		opponent.setLastHitFrame(currentFrame);
+
 
 		if (isGuard(attack)) {
-			setHp(this.hp - attack.getGuardDamage() - opponent.getComboDamage());
+			setHp(this.hp - attack.getGuardDamage() - opponent.getExtraDamage());
 			setEnergy(this.energy + attack.getGiveEnergy());
 			setSpeedX(direction * attack.getImpactX() / 2); // 通常の半分のノックバック(旧より変更)
 			setRemainingFrame(attack.getGiveGuardRecov());
@@ -300,14 +309,14 @@ public class Character {
 						opponent.runAction(Action.THROW_HIT, false);
 					}
 
-					setHp(this.hp - attack.getHitDamage());
+					setHp(this.hp - attack.getHitDamage() - opponent.getExtraDamage());
 					setEnergy(this.energy + attack.getGiveEnergy());
 					opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
 				}
 
 				// 投げ技以外
 			} else {
-				setHp(this.hp - attack.getHitDamage() - opponent.getComboDamage());
+				setHp(this.hp - attack.getHitDamage() - opponent.getExtraDamage());
 				setEnergy(this.energy + attack.getGiveEnergy());
 				setSpeedX(direction * attack.getImpactX());
 				setSpeedY(attack.getImpactY());
@@ -634,7 +643,7 @@ public class Character {
 	}
 
 	public int getLastCombo() {
-		return this.lastCombo;
+		return this.lastHitFrame;
 	}
 
 	public int getComboState() {
@@ -699,6 +708,22 @@ public class Character {
 		Motion motion = motionList.get(this.action.ordinal());
 
 		return motion.getImage(Math.abs(this.remainingFrame) % motion.getFrameNumber());
+	}
+
+	/**現時点での攻撃の連続ヒット回数を取得する*/
+	public int getHitCount() {
+		return this.hitCount;
+	}
+
+	public int getLastHitFrame() {
+		return this.lastHitFrame;
+	}
+
+	public int getExtraDamage() {
+		int requireHit = 4; //ボーナスダメージに必要な最小限のヒット数
+		int damage = 10; //ボーナスダメージ
+
+		return this.hitCount < requireHit ? 0 : damage * requireHit / this.hitCount;
 	}
 
 	////// Setter//////
@@ -837,6 +862,14 @@ public class Character {
 		}
 	}
 
+	public void setHitCount(int hitCount) {
+		this.hitCount = hitCount;
+	}
+
+	public void setLastHitFrame(int currentFrame) {
+		this.lastHitFrame = currentFrame;
+	}
+
 	/**
 	 * Sets a list storing keys of the action that the character will be
 	 * executing in the simulator
@@ -871,7 +904,7 @@ public class Character {
 	 * Reset combo's information.
 	 */
 	public void resetCombo() {
-		this.lastCombo = 0;
+		this.lastHitFrame = 0;
 		this.currentCombo.clear();
 	}
 
@@ -921,7 +954,7 @@ public class Character {
 			resetCombo();
 		}
 
-		this.lastCombo = nowFrame + this.remainingFrame;
+		this.lastHitFrame = nowFrame + this.remainingFrame;
 		this.currentCombo.add(this.action);
 		if (currentPossibleCombos().isEmpty()) {
 			resetCombo();
@@ -1003,7 +1036,7 @@ public class Character {
 	 *         otherwise.
 	 */
 	public boolean isComboValid(int nowFrame) {
-		return (nowFrame - this.lastCombo) <= GameSetting.COMBO_LIMIT;
+		return (nowFrame - this.lastHitFrame) <= GameSetting.COMBO_LIMIT;
 	}
 
 	/**

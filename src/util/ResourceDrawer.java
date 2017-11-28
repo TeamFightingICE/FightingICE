@@ -233,7 +233,7 @@ public class ResourceDrawer {
 	 */
 	private void drawHitCounter(Character[] playerCharacters) {
 		for (int i = 0; i < 2; ++i) {
-			int comboState = playerCharacters[i].getComboState();
+			int comboState = Math.min(playerCharacters[i].getHitCount(), 4);
 
 			if (comboState > 0) {
 				Image counterImage = GraphicManager.getInstance().getCounterTextImageContainer().get(comboState - 1);
