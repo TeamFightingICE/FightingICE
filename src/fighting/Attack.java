@@ -174,6 +174,7 @@ public class Attack {
 		int bottom;
 
 		if (direction) {
+			System.out.println("set L: " + settingHitArea.getLeft() + "set R " + settingHitArea.getRight());
 			left = x + this.settingHitArea.getLeft();
 			right = x + this.settingHitArea.getRight();
 			this.speedX = this.settingSpeedX;

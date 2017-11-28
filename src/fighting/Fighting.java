@@ -143,7 +143,7 @@ public class Fighting {
 					Image[] upper = GraphicManager.getInstance().getUpperImageContainer()[i];
 					Motion motion = this.playerCharacters[i].getMotionList().get(Action.STAND_F_D_DFB.ordinal());
 					
-					if(this.playerCharacters[i].isActive(motion)){
+					if(this.playerCharacters[i].startActive(motion)){
 						this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), upper, true, false));
 					}
 					
@@ -370,8 +370,9 @@ public class Fighting {
 			return false;
 		} else if (opponent.getHitAreaLeft() <= attack.getCurrentHitArea().getRight()
 				&& opponent.getHitAreaRight() >= attack.getCurrentHitArea().getLeft()
-				&& opponent.getHitAreaBottom() <= attack.getCurrentHitArea().getBottom()
-				&& opponent.getHitAreaTop() >= attack.getCurrentHitArea().getTop()) {
+				&& opponent.getHitAreaTop() <= attack.getCurrentHitArea().getBottom()
+				&& opponent.getHitAreaBottom() >= attack.getCurrentHitArea().getTop()) {
+			System.out.println("hit !");
 			return true;
 		} else {
 			return false;

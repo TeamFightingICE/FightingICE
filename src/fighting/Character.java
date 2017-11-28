@@ -261,6 +261,9 @@ public class Character {
 		}
 
 		createAttackInstance();
+		
+		if(playerNumber && attack != null) System.out.println("AL " + attack.getCurrentHitArea().getLeft() + " AR " + attack.getCurrentHitArea().getRight() + " AT " + attack.getCurrentHitArea().getTop() + " AB " + attack.getCurrentHitArea().getBottom());
+		if(!playerNumber) System.out.println("L " + getHitAreaLeft() + " R " + getHitAreaRight() + " T " + getHitAreaTop() + " B " + getHitAreaBottom());
 
 		if (!this.inputCommands.isEmpty()) {
 			this.processedCommands.addLast(new Key(this.inputCommands.pop()));
@@ -393,7 +396,10 @@ public class Character {
 	private void createAttackInstance() {
 		Motion motion = this.motionList.get(this.action.ordinal());
 
-		if (isActive(motion)) {
+		if (startActive(motion)) {
+			if (playerNumber) {
+				System.out.println(motion.getActionName());
+			}
 			this.attack = new Attack(motion.getAttackHitArea(), motion.getAttackSpeedX(), motion.getAttackSpeedY(),
 					motion.getAttackStartUp(), motion.getAttackActive(), motion.getAttackHitDamage(),
 					motion.getAttackGuardDamage(), motion.getAttackStartAddEnergy(), motion.getAttackHitAddEnergy(),
@@ -405,7 +411,7 @@ public class Character {
 		}
 	}
 
-	public boolean isActive(Motion motion) {
+	public boolean startActive(Motion motion) {
 		int startActive = motion.getFrameNumber() - motion.getAttackStartUp();
 		return startActive == this.remainingFrame;
 	}
