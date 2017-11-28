@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
@@ -30,6 +32,8 @@ public class SoundManager {
 	private ArrayList<Integer> sources;
 	private long device;
 	private long context;
+	private Map<String, Integer> soundEffect;
+	private Integer backGroundMusic;
 
 	/** コンストラクタ */
 	private SoundManager() {
@@ -49,6 +53,8 @@ public class SoundManager {
 
 		// 解放確認フラグ
 		this.closeFlag = false;
+
+		this.soundEffect = new HashMap<String, Integer>();
 
 		this.initialize();
 	}
@@ -188,7 +194,7 @@ public class SoundManager {
 		alSourceStop(source);
 	}
 
-	/** 音声ファイルクローズ */
+	/** 音声ファイルクローズ 終了時は必ず行う */
 	public void close() {
 		if (!this.closeFlag) {
 			IntBuffer scratch = BufferUtils.createIntBuffer(1);
@@ -217,5 +223,17 @@ public class SoundManager {
 
 			this.closeFlag = true;
 		}
+	}
+
+	public Map<String, Integer> getSoundEffect() {
+		return this.soundEffect;
+	}
+
+	public Integer getBackGroundMusic() {
+		return this.backGroundMusic;
+	}
+
+	public void setBackGroundMusic(int source) {
+		this.backGroundMusic = source;
 	}
 }

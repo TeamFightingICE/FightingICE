@@ -3,8 +3,6 @@ package gamescene;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import enumerate.GameSceneName;
 import informationcontainer.MenuItem;
@@ -13,6 +11,7 @@ import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
+import setting.ResourceSetting;
 import struct.Key;
 
 public class HomeMenu extends GameScene {
@@ -26,16 +25,8 @@ public class HomeMenu extends GameScene {
 	private int cursorPosition;
 	// 現在選択されているreplayのIndex
 	private int replayIndex;
-
-	private SoundManager sm;
-	private Map<String, Integer> soundEffect;
-	private Integer backGroundMusic;
 	private Keyboard keyboard;
-
-	private static final String BGM_FILE = "BGM0.wav";
-
-	public static String[] SOUND_EFFECTS = { "LandingA1.wav", "JumpSoundAmended.wav", "WeakHit.wav", "StrongHit.wav",
-			"WeakGuard1.wav" };
+	private SoundManager sm;
 
 	public HomeMenu() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
@@ -60,10 +51,9 @@ public class HomeMenu extends GameScene {
 		if (allReplayNames.size() == 0) {
 			allReplayNames.add("None");
 		}
+		sm = SoundManager.getInstance();
+		ResourceLoader.getInstance().loadResource();
 
-		this.sm = SoundManager.getInstance();
-		this.loadSoundEffect(sm);
-		this.loadBackGroundMusic(sm);
 		this.keyboard = InputManager.getInstance().getKeyboard();
 	}
 
@@ -86,25 +76,25 @@ public class HomeMenu extends GameScene {
 			}
 		}
 		if (keyboard.getKeyDown(GLFW_KEY_1)) {
-			sm.play(soundEffect.get(SOUND_EFFECTS[0]));
+			sm.play(sm.getSoundEffect().get(ResourceSetting.SOUND_EFFECTS[0]));
 		}
 		if (keyboard.getKeyDown(GLFW_KEY_2)) {
-			sm.play(soundEffect.get(SOUND_EFFECTS[1]));
+			sm.play(sm.getSoundEffect().get(ResourceSetting.SOUND_EFFECTS[1]));
 		}
 		if (keyboard.getKeyDown(GLFW_KEY_3)) {
-			sm.play(soundEffect.get(SOUND_EFFECTS[2]));
+			sm.play(sm.getSoundEffect().get(ResourceSetting.SOUND_EFFECTS[2]));
 		}
 		if (keyboard.getKeyDown(GLFW_KEY_4)) {
-			sm.play(soundEffect.get(SOUND_EFFECTS[3]));
+			sm.play(sm.getSoundEffect().get(ResourceSetting.SOUND_EFFECTS[3]));
 		}
 		if (keyboard.getKeyDown(GLFW_KEY_5)) {
-			sm.play(soundEffect.get(SOUND_EFFECTS[4]));
+			sm.play(sm.getSoundEffect().get(ResourceSetting.SOUND_EFFECTS[4]));
 		}
 		if (keyboard.getKeyDown(GLFW_KEY_6)) {
-			sm.play(backGroundMusic);
+			sm.play(sm.getBackGroundMusic());
 		}
 		if (keyboard.getKeyDown(GLFW_KEY_7)) {
-			sm.stop(backGroundMusic);
+			sm.stop(sm.getBackGroundMusic());
 		}
 
 		switch (cursorPosition) {
@@ -165,18 +155,6 @@ public class HomeMenu extends GameScene {
 				menuItems[2].getCoordinateY());
 		GraphicManager.getInstance().drawString("=>", menuItems[cursorPosition].getCoordinateX() - 30,
 				menuItems[cursorPosition].getCoordinateY());
-	}
-
-	private void loadSoundEffect(SoundManager sm) {
-		String path = "./data/sound/";
-		this.soundEffect = new HashMap<String, Integer>();
-		for (String soundEffect : SOUND_EFFECTS)
-			this.soundEffect.put(soundEffect, sm.loadSoundResource(path + soundEffect, false));
-	}
-
-	private void loadBackGroundMusic(SoundManager sm) {
-		String path = "./data/sound/";
-		this.backGroundMusic = sm.loadSoundResource(path + BGM_FILE, true);
 	}
 
 	@Override

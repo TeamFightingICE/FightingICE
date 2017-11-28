@@ -45,7 +45,7 @@ public class ResourceSetting {
 	/**
 	 * The names of all sounds effects.
 	 */
-	public static String[] SOUND_EFFECTS = { "013_LandingA1.wav", "015_JumpSoundAmended.wav", "016_WeakHit.wav",
-			"017_StrongHit.wav", "021_WeakGuard1.wav" };
+	public static String[] SOUND_EFFECTS = { "LandingA1.wav", "JumpSoundAmended.wav", "WeakHit.wav",
+			"StrongHit.wav", "WeakGuard1.wav" };
 
 }
