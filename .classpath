@@ -25,7 +25,5 @@
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-openal-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-opengl-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-opengles-natives-windows.jar"/>
-	<classpathentry kind="lib" path="lib/javatuples-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/commons_csv.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
