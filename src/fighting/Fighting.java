@@ -157,7 +157,7 @@ public class Fighting {
 				this.playerCharacters[i].destroyAttackInstance();
 			}
 
-			if(!playerCharacters[i].isComboValid(currentFrame)){
+			if (!playerCharacters[i].isComboValid(currentFrame)) {
 				playerCharacters[i].setHitCount(0);
 			}
 		}

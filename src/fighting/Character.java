@@ -66,7 +66,7 @@ public class Character {
 
 	private ArrayList<Motion> motionList;
 
-	/** 攻撃の連続ヒット数*/
+	/** 攻撃の連続ヒット数 */
 	private int hitCount;
 
 	public Character() {
@@ -273,7 +273,6 @@ public class Character {
 		int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
 		opponent.setHitCount(opponent.getHitCount() + 1);
 		opponent.setLastHitFrame(currentFrame);
-
 
 		if (isGuard(attack)) {
 			setHp(this.hp - attack.getGuardDamage() - opponent.getExtraDamage());
@@ -673,7 +672,7 @@ public class Character {
 		return motion.getImage(Math.abs(this.remainingFrame) % motion.getFrameNumber());
 	}
 
-	/**現時点での攻撃の連続ヒット回数を取得する*/
+	/** 現時点での攻撃の連続ヒット回数を取得する */
 	public int getHitCount() {
 		return this.hitCount;
 	}
@@ -683,8 +682,8 @@ public class Character {
 	}
 
 	public int getExtraDamage() {
-		int requireHit = 4; //ボーナスダメージに必要な最小限のヒット数
-		int damage = 10; //ボーナスダメージ
+		int requireHit = 4; // ボーナスダメージに必要な最小限のヒット数
+		int damage = 5; // ボーナスダメージ
 
 		return this.hitCount < requireHit ? 0 : damage * requireHit / this.hitCount;
 	}
