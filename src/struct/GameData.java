@@ -2,9 +2,6 @@ package struct;
 
 import java.util.ArrayList;
 
-import org.javatuples.Triplet;
-
-import enumerate.Action;
 import fighting.Character;
 import fighting.Motion;
 import setting.LaunchSetting;
@@ -26,13 +23,10 @@ public class GameData {
 
 	private Simulator simulator;
 
-	private ArrayList<ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>> comboTable;
-
 	public GameData() {
 		this.characterMotions = new ArrayList<ArrayList<MotionData>>(2);
 		this.characterNames = new String[2];
 		this.aiNames = new String[2];
-		this.comboTable = new ArrayList<ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>>(2);
 	}
 
 	public GameData(Character[] players) {
@@ -50,9 +44,6 @@ public class GameData {
 				motionDataList.add(new MotionData(motion));
 			}
 			this.characterMotions.add(motionDataList);
-
-			// コンボテーブルを格納
-			this.comboTable.add(players[i].getComboTable());
 		}
 		this.simulator = new Simulator(this);
 	}
@@ -81,9 +72,4 @@ public class GameData {
 	public Simulator getSimulator() {
 		return new Simulator(this.simulator);
 	}
-
-	public ArrayList<ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>> getComboTable() {
-		return (ArrayList<ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>>) this.comboTable.clone();
-	}
-
 }

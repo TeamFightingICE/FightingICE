@@ -52,7 +52,7 @@ public class ResourceLoader {
 		loadImages(GraphicManager.getInstance().getUltimateAttackImageContainer(),
 				graphicPath + ResourceSetting.SUPER_DIRECTORY);
 		System.out.println("必殺技読み込み完了");
-		// 1~4の文字カウンタ読み込み
+		// 0~9の文字カウンタ読み込み
 		loadImages(GraphicManager.getInstance().getCounterTextImageContainer(),
 				graphicPath + ResourceSetting.COUNTER_DIRECTORY);
 		System.out.println("文字カウンタ読み込み完了");

@@ -1,6 +1,5 @@
 package struct;
 
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -49,13 +48,9 @@ public class CharacterData {
 
 	private int graphicSizeY;
 
-	private int graphicCenterX;
+	private int hitCount;
 
-	private int graphicCenterY;
-
-	private ArrayList<Action> currentCombo = new ArrayList<Action>();
-
-	private int lastCombo;
+	private int lastHitFrame;
 
 	private Deque<Key> inputCommands;
 
@@ -69,8 +64,6 @@ public class CharacterData {
 		this.y = character.getY();
 		this.graphicSizeX = character.getGraphicSizeX();
 		this.graphicSizeY = character.getGraphicSizeY();
-		this.graphicCenterX = character.getGraphicCenterX();
-		this.graphicCenterY = character.getGraphicCenterY();
 		this.left = character.getHitAreaLeft();
 		this.right = character.getHitAreaRight();
 		this.top = character.getHitAreaTop();
@@ -83,8 +76,8 @@ public class CharacterData {
 		this.control = character.isControl();
 		this.attack = character.getAttack();
 		this.remainingFrame = character.getRemainingFrame();
-		this.currentCombo = character.getCurrentCombo();
-		this.lastCombo = character.getLastCombo();
+		this.hitCount = character.getHitCount();
+		this.lastHitFrame = character.getLastHitFrame();
 	}
 
 	// Copy constructor for the CharacterData class
@@ -96,8 +89,6 @@ public class CharacterData {
 		this.y = characterData.getY();
 		this.graphicSizeX = characterData.getGraphicSizeX();
 		this.graphicSizeY = characterData.getGraphicSizeY();
-		this.graphicCenterX = characterData.getGraphicCenterX();
-		this.graphicCenterY = characterData.getGraphicCenterY();
 		this.left = characterData.getLeft();
 		this.right = characterData.getRight();
 		this.top = characterData.getTop();
@@ -110,8 +101,8 @@ public class CharacterData {
 		this.control = characterData.isControl();
 		this.attack = characterData.getAttack();
 		this.remainingFrame = characterData.getRemainingFrame();
-		this.currentCombo = characterData.getCurrentCombo();
-		this.lastCombo = characterData.getLastCombo();
+		this.hitCount = characterData.getHitCount();
+		this.lastHitFrame = characterData.getLastHitFrame();
 	}
 
 	public boolean isPlayerNumber() {
@@ -183,14 +174,6 @@ public class CharacterData {
 		return new Attack(this.attack);
 	}
 
-	public int getGraphicCenterX() {
-		return this.graphicCenterX;
-	}
-
-	public int getGraphicCenterY() {
-		return this.graphicCenterY;
-	}
-
 	public int getGraphicSizeX() {
 		return this.graphicSizeX;
 	}
@@ -199,22 +182,15 @@ public class CharacterData {
 		return this.graphicSizeY;
 	}
 
-	public ArrayList<Action> getCurrentCombo() {
-		ArrayList<Action> temp = new ArrayList<Action>();
-		for (Action action : this.currentCombo) {
-			temp.add(action);
-		}
 
-		return temp;
+	public int getHitCount() {
+		return this.hitCount;
 	}
 
-	public int getLastCombo() {
-		return this.lastCombo;
+	public int getLastHitFrame() {
+		return this.lastHitFrame;
 	}
 
-	public int getComboState() {
-		return this.currentCombo.size();
-	}
 
 	/**
 	 * Returns a list storing keys of the action that the character will be
@@ -319,20 +295,20 @@ public class CharacterData {
 		this.attack = attack;
 	}
 
-	public void setGraphicCenterX(int graphicCenterX) {
-		this.graphicCenterX = graphicCenterX;
-	}
-
-	public void setGraphicCenterY(int graphicCenterY) {
-		this.graphicCenterY = graphicCenterY;
-	}
-
 	public void setGraphicSizeX(int graphicSizeX) {
 		this.graphicSizeX = graphicSizeX;
 	}
 
 	public void setGraphicSizeY(int graphicSizeY) {
 		this.graphicSizeY = graphicSizeY;
+	}
+
+	public void setHitCount(int hitCount) {
+		this.hitCount = hitCount;
+	}
+
+	public void setLastHitFrame(int lastHitFrame) {
+		this.lastHitFrame = lastHitFrame;
 	}
 
 	/**

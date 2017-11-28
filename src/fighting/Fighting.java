@@ -108,7 +108,8 @@ public class Fighting {
 
 			if (detectionHit(this.playerCharacters[opponentIndex], projectile.getAttack())) {
 				int myIndex = opponentIndex == 0 ? 1 : 0;
-				this.playerCharacters[opponentIndex].hitAttack(this.playerCharacters[myIndex], projectile.getAttack());
+				this.playerCharacters[opponentIndex].hitAttack(this.playerCharacters[myIndex], projectile.getAttack(),
+						currentFrame);
 
 			} else {
 				this.projectileDeque.addLast(projectile);
@@ -122,13 +123,8 @@ public class Fighting {
 
 			if (detectionHit(this.playerCharacters[opponentIndex], attack)) {
 				isHit[i] = true;
-				// コンボの処理
-				processingCombo(currentFrame, i);
 				// HP等のパラメータの更新
-				this.playerCharacters[opponentIndex].hitAttack(this.playerCharacters[i], attack);
-
-			} else if (this.playerCharacters[i].getAttack() != null) {
-				this.playerCharacters[i].resetCombo();
+				this.playerCharacters[opponentIndex].hitAttack(this.playerCharacters[i], attack, currentFrame);
 			}
 		}
 
@@ -136,8 +132,11 @@ public class Fighting {
 		for (int i = 0; i < 2; i++) {
 			if (this.playerCharacters[i].getAttack() != null) {
 				// 現在のコンボに応じたエフェクトをセット
-				Image[] effect = GraphicManager.getInstance().getHitEffectImageContaier()[Math
-						.max(this.playerCharacters[i].getComboState() - 1, 0)];
+				int comboState = Math.max(this.playerCharacters[i].getHitCount() - 1, 0);
+				// 4Hit以上であれば,エフェクトは4ヒット目のもの固定
+				comboState = Math.min(comboState, 3);
+
+				Image[] effect = GraphicManager.getInstance().getHitEffectImageContaier()[comboState];
 				this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), effect, isHit[i]));
 
 				// アッパーの処理
@@ -156,6 +155,10 @@ public class Fighting {
 			if (isHit[i]) {
 				this.playerCharacters[i].setHitConfirm(true);
 				this.playerCharacters[i].destroyAttackInstance();
+			}
+
+			if (!playerCharacters[i].isComboValid(currentFrame)) {
+				playerCharacters[i].setHitCount(0);
 			}
 		}
 	}
@@ -320,21 +323,6 @@ public class Fighting {
 
 				playerCharacters[i].moveX(-playerCharacters[i].getHitAreaLeft());
 			}
-		}
-	}
-
-	/** 自身の攻撃が相手に当たった時, コンボの遷移処理及び相手のコンボのブレイク処理を行う */
-	private void processingCombo(int currentFrame, int myIndex) {
-		int opponentIndex = myIndex == 0 ? 1 : 0;
-		Action action = this.playerCharacters[myIndex].getAction();
-
-		// 次のコンボに遷移
-		this.playerCharacters[myIndex].nextCombo(currentFrame);
-		// 自身のコンボブレイカーによって相手のコンボがブレイクできたか
-		if (this.playerCharacters[opponentIndex].isComboBreakable()
-				&& this.playerCharacters[opponentIndex].getComboBreakers().contains(action)) {
-			this.playerCharacters[opponentIndex].breakCombo();
-			this.playerCharacters[opponentIndex].resetCombo();
 		}
 	}
 

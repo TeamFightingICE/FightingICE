@@ -4,14 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
-import org.javatuples.Triplet;
 
 import enumerate.Action;
 import enumerate.State;
@@ -65,17 +58,16 @@ public class Character {
 
 	private int graphicCenterY;
 
-	private ArrayList<Action> currentCombo;
-
-	private int lastCombo;
-
-	private ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> comboTable;
+	private int lastHitFrame;
 
 	private Deque<Key> inputCommands;
 
 	private Deque<Key> processedCommands;
 
 	private ArrayList<Motion> motionList;
+
+	/** 攻撃の連続ヒット数 */
+	private int hitCount;
 
 	public Character() {
 		this.playerNumber = true;
@@ -96,8 +88,8 @@ public class Character {
 		this.control = false;
 		this.attack = null;
 		this.remainingFrame = 0;
-		this.currentCombo = new ArrayList<Action>();
-		this.lastCombo = 0;
+		this.lastHitFrame = 0;
+		this.hitCount = 0;
 	}
 
 	public Character(Character character) {
@@ -119,9 +111,9 @@ public class Character {
 		this.control = character.isControl();
 		this.attack = character.getAttack();
 		this.remainingFrame = character.getRemainingFrame();
-		this.currentCombo = character.getCurrentCombo();
-		this.lastCombo = character.getLastCombo();
+		this.lastHitFrame = character.getLastHitFrame();
 		this.motionList = character.getMotionList();
+		this.hitCount = this.getHitCount();
 	}
 
 	public void initialize(String characterName, boolean playerNumber) {
@@ -142,14 +134,11 @@ public class Character {
 		}
 
 		this.playerNumber = playerNumber;
-		this.comboTable = new ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>();
 		this.inputCommands = new LinkedList<Key>();
 		this.processedCommands = new LinkedList<Key>();
 		this.motionList = new ArrayList<Motion>();
 
 		setMotionList(characterName);
-		setComboTable(characterName);
-
 	}
 
 	/** 各ラウンドの開始時にキャラクター情報を初期化する */
@@ -175,7 +164,8 @@ public class Character {
 		this.remainingFrame = 1;
 		this.control = false;
 		this.hitConfirm = false;
-		resetCombo();
+		this.hitCount = 0;
+		this.lastHitFrame = 0;
 
 		if (this.playerNumber) {
 			this.front = true;
@@ -278,12 +268,14 @@ public class Character {
 	}
 
 	/** 攻撃がヒットしたときに,自身のパラメータや状態を更新する */
-	public void hitAttack(Character opponent, Attack attack) {
+	public void hitAttack(Character opponent, Attack attack, int currentFrame) {
 
 		int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
+		opponent.setHitCount(opponent.getHitCount() + 1);
+		opponent.setLastHitFrame(currentFrame);
 
 		if (isGuard(attack)) {
-			setHp(this.hp - attack.getGuardDamage() - opponent.getComboDamage());
+			setHp(this.hp - attack.getGuardDamage() - opponent.getExtraDamage());
 			setEnergy(this.energy + attack.getGiveEnergy());
 			setSpeedX(direction * attack.getImpactX() / 2); // 通常の半分のノックバック(旧より変更)
 			setRemainingFrame(attack.getGiveGuardRecov());
@@ -300,14 +292,14 @@ public class Character {
 						opponent.runAction(Action.THROW_HIT, false);
 					}
 
-					setHp(this.hp - attack.getHitDamage());
+					setHp(this.hp - attack.getHitDamage() - opponent.getExtraDamage());
 					setEnergy(this.energy + attack.getGiveEnergy());
 					opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
 				}
 
 				// 投げ技以外
 			} else {
-				setHp(this.hp - attack.getHitDamage() - opponent.getComboDamage());
+				setHp(this.hp - attack.getHitDamage() - opponent.getExtraDamage());
 				setEnergy(this.energy + attack.getGiveEnergy());
 				setSpeedX(direction * attack.getImpactX());
 				setSpeedY(attack.getImpactY());
@@ -624,27 +616,6 @@ public class Character {
 		return this.graphicSizeY;
 	}
 
-	public ArrayList<Action> getCurrentCombo() {
-		ArrayList<Action> temp = new ArrayList<Action>();
-		for (Action action : this.currentCombo) {
-			temp.add(action);
-		}
-
-		return temp;
-	}
-
-	public int getLastCombo() {
-		return this.lastCombo;
-	}
-
-	public int getComboState() {
-		return this.currentCombo.size();
-	}
-
-	public ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> getComboTable() {
-		return (ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>) this.comboTable.clone();
-	}
-
 	public ArrayList<Motion> getMotionList() {
 		ArrayList<Motion> temp = new ArrayList<Motion>();
 		for (Motion motion : this.motionList) {
@@ -699,6 +670,22 @@ public class Character {
 		Motion motion = motionList.get(this.action.ordinal());
 
 		return motion.getImage(Math.abs(this.remainingFrame) % motion.getFrameNumber());
+	}
+
+	/** 現時点での攻撃の連続ヒット回数を取得する */
+	public int getHitCount() {
+		return this.hitCount;
+	}
+
+	public int getLastHitFrame() {
+		return this.lastHitFrame;
+	}
+
+	public int getExtraDamage() {
+		int requireHit = 4; // ボーナスダメージに必要な最小限のヒット数
+		int damage = 5; // ボーナスダメージ
+
+		return this.hitCount < requireHit ? 0 : damage * requireHit / this.hitCount;
 	}
 
 	////// Setter//////
@@ -778,39 +765,6 @@ public class Character {
 
 	/**
 	 *
-	 * Sets the combo table.
-	 *
-	 * @param characterName
-	 *            the name of the Character.
-	 *
-	 */
-	private void setComboTable(String characterName) {
-		try {
-			BufferedReader br = ResourceLoader.getInstance()
-					.openReadFile("./data/characters/" + characterName + "/ComboTable.csv");
-
-			Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(br);
-			for (CSVRecord record : records) {
-				ArrayList<Action> actions = new ArrayList<Action>();
-				actions.add(Action.valueOf(record.get("1st attack")));
-				actions.add(Action.valueOf(record.get("2nd attack")));
-				actions.add(Action.valueOf(record.get("3rd attack")));
-				actions.add(Action.valueOf(record.get("4th attack")));
-				ArrayList<Action> breakers = new ArrayList<Action>();
-				for (String breaker : record.get("combo breaker").split(",")) {
-					breakers.add(Action.valueOf(breaker));
-				}
-				this.comboTable.add(Triplet.with(actions, breakers, Integer.parseInt(record.get("extra damage"))));
-			}
-
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 *
 	 * Sets motions.
 	 *
 	 * @param characterName
@@ -835,6 +789,14 @@ public class Character {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setHitCount(int hitCount) {
+		this.hitCount = hitCount;
+	}
+
+	public void setLastHitFrame(int currentFrame) {
+		this.lastHitFrame = currentFrame;
 	}
 
 	/**
@@ -868,132 +830,6 @@ public class Character {
 	}
 
 	/**
-	 * Reset combo's information.
-	 */
-	public void resetCombo() {
-		this.lastCombo = 0;
-		this.currentCombo.clear();
-	}
-
-	/**
-	 *
-	 * Get all possible combo after the last attack.
-	 *
-	 * @return All possible combo after the last attack.
-	 */
-	private ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> currentPossibleCombos() {
-		if (this.currentCombo.isEmpty()) {
-			return this.comboTable;
-		}
-
-		ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> res = new ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>>(
-				this.comboTable);
-		for (int i = 0; i < res.size(); ++i) {
-			Iterator<Action> it1 = res.get(i).getValue0().iterator();
-			Iterator<Action> it2 = this.currentCombo.iterator();
-
-			while (it1.hasNext() && it2.hasNext()) {
-				Action comboAction = it1.next();
-				Action action = it2.next();
-
-				if (comboAction != action) {
-					res.remove(i);
-					--i;
-					break;
-				}
-			}
-		}
-		return res;
-	}
-
-	/**
-	 * Move to the next combo state using current action
-	 *
-	 * @param nowFrame
-	 *            current frame number
-	 */
-	public void nextCombo(int nowFrame) {
-		if (this.motionList.get(this.action.ordinal()).getAttackType() == 0) {
-			return;
-		}
-
-		if (!this.isComboValid(nowFrame) || isComboCompleted()) {
-			resetCombo();
-		}
-
-		this.lastCombo = nowFrame + this.remainingFrame;
-		this.currentCombo.add(this.action);
-		if (currentPossibleCombos().isEmpty()) {
-			resetCombo();
-		}
-	}
-
-	/**
-	 *
-	 * Checks if a combo is possible.
-	 *
-	 * @param nowFrame
-	 *            the current frame.
-	 */
-	public void resetInvalidCombo(int nowFrame) {
-		if (!this.isComboValid(nowFrame)) {
-			this.resetCombo();
-		}
-	}
-
-	/**
-	 *
-	 * Break the current combo.
-	 *
-	 */
-	public void breakCombo() {
-		if (!isComboBreakable()) {
-			return;
-		}
-
-		ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> combos = this.currentPossibleCombos();
-		int damages = 0;
-		for (Triplet<ArrayList<Action>, ArrayList<Action>, Integer> triplet : combos) {
-			damages += triplet.getValue2();
-		}
-
-		damages /= combos.size();
-		setHp(this.hp - damages);
-		// this.resetCombo();
-	}
-
-	/**
-	 * Get damages provides by the current combo.
-	 *
-	 * @return damages provides by the current combo.
-	 */
-	public int getComboDamage() {
-		ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> combos = this.currentPossibleCombos();
-
-		if (this.isComboCompleted() && combos.size() > 0) {
-			return combos.get(0).getValue2();
-		}
-
-		return 0;
-	}
-
-	/**
-	 * Get combo breakers.
-	 *
-	 * @return combo breakers.
-	 */
-	public Set<Action> getComboBreakers() {
-		Set<Action> res = new HashSet<Action>();
-		ArrayList<Triplet<ArrayList<Action>, ArrayList<Action>, Integer>> combos = this.currentPossibleCombos();
-
-		for (Triplet<ArrayList<Action>, ArrayList<Action>, Integer> triplet : combos) {
-			res.addAll(triplet.getValue1());
-		}
-
-		return res;
-	}
-
-	/**
 	 * Get a boolean value whether the combo is still valid or not.
 	 *
 	 * @param nowFrame
@@ -1003,25 +839,6 @@ public class Character {
 	 *         otherwise.
 	 */
 	public boolean isComboValid(int nowFrame) {
-		return (nowFrame - this.lastCombo) <= GameSetting.COMBO_LIMIT;
+		return (nowFrame - this.lastHitFrame) <= GameSetting.COMBO_LIMIT;
 	}
-
-	/**
-	 * Get a boolean value whether the combo is breakable or not.
-	 *
-	 * @return <em>True</em> if a combo is breakable, <em>False</em> otherwise.
-	 */
-	public boolean isComboBreakable() {
-		return this.currentCombo.size() >= 2 && this.currentCombo.size() <= 3;
-	}
-
-	/**
-	 * Get a boolean value whether the combo is completed or not.
-	 *
-	 * @return <em>True</em> if a combo is done, <em>False</em> otherwise.
-	 */
-	public boolean isComboCompleted() {
-		return this.currentCombo.size() == 4;
-	}
-
 }
