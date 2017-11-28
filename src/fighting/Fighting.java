@@ -156,7 +156,7 @@ public class Fighting {
 				this.playerCharacters[i].setHitConfirm(true);
 				this.playerCharacters[i].destroyAttackInstance();
 			}
-			
+
 			if(!playerCharacters[i].isComboValid(currentFrame)){
 				playerCharacters[i].setHitCount(0);
 			}
@@ -323,21 +323,6 @@ public class Fighting {
 
 				playerCharacters[i].moveX(-playerCharacters[i].getHitAreaLeft());
 			}
-		}
-	}
-
-	/** 自身の攻撃が相手に当たった時, コンボの遷移処理及び相手のコンボのブレイク処理を行う */
-	private void processingCombo(int currentFrame, int myIndex) {
-		int opponentIndex = myIndex == 0 ? 1 : 0;
-		Action action = this.playerCharacters[myIndex].getAction();
-
-		// 次のコンボに遷移
-		this.playerCharacters[myIndex].nextCombo(currentFrame);
-		// 自身のコンボブレイカーによって相手のコンボがブレイクできたか
-		if (this.playerCharacters[opponentIndex].isComboBreakable()
-				&& this.playerCharacters[opponentIndex].getComboBreakers().contains(action)) {
-			this.playerCharacters[opponentIndex].breakCombo();
-			this.playerCharacters[opponentIndex].resetCombo();
 		}
 	}
 
