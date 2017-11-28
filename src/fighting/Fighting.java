@@ -84,9 +84,11 @@ public class Fighting {
 
 		for (int i = 0; i < 2; i++) {
 			if (!this.inputCommands.isEmpty()) {
-				//Action executeAction = this.commandTable.convertKeyToAction(this.playerCharacters[i],this.inputCommands);
+				// Action executeAction =
+				// this.commandTable.convertKeyToAction(this.playerCharacters[i],this.inputCommands);
 
-				Action executeAction = this.commandTable.interpretationCommand(this.playerCharacters[i], this.inputCommands);
+				Action executeAction = this.commandTable.interpretationCommand(this.playerCharacters[i],
+						this.inputCommands);
 				if (ableAction(this.playerCharacters[i], executeAction)) {
 					this.playerCharacters[i].runAction(executeAction, true);
 				}
@@ -123,7 +125,7 @@ public class Fighting {
 				// コンボの処理
 				processingCombo(currentFrame, i);
 				// HP等のパラメータの更新
-				this.playerCharacters[i].hitAttack(this.playerCharacters[opponentIndex], attack);
+				this.playerCharacters[opponentIndex].hitAttack(this.playerCharacters[i], attack);
 
 			} else if (this.playerCharacters[i].getAttack() != null) {
 				this.playerCharacters[i].resetCombo();
@@ -142,11 +144,12 @@ public class Fighting {
 				if (playerCharacters[i].getAction() == Action.STAND_F_D_DFB) {
 					Image[] upper = GraphicManager.getInstance().getUpperImageContainer()[i];
 					Motion motion = this.playerCharacters[i].getMotionList().get(Action.STAND_F_D_DFB.ordinal());
-					
-					if(this.playerCharacters[i].startActive(motion)){
-						this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), upper, true, false));
+
+					if (this.playerCharacters[i].startActive(motion)) {
+						this.hitEffects.get(i)
+								.add(new HitEffect(this.playerCharacters[i].getAttack(), upper, true, false));
 					}
-					
+
 				}
 			}
 
@@ -191,7 +194,6 @@ public class Fighting {
 			// update each character.
 			this.playerCharacters[i].update();
 
-
 			// enque object attack if the data is missile decision
 			if (this.playerCharacters[i].getAttack() != null) {
 				if (this.playerCharacters[i].getAttack().isProjectile()) {
@@ -207,7 +209,6 @@ public class Fighting {
 						temp[j] = projectileImage.get(j);
 					}
 					this.projectileDeque.addLast(new LoopEffect(attack, temp));
-					System.out.println(projectileDeque.size());
 					this.playerCharacters[i].destroyAttackInstance();
 				}
 			}
@@ -217,8 +218,8 @@ public class Fighting {
 				playerCharacters[i].frontDecision(playerCharacters[i == 0 ? 1 : 0].getHitAreaCenterX());
 			}
 
-			//エフェクトの更新
-			for(int j = 0; j < this.hitEffects.get(i).size(); j++){
+			// エフェクトの更新
+			for (int j = 0; j < this.hitEffects.get(i).size(); j++) {
 				if (!this.hitEffects.get(i).get(j).update()) {
 					this.hitEffects.get(i).remove(j);
 					--j;
@@ -239,9 +240,11 @@ public class Fighting {
 	private void detectionPush() {
 		// whether the conflict of first and second player or not?
 		if (isCollision()) {
-		/*	int direction = this.playerCharacters[0].isFront() ? 1 : -1;
-			int p1SpeedX = direction * this.playerCharacters[0].getSpeedX();
-			int p2SpeedX = -direction * this.playerCharacters[1].getSpeedX();*/
+			/*
+			 * int direction = this.playerCharacters[0].isFront() ? 1 : -1; int
+			 * p1SpeedX = direction * this.playerCharacters[0].getSpeedX(); int
+			 * p2SpeedX = -direction * this.playerCharacters[1].getSpeedX();
+			 */
 			int p1SpeedX = Math.abs(this.playerCharacters[0].getSpeedX());
 			int p2SpeedX = Math.abs(this.playerCharacters[1].getSpeedX());
 
@@ -372,7 +375,6 @@ public class Fighting {
 				&& opponent.getHitAreaRight() >= attack.getCurrentHitArea().getLeft()
 				&& opponent.getHitAreaTop() <= attack.getCurrentHitArea().getBottom()
 				&& opponent.getHitAreaBottom() >= attack.getCurrentHitArea().getTop()) {
-			System.out.println("hit !");
 			return true;
 		} else {
 			return false;
@@ -414,30 +416,32 @@ public class Fighting {
 	}
 
 	public LinkedList<LinkedList<HitEffect>> getHitEffectList() {
-	//	LinkedList<LinkedList<HitEffect>> temp = new LinkedList<LinkedList<HitEffect>>();
+		// LinkedList<LinkedList<HitEffect>> temp = new
+		// LinkedList<LinkedList<HitEffect>>();
 		LinkedList<LinkedList<HitEffect>> temp = new LinkedList<LinkedList<HitEffect>>(this.hitEffects);
 
-		/*for(int i = 0; i < 2; i++){
-			LinkedList<HitEffect> effects = new LinkedList<HitEffect>();
-
-			for(HitEffect effect : temp.get(i)){
-				effect = new HitEffect(effect.getAttack(), effect.getImages(), effect.isHit());
-				effects.add(effect);
-			}
-
-			temp.add(effects);
-		}*/
+		/*
+		 * for(int i = 0; i < 2; i++){ LinkedList<HitEffect> effects = new
+		 * LinkedList<HitEffect>();
+		 *
+		 * for(HitEffect effect : temp.get(i)){ effect = new
+		 * HitEffect(effect.getAttack(), effect.getImages(), effect.isHit());
+		 * effects.add(effect); }
+		 *
+		 * temp.add(effects); }
+		 */
 
 		return temp;
 	}
 
 	public Deque<LoopEffect> getProjectileDeque() {
 		Deque<LoopEffect> temp = new LinkedList<LoopEffect>(this.projectileDeque);
-		/*Deque<LoopEffect> temp = new LinkedList<LoopEffect>();
-
-		for(LoopEffect loopEffect : this.projectileDeque){
-			temp.addLast(new LoopEffect(loopEffect.getAttack(), loopEffect.getImages()));
-		}*/
+		/*
+		 * Deque<LoopEffect> temp = new LinkedList<LoopEffect>();
+		 *
+		 * for(LoopEffect loopEffect : this.projectileDeque){ temp.addLast(new
+		 * LoopEffect(loopEffect.getAttack(), loopEffect.getImages())); }
+		 */
 
 		return temp;
 	}

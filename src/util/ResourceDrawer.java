@@ -40,7 +40,7 @@ public class ResourceDrawer {
 
 		drawCharacterImage(characters, screenGraphic);
 
-		drawAttackImage(projectiles, screenGraphic);
+		drawAttackImage(projectiles, characters, screenGraphic);
 
 		drawHPGaugeImage(characters);
 
@@ -91,7 +91,7 @@ public class ResourceDrawer {
 			// Draw a character to match the direction
 			BufferedImage image = playerCharacters[i].getNowImage().getBufferedImage();
 			// キャラクターの向いている方向に応じて,画像を反転させる
-			flipImage(image, playerCharacters[i].isFront());
+			image = flipImage(image, playerCharacters[i].isFront());
 
 			int positionX = playerCharacters[i].getHitAreaLeft()
 					+ (playerCharacters[i].getHitAreaRight() - playerCharacters[i].getHitAreaLeft()) / 3;
@@ -99,8 +99,8 @@ public class ResourceDrawer {
 
 			GraphicManager.getInstance().drawString(names[i], positionX, positionY);
 
-			screenGraphic.drawImage(image, playerCharacters[i].getX(), playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
-					playerCharacters[i].getGraphicSizeY(), null);
+			screenGraphic.drawImage(image, playerCharacters[i].getX(), playerCharacters[i].getY(),
+					playerCharacters[i].getGraphicSizeX(), playerCharacters[i].getGraphicSizeY(), null);
 
 			GraphicManager.getInstance().drawImage(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
 					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
@@ -114,30 +114,31 @@ public class ResourceDrawer {
 	 * @param g
 	 *            the Graphic Manager.
 	 */
-	private void drawAttackImage(Deque<LoopEffect> projectiles, Graphics2D screenGraphic) {
+	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters, Graphics2D screenGraphic) {
 
 		// Is displayed according to the orientation image attack.
 		for (LoopEffect projectile : projectiles) {
 			Attack attack = projectile.getAttack();
-			Image image = projectile.getImage();
-			HitArea area = attack.getCurrentHitArea();
-
-			int positionX;
-			if (attack.getSpeedX() >= 0) {
-				positionX = area.getRight() - (image.getWidth() * 5 / 6);
-			} else {
-				positionX = area.getLeft() - (image.getWidth() * 1 / 6);
-			}
 
 			if (attack.getCurrentFrame() > attack.getStartUp()) {
-				BufferedImage tmpImage = image.getBufferedImage();
-				flipImage(tmpImage, attack.isPlayerNumber());
+				Image image = projectile.getImage();
+				HitArea area = attack.getCurrentHitArea();
 
+				int positionX;
+				if (attack.getSpeedX() >= 0) {
+					positionX = area.getRight() - (image.getWidth() * 5 / 6);
+				} else {
+					positionX = area.getLeft() - (image.getWidth() * 1 / 6);
+				}
 				int positionY = area.getTop() - ((image.getHeight() - (area.getBottom() - area.getTop())) / 2);
+
+				BufferedImage tmpImage = image.getBufferedImage();
+				tmpImage = flipImage(tmpImage, attack.getSpeedX() >= 0);
+
 				screenGraphic.drawImage(tmpImage, positionX, positionY, image.getWidth(), image.getHeight(), null);
 
 				GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(), image.getHeight(),
-						attack.isPlayerNumber());
+						attack.getSpeedX() >= 0);
 			}
 		}
 	}
@@ -292,7 +293,7 @@ public class ResourceDrawer {
 					Image image = hitEffect.getImage();
 
 					BufferedImage tmpImage = image.getBufferedImage();
-					flipImage(tmpImage, i != 0);
+					tmpImage = flipImage(tmpImage, i != 0);
 
 					int positionX = area.getLeft() - (image.getWidth() - area.getRight() + area.getLeft()) / 2
 							+ hitEffect.getXVariation();

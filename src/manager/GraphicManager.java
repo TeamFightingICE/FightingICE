@@ -19,36 +19,32 @@ public class GraphicManager {
 
 	private LetterImage letterImage;
 
-	/**各キャラクターの画像を格納するリスト*/
+	/** 各キャラクターの画像を格納するリスト */
 	private ArrayList<CharacterActionImage> characterImageContainer;
 
-	/**波動拳の画像を格納するリスト*/
+	/** 波動拳の画像を格納するリスト */
 	private ArrayList<Image> projectileImageContainer;
 
-	/**必殺技の画像を格納するリスト*/
+	/** 必殺技の画像を格納するリスト */
 	private ArrayList<Image> ultimateAttackImageContainer;
 
-	/**"Hit"の画像を格納するリスト*/
+	/** "Hit"の画像を格納するリスト */
 	private ArrayList<Image> hitTextImageContainer;
 
-	/**1～9までの画像を格納するリスト*/
+	/** 1～9までの画像を格納するリスト */
 	private ArrayList<Image> counterTextImageContainer;
 
-	/** アッパー画像を格納する2次元配列*/
+	/** アッパー画像を格納する2次元配列 */
 	private Image[][] upperImageContainer;
 
-	/** 攻撃ヒット時に描画するエフェクトの画像を格納する2次元配列*/
+	/** 攻撃ヒット時に描画するエフェクトの画像を格納する2次元配列 */
 	private Image[][] hitEffectImageContainer;
 
 	private ArrayList<Image> backGroundImage;
 
+	private static GraphicManager graphicManager = new GraphicManager();
 
-
-
-
-	private static  GraphicManager  graphicManager = new GraphicManager();
-
-	private  GraphicManager() {
+	private GraphicManager() {
 		System.out.println("Create instance: " + GraphicManager.class.getName());
 
 		this.renderTaskList = new LinkedList<RenderTask>();
@@ -64,46 +60,45 @@ public class GraphicManager {
 
 		this.upperImageContainer = new Image[2][3];
 		this.hitEffectImageContainer = new Image[4][4];
-		this.backGroundImage  = new ArrayList<Image>();
+		this.backGroundImage = new ArrayList<Image>();
 
 	}
 
-	public static  GraphicManager getInstance() {
-		return  graphicManager;
+	public static GraphicManager getInstance() {
+		return graphicManager;
 	}
 
-	public ArrayList<CharacterActionImage> getCharacterImageContainer(){
+	public ArrayList<CharacterActionImage> getCharacterImageContainer() {
 		return this.characterImageContainer;
 	}
 
-	public ArrayList<Image> getProjectileImageContainer(){
+	public ArrayList<Image> getProjectileImageContainer() {
 		return this.projectileImageContainer;
 	}
 
-	public ArrayList<Image> getCounterTextImageContainer(){
+	public ArrayList<Image> getCounterTextImageContainer() {
 		return this.counterTextImageContainer;
 	}
 
-	public ArrayList<Image> getUltimateAttackImageContainer(){
+	public ArrayList<Image> getUltimateAttackImageContainer() {
 		return this.ultimateAttackImageContainer;
 	}
 
-	public ArrayList<Image> getHitTextImageContainer(){
+	public ArrayList<Image> getHitTextImageContainer() {
 		return this.hitTextImageContainer;
 	}
 
-	public Image[][] getUpperImageContainer(){
+	public Image[][] getUpperImageContainer() {
 		return this.upperImageContainer;
 	}
 
-	public Image[][] getHitEffectImageContaier(){
+	public Image[][] getHitEffectImageContaier() {
 		return this.hitEffectImageContainer;
 	}
 
-	public ArrayList<Image> getBackgroundImage(){
+	public ArrayList<Image> getBackgroundImage() {
 		return this.backGroundImage;
 	}
-
 
 	public void render() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -120,7 +115,6 @@ public class GraphicManager {
 		ImageTask task = new ImageTask(img, x, y, direction);
 		this.renderTaskList.add(task);
 	}
-
 
 	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction) {
 		ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
@@ -142,7 +136,7 @@ public class GraphicManager {
 		this.renderTaskList.add(task);
 	}
 
-	public void setLetterFont(LetterImage lf){
+	public void setLetterFont(LetterImage lf) {
 		this.letterImage = lf;
 	}
 

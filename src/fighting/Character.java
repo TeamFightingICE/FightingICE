@@ -229,6 +229,11 @@ public class Character {
 		frictionEffect();
 		gravityEffect();
 
+		if (FlagSetting.trainingModeFlag) {
+			this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
+			this.hp = LaunchSetting.maxHp[this.playerNumber ? 0 : 1];
+		}
+
 		if (this.energy > LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1]) {
 			this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
 		}
@@ -253,17 +258,14 @@ public class Character {
 				runAction(Action.RISE, true);
 			} else if (this.state == State.AIR || getHitAreaBottom() < GameSetting.STAGE_HEIGHT) {
 				runAction(Action.AIR, true);
-			} else if(this.state == State.CROUCH){
+			} else if (this.state == State.CROUCH) {
 				runAction(Action.CROUCH, true);
-			}else{
+			} else {
 				runAction(Action.STAND, true);
 			}
 		}
 
 		createAttackInstance();
-		
-		if(playerNumber && attack != null) System.out.println("AL " + attack.getCurrentHitArea().getLeft() + " AR " + attack.getCurrentHitArea().getRight() + " AT " + attack.getCurrentHitArea().getTop() + " AB " + attack.getCurrentHitArea().getBottom());
-		if(!playerNumber) System.out.println("L " + getHitAreaLeft() + " R " + getHitAreaRight() + " T " + getHitAreaTop() + " B " + getHitAreaBottom());
 
 		if (!this.inputCommands.isEmpty()) {
 			this.processedCommands.addLast(new Key(this.inputCommands.pop()));
@@ -397,9 +399,6 @@ public class Character {
 		Motion motion = this.motionList.get(this.action.ordinal());
 
 		if (startActive(motion)) {
-			if (playerNumber) {
-				System.out.println(motion.getActionName());
-			}
 			this.attack = new Attack(motion.getAttackHitArea(), motion.getAttackSpeedX(), motion.getAttackSpeedY(),
 					motion.getAttackStartUp(), motion.getAttackActive(), motion.getAttackHitDamage(),
 					motion.getAttackGuardDamage(), motion.getAttackStartAddEnergy(), motion.getAttackHitAddEnergy(),
