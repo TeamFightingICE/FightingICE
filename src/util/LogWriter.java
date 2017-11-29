@@ -55,13 +55,13 @@ public class LogWriter {
 		PrintWriter pw;
 		switch (extension) {
 		case CSV:
-			pw = ResourceLoader.getInstance().openWriteFile(path + fileName + ".csv");
+			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".csv");
 			break;
 		case TXT:
-			pw = ResourceLoader.getInstance().openWriteFile(path + fileName + ".txt");
+			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".txt");
 			break;
 		default:
-			pw = ResourceLoader.getInstance().openWriteFile(path + fileName + ".PLOG");
+			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".PLOG");
 			break;
 		}
 
@@ -74,6 +74,7 @@ public class LogWriter {
 		pw.close();
 	}
 
+	/** リプレイファイルに現フレームのゲーム情報を出力する*/
 	public void outputLog(DataOutputStream dos, KeyData keyData, Character[] playerCharacters) {
 		// output log file for replay
 		try {
@@ -104,6 +105,7 @@ public class LogWriter {
 
 	}
 
+	/** リプレイファイルに起動モード(HP mode or Time mode)や使用キャラといったヘッダ情報を記述する */
 	public void writeHeader(DataOutputStream dos) {
 		try {
 			for (int i = 0; i < 2; i++) {
