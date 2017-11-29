@@ -16,11 +16,14 @@ public class Result extends GameScene {
 
 	private ArrayList<RoundResult> roundResults;
 
+	private  String timeInfo;
+
 	public Result() {
 		this.roundResults = new ArrayList<RoundResult>();
+		this.timeInfo = "0";
 	}
 
-	public Result(ArrayList<RoundResult> roundResults) {
+	public Result(ArrayList<RoundResult> roundResults, String timeInfo) {
 		this.roundResults = new ArrayList<RoundResult>(roundResults);
 		roundResults.clear();
 	}
@@ -28,7 +31,7 @@ public class Result extends GameScene {
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.RESULT);
-		LogWriter.getInstance().outputResult(this.roundResults, LogWriter.CSV);
+		LogWriter.getInstance().outputResult(this.roundResults, LogWriter.CSV, this.timeInfo);
 	}
 
 	@Override
