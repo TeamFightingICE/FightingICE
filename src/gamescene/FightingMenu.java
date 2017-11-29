@@ -7,6 +7,7 @@ import informationcontainer.MenuItem;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
+import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.Key;
@@ -93,7 +94,11 @@ public class FightingMenu extends GameScene {
 					}
 
 				}
+				
 				LaunchSetting.repeatNumber =  GameSetting.REPEAT_NUMBERS[numberIndex];
+				if(LaunchSetting.repeatNumber > 1){
+					FlagSetting.automationFlag = true;
+				}
 
 				// Launcherの次の遷移先を登録
 				Launcher launcher = new Launcher(GameSceneName.PLAY);

@@ -28,4 +28,6 @@ public final class LaunchSetting {
 
 	public static String replayName = "None";
 
+	public static int repeatedCount = 0;
+
 }

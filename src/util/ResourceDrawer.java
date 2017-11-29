@@ -224,7 +224,7 @@ public class ResourceDrawer {
 	 *
 	 */
 	private void drawRoundNumber(int round) {
-		GraphicManager.getInstance().drawString("ROUND:" + (round + 1), 850, 10);
+		GraphicManager.getInstance().drawString("ROUND:" + round, 850, 10);
 	}
 
 	/**

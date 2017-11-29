@@ -9,7 +9,7 @@ public class GameSetting {
 	public static final String[] CHARACTERS = { "ZEN", "GARNET", "LUD" };
 	public static final int[] REPEAT_NUMBERS = { 1, 2, 3, 5, 10, 30, 50, 100 };
 
-	public static final int ROUND_FRAME_NUMBER = 600;
+	public static final int ROUND_FRAME_NUMBER = 60;
 	public static final int BREAKTIME_FRAME_NUMBER = 70;
 
 	public static final int GRAVITY = 1;
