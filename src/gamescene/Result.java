@@ -25,6 +25,7 @@ public class Result extends GameScene {
 
 	public Result(ArrayList<RoundResult> roundResults, String timeInfo) {
 		this.roundResults = new ArrayList<RoundResult>(roundResults);
+		this.timeInfo = timeInfo;
 		roundResults.clear();
 	}
 
