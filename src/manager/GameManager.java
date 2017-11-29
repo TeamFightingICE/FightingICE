@@ -8,7 +8,7 @@ public abstract class GameManager {
 	 * 現在のゲームシーン <br>
 	 * Menu, Launch, Play, Resultなどが入る
 	 */
-	private GameScene currentGameScene;
+	protected GameScene currentGameScene;
 
 	/** ゲームの終了要求があったかを表すフラグ */
 	private boolean isExitFlag;

@@ -140,4 +140,17 @@ public class GraphicManager {
 		this.letterImage = lf;
 	}
 
+	public void close() {
+		this.renderTaskList.clear();
+		this.letterImage = null;
+		this.characterImageContainer.clear();
+		this.projectileImageContainer.clear();
+		this.ultimateAttackImageContainer.clear();
+		this.counterTextImageContainer.clear();
+		this.hitTextImageContainer.clear();
+		this.upperImageContainer = null;
+		this.hitEffectImageContainer = null;
+		this.backGroundImage.clear();
+	}
+
 }

@@ -108,8 +108,23 @@ public class ResourceLoader {
 		// キャラクター画像読み込み
 		loadCharacterImages(characterGraphicPath);
 		System.out.println("キャラクター画像読み込み完了");
-		loadSoundEffect();
-		loadBackGroundMusic();
+
+		// サウンドエフェクト読み込み
+		if (!isLoaded("soundEffect")) {
+			loadSoundEffect();
+
+			addLoadedGraphic("soundEffect");
+			System.out.println("サウンドエフェクト読み込み完了");
+		}
+
+		// BGM読み込み
+		if (!isLoaded("BGM")) {
+			loadBackGroundMusic();
+
+			addLoadedGraphic("BGM");
+			System.out.println("BGM読み込み完了");
+		}
+
 	}
 
 	/**
@@ -394,14 +409,19 @@ public class ResourceLoader {
 	}
 
 	private void loadSoundEffect() {
-		String path = "./data/sound/";
-		for (String soundEffect : ResourceSetting.SOUND_EFFECTS)
-			SoundManager.getInstance().getSoundEffect().put(soundEffect, SoundManager.getInstance().loadSoundResource(path + soundEffect, false));
+		File[] files = new File(ResourceSetting.SOUND_DIRECTORY).listFiles();
+
+		for (File file : files) {
+			if (!file.getName().equals(ResourceSetting.BGM_FILE)) {
+				SoundManager.getInstance().getSoundEffect().put(file.getName(),
+						SoundManager.getInstance().loadSoundResource(file.getPath(), false));
+			}
+		}
 	}
 
 	private void loadBackGroundMusic() {
-		String path = "./data/sound/";
-		SoundManager.getInstance().setBackGroundMusic(SoundManager.getInstance().loadSoundResource(path + ResourceSetting.BGM_FILE, true));
+		SoundManager.getInstance().setBackGroundMusic(SoundManager.getInstance()
+				.loadSoundResource(ResourceSetting.SOUND_DIRECTORY + ResourceSetting.BGM_FILE, true));
 	}
 
 	public boolean isLoaded(String graphicName) {

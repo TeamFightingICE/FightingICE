@@ -43,9 +43,8 @@ public class ResourceSetting {
 	public static final String BGM_FILE = "BGM0.wav";
 
 	/**
-	 * The names of all sounds effects.
+	 * The path of all sounds effects.
 	 */
-	public static String[] SOUND_EFFECTS = { "LandingA1.wav", "JumpSoundAmended.wav", "WeakHit.wav",
-			"StrongHit.wav", "WeakGuard1.wav" };
+	public static String SOUND_DIRECTORY = "./data/sounds/";
 
 }

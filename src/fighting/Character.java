@@ -10,6 +10,7 @@ import enumerate.Action;
 import enumerate.State;
 import image.Image;
 import loader.ResourceLoader;
+import manager.SoundManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -150,7 +151,7 @@ public class Character {
 		}
 
 		if (FlagSetting.trainingModeFlag) {
-			this.hp = 9999;
+			this.hp = LaunchSetting.maxHp[this.playerNumber ? 0 : 1];
 			this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
 		} else {
 			this.energy = 0;
@@ -233,7 +234,7 @@ public class Character {
 				runAction(Action.LANDING, true);
 				setSpeedY(0);
 
-				// 着地音を鳴らす
+				SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("Landing.wav"));
 			}
 
 			moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
@@ -281,7 +282,7 @@ public class Character {
 			setRemainingFrame(attack.getGiveGuardRecov());
 			opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
-			// ガード時のサウンド鳴らす
+			SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakGuard.wav"));
 		} else {
 			// 投げ技のときの処理
 			if (attack.getAttackType() == 4) {
@@ -308,7 +309,8 @@ public class Character {
 				if (attack.isDownProperty()) {
 					runAction(Action.CHANGE_DOWN, false);
 					setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
-					// ダウン時の音を鳴らす
+
+					SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("StrongHit.wav"));
 
 				} else {
 					switch (this.state) {
@@ -328,7 +330,7 @@ public class Character {
 						break;
 					}
 
-					// 通常のヒット音を鳴らす
+					SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakHit.wav"));
 				}
 			}
 		}

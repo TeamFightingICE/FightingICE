@@ -8,6 +8,7 @@ import informationcontainer.RoundResult;
 import input.KeyData;
 import manager.GraphicManager;
 import manager.InputManager;
+import manager.SoundManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import struct.FrameData;
@@ -59,6 +60,7 @@ public class Play extends GameScene {
 		// ((Input) im).initialize(deviceTypes, aiNames);
 		// ((Input) im).startAI(gameData);
 
+		SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
 	}
 
 	@Override
@@ -84,6 +86,8 @@ public class Play extends GameScene {
 		} else {
 			System.out.println("Result遷移");
 			// BGMを止める
+			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+
 			Result result = new Result(this.roundResults);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
