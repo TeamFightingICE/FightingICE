@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-openal-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-opengl-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-opengles-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl_util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

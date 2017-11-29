@@ -33,8 +33,11 @@ public class ResourceLoader {
 
 	private static ResourceLoader resourceLoader = new ResourceLoader();
 
+	private ArrayList<String> loadedGraphics;
+
 	private ResourceLoader() {
 		System.out.println("Create instance: " + ResourceLoader.class.getName());
+		this.loadedGraphics = new ArrayList<String>();
 	}
 
 	public static ResourceLoader getInstance() {
@@ -46,31 +49,62 @@ public class ResourceLoader {
 		String characterGraphicPath = "./data/characters/";
 
 		// 波動拳読み込み
-		loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
-				graphicPath + ResourceSetting.PROJECTILE_DIRECTORY);
-		System.out.println("波動拳読み込み完了");
+		if (!isLoaded("hadouken")) {
+			loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
+					graphicPath + ResourceSetting.PROJECTILE_DIRECTORY);
+
+			addLoadedGraphic("hadouken");
+			System.out.println("波動拳読み込み完了");
+		}
+
 		// 必殺技読み込み
-		loadImages(GraphicManager.getInstance().getUltimateAttackImageContainer(),
-				graphicPath + ResourceSetting.SUPER_DIRECTORY);
-		System.out.println("必殺技読み込み完了");
+		if (!isLoaded("super")) {
+			loadImages(GraphicManager.getInstance().getUltimateAttackImageContainer(),
+					graphicPath + ResourceSetting.SUPER_DIRECTORY);
+
+			addLoadedGraphic("super");
+			System.out.println("必殺技読み込み完了");
+		}
+
 		// 0~9の文字カウンタ読み込み
-		loadImages(GraphicManager.getInstance().getCounterTextImageContainer(),
-				graphicPath + ResourceSetting.COUNTER_DIRECTORY);
-		System.out.println("文字カウンタ読み込み完了");
+		if (!isLoaded("hitCounter")) {
+			loadImages(GraphicManager.getInstance().getCounterTextImageContainer(),
+					graphicPath + ResourceSetting.COUNTER_DIRECTORY);
+
+			addLoadedGraphic("hitCounter");
+			System.out.println("文字カウンタ読み込み完了");
+		}
+
 		// "Hit"文字読み込み
-		loadImages(GraphicManager.getInstance().getHitTextImageContainer(),
-				graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
-		System.out.println("Hit文字読み込み完了");
+		if (!isLoaded("hitText")) {
+			loadImages(GraphicManager.getInstance().getHitTextImageContainer(),
+					graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
+
+			addLoadedGraphic("hitText");
+			System.out.println("Hit文字読み込み完了");
+		}
+
+		// ヒットエフェクト読み込み
+		if (!isLoaded("hitEffect")) {
+			loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
+
+			addLoadedGraphic("hitEffect");
+			System.out.println("ヒットエフェクト読み込み完了");
+		}
+
 		// 背景画像読み込み
-		loadBackgroundImage(GraphicManager.getInstance().getBackgroundImage(),
-				graphicPath + ResourceSetting.BACKGROUND_DIRECTORY);
-		System.out.println("背景読み込み完了");
+		if (!isLoaded("background")) {
+			loadBackgroundImage(GraphicManager.getInstance().getBackgroundImage(),
+					graphicPath + ResourceSetting.BACKGROUND_DIRECTORY);
+
+			addLoadedGraphic("background");
+			System.out.println("背景読み込み完了");
+		}
+
 		// アッパー画像読み込み
 		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY);
 		System.out.println("アッパー読み込み完了");
-		// ヒットエフェクト読み込み
-		loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
-		System.out.println("ヒットエフェクト読み込み完了");
+
 		// キャラクター画像読み込み
 		loadCharacterImages(characterGraphicPath);
 		System.out.println("キャラクター画像読み込み完了");
@@ -153,48 +187,51 @@ public class ResourceLoader {
 	 */
 	public void loadCharacterImages(String path) {
 		for (int i = 0; i < 2; i++) {
-			try {
-				BufferedReader br = openReadFile(path + LaunchSetting.characterNames[i] + "/Motion.csv");
+			if (!isLoaded(LaunchSetting.characterNames[i] + "_Graphic")) {
+				try {
+					BufferedReader br = openReadFile(path + LaunchSetting.characterNames[i] + "/Motion.csv");
 
-				String line;
-				br.readLine(); // ignore header
+					String line;
+					br.readLine(); // ignore header
 
-				while ((line = br.readLine()) != null) {
-					String[] data = line.split(",", 0);
-					String actionName = data[0];
-					int frameNumber = Integer.valueOf(data[1]);
-					String imageName = data[33];
+					while ((line = br.readLine()) != null) {
+						String[] data = line.split(",", 0);
+						String actionName = data[0];
+						int frameNumber = Integer.valueOf(data[1]);
+						String imageName = data[33];
 
-					Image[] actionImage = new Image[frameNumber];
-					String dirPath = path + LaunchSetting.characterNames[i] + "/graphics/" + imageName;
+						Image[] actionImage = new Image[frameNumber];
+						String dirPath = path + LaunchSetting.characterNames[i] + "/graphics/" + imageName;
 
-					// 指定キャラクターのグラフィックが格納されているディレクトリを取得
-					File[] files = new File(dirPath).listFiles();
-					int num = 0;
-					for (int j = 0; j < files.length; j++) {
-						if (j >= frameNumber) {
-							break;
+						// 指定キャラクターのグラフィックが格納されているディレクトリを取得
+						File[] files = new File(dirPath).listFiles();
+						int num = 0;
+						for (int j = 0; j < files.length; j++) {
+							if (j >= frameNumber) {
+								break;
+							}
+
+							actionImage[j] = loadImage(files[j].getPath());
+							num++;
 						}
 
-						actionImage[j] = loadImage(files[j].getPath());
-						num++;
+						// 画像数がMotion.csvで定められているフレーム数よりも少ない場合、不足分を補う
+						if (num < frameNumber) {
+							for (int j = num; j < frameNumber; j++) {
+								actionImage[j] = actionImage[0];
+							}
+						}
+						CharacterActionImage temp = new CharacterActionImage(LaunchSetting.characterNames[i],
+								actionName, frameNumber, actionImage);
+						GraphicManager.getInstance().getCharacterImageContainer().add(temp);
 					}
 
-					// 画像数がMotion.csvで定められているフレーム数よりも少ない場合、不足分を補う
-					if (num < frameNumber) {
-						for (int j = num; j < frameNumber; j++) {
-							actionImage[j] = actionImage[0];
-						}
-					}
-					CharacterActionImage temp = new CharacterActionImage(LaunchSetting.characterNames[i], actionName,
-							frameNumber, actionImage);
-					GraphicManager.getInstance().getCharacterImageContainer().add(temp);
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+			addLoadedGraphic(LaunchSetting.characterNames[i] + "_Graphic");
 		}
 	}
 
@@ -365,6 +402,14 @@ public class ResourceLoader {
 	private void loadBackGroundMusic() {
 		String path = "./data/sound/";
 		SoundManager.getInstance().setBackGroundMusic(SoundManager.getInstance().loadSoundResource(path + ResourceSetting.BGM_FILE, true));
+	}
+
+	public boolean isLoaded(String graphicName) {
+		return this.loadedGraphics.contains(graphicName);
+	}
+
+	public void addLoadedGraphic(String graphicName) {
+		this.loadedGraphics.add(graphicName);
 	}
 
 }
