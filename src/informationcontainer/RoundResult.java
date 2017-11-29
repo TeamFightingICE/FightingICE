@@ -37,7 +37,7 @@ public class RoundResult {
 		return new int[] { this.remainingHPs[0], this.remainingHPs[1] };
 	}
 
-	public int gerElapsedFrame() {
+	public int getElapsedFrame() {
 		return this.elapsedFrame;
 	}
 

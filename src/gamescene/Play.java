@@ -46,9 +46,9 @@ public class Play extends GameScene {
 		this.fighting = new Fighting();
 		this.fighting.initialize();
 
-		this.nowFrame = 0;
+		this.nowFrame = 1;
 		this.elapsedBreakTime = 0;
-		this.currentRound = 0;
+		this.currentRound = 1;
 		this.roundStartFlag = true;
 
 		this.frameData = new FrameData();
@@ -66,7 +66,7 @@ public class Play extends GameScene {
 	@Override
 	public void update() {
 
-		if (this.currentRound < GameSetting.ROUND_MAX) {
+		if (this.currentRound <= GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
 				initRound();
@@ -98,7 +98,7 @@ public class Play extends GameScene {
 
 	private void initRound() {
 		this.fighting.initRound();
-		this.nowFrame = 0;
+		this.nowFrame = 1;
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 
@@ -148,7 +148,7 @@ public class Play extends GameScene {
 	}
 
 	private boolean isTimeOver() {
-		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
+		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER;
 	}
 
 	@Override

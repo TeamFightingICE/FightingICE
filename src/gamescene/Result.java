@@ -8,6 +8,7 @@ import manager.GraphicManager;
 import manager.InputManager;
 import setting.GameSetting;
 import struct.Key;
+import util.LogWriter;
 
 public class Result extends GameScene {
 
@@ -25,6 +26,7 @@ public class Result extends GameScene {
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.RESULT);
+		LogWriter.getInstance().outputResult(this.roundResults, LogWriter.CSV);
 	}
 
 	@Override
