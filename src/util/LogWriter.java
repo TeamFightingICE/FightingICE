@@ -73,6 +73,9 @@ public class LogWriter {
 		}
 
 		pw.close();
+	}
+
+	public void outputLog() {
 
 	}
 }

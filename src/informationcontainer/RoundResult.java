@@ -24,8 +24,8 @@ public class RoundResult {
 
 	public RoundResult(FrameData frameData) {
 		this.currentRound = frameData.getCurrentRound();
-		this.remainingHPs = new int[] { frameData.getMyCharacter(true).getHp(),
-				frameData.getMyCharacter(false).getHp() };
+		this.remainingHPs = new int[] { Math.max(frameData.getMyCharacter(true).getHp(), 0),
+				Math.max(frameData.getMyCharacter(false).getHp(), 0) };
 		this.elapsedFrame = frameData.getCurrentFrameNumber();
 	}
 
@@ -40,5 +40,4 @@ public class RoundResult {
 	public int getElapsedFrame() {
 		return this.elapsedFrame;
 	}
-
 }

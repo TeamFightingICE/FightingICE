@@ -14,6 +14,7 @@ import setting.GameSetting;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
+import util.LogWriter;
 import util.ResourceDrawer;
 
 public class Play extends GameScene {
@@ -125,6 +126,7 @@ public class Play extends GameScene {
 		}
 
 		// リプレイログ吐き出し
+		LogWriter.getInstance().outputLog();
 		// 画面をDrawerクラスで描画
 		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
