@@ -45,6 +45,7 @@ public class HomeMenu extends GameScene {
 		if (allReplayNames.size() == 0) {
 			allReplayNames.add("None");
 		}
+		
 	}
 
 	@Override

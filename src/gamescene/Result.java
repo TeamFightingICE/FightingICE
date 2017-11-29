@@ -9,23 +9,29 @@ import informationcontainer.RoundResult;
 import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
+import setting.FlagSetting;
 import setting.GameSetting;
+import setting.LaunchSetting;
 import util.LogWriter;
 
 public class Result extends GameScene {
 
 	private ArrayList<RoundResult> roundResults;
 
-	private  String timeInfo;
+	private String timeInfo;
+
+	private int displayedTime;
 
 	public Result() {
 		this.roundResults = new ArrayList<RoundResult>();
 		this.timeInfo = "0";
+		this.displayedTime = 0;
 	}
 
 	public Result(ArrayList<RoundResult> roundResults, String timeInfo) {
 		this.roundResults = new ArrayList<RoundResult>(roundResults);
 		this.timeInfo = timeInfo;
+		this.displayedTime = 0;
 		roundResults.clear();
 	}
 
@@ -43,11 +49,11 @@ public class Result extends GameScene {
 			String[] score = new String[] { String.valueOf(this.roundResults.get(i).getRemainingHPs()[0]),
 					String.valueOf(this.roundResults.get(i).getRemainingHPs()[1]) };
 
-			//スコアの描画
+			// スコアの描画
 			GraphicManager.getInstance().drawString(score[0], positionX[0], 50 + i * 100);
 			GraphicManager.getInstance().drawString(score[1], positionX[1], 50 + i * 100);
 
-			//勝ちや引き分けに応じてWin !やDrawをスコアの横に印字
+			// 勝ちや引き分けに応じてWin !やDrawをスコアの横に印字
 			switch (getWinPlayer(i)) {
 			case 1:
 				GraphicManager.getInstance().drawString("Win !", positionX[0] - 100, 50 + i * 100);
@@ -62,19 +68,38 @@ public class Result extends GameScene {
 			}
 		}
 
-		String string = "Press Enter key to return menu";
-		GraphicManager.getInstance().drawString(string, GameSetting.STAGE_WIDTH / 2 - string.length() * 5 - 30, 400);
+		if (FlagSetting.automationFlag) {
+			if (++this.displayedTime > 300) {
+				if (LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
+					LaunchSetting.repeatedCount++;
 
-		if (Keyboard.getKeyDown(GLFW_KEY_ENTER)) {
-			HomeMenu homeMenu = new HomeMenu();
-			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-			this.setNextGameScene(homeMenu); // 次のシーンをセットする
+					Launcher launcher = new Launcher(GameSceneName.PLAY);
+					this.setTransitionFlag(true);
+					this.setNextGameScene(launcher);
+
+				} else {
+					this.setGameEndFlag(true);
+				}
+			}
+
+		} else {
+			String string = "Press Enter key to return menu";
+			GraphicManager.getInstance().drawString(string, GameSetting.STAGE_WIDTH / 2 - string.length() * 5 - 30,
+					400);
+
+			if (Keyboard.getKeyDown(GLFW_KEY_ENTER)) {
+				HomeMenu homeMenu = new HomeMenu();
+				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+				this.setNextGameScene(homeMenu); // 次のシーンをセットする
+			}
 		}
+
 	}
 
 	@Override
 	public void close() {
 		this.roundResults.clear();
+		this.displayedTime = 0;
 	}
 
 	/**
