@@ -15,27 +15,8 @@ import util.DeleteFiles;
 
 public class Game extends GameManager {
 
-	private String[] aiNames;
-
-	private String[] characterNames;
-
-	private int repeatNumber;
-
-	private BackgroundType backgroundType;
-
-	private int py4jPort;
-
-	private int invertedPlayer;
-
 	public Game() {
 		super();
-
-		this.aiNames = new String[2];
-		this.characterNames = new String[2];
-		this.repeatNumber = 1;
-		this.backgroundType = BackgroundType.IMAGE;
-		this.py4jPort = 4242;
-		this.invertedPlayer = 0;
 	}
 
 	public void setOptions(String[] options){
@@ -151,7 +132,7 @@ public class Game extends GameManager {
 
 	@Override
 	public void close() {
-
+		this.currentGameScene = null;
 	}
 
 }

@@ -153,6 +153,10 @@ public class DisplayManager {
 
 	/** ゲームの終了処理を行い,ウィンドウを閉じる. */
 	private void close() {
+		GraphicManager.getInstance().close();
+		SoundManager.getInstance().close();
+		//InputManager.getInstance().close();
+
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(this.window);
 		glfwDestroyWindow(this.window);
