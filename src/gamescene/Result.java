@@ -36,9 +36,11 @@ public class Result extends GameScene {
 			String[] score = new String[] { String.valueOf(this.roundResults.get(i).getRemainingHPs()[0]),
 					String.valueOf(this.roundResults.get(i).getRemainingHPs()[1]) };
 
+			//スコアの描画
 			GraphicManager.getInstance().drawString(score[0], positionX[0], 50 + i * 100);
 			GraphicManager.getInstance().drawString(score[1], positionX[1], 50 + i * 100);
 
+			//勝ちや引き分けに応じてWin !やDrawをスコアの横に印字
 			switch (getWinPlayer(i)) {
 			case 1:
 				GraphicManager.getInstance().drawString("Win !", positionX[0] - 50, 50 + i * 100);

@@ -60,6 +60,7 @@ public class Launcher extends GameScene {
 		//リソースのロード
 		ResourceLoader.getInstance().loadResource();
 
+
 	}
 
 	@Override
