@@ -3,10 +3,17 @@ package manager;
 import static org.lwjgl.glfw.GLFW.*;
 
 import aiinterface.AIController;
+import aiinterface.ThreadController;
 import enumerate.GameSceneName;
+import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
+import loader.ResourceLoader;
+import setting.LaunchSetting;
+import struct.FrameData;
+import struct.GameData;
 import struct.Key;
+import util.Transform;
 
 /** AIやキーボード等の入力関連のタスクを管理するマネージャー */
 public class InputManager<Data> {
@@ -27,8 +34,7 @@ public class InputManager<Data> {
 
 	/** Default device type is keyboard **/
 	public final static char DEVICE_TYPE_KEYBOARD = 0;
-	public final static char DEVICE_TYPE_CONTROLLER = 1;
-	public final static char DEVICE_TYPE_AI = 2;
+	public final static char DEVICE_TYPE_AI = 1;
 
 	// to recognize the input devices
 	private char[] deviceTypes;
@@ -54,7 +60,9 @@ public class InputManager<Data> {
 	public void update() {
 		// Poll for window events. The key callback above will only be
 		// invoked during this call.
-		 glfwPollEvents();
+		glfwPollEvents();
+
+		int aiCount = 0;
 
 		Key[] keys = new Key[this.deviceTypes.length];
 		for (int i = 0; i < this.deviceTypes.length; i++) {
@@ -63,15 +71,13 @@ public class InputManager<Data> {
 				keys[i] = getKeyFromKeyboard(i == 0);
 				break;
 			case DEVICE_TYPE_AI:
-				// keys[i] = getKeyFromAI();
+				keys[i] = getKeyFromAI(ais[aiCount]);
+				aiCount++;
 				break;
 			default:
 				break;
 			}
 		}
-
-		// keys[0] = getKeyFromKeyboard(true);
-		// keys[1] = getKeyFromKeyboard(false);
 
 		this.setKeyData(new KeyData(keys));
 	}
@@ -100,11 +106,61 @@ public class InputManager<Data> {
 		return key;
 	}
 
+	public void createAIcontroller() {
+		String[] aiNames = LaunchSetting.aiNames.clone();
+		this.deviceTypes = LaunchSetting.deviceTypes.clone();
+		this.ais = new AIController[aiNames.length];
+		for (int i = 0; i < aiNames.length; i++) {
+			if (deviceTypes[i] == DEVICE_TYPE_AI) {
+				ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
+			}
+		}
+	}
+
+	public void startAI(GameData gameData) {
+		int count = 0;
+		for (int i = 0; i < this.deviceTypes.length; i++) {
+			if (deviceTypes[i] == DEVICE_TYPE_AI) {
+				// ais[count].initialize(waitFrame, gd,
+				// !Transform.iTob(i));//Call the initialize function of the AI
+				// of interest
+				ais[count].initialize(ThreadController.getInstance().getAIsObject(i), gameData,Transform.convertPlayerNumberfromItoB(i));
+				ais[count].start();// start the thread
+				count++;
+			}
+		}
+	}
+
 	// private synchronized Key getInputFromAI(AIController ai){
-	private Key getInputFromAI(AIController ai) {
+	private Key getKeyFromAI(AIController ai) {
 		if (ai == null)
 			return new Key();
 		return new Key(ai.getInput());
+	}
+
+	public void setFrameData(FrameData frameData) {
+		int count = 0;
+		for (int i = 0; i < this.deviceTypes.length; i++) {
+			if (deviceTypes[i] == DEVICE_TYPE_AI) {
+				System.out.println("add AI"+i+"s frameData");
+				if (!frameData.getEmptyFlag()) {
+					ais[count].setFrameData(new FrameData(frameData));
+				} else {
+					ais[count].setFrameData(new FrameData());
+				}
+				ThreadController.getInstance().resetFlag(i);
+				count++;
+			}
+		}
+	}
+
+	public void sendRoundResult(RoundResult roundResult) {
+		for (AIController ai : this.ais) {
+			if (ai != null) {
+				ai.informRoundResult(roundResult);
+				ai.clear();
+			}
+		}
 	}
 
 	public KeyData getKeyData() {

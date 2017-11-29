@@ -56,8 +56,9 @@ public class Play extends GameScene {
 		this.roundResults = new ArrayList<RoundResult>();
 
 		GameData gameData = new GameData(fighting.getCharacters());
-		// ((Input) im).initialize(deviceTypes, aiNames);
-		// ((Input) im).startAI(gameData);
+
+		InputManager.getInstance().createAIcontroller();
+		InputManager.getInstance().startAI(gameData);
 
 	}
 
@@ -103,6 +104,7 @@ public class Play extends GameScene {
 
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
+		InputManager.getInstance().setFrameData(new FrameData());
 
 		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
@@ -114,7 +116,9 @@ public class Play extends GameScene {
 		this.fighting.processingFight(this.nowFrame, this.keyData);
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, this.keyData);
 		this.screenData = new ScreenData();
+
 		// AIにFrameDataをセット
+		InputManager.getInstance().setFrameData(new FrameData(this.frameData));
 		// 体力が0orタイムオーバーならラウンド終了処理
 		if (isBeaten() || isTimeOver()) {
 			processingRoundEnd();
@@ -133,7 +137,7 @@ public class Play extends GameScene {
 		this.roundResults.add(roundResult);
 
 		// AIに結果を渡す sendRoundResult(p1Hp, p2Hp, frames);
-
+		InputManager.getInstance().sendRoundResult(roundResult);
 		this.currentRound++;
 		this.roundStartFlag = true;
 	}

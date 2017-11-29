@@ -107,6 +107,7 @@ public class ResourceLoader {
 			ClassLoader cl = URLClassLoader.newInstance(new URL[] { file.toURI().toURL() });
 			Class<?> c = cl.loadClass(aiName);
 			AIInterface ai = (AIInterface) c.newInstance();
+			System.out.println("ai");
 			return new AIController(ai);
 		} catch (MalformedURLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
