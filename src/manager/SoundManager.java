@@ -21,18 +21,31 @@ import org.lwjgl.util.WaveData;
 
 /** シングルトンパターン サウンドマネージャークラス */
 public class SoundManager {
+
 	private boolean closeFlag;
+
 	private float[] sourcePos;
+
 	private float[] sourceVel;
+
 	private float[] listenerPos;
+
 	private float[] listenerVel;
+
 	private float[] listenerOri;
+
 	private ArrayList<String> loadedFiles;
+
 	private ArrayList<Integer> buffers;
+
 	private ArrayList<Integer> sources;
+
 	private long device;
+
 	private long context;
+
 	private Map<String, Integer> soundEffect;
+
 	private Integer backGroundMusic;
 
 	/** コンストラクタ */
@@ -200,14 +213,14 @@ public class SoundManager {
 			IntBuffer scratch = BufferUtils.createIntBuffer(1);
 
 			// 再生中の音声を停止して削除
-			for(Integer sce: this.sources) {
+			for (Integer sce : this.sources) {
 				this.stop(sce.intValue());
 				scratch.put(0, sce);
 				alDeleteSources(scratch);
 			}
 
 			// バッファ削除
-			for(Integer buf: this.buffers) {
+			for (Integer buf : this.buffers) {
 				scratch.put(0, buf);
 				alDeleteBuffers(scratch);
 			}

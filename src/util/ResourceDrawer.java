@@ -21,14 +21,17 @@ import struct.HitArea;
 
 public class ResourceDrawer {
 
-	private static ResourceDrawer resourceDrawer = new ResourceDrawer();
-
 	private ResourceDrawer() {
 		System.out.println("Create instance: " + ResourceDrawer.class.getName());
 	}
 
 	public static ResourceDrawer getInstance() {
-		return resourceDrawer;
+		return ResourceDrawerHolder.instance;
+	}
+
+	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	private static class ResourceDrawerHolder {
+		private static final ResourceDrawer instance = new ResourceDrawer();
 	}
 
 	public void drawResource(Character[] characters, Deque<LoopEffect> projectiles,

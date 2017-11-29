@@ -10,7 +10,6 @@ import struct.Key;
 
 /** AIやキーボード等の入力関連のタスクを管理するマネージャー */
 public class InputManager<Data> {
-	private static InputManager inputManager = new InputManager();
 
 	private KeyData buffer;
 
@@ -44,7 +43,12 @@ public class InputManager<Data> {
 	}
 
 	public static InputManager getInstance() {
-		return inputManager;
+		return InputManagerHolder.instance;
+	}
+
+	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	private static class InputManagerHolder {
+		private static final InputManager instance = new InputManager();
 	}
 
 	public Keyboard getKeyboard() {
@@ -54,7 +58,7 @@ public class InputManager<Data> {
 	public void update() {
 		// Poll for window events. The key callback above will only be
 		// invoked during this call.
-		 glfwPollEvents();
+		glfwPollEvents();
 
 		Key[] keys = new Key[this.deviceTypes.length];
 		for (int i = 0; i < this.deviceTypes.length; i++) {

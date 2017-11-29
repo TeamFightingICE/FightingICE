@@ -42,8 +42,6 @@ public class GraphicManager {
 
 	private ArrayList<Image> backGroundImage;
 
-	private static GraphicManager graphicManager = new GraphicManager();
-
 	private GraphicManager() {
 		System.out.println("Create instance: " + GraphicManager.class.getName());
 
@@ -65,7 +63,12 @@ public class GraphicManager {
 	}
 
 	public static GraphicManager getInstance() {
-		return graphicManager;
+		return GraphicManagerHolder.instance;
+	}
+
+	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	private static class GraphicManagerHolder {
+		private static final GraphicManager instance = new GraphicManager();
 	}
 
 	public ArrayList<CharacterActionImage> getCharacterImageContainer() {

@@ -31,8 +31,6 @@ import setting.ResourceSetting;
 /** キャラクターの設定ファイルや画像等のリソースをロードするためのシングルトンなクラス */
 public class ResourceLoader {
 
-	private static ResourceLoader resourceLoader = new ResourceLoader();
-
 	private ArrayList<String> loadedGraphics;
 
 	private ResourceLoader() {
@@ -41,7 +39,12 @@ public class ResourceLoader {
 	}
 
 	public static ResourceLoader getInstance() {
-		return resourceLoader;
+		return ResourceLoaderHolder.instance;
+	}
+
+	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	private static class ResourceLoaderHolder {
+		private static final ResourceLoader instance = new ResourceLoader();
 	}
 
 	public void loadResource() {
