@@ -23,6 +23,7 @@ import aiinterface.AIInterface;
 import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
+import manager.SoundManager;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import setting.ResourceSetting;
@@ -73,6 +74,8 @@ public class ResourceLoader {
 		// キャラクター画像読み込み
 		loadCharacterImages(characterGraphicPath);
 		System.out.println("キャラクター画像読み込み完了");
+		loadSoundEffect();
+		loadBackGroundMusic();
 	}
 
 	/**
@@ -351,6 +354,17 @@ public class ResourceLoader {
 				GraphicManager.getInstance().getHitEffectImageContaier()[i][j] = loadImage(files[j].getPath());
 			}
 		}
+	}
+
+	private void loadSoundEffect() {
+		String path = "./data/sound/";
+		for (String soundEffect : ResourceSetting.SOUND_EFFECTS)
+			SoundManager.getInstance().getSoundEffect().put(soundEffect, SoundManager.getInstance().loadSoundResource(path + soundEffect, false));
+	}
+
+	private void loadBackGroundMusic() {
+		String path = "./data/sound/";
+		SoundManager.getInstance().setBackGroundMusic(SoundManager.getInstance().loadSoundResource(path + ResourceSetting.BGM_FILE, true));
 	}
 
 }
