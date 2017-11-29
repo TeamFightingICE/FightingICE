@@ -1,23 +1,29 @@
 package gamescene;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
 import informationcontainer.RoundResult;
+import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
 import setting.GameSetting;
-import struct.Key;
+import util.LogWriter;
 
 public class Result extends GameScene {
 
 	private ArrayList<RoundResult> roundResults;
 
+	private  String timeInfo;
+
 	public Result() {
 		this.roundResults = new ArrayList<RoundResult>();
+		this.timeInfo = "0";
 	}
 
-	public Result(ArrayList<RoundResult> roundResults) {
+	public Result(ArrayList<RoundResult> roundResults, String timeInfo) {
 		this.roundResults = new ArrayList<RoundResult>(roundResults);
 		roundResults.clear();
 	}
@@ -25,11 +31,11 @@ public class Result extends GameScene {
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.RESULT);
+		LogWriter.getInstance().outputResult(this.roundResults, LogWriter.CSV, this.timeInfo);
 	}
 
 	@Override
 	public void update() {
-		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
 		int[] positionX = new int[] { GameSetting.STAGE_WIDTH / 2 - 70, GameSetting.STAGE_WIDTH / 2 + 10 };
 
 		for (int i = 0; i < this.roundResults.size(); i++) {
@@ -43,10 +49,10 @@ public class Result extends GameScene {
 			//勝ちや引き分けに応じてWin !やDrawをスコアの横に印字
 			switch (getWinPlayer(i)) {
 			case 1:
-				GraphicManager.getInstance().drawString("Win !", positionX[0] - 50, 50 + i * 100);
+				GraphicManager.getInstance().drawString("Win !", positionX[0] - 100, 50 + i * 100);
 				break;
 			case -1:
-				GraphicManager.getInstance().drawString("Win !", positionX[1] + 50, 50 + i * 100);
+				GraphicManager.getInstance().drawString("Win !", positionX[1] + 80, 50 + i * 100);
 				break;
 			default:
 				GraphicManager.getInstance().drawString("Draw", positionX[0] - 100, 50 + i * 100);
@@ -55,10 +61,10 @@ public class Result extends GameScene {
 			}
 		}
 
-		String string = "Press Z to return menu";
-		GraphicManager.getInstance().drawString(string, GameSetting.STAGE_WIDTH / 2 - string.length() * 5 - 20, 400);
+		String string = "Press Enter key to return menu";
+		GraphicManager.getInstance().drawString(string, GameSetting.STAGE_WIDTH / 2 - string.length() * 5 - 30, 400);
 
-		if (key.A) {
+		if (Keyboard.getKeyDown(GLFW_KEY_ENTER)) {
 			HomeMenu homeMenu = new HomeMenu();
 			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 			this.setNextGameScene(homeMenu); // 次のシーンをセットする

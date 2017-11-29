@@ -1,11 +1,17 @@
 package gamescene;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import enumerate.GameSceneName;
 import fighting.Fighting;
 import informationcontainer.RoundResult;
 import input.KeyData;
+import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
@@ -14,6 +20,7 @@ import setting.GameSetting;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
+import util.LogWriter;
 import util.ResourceDrawer;
 
 public class Play extends GameScene {
@@ -36,6 +43,10 @@ public class Play extends GameScene {
 
 	private ArrayList<RoundResult> roundResults;
 
+	private DataOutputStream dos;
+
+	private String timeInfo;
+
 	public Play() {
 
 	}
@@ -46,15 +57,17 @@ public class Play extends GameScene {
 		this.fighting = new Fighting();
 		this.fighting.initialize();
 
-		this.nowFrame = 0;
+		this.nowFrame = 1;
 		this.elapsedBreakTime = 0;
-		this.currentRound = 0;
+		this.currentRound = 1;
 		this.roundStartFlag = true;
 
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
 		this.keyData = new KeyData();
 		this.roundResults = new ArrayList<RoundResult>();
+
+		openReplayFile();
 
 		GameData gameData = new GameData(fighting.getCharacters());
 		// ((Input) im).initialize(deviceTypes, aiNames);
@@ -66,7 +79,7 @@ public class Play extends GameScene {
 	@Override
 	public void update() {
 
-		if (this.currentRound < GameSetting.ROUND_MAX) {
+		if (this.currentRound <= GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
 				initRound();
@@ -88,7 +101,7 @@ public class Play extends GameScene {
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
 
-			Result result = new Result(this.roundResults);
+			Result result = new Result(this.roundResults, this.timeInfo);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
 
@@ -98,7 +111,7 @@ public class Play extends GameScene {
 
 	private void initRound() {
 		this.fighting.initRound();
-		this.nowFrame = 0;
+		this.nowFrame = 1;
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 
@@ -125,6 +138,7 @@ public class Play extends GameScene {
 		}
 
 		// リプレイログ吐き出し
+		LogWriter.getInstance().outputLog(this.dos, this.keyData, this.fighting.getCharacters());
 		// 画面をDrawerクラスで描画
 		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
@@ -148,11 +162,31 @@ public class Play extends GameScene {
 	}
 
 	private boolean isTimeOver() {
-		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
+		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER;
+	}
+
+	private void openReplayFile() {
+		this.timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
+
+		String fileName = LogWriter.getInstance().createOutputFileName("./log/replay/", this.timeInfo);
+		this.dos = ResourceLoader.getInstance().openDataOutputStream(fileName + ".dat");
+
+		LogWriter.getInstance().writeHeader(this.dos);
 	}
 
 	@Override
 	public void close() {
+		this.fighting = null;
+		this.frameData = null;
+		this.screenData = null;
+		this.keyData = null;
+		this.roundResults.clear();
+
+		try {
+			this.dos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 

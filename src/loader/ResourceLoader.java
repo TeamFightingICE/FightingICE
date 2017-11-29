@@ -5,10 +5,15 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -140,6 +145,38 @@ public class ResourceLoader {
 		try {
 			File file = new File(filePath);
 			return new BufferedReader(new FileReader(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * 読み込みたいファイルを開き，そのBufferedReaderを返す
+	 *
+	 * @param filePath
+	 *            読み込みたいファイルまでのパス
+	 */
+	public DataOutputStream openDataOutputStream(String filePath) {
+		try {
+			File file = new File(filePath);
+			return new DataOutputStream(new FileOutputStream(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * 読み込みたいファイルを開き，そのBufferedReaderを返す
+	 *
+	 * @param filePath
+	 *            読み込みたいファイルまでのパス
+	 */
+	public PrintWriter openWriteFile(String filePath) {
+		try {
+			File file = new File(filePath);
+			return new PrintWriter(new BufferedWriter(new FileWriter(file)));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
