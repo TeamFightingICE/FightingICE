@@ -48,12 +48,18 @@ public class Play extends GameScene {
 	private String timeInfo;
 
 	public Play() {
-
+		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
+		this.gameSceneName = GameSceneName.PLAY;
+		this.isGameEndFlag = false;
+		this.isTransitionFlag = false;
+		this.nextGameScene = null;
+		//////////////////////////////////////
 	}
 
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.PLAY);
+
 		this.fighting = new Fighting();
 		this.fighting.initialize();
 
@@ -83,7 +89,6 @@ public class Play extends GameScene {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
 				initRound();
-				System.out.println("Round: " + currentRound);
 
 			} else if (this.elapsedBreakTime < GameSetting.BREAKTIME_FRAME_NUMBER) {
 				// break time
