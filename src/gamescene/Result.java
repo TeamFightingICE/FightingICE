@@ -23,12 +23,21 @@ public class Result extends GameScene {
 	private int displayedTime;
 
 	public Result() {
+		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
+		this.gameSceneName = GameSceneName.FIGHTING_MENU;
+		this.isGameEndFlag = false;
+		this.isTransitionFlag = false;
+		this.nextGameScene = null;
+		//////////////////////////////////////
+
 		this.roundResults = new ArrayList<RoundResult>();
 		this.timeInfo = "0";
 		this.displayedTime = 0;
 	}
 
 	public Result(ArrayList<RoundResult> roundResults, String timeInfo) {
+		super();
+
 		this.roundResults = new ArrayList<RoundResult>(roundResults);
 		this.timeInfo = timeInfo;
 		this.displayedTime = 0;
@@ -38,6 +47,7 @@ public class Result extends GameScene {
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.RESULT);
+
 		LogWriter.getInstance().outputResult(this.roundResults, LogWriter.CSV, this.timeInfo);
 	}
 

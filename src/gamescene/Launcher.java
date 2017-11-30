@@ -48,7 +48,7 @@ public class Launcher extends GameScene {
 
 		case "REPLAY":
 			System.out.println("Replay遷移");
-			Replay replay = new Replay();  //このコンストラクタでリプレイ再生時に使用するキャラをセットしないとつらい(
+			Replay replay = new Replay();
 			this.setTransitionFlag(true);
 			this.setNextGameScene(replay);
 			break;

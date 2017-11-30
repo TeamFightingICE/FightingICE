@@ -7,6 +7,7 @@ import informationcontainer.MenuItem;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
+import setting.LaunchSetting;
 import struct.Key;
 
 public class HomeMenu extends GameScene {
@@ -45,7 +46,7 @@ public class HomeMenu extends GameScene {
 		if (allReplayNames.size() == 0) {
 			allReplayNames.add("None");
 		}
-		
+
 	}
 
 	@Override
@@ -92,6 +93,7 @@ public class HomeMenu extends GameScene {
 				}
 			}
 			if (key.A) {
+				LaunchSetting.replayName = this.allReplayNames.get(this.replayIndex);
 				// Launcherの次の遷移先を登録
 				Launcher launcher = new Launcher(GameSceneName.REPLAY);
 				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
