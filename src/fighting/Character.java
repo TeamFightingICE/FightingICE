@@ -782,7 +782,7 @@ public class Character {
 
 			while ((line = br.readLine()) != null) {
 				String[] st = line.split(",", 0);
-				Motion motion = new Motion(st, characterName);
+				Motion motion = new Motion(st, characterName, this.playerNumber ? 0 : 1);
 				this.motionList.add(motion);
 			}
 
