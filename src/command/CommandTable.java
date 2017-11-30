@@ -26,7 +26,7 @@ public class CommandTable {
 
 		// get current key state
 		temp = input.removeLast();
-		nowKeyData = new Key(temp.getKeys()[charIndex]);
+		nowKeyData = temp.getKeys()[charIndex];
 
 		// The decision as input only at the moment you press the button. Press
 		// keeps flick.
@@ -66,7 +66,6 @@ public class CommandTable {
 		boolean pushC = false;
 
 		// get current key state
-		Key temp = input.removeLast();
 		Key nowKey = new Key(input.removeLast());
 
 		// The decision as input only at the moment you press the button. Press
@@ -81,7 +80,7 @@ public class CommandTable {
 			pushC = nowKey.C;
 		}
 
-		input.addLast(temp);
+		input.addLast(nowKey);
 
 		int lever;
 		int[] commandList = { 5, 5, 5, 5 };
@@ -186,6 +185,7 @@ public class CommandTable {
 
 					// normal move
 				} else if (nowKeyData.getLever(isFront) == 3) {
+					System.out.println("in !");
 					return Action.CROUCH_FB;// STAND3B
 
 				} else if (nowKeyData.getLever(isFront) == 2) {
