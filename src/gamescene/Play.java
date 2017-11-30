@@ -73,7 +73,9 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 		this.roundResults = new ArrayList<RoundResult>();
 
-		openReplayFile();
+		if (!FlagSetting.trainingModeFlag) {
+			openReplayFile();
+		}
 
 		GameData gameData = new GameData(fighting.getCharacters());
 		// ((Input) im).initialize(deviceTypes, aiNames);
@@ -143,7 +145,9 @@ public class Play extends GameScene {
 		}
 
 		// リプレイログ吐き出し
-		LogWriter.getInstance().outputLog(this.dos, this.keyData, this.fighting.getCharacters());
+		if (!FlagSetting.trainingModeFlag) {
+			LogWriter.getInstance().outputLog(this.dos, this.keyData, this.fighting.getCharacters());
+		}
 		// 画面をDrawerクラスで描画
 		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
@@ -167,7 +171,12 @@ public class Play extends GameScene {
 	}
 
 	private boolean isTimeOver() {
-		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER;
+		if (FlagSetting.trainingModeFlag) {
+			return this.nowFrame == Integer.MAX_VALUE;
+		} else {
+			return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER;
+		}
+
 	}
 
 	private void openReplayFile() {

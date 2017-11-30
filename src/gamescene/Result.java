@@ -47,6 +47,7 @@ public class Result extends GameScene {
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.RESULT);
+
 		LogWriter.getInstance().outputResult(this.roundResults, LogWriter.CSV, this.timeInfo);
 	}
 

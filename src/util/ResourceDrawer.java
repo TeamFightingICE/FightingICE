@@ -215,7 +215,13 @@ public class ResourceDrawer {
 	 *            the remaining time.
 	 */
 	private void drawTimeImage(int remainingTime) {
-		GraphicManager.getInstance().drawString(Integer.toString(remainingTime), GameSetting.STAGE_WIDTH / 2 - 30, 10);
+		if (FlagSetting.trainingModeFlag) {
+			GraphicManager.getInstance().drawString("Training Mode", GameSetting.STAGE_WIDTH / 2 - 80, 10);
+		} else {
+			GraphicManager.getInstance().drawString(Integer.toString(remainingTime), GameSetting.STAGE_WIDTH / 2 - 30,
+					10);
+		}
+
 	}
 
 	/**
