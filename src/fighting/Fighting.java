@@ -17,15 +17,15 @@ import struct.FrameData;
 
 public class Fighting {
 
-	private Character[] playerCharacters;
+	protected Character[] playerCharacters;
 
-	private Deque<LoopEffect> projectileDeque;
+	protected Deque<LoopEffect> projectileDeque;
 
 	private Deque<KeyData> inputCommands;
 
 	private LinkedList<LinkedList<HitEffect>> hitEffects;
 
-	private CommandTable commandTable;
+	protected CommandTable commandTable;
 
 	public Fighting() {
 		this.playerCharacters = new Character[2];
@@ -75,7 +75,7 @@ public class Fighting {
 	}
 
 	/** 入力されたキーを基にアクションを実行する */
-	private void processingCommands(int currentFrame, KeyData keyData) {
+	protected void processingCommands(int currentFrame, KeyData keyData) {
 		this.inputCommands.addLast(keyData);
 
 		if (this.inputCommands.size() > GameSetting.INPUT_LIMIT) {
@@ -87,7 +87,7 @@ public class Fighting {
 				// Action executeAction =
 				// this.commandTable.convertKeyToAction(this.playerCharacters[i],this.inputCommands);
 
-				Action executeAction = this.commandTable.interpretationCommand(this.playerCharacters[i],
+				Action executeAction = this.commandTable.interpretationCommandFromKeyData(this.playerCharacters[i],
 						this.inputCommands);
 				if (ableAction(this.playerCharacters[i], executeAction)) {
 					this.playerCharacters[i].runAction(executeAction, true);
@@ -97,7 +97,7 @@ public class Fighting {
 	}
 
 	/** 攻撃の当たり判定と,それに伴うキャラクターのパラメータ・コンボ状態の更新を行う */
-	private void calculationHit(int currentFrame) {
+	protected void calculationHit(int currentFrame) {
 		boolean[] isHit = { false, false };
 
 		// 波動拳の処理
@@ -166,7 +166,7 @@ public class Fighting {
 	/**
 	 * 攻撃オブジェクトのパラメータ更新を行う.
 	 */
-	private void updateAttackParameter() {
+	protected void updateAttackParameter() {
 		// update coordinate of Attacks(long distance)
 		int dequeSize = this.projectileDeque.size();
 		for (int i = 0; i < dequeSize; i++) {
@@ -192,7 +192,7 @@ public class Fighting {
 	/**
 	 * キャラクターのパラメータや波動拳の情報を更新する
 	 */
-	private void updateCharacter() {
+	protected void updateCharacter() {
 		for (int i = 0; i < 2; ++i) {
 			// update each character.
 			this.playerCharacters[i].update();
@@ -240,7 +240,7 @@ public class Fighting {
 	/**
 	 * 各キャラクターの現在の水平方向のスピード量に応じて, プッシュ処理を行う
 	 */
-	private void detectionPush() {
+	protected void detectionPush() {
 		// whether the conflict of first and second player or not?
 		if (isCollision()) {
 			/*
@@ -270,7 +270,7 @@ public class Fighting {
 	/**
 	 * 相手と位置が重なってしまった場合, 重ならないように各キャラクターの座標の更新処理を行う
 	 */
-	private void detectionFusion() {
+	protected void detectionFusion() {
 		// whether the conflict of first and second player or not?
 		if (isCollision()) {
 			int direction = 0;
@@ -304,7 +304,7 @@ public class Fighting {
 	/**
 	 * ステージ端からキャラクターがはみ出ないように, 各キャラクターの座標の更新処理を行う
 	 */
-	private void decisionEndStage() {
+	protected void decisionEndStage() {
 
 		for (int i = 0; i < 2; ++i) {
 			// if action is down, character will be rebound.
@@ -327,7 +327,7 @@ public class Fighting {
 	}
 
 	/** 入力されたアクションが実行可能かどうかを返す */
-	private boolean ableAction(Character character, Action nextAction) {
+	protected boolean ableAction(Character character, Action nextAction) {
 		Motion nextMotion = character.getMotionList().get(nextAction.ordinal());
 		Motion nowMotion = character.getMotionList().get(character.getAction().ordinal());
 
@@ -356,7 +356,7 @@ public class Fighting {
 	 * @see Character
 	 * @see Attack
 	 */
-	private boolean detectionHit(Character opponent, Attack attack) {
+	protected boolean detectionHit(Character opponent, Attack attack) {
 		if (attack == null || opponent.getState() == State.DOWN) {
 			return false;
 		} else if (opponent.getHitAreaLeft() <= attack.getCurrentHitArea().getRight()
@@ -404,33 +404,10 @@ public class Fighting {
 	}
 
 	public LinkedList<LinkedList<HitEffect>> getHitEffectList() {
-		// LinkedList<LinkedList<HitEffect>> temp = new
-		// LinkedList<LinkedList<HitEffect>>();
-		LinkedList<LinkedList<HitEffect>> temp = new LinkedList<LinkedList<HitEffect>>(this.hitEffects);
-
-		/*
-		 * for(int i = 0; i < 2; i++){ LinkedList<HitEffect> effects = new
-		 * LinkedList<HitEffect>();
-		 *
-		 * for(HitEffect effect : temp.get(i)){ effect = new
-		 * HitEffect(effect.getAttack(), effect.getImages(), effect.isHit());
-		 * effects.add(effect); }
-		 *
-		 * temp.add(effects); }
-		 */
-
-		return temp;
+		return new LinkedList<LinkedList<HitEffect>>(this.hitEffects);
 	}
 
 	public Deque<LoopEffect> getProjectileDeque() {
-		Deque<LoopEffect> temp = new LinkedList<LoopEffect>(this.projectileDeque);
-		/*
-		 * Deque<LoopEffect> temp = new LinkedList<LoopEffect>();
-		 *
-		 * for(LoopEffect loopEffect : this.projectileDeque){ temp.addLast(new
-		 * LoopEffect(loopEffect.getAttack(), loopEffect.getImages())); }
-		 */
-
-		return temp;
+		return new LinkedList<LoopEffect>(this.projectileDeque);
 	}
 }

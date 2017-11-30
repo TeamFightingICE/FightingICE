@@ -45,17 +45,30 @@ public class GameData {
 			}
 			this.characterMotions.add(motionDataList);
 		}
+
 		this.simulator = new Simulator(this);
 	}
 
 	/** Getter */
 
-	public ArrayList<MotionData> getCharacterMotionData(boolean playerNumber) {
+	public ArrayList<MotionData> getMotionData(boolean playerNumber) {
 		ArrayList<MotionData> temp = new ArrayList<MotionData>();
 		ArrayList<MotionData> copy = this.characterMotions.get(playerNumber ? 0 : 1);
 
 		for (MotionData motionData : copy) {
 			temp.add(motionData);
+		}
+
+		return temp;
+	}
+
+	public ArrayList<Motion> getMotion(boolean playerNumber) {
+		ArrayList<Motion> temp = new ArrayList<Motion>();
+		ArrayList<MotionData> copy = this.characterMotions.get(playerNumber ? 0 : 1);
+
+		for (MotionData motionData : copy) {
+			Motion motion = new Motion(motionData);
+			temp.add(motion);
 		}
 
 		return temp;
@@ -70,6 +83,6 @@ public class GameData {
 	}
 
 	public Simulator getSimulator() {
-		return new Simulator(this.simulator);
+		return this.simulator;
 	}
 }

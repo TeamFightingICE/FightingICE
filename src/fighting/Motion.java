@@ -7,6 +7,7 @@ import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
 import struct.HitArea;
+import struct.MotionData;
 
 public class Motion {
 
@@ -208,6 +209,38 @@ public class Motion {
 		//
 
 		setMotionImage(characterName);
+	}
+
+	public Motion(MotionData motionData) {
+		this.actionName = motionData.getActionName();
+		this.frameNumber = motionData.getFrameNumber();
+		this.speedX = motionData.getSpeedX();
+		this.speedY = motionData.getSpeedY();
+		this.characterHitArea = motionData.getCharacterHitArea();
+		this.state = motionData.getState();
+		this.attackHitArea = motionData.getAttackHitArea();
+		this.attackSpeedX = motionData.getAttackSpeedX();
+		this.attackSpeedY = motionData.getAttackSpeedY();
+		this.attackStartUp = motionData.getAttackStartUp();
+		this.attackActive = motionData.getAttackActive();
+		this.attackHitDamage =motionData.getAttackHitDamage();
+		this.attackGuardDamage = motionData.getAttackGuardDamage();
+		this.attackStartAddEnergy = motionData.getAttackStartAddEnergy();
+		this.attackHitAddEnergy = motionData.getAttackHitAddEnergy();
+		this.attackGuardAddEnergy = motionData.getAttackGuardAddEnergy();
+		this.attackGiveEnergy = motionData.getAttackGiveEnergy();
+		this.attackImpactX =motionData.getAttackImpactX();
+		this.attackImpactY = motionData.getAttackImpactY();
+		this.attackGiveGuardRecov = motionData.getAttackGiveGuardRecov();
+		this.attackType =motionData.getAttackType();
+		this.attackDownProperty = motionData.isAttackDownProperty();
+		this.cancelAbleFrame = motionData.getCancelAbleFrame();
+		this.cancelAbleMotionLevel = motionData.getCancelAbleMotionLevel();
+		this.motionLevel = motionData.getMotionLevel();
+		this.control =motionData.isControl();
+		this.landingFlag = motionData.isLandingFlag();
+
+		//画像は読み込まない
 	}
 
 	private void setMotionImage(String characterName) {

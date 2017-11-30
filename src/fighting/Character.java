@@ -14,6 +14,7 @@ import manager.SoundManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import struct.CharacterData;
 import struct.HitArea;
 import struct.Key;
 
@@ -71,6 +72,8 @@ public class Character {
 	private int hitCount;
 
 	public Character() {
+		initializeList();
+
 		this.playerNumber = true;
 		this.hp = 0;
 		this.energy = 0;
@@ -94,6 +97,8 @@ public class Character {
 	}
 
 	public Character(Character character) {
+		initializeList();
+
 		this.playerNumber = character.isPlayerNumber();
 		this.hp = character.getHp();
 		this.energy = character.getEnergy();
@@ -112,9 +117,39 @@ public class Character {
 		this.control = character.isControl();
 		this.attack = character.getAttack();
 		this.remainingFrame = character.getRemainingFrame();
-		this.lastHitFrame = character.getLastHitFrame();
+		this.inputCommands = character.getInputCommand();
+		this.processedCommands = character.getProcessedCommand();
 		this.motionList = character.getMotionList();
-		this.hitCount = this.getHitCount();
+		this.lastHitFrame = character.getLastHitFrame();
+		this.hitCount = character.getHitCount();
+	}
+
+	public Character(CharacterData characterData, ArrayList<Motion> motionList) {
+		initializeList();
+
+		this.playerNumber = characterData.isPlayerNumber();
+		this.hp = characterData.getHp();
+		this.energy = characterData.getEnergy();
+		this.x = characterData.getX();
+		this.y = characterData.getY();
+		this.graphicSizeX = characterData.getGraphicSizeX();
+		this.graphicSizeY = characterData.getGraphicSizeY();
+		this.graphicCenterX = characterData.getGraphicCenterX();
+		this.graphicCenterY = characterData.getGraphicCenterY();
+		this.speedX = characterData.getSpeedX();
+		this.speedY = characterData.getSpeedY();
+		this.state = characterData.getState();
+		this.action = characterData.getAction();
+		this.hitConfirm = characterData.isHitConfirm();
+		this.front = characterData.isFront();
+		this.control = characterData.isControl();
+		this.attack = characterData.getAttack();
+		this.remainingFrame = characterData.getRemainingFrame();
+		this.inputCommands = characterData.getInputCommand();
+		this.processedCommands = characterData.getProcessedCommand();
+		this.motionList = motionList;
+		this.lastHitFrame = characterData.getLastHitFrame();
+		this.hitCount = characterData.getHitCount();
 	}
 
 	public void initialize(String characterName, boolean playerNumber) {
@@ -135,11 +170,14 @@ public class Character {
 		}
 
 		this.playerNumber = playerNumber;
+
+		setMotionList(characterName);
+	}
+
+	public void initializeList() {
 		this.inputCommands = new LinkedList<Key>();
 		this.processedCommands = new LinkedList<Key>();
 		this.motionList = new ArrayList<Motion>();
-
-		setMotionList(characterName);
 	}
 
 	/** 各ラウンドの開始時にキャラクター情報を初期化する */
@@ -631,9 +669,6 @@ public class Character {
 	 * Returns a list storing keys of the action that the character will be
 	 * executing in the simulator
 	 *
-	 * @deprecated This method is used only for processing of the simulator. You
-	 *             should not use this method for AI development.
-	 *
 	 * @return A list storing keys of the action that the character will be
 	 *         executing in the simulator
 	 */
@@ -649,9 +684,6 @@ public class Character {
 	/**
 	 * Returns a list storing up to 30 keys that the character executed in the
 	 * simulator
-	 *
-	 * @deprecated This method is used only for processing of the simulator. You
-	 *             should not use this method for AI development.
 	 *
 	 * @return A list storing up to 30 keys that the character executed in the
 	 *         simulator
@@ -805,9 +837,6 @@ public class Character {
 	 * Sets a list storing keys of the action that the character will be
 	 * executing in the simulator
 	 *
-	 * @deprecated This method is used only for processing of the simulator. You
-	 *             should not use this method for AI development.
-	 *
 	 * @param inputCommands
 	 *            A list storing keys of the action that the character will be
 	 *            executing in the simulator
@@ -819,9 +848,6 @@ public class Character {
 	/**
 	 * Sets a list storing up to 30 keys that the character executed in the
 	 * simulator
-	 *
-	 * @deprecated This method is used only for processing of the simulator. You
-	 *             should not use this method for AI development.
 	 *
 	 * @param inputCommands
 	 *            A list storing up to 30 keys that the character executed in

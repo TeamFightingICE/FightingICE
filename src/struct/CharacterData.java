@@ -16,8 +16,10 @@ public class CharacterData {
 
 	private int energy;
 
+	/** キャラクター画像の一番左上のx座標*/
 	private int x;
 
+    /** キャラクター画像の一番左上のy座標*/
 	private int y;
 
 	private int left;
@@ -339,6 +341,19 @@ public class CharacterData {
 	 */
 	public void setProcessedCommand(Deque<Key> inputCommand) {
 		this.processedCommands = new LinkedList<Key>(inputCommand);
+	}
+
+	public int getGraphicCenterX() {
+		return 0;
+	}
+
+	public int getGraphicCenterY() {
+		return 0;
+	}
+
+	public boolean isHitConfirm() {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
 	}
 
 }

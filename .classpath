@@ -14,7 +14,11 @@
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opencl.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengl.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengles.jar"/>
-	<classpathentry kind="lib" path="lib/lwjgl/lwjgl.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NewFightingICE/lib/natives/windows"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-bgfx-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-glfw-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-lmdb-natives-windows.jar"/>
