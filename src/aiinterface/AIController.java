@@ -52,16 +52,25 @@ public class AIController extends Thread {
 
 			this.ai.getInformation(this.framesData.removeFirst());
 			this.ai.processing();
+			setInput(this.ai.input());
 //			ThreadController.getInstance().resetFlag(this.Num);
-			System.out.println("AI" + Transform.convertPlayerNumberfromBtoI(playerNumber) + "run");
+//			System.out.println("AI" + Transform.convertPlayerNumberfromBtoI(playerNumber) + "run");
 		}
 
 	}
 
 	public Key getInput() {
-		return new Key();
+		if(this.key != null){
+			return this.key;
+		}else{
+			return new Key();
+		}
 	}
 
+	public void setInput(Key key){
+		this.key = new Key(key);
+	}
+	
 	public void setFrameData(FrameData fd){
 		this.framesData.addLast(fd);
 		while(this.framesData.size()>DELAY){
