@@ -63,6 +63,7 @@ public class FrameData {
 
 	// Copy constructor for the FrameData class
 	public FrameData(FrameData frameData) {
+		this.characterData = new CharacterData[2];
 		this.characterData[0] = frameData.getMyCharacter(true);
 		this.characterData[1] = frameData.getMyCharacter(false);
 		this.currentFrameNumber = frameData.getCurrentFrameNumber();

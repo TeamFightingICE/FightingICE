@@ -43,6 +43,7 @@ public class Key {
 	 * @see Key
 	 */
 	public Key(Key key) {
+		if(key!=null){
 		this.A = key.A;
 		this.B = key.B;
 		this.C = key.C;
@@ -50,6 +51,9 @@ public class Key {
 		this.R = key.R;
 		this.D = key.D;
 		this.L = key.L;
+		}else{
+			this.empty();
+		}
 	}
 
 	/**

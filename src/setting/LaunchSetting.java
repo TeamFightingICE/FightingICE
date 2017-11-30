@@ -16,7 +16,7 @@ public final class LaunchSetting {
 	/**
 	 * 0: キーボード 1: AI
 	 */
-	public static int[] deviceTypes = { 0, 0 };
+	public static char[] deviceTypes = { 0, 0 };
 
 	public static int py4jPort = 4242;
 
