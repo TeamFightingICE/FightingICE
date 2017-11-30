@@ -129,7 +129,7 @@ public class HomeMenu extends GameScene {
 
 	@Override
 	public void close() {
-		System.out.println("Menu close");
+		System.out.println("Home Menu close");
 	}
 
 }

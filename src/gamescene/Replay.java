@@ -1,6 +1,9 @@
 package gamescene;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,6 +11,7 @@ import java.io.IOException;
 import enumerate.GameSceneName;
 import fighting.Fighting;
 import input.KeyData;
+import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
@@ -102,6 +106,16 @@ public class Replay extends GameScene {
 			this.setNextGameScene(homeMenu);
 		}
 
+		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
+			System.out.println("ESC is pressed");
+			// BGMを止める
+			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+
+			HomeMenu homeMenu = new HomeMenu();
+			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+			this.setNextGameScene(homeMenu); // 次のシーンをセットする
+		}
+
 	}
 
 	@Override
@@ -182,8 +196,24 @@ public class Replay extends GameScene {
 				dis.readInt(); // x
 				dis.readInt(); // y
 				keyByte = dis.readByte();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (EOFException e) {
+				System.out.println(
+						"The replay file was finished in the middle");
+				try {
+					dis.close();
+				} catch (IOException e1) {
+					// TODO 自動生成された catch ブロック
+					e1.printStackTrace();
+				}
+				// BGMを止める
+				SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+
+				HomeMenu homeMenu = new HomeMenu();
+				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+				this.setNextGameScene(homeMenu); // 次のシーンをセットする
+				break;
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
 
 			temp[i].U = convertItoB(keyByte / 64);
