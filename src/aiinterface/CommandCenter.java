@@ -1,5 +1,6 @@
 package aiinterface;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 import struct.FrameData;
@@ -233,6 +234,7 @@ public class CommandCenter {
 
 	/**
 	 * 実行待ちのコマンドリストから先頭の要素を渡す
+	 * 渡した先頭要素はCommandCenter上から削除される
 	 * @return
 	 */
 	public Key getSkillKey(){
@@ -242,7 +244,12 @@ public class CommandCenter {
 			return new Key();
 		}
 	}
-
+	
+	//実行待ちのコマンドリストを全て返す
+	public Deque<Key> getSkillKeys(){
+		return new LinkedList<Key>(this.skillKey);
+	}
+	
 	//実行待ちのコマンドをキャンセルする
 	public void skillCancel(){
 		this.skillKey.clear();
