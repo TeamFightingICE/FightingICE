@@ -146,7 +146,6 @@ public class InputManager<Data> {
 		int count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				System.out.println("add AI"+i+"s frameData");
 				if (!frameData.getEmptyFlag()) {
 					ais[count].setFrameData(new FrameData(frameData));
 				} else {

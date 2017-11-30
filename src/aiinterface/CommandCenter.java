@@ -1,7 +1,9 @@
 package aiinterface;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
+import struct.FrameData;
 import struct.Key;
 
 /**
@@ -13,9 +15,15 @@ public class CommandCenter {
 
 	//実行待ちコマンドリスト
 	private LinkedList<Key> skillKey;
+	
+	private FrameData frameData;
 
+	private boolean playerNumber;
+	
 	public CommandCenter(){
 		this.skillKey = new LinkedList<Key>();
+		this.frameData = new FrameData();
+		this.playerNumber = true;
 	}
 
 	/**
@@ -167,6 +175,10 @@ public class CommandCenter {
 	private void createKeys(String str){
 		Key buf;
 		String[] commands = str.split(" ");
+		if(!this.frameData.getMyCharacter(playerNumber).isFront()){
+			commands = reverseKey(commands);
+		}
+		
 		int index = 0;
 		while(index < commands.length){
 			buf = new Key();
@@ -205,10 +217,14 @@ public class CommandCenter {
 			}
 			skillKey.add(buf);
 			index++;
-
 		}
 	}
 
+	public void setFrameData(FrameData frameData, boolean playerNumber){
+		this.frameData = frameData;
+		this.playerNumber = playerNumber;
+	}
+	
 	/**
 	 * @return　実行待ちのコマンドが存在しているかどうか
 	 */
@@ -218,6 +234,7 @@ public class CommandCenter {
 
 	/**
 	 * 実行待ちのコマンドリストから先頭の要素を渡す
+	 * 渡した先頭要素はCommandCenter上から削除される
 	 * @return
 	 */
 	public Key getSkillKey(){
@@ -227,10 +244,37 @@ public class CommandCenter {
 			return new Key();
 		}
 	}
-
+	
+	//実行待ちのコマンドリストを全て返す
+	public Deque<Key> getSkillKeys(){
+		return new LinkedList<Key>(this.skillKey);
+	}
+	
 	//実行待ちのコマンドをキャンセルする
 	public void skillCancel(){
 		this.skillKey.clear();
 	}
-
+	
+	//KeyDataの反転
+	private String[] reverseKey(String[] commands){
+		String[] buffer = new String[commands.length];
+		for(int i = 0; i < commands.length; i++){
+			if(commands[i].equals("L") || commands[i].equals("4")){
+				buffer[i] = "6";
+			}else if(commands[i].equals("R") || commands[i].equals("6")){
+				buffer[i] = "4";
+			}else if(commands[i].equals("LD") || commands[i].equals("1")){
+				buffer[i] = "3";
+			}else if(commands[i].equals("LU") || commands[i].equals("7")){
+				buffer[i] = "9";
+			}else if(commands[i].equals("RD") || commands[i].equals("3")){
+				buffer[i] = "1";
+			}else if(commands[i].equals("RU") || commands[i].equals("9")){
+				buffer[i] = "7";
+			}else{
+				buffer[i] = commands[i];
+			}
+		}
+		return buffer;
+	}
 }
