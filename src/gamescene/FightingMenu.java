@@ -1,9 +1,12 @@
 package gamescene;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
 import informationcontainer.MenuItem;
+import input.Keyboard;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
@@ -83,20 +86,20 @@ public class FightingMenu extends GameScene {
 		case 0:
 			if (key.A) {
 				//Launch情報をセット
-				for(int i = 0; i < 2; i++){
+				for (int i = 0; i < 2; i++) {
 					LaunchSetting.aiNames[i] = allAiNames.get(playerIndexes[i]);
 					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[characterIndexes[i]];
 
-					if(LaunchSetting.aiNames[i].equals("KeyBoard")){
+					if (LaunchSetting.aiNames[i].equals("KeyBoard")) {
 						LaunchSetting.deviceTypes[i] = 0;
-					} else{
+					} else {
 						LaunchSetting.deviceTypes[i] = 1;
 					}
 
 				}
-				
-				LaunchSetting.repeatNumber =  GameSetting.REPEAT_NUMBERS[numberIndex];
-				if(LaunchSetting.repeatNumber > 1){
+
+				LaunchSetting.repeatNumber = GameSetting.REPEAT_NUMBERS[numberIndex];
+				if (LaunchSetting.repeatNumber > 1) {
 					FlagSetting.automationFlag = true;
 				}
 
@@ -204,6 +207,12 @@ public class FightingMenu extends GameScene {
 			break;
 		}
 
+		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
+			HomeMenu homeMenu = new HomeMenu(); // 次のシーンのコンストラクタ作成
+			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+			this.setNextGameScene(homeMenu); // 次のシーンをセットする
+		}
+
 		this.drawScreen();
 
 	}
@@ -229,7 +238,7 @@ public class FightingMenu extends GameScene {
 
 	@Override
 	public void close() {
-		System.out.println("Menu close");
+		System.out.println("Fighting Menu close");
 
 	}
 

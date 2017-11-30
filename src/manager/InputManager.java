@@ -128,7 +128,8 @@ public class InputManager<Data> {
 				// ais[count].initialize(waitFrame, gd,
 				// !Transform.iTob(i));//Call the initialize function of the AI
 				// of interest
-				ais[count].initialize(ThreadController.getInstance().getAIsObject(i), gameData,Transform.convertPlayerNumberfromItoB(i));
+				ais[count].initialize(ThreadController.getInstance().getAIsObject(i), gameData,
+						Transform.convertPlayerNumberfromItoB(i));
 				ais[count].start();// start the thread
 				count++;
 			}
@@ -146,7 +147,7 @@ public class InputManager<Data> {
 		int count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				System.out.println("add AI"+i+"s frameData");
+				System.out.println("add AI" + i + "s frameData");
 				if (!frameData.getEmptyFlag()) {
 					ais[count].setFrameData(new FrameData(frameData));
 				} else {

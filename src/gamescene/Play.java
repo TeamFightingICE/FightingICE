@@ -1,5 +1,7 @@
 package gamescene;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ import enumerate.GameSceneName;
 import fighting.Fighting;
 import informationcontainer.RoundResult;
 import input.KeyData;
+import input.Keyboard;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
@@ -113,6 +116,16 @@ public class Play extends GameScene {
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
 
+		}
+
+		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
+			System.out.println("ESC is pressed");
+			// BGMを止める
+			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+
+			HomeMenu homeMenu = new HomeMenu();
+			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+			this.setNextGameScene(homeMenu); // 次のシーンをセットする
 		}
 
 	}
