@@ -1,11 +1,15 @@
 package fighting;
 
+import java.awt.RenderingHints;
+import java.awt.image.BandCombineOp;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import enumerate.State;
 import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
+import setting.LaunchSetting;
 import struct.HitArea;
 
 public class Motion {
@@ -174,7 +178,7 @@ public class Motion {
 	 */
 	private ArrayList<Image> imageList;
 
-	public Motion(String[] data, String characterName) {
+	public Motion(String[] data, String characterName, int playerIndex) {
 		this.actionName = data[0];
 		this.frameNumber = Integer.valueOf(data[1]);
 		this.speedX = Integer.valueOf(data[2]);
@@ -207,10 +211,10 @@ public class Motion {
 		// data[33]は読み込む画像が入ったディレクトリ名
 		//
 
-		setMotionImage(characterName);
+		setMotionImage(characterName, playerIndex);
 	}
 
-	private void setMotionImage(String characterName) {
+	private void setMotionImage(String characterName, int playerIndex) {
 		this.imageList = new ArrayList<Image>();
 		ArrayList<CharacterActionImage> temp = GraphicManager.getInstance().getCharacterImageContainer();
 		int index = temp.indexOf(new CharacterActionImage(characterName, this.actionName));
@@ -224,9 +228,33 @@ public class Motion {
 			Image[] image = temp.get(index).getActionImage();
 
 			for (Image img : image) {
+				if (LaunchSetting.characterNames[0].equals(LaunchSetting.characterNames[1])) {
+					if (LaunchSetting.invertedPlayer == playerIndex + 1) {
+						img = invert(img);
+					}
+				}
+
 				this.imageList.add(img);
 			}
 		}
+	}
+
+	private Image invert(Image image) {
+		BufferedImage temp = new BufferedImage(image.getWidth(), image.getHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage invertedImage = image.getBufferedImage();
+		
+				float[][] matrix = new float[][] { new float[] { -1.0f, 0.0f, 0.0f, 0.0f, 255.0f },
+					new float[] { 0.0f, -1.0f, 0.0f, 0.0f, 255.0f },
+					new float[] { 0.0f, 0.0f, -1.0f, 0.0f, 255.0f },
+					new float[] { 0.0f, 0.0f, 0.0f, 1.0f, 0.0f } };
+
+			BandCombineOp invert = new BandCombineOp(matrix, new RenderingHints(null));
+			invert.filter(invertedImage.getRaster(), temp.getRaster());
+
+		image.setBufferedImage(invertedImage);
+		
+		return image;
 	}
 
 	////// Getter//////
