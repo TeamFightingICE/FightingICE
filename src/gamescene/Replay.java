@@ -46,41 +46,19 @@ public class Replay extends GameScene {
 		this.isTransitionFlag = false;
 		this.nextGameScene = null;
 		//////////////////////////////////////
+
+		try {
+			String path = "./log/replay/" + LaunchSetting.replayName + ".dat";
+			this.dis = new DataInputStream(new FileInputStream(new File(path)));
+			readHeader();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.REPLAY);
-
-		try {
-			String path = "./log/replay/" + LaunchSetting.replayName + ".dat";
-			this.dis = new DataInputStream(new FileInputStream(new File(path)));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		for (int i = 0; i < 2; i++) {
-			int maxHp = 0;
-
-			try {
-				int checkMode = dis.readInt();
-
-				// Check whether fighting mode is limited HP mode or not
-				// If it is HP mode, checkMode is less than 0 (e.g. -1)
-				if (checkMode < 0) {
-					maxHp = dis.readInt();
-
-					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[dis.readInt()];
-					FlagSetting.limitHpFlag = true;
-				} else {
-					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[checkMode];
-					FlagSetting.limitHpFlag = false;
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 
 		this.fighting = new Fighting();
 		this.fighting.initialize();
@@ -196,13 +174,13 @@ public class Replay extends GameScene {
 			byte keyByte = 0;
 
 			try {
-				dis.readBoolean(); //front
-				dis.readByte();  //remaingFrame
+				dis.readBoolean(); // front
+				dis.readByte(); // remaingFrame
 				dis.readByte(); // actionOrdinal
-				dis.readInt(); //hp
-				dis.readInt(); //energy
-				dis.readInt(); //x
-				dis.readInt(); //y
+				dis.readInt(); // hp
+				dis.readInt(); // energy
+				dis.readInt(); // x
+				dis.readInt(); // y
 				keyByte = dis.readByte();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -237,6 +215,28 @@ public class Replay extends GameScene {
 	 */
 	private boolean convertItoB(int i) {
 		return i == 1 ? true : false;
+	}
+
+	private void readHeader() {
+		for (int i = 0; i < 2; i++) {
+			try {
+				int checkMode = dis.readInt();
+
+				// Check whether fighting mode is limited HP mode or not
+				// If it is HP mode, checkMode is less than 0 (e.g. -1)
+				if (checkMode < 0) {
+					LaunchSetting.maxHp[i] = dis.readInt();
+					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[dis.readInt()];
+					FlagSetting.limitHpFlag = true;
+				} else {
+					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[checkMode];
+					FlagSetting.limitHpFlag = false;
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

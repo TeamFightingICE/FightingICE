@@ -11,6 +11,7 @@ import informationcontainer.RoundResult;
 import input.KeyData;
 import loader.ResourceLoader;
 import setting.FlagSetting;
+import setting.GameSetting;
 import setting.LaunchSetting;
 
 public class LogWriter {
@@ -114,7 +115,7 @@ public class LogWriter {
 					dos.writeInt(LaunchSetting.maxHp[i]);
 				}
 
-				dos.writeInt(Arrays.asList(LaunchSetting.characterNames).indexOf(LaunchSetting.characterNames[i]));
+				dos.writeInt(Arrays.asList(GameSetting.CHARACTERS).indexOf(LaunchSetting.characterNames[i]));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
