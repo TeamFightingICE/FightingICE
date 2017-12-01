@@ -71,7 +71,7 @@ public class GameData {
 		return temp;
 	}
 
-	//シミュレータ用
+	// シミュレータ用
 	public ArrayList<Motion> getMotion(boolean playerNumber) {
 		ArrayList<Motion> temp = new ArrayList<Motion>();
 		ArrayList<MotionData> copy = this.characterMotions.get(playerNumber ? 0 : 1);
@@ -84,7 +84,7 @@ public class GameData {
 		return temp;
 	}
 
-	public int getStageWidth(){
+	public int getStageWidth() {
 		return this.stageWidth;
 	}
 

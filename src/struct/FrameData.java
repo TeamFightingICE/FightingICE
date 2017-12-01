@@ -8,17 +8,27 @@ import setting.GameSetting;
 
 public class FrameData {
 
+	/**
+	 * The character's data<br>
+	 * Index 0 is P1, index 1 is P2.
+	 */
 	private CharacterData[] characterData;
 
+	/**
+	 * The current frame of the round
+	 */
 	private int currentFrameNumber;
+
 	/**
 	 * The current round number
 	 */
 	private int currentRound;
+
 	/**
 	 * The projectile data of both characters
 	 */
 	private Deque<AttackData> projectileData;
+
 	/**
 	 * The value of input information
 	 */

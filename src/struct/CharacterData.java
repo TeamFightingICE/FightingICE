@@ -9,17 +9,16 @@ import fighting.Character;
 
 public class CharacterData {
 
-
 	private boolean playerNumber;
 
 	private int hp;
 
 	private int energy;
 
-	/** キャラクター画像の一番左上のx座標*/
+	/** キャラクター画像の一番左上のx座標 */
 	private int x;
 
-    /** キャラクター画像の一番左上のy座標*/
+	/** キャラクター画像の一番左上のy座標 */
 	private int y;
 
 	private int left;
@@ -112,7 +111,7 @@ public class CharacterData {
 		this.action = characterData.getAction();
 		this.front = characterData.isFront();
 		this.control = characterData.isControl();
-		this.attackData =new AttackData(characterData.getAttack());
+		this.attackData = new AttackData(characterData.getAttack());
 		this.remainingFrame = characterData.getRemainingFrame();
 		this.hitConfirm = characterData.isHitConfirm();
 		this.hitCount = characterData.getHitCount();
@@ -215,7 +214,6 @@ public class CharacterData {
 	public int getLastHitFrame() {
 		return this.lastHitFrame;
 	}
-
 
 	/**
 	 * Returns a list storing keys of the action that the character will be
@@ -369,6 +367,5 @@ public class CharacterData {
 	public void setProcessedCommand(Deque<Key> inputCommand) {
 		this.processedCommands = new LinkedList<Key>(inputCommand);
 	}
-
 
 }
