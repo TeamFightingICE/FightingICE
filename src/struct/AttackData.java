@@ -3,19 +3,15 @@ package struct;
 import fighting.Attack;
 
 public class AttackData {
-	// 要:コメントの打ち直し
-	private HitArea hitAreaNow;
 
-	private int nowFrame;
+	private HitArea currentHitArea;
+
+	private int currentFrame;
 
 	private boolean playerNumber;
 
-	private HitArea hitAreaSetting;
-
-	private int settingSpeedX;
-	private int settingSpeedY;
-
 	private int speedX;
+
 	private int speedY;
 
 	private int startUp;
@@ -23,14 +19,19 @@ public class AttackData {
 	private int active;
 
 	private int hitDamage;
+
 	private int guardDamage;
 
 	private int startAddEnergy;
+
 	private int hitAddEnergy;
+
 	private int guardAddEnergy;
+
 	private int giveEnergy;
 
 	private int impactX;
+
 	private int impactY;
 
 	private int giveGuardRecov;
@@ -39,9 +40,14 @@ public class AttackData {
 
 	private boolean downProperty;
 
+	private boolean isProjectile;
+
 	public AttackData() {
-		this.settingSpeedX = 0;
-		this.settingSpeedY = 0;
+		this.currentHitArea = new HitArea();
+		this.currentFrame = -1;
+		this.playerNumber = true;
+		this.speedX = 0;
+		this.speedY = 0;
 		this.startUp = 0;
 		this.active = 0;
 		this.hitDamage = 0;
@@ -55,46 +61,14 @@ public class AttackData {
 		this.giveGuardRecov = 0;
 		this.attackType = 0;
 		this.downProperty = false;
-	}
-
-	public AttackData(HitArea hitAreaInput, int speedXInput, int speedYInput, int invokeInput, int activeInput,
-			int hitDamegeInput, int guardDamageInput, int startAddEnergyInput, int hitAddEnergyInput,
-			int guardAddEnergyInput, int giveEnergyInput, int impactXInput, int impactYInput, int giveGuardRecovInput,
-			int attackTypeInput, boolean downPropInput) {
-		this.hitAreaNow = new HitArea();
-
-		this.hitAreaSetting = new HitArea();
-		// hitAreaSetting.HitArea(hitAreaInput);
-
-		this.settingSpeedX = speedXInput;
-		this.settingSpeedY = speedYInput;
-		this.startUp = invokeInput;
-		this.active = activeInput;
-		this.hitDamage = hitDamegeInput;
-		this.guardDamage = guardDamageInput;
-		this.startAddEnergy = startAddEnergyInput;
-		this.hitAddEnergy = hitAddEnergyInput;
-		this.guardAddEnergy = guardAddEnergyInput;
-		this.giveEnergy = giveEnergyInput;
-		this.impactX = impactXInput;
-		this.impactY = impactYInput;
-		this.giveGuardRecov = giveGuardRecovInput;
-		this.attackType = attackTypeInput;
-		this.downProperty = downPropInput;
+		this.isProjectile = false;
 	}
 
 	public AttackData(Attack attack) {
-		if (attack == null) {
-		} else {
-			this.hitAreaNow = new HitArea();
-			// this.hitAreaNow.setParameters(attack.getHitAreaNow());
+		if (attack != null) {
+			this.currentHitArea = attack.getCurrentHitArea();
+			this.currentFrame = attack.getCurrentFrame();
 			this.playerNumber = attack.isPlayerNumber();
-
-			this.hitAreaSetting = new HitArea();
-			// this.hitAreaSetting.setParameters(attack.getHitAreaSetting());
-
-			this.settingSpeedX = attack.getSettingSpeedX();
-			this.settingSpeedY = attack.getSettingSpeedY();
 			this.speedX = attack.getSpeedX();
 			this.speedY = attack.getSpeedY();
 			this.startUp = attack.getStartUp();
@@ -110,8 +84,35 @@ public class AttackData {
 			this.giveGuardRecov = attack.getGiveGuardRecov();
 			this.attackType = attack.getAttackType();
 			this.downProperty = attack.isDownProperty();
+			this.isProjectile = attack.isProjectile();
 		}
 	}
+
+	public AttackData(AttackData attackData) {
+		if (attackData != null) {
+			this.currentHitArea = attackData.getCurrentHitArea();
+			this.currentFrame = attackData.getCurrentFrame();
+			this.playerNumber = attackData.isPlayerNumber();
+			this.speedX = attackData.getSpeedX();
+			this.speedY = attackData.getSpeedY();
+			this.startUp = attackData.getStartUp();
+			this.active = attackData.getActive();
+			this.hitDamage = attackData.getHitDamage();
+			this.guardDamage = attackData.getGuardDamage();
+			this.startAddEnergy = attackData.getStartAddEnergy();
+			this.hitAddEnergy = attackData.getHitAddEnergy();
+			this.guardAddEnergy = attackData.getGuardAddEnergy();
+			this.giveEnergy = attackData.getGiveEnergy();
+			this.impactX = attackData.getImpactX();
+			this.impactY = attackData.getImpactY();
+			this.giveGuardRecov = attackData.getGiveGuardRecov();
+			this.attackType = attackData.getAttackType();
+			this.downProperty = attackData.isDownProperty();
+			this.isProjectile = attackData.isProjectile();
+		}
+	}
+
+	//////// Getter//////////
 
 	public boolean isPlayerNumber() {
 		return this.playerNumber;
@@ -121,9 +122,13 @@ public class AttackData {
 		return this.downProperty;
 	}
 
+	public boolean isProjectile() {
+		return this.isProjectile;
+	}
+
 	// get
-	public int getNowFrame() {
-		return this.nowFrame;
+	public int getCurrentFrame() {
+		return this.currentFrame;
 	}
 
 	public int getPlayerNumber() {
@@ -186,29 +191,25 @@ public class AttackData {
 		return this.attackType;
 	}
 
-	public int getSettingSpeedX() {
-		return this.settingSpeedX;
+	public HitArea getCurrentHitArea() {
+		return new HitArea(this.currentHitArea);
 	}
 
-	public int getSettingSpeedY() {
-		return this.settingSpeedY;
-	}
-
-	// set
-	public void setNowFrame(int nowFrame) {
-		this.nowFrame = nowFrame;
+	////// Setter//////
+	public void setCurrentFrame(int nowFrame) {
+		this.currentFrame = nowFrame;
 	}
 
 	public void setPlayerNumber(boolean playerNumber) {
 		this.playerNumber = playerNumber;
 	}
 
-	public void setSpeedX(int speed_x) {
-		this.speedX = speed_x;
+	public void setSpeedX(int speedX) {
+		this.speedX = speedX;
 	}
 
-	public void setSpeedY(int speed_y) {
-		this.speedY = speed_y;
+	public void setSpeedY(int speedY) {
+		this.speedY = speedY;
 	}
 
 	public void setStartUp(int startUp) {
@@ -263,12 +264,8 @@ public class AttackData {
 		this.downProperty = downProperty;
 	}
 
-	public void setSettingSpeedX(int settingSpeedX) {
-		this.settingSpeedX = settingSpeedX;
-	}
-
-	public void setSettingSpeedY(int settingSpeedY) {
-		this.settingSpeedY = settingSpeedY;
+	public void setIsProjectile(boolean isProjectile) {
+		this.isProjectile = isProjectile;
 	}
 
 }

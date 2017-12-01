@@ -12,6 +12,7 @@ import input.KeyData;
 import manager.GraphicManager;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import struct.AttackData;
 import struct.CharacterData;
 import struct.FrameData;
 
@@ -383,9 +384,9 @@ public class Fighting {
 		CharacterData[] characterData = new CharacterData[] { new CharacterData(playerCharacters[0]),
 				new CharacterData(playerCharacters[1]) };
 
-		Deque<Attack> newAttackDeque = new LinkedList<Attack>();
+		Deque<AttackData> newAttackDeque = new LinkedList<AttackData>();
 		for (LoopEffect loopEffect : this.projectileDeque) {
-			newAttackDeque.addLast(loopEffect.getAttack());
+			newAttackDeque.addLast(new AttackData(loopEffect.getAttack()));
 		}
 
 		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData);
