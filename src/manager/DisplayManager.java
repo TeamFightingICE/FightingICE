@@ -59,6 +59,7 @@ public class DisplayManager {
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		System.setProperty("java.awt.headless", "true");
 
 		// windowの作成
 		short width = GameSetting.STAGE_WIDTH;
@@ -98,7 +99,7 @@ public class DisplayManager {
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(this.window);
 		// Enable v-sync
-		glfwSwapInterval(1);
+		glfwSwapInterval(0);
 
 		// Make the window visible
 		glfwShowWindow(this.window);
@@ -112,7 +113,10 @@ public class DisplayManager {
 	 */
 	private void gameLoop(GameManager gm) {
 
-		double currentTime = 0;
+		long newTime = System.currentTimeMillis() << 16;
+		long lastTime = 0;
+		long error = 0;
+		long idealSleep = (1000 << 16) / GameSetting.FPS;
 		glfwSetTime(0.0);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -148,6 +152,22 @@ public class DisplayManager {
 				glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
 			}
 
+			newTime = System.currentTimeMillis() << 16;
+			long sleepTime = idealSleep - (newTime - lastTime) - error; // 休止できる時間
+			if (sleepTime < 0x20000) {
+				sleepTime = 0x20000;
+			}
+
+			lastTime = newTime;
+			try {
+				Thread.sleep(sleepTime >> 16);
+			} catch (Exception e) {
+				gm.close();
+				break;
+			}
+			newTime = System.currentTimeMillis() << 16;
+			error = newTime - lastTime - sleepTime; // 休止時間の誤差
+			lastTime = newTime;
 		}
 	}
 
@@ -155,7 +175,7 @@ public class DisplayManager {
 	private void close() {
 		GraphicManager.getInstance().close();
 		SoundManager.getInstance().close();
-		//InputManager.getInstance().close();
+		// InputManager.getInstance().close();
 
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(this.window);
@@ -195,5 +215,4 @@ public class DisplayManager {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
-
 }
