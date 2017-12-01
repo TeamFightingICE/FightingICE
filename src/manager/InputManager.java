@@ -13,6 +13,7 @@ import setting.LaunchSetting;
 import struct.FrameData;
 import struct.GameData;
 import struct.Key;
+import struct.ScreenData;
 import util.Transform;
 
 /** AIやキーボード等の入力関連のタスクを管理するマネージャー */
@@ -143,7 +144,7 @@ public class InputManager<Data> {
 		return new Key(ai.getInput());
 	}
 
-	public void setFrameData(FrameData frameData) {
+	public void setFrameData(FrameData frameData, ScreenData screenData) {
 		int count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (deviceTypes[i] == DEVICE_TYPE_AI) {
@@ -152,6 +153,8 @@ public class InputManager<Data> {
 				} else {
 					ais[count].setFrameData(new FrameData());
 				}
+
+				ais[count].setScreenData(new ScreenData(screenData));
 				ThreadController.getInstance().resetFlag(i);
 				count++;
 			}

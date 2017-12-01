@@ -141,7 +141,7 @@ public class Play extends GameScene {
 
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
-		InputManager.getInstance().setFrameData(new FrameData());
+		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
 
 		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
@@ -155,7 +155,7 @@ public class Play extends GameScene {
 		this.screenData = new ScreenData();
 
 		// AIにFrameDataをセット
-		InputManager.getInstance().setFrameData(new FrameData(this.frameData));
+		InputManager.getInstance().setFrameData(this.frameData, this.screenData);
 		// 体力が0orタイムオーバーならラウンド終了処理
 		if (isBeaten() || isTimeOver()) {
 			processingRoundEnd();

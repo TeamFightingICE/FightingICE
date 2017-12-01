@@ -3,6 +3,7 @@ package aiinterface;
 import struct.FrameData;
 import struct.GameData;
 import struct.Key;
+import struct.ScreenData;
 
 public interface AIInterface {
 
@@ -16,6 +17,10 @@ public interface AIInterface {
 
 	void close();
 
-	default void roundEnd(int p1Hp, int p2Hp, int frames){};
+	default void roundEnd(int p1Hp, int p2Hp, int frames) {
+	};
+
+	default void getScreenData(ScreenData sd) {
+	};
 
 }

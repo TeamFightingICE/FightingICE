@@ -6,7 +6,7 @@ import informationcontainer.RoundResult;
 import struct.FrameData;
 import struct.GameData;
 import struct.Key;
-import util.Transform;
+import struct.ScreenData;
 
 public class AIController extends Thread {
 
@@ -20,21 +20,22 @@ public class AIController extends Thread {
 
 	private LinkedList<FrameData> framesData;
 
+	private ScreenData screenData;
+
 	private Object waitObj;
 
 	public AIController(AIInterface ai) {
 		this.ai = ai;
 	}
 
-	public void initialize(Object waitFrame, GameData gameData, boolean playerNumber){
+	public void initialize(Object waitFrame, GameData gameData, boolean playerNumber) {
 		this.playerNumber = playerNumber;
 		this.waitObj = waitFrame;
 		this.key = new Key();
 		this.framesData = new LinkedList<FrameData>();
 		this.clear();
-		this.ai.initialize(gameData,playerNumber);
+		this.ai.initialize(gameData, playerNumber);
 	}
-
 
 	@Override
 	public void run() {
@@ -42,7 +43,7 @@ public class AIController extends Thread {
 		while (true) {
 			synchronized (this.waitObj) {
 				try {
-					//System.out.println("lock AI"+(this.playerNumber? 1:2));
+					// System.out.println("lock AI"+(this.playerNumber? 1:2));
 					this.waitObj.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -51,42 +52,50 @@ public class AIController extends Thread {
 			}
 
 			this.ai.getInformation(this.framesData.removeFirst());
+			this.ai.getScreenData(this.screenData);
 			this.ai.processing();
 			setInput(this.ai.input());
-//			ThreadController.getInstance().resetFlag(this.Num);
-//			System.out.println("AI" + Transform.convertPlayerNumberfromBtoI(playerNumber) + "run");
+			// ThreadController.getInstance().resetFlag(this.Num);
+			// System.out.println("AI" +
+			// Transform.convertPlayerNumberfromBtoI(playerNumber) + "run");
 		}
 
 	}
 
 	public Key getInput() {
-		if(this.key != null){
+		if (this.key != null) {
 			return this.key;
-		}else{
+		} else {
 			return new Key();
 		}
 	}
 
-	public void setInput(Key key){
+	public void setInput(Key key) {
 		this.key = new Key(key);
 	}
-	
-	public void setFrameData(FrameData fd){
+
+	public void setFrameData(FrameData fd) {
 		this.framesData.addLast(fd);
-		while(this.framesData.size()>DELAY){
+		while (this.framesData.size() > DELAY) {
 			this.framesData.removeFirst();
 		}
 	}
 
-	public void clear(){
+	public void setScreenData(ScreenData screenData) {
+		this.screenData = screenData;
+	}
+
+	public void clear() {
 		System.out.println("init AI");
 		this.framesData.clear();
-		while(framesData.size()<DELAY){
+
+		while (this.framesData.size() < DELAY) {
 			this.framesData.add(new FrameData());
 		}
 	}
 
-	public void informRoundResult(RoundResult roundResult){
-		this.ai.roundEnd(roundResult.getRemainingHPs()[0],roundResult.getRemainingHPs()[1],roundResult.getElapsedFrame());
+	public void informRoundResult(RoundResult roundResult) {
+		this.ai.roundEnd(roundResult.getRemainingHPs()[0], roundResult.getRemainingHPs()[1],
+				roundResult.getElapsedFrame());
 	}
 }

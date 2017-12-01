@@ -26,7 +26,8 @@ public class ScreenData {
 
 	public ScreenData() {
 		this.displayByteBuffer = createDisplayByteBuffer();
-		this.screenImage = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		this.screenImage = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT,
+				BufferedImage.TYPE_INT_RGB);
 	}
 
 	public ScreenData(BufferedImage screenImage) {
