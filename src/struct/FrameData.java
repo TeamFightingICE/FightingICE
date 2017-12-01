@@ -3,23 +3,32 @@ package struct;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import fighting.Attack;
 import input.KeyData;
 import setting.GameSetting;
 
 public class FrameData {
 
+	/**
+	 * The character's data<br>
+	 * Index 0 is P1, index 1 is P2.
+	 */
 	private CharacterData[] characterData;
 
+	/**
+	 * The current frame of the round
+	 */
 	private int currentFrameNumber;
+
 	/**
 	 * The current round number
 	 */
 	private int currentRound;
+
 	/**
 	 * The projectile data of both characters
 	 */
-	private Deque<Attack> projectileData;
+	private Deque<AttackData> projectileData;
+
 	/**
 	 * The value of input information
 	 */
@@ -30,8 +39,6 @@ public class FrameData {
 	 */
 	private boolean emptyFlag;
 
-
-
 	/**
 	 * This is the default constructor.
 	 */
@@ -39,22 +46,22 @@ public class FrameData {
 		this.characterData = new CharacterData[2];
 		this.currentFrameNumber = -1;
 		this.currentRound = -1;
-		this.projectileData = new LinkedList<Attack>();
+		this.projectileData = new LinkedList<AttackData>();
 		this.keyData = null;
 		this.emptyFlag = true;
 
 	}
 
-	public FrameData(CharacterData[] characterData, int currentFrame, int currentRound, Deque<Attack> projectileData,
-			KeyData keyData) {
+	public FrameData(CharacterData[] characterData, int currentFrame, int currentRound,
+			Deque<AttackData> projectileData, KeyData keyData) {
 		this.characterData = new CharacterData[] { characterData[0], characterData[1] };
 		this.currentFrameNumber = currentFrame;
 		this.currentRound = currentRound;
 
 		// make deep copy of the attacks list
-		this.projectileData = new LinkedList<Attack>();
-		for (Attack attack : projectileData) {
-			 this.projectileData.add(new Attack(attack));
+		this.projectileData = new LinkedList<AttackData>();
+		for (AttackData attack : projectileData) {
+			this.projectileData.add(new AttackData(attack));
 		}
 
 		this.keyData = keyData;
@@ -64,16 +71,16 @@ public class FrameData {
 	// Copy constructor for the FrameData class
 	public FrameData(FrameData frameData) {
 		this.characterData = new CharacterData[2];
-		this.characterData[0] = frameData.getMyCharacter(true);
-		this.characterData[1] = frameData.getMyCharacter(false);
-		this.currentFrameNumber = frameData.getCurrentFrameNumber();
-		this.currentRound = frameData.getCurrentRound();
+		this.characterData[0] = frameData.getCharacter(true);
+		this.characterData[1] = frameData.getCharacter(false);
+		this.currentFrameNumber = frameData.getFramesNumber();
+		this.currentRound = frameData.getRound();
 
 		// make deep copy of the attacks list
-		this.projectileData = new LinkedList<Attack>();
-		Deque<Attack> temp = frameData.getProjectiles();
-		for (Attack attack : temp) {
-			 this.projectileData.add(new Attack(attack));
+		this.projectileData = new LinkedList<AttackData>();
+		Deque<AttackData> temp = frameData.getProjectiles();
+		for (AttackData attack : temp) {
+			this.projectileData.add(new AttackData(attack));
 		}
 
 		this.keyData = new KeyData(frameData.getKeyData());
@@ -81,12 +88,8 @@ public class FrameData {
 
 	}
 
-	public CharacterData getMyCharacter(boolean playerNumber) {
+	public CharacterData getCharacter(boolean playerNumber) {
 		return playerNumber ? new CharacterData(this.characterData[0]) : new CharacterData(this.characterData[1]);
-	}
-
-	public CharacterData getOpponentCharacter(boolean playerNumber) {
-		return playerNumber ? new CharacterData(this.characterData[1]) : new CharacterData(this.characterData[0]);
 	}
 
 	/**
@@ -116,7 +119,7 @@ public class FrameData {
 	 *
 	 * @return The number of remaining frames of the round.
 	 */
-	public int getRemainingFrameNumber() {
+	public int getRemainingFramesNumber() {
 		return (GameSetting.ROUND_FRAME_NUMBER - currentFrameNumber);
 	}
 
@@ -125,7 +128,7 @@ public class FrameData {
 	 *
 	 * @return The number of frames since the beginning of the round.
 	 */
-	public int getCurrentFrameNumber() {
+	public int getFramesNumber() {
 		return this.currentFrameNumber;
 	}
 
@@ -134,7 +137,7 @@ public class FrameData {
 	 *
 	 * @return The current round number
 	 */
-	public int getCurrentRound() {
+	public int getRound() {
 		return this.currentRound;
 	}
 
@@ -143,11 +146,11 @@ public class FrameData {
 	 *
 	 * @return The projectile data of both characters
 	 */
-	public Deque<Attack> getProjectiles() {
+	public Deque<AttackData> getProjectiles() {
 		// create a deep copy of the attacks list
-		LinkedList<Attack> attackList = new LinkedList<Attack>();
-		for (Attack attack : this.projectileData) {
-			 attackList.add(new Attack(attack));
+		LinkedList<AttackData> attackList = new LinkedList<AttackData>();
+		for (AttackData attack : this.projectileData) {
+			attackList.add(new AttackData(attack));
 		}
 
 		return attackList;
@@ -158,11 +161,11 @@ public class FrameData {
 	 *
 	 * @return The projectile data of player 1
 	 */
-	public Deque<Attack> getProjectilesByP1() {
-		LinkedList<Attack> attackList = new LinkedList<Attack>();
-		for (Attack attack : this.projectileData) {
+	public Deque<AttackData> getProjectilesByP1() {
+		LinkedList<AttackData> attackList = new LinkedList<AttackData>();
+		for (AttackData attack : this.projectileData) {
 			if (attack.isPlayerNumber()) {
-				// attackList.add(new Attack(attack));
+				attackList.add(new AttackData(attack));
 			}
 		}
 		return attackList;
@@ -173,11 +176,11 @@ public class FrameData {
 	 *
 	 * @return The projectile data of player 2
 	 */
-	public Deque<Attack> getProjectilesByP2() {
-		LinkedList<Attack> attackList = new LinkedList<Attack>();
-		for (Attack attack : this.projectileData) {
+	public Deque<AttackData> getProjectilesByP2() {
+		LinkedList<AttackData> attackList = new LinkedList<AttackData>();
+		for (AttackData attack : this.projectileData) {
 			if (!attack.isPlayerNumber()) {
-				// attackList.add(new Attack(attack));
+				attackList.add(new AttackData(attack));
 			}
 		}
 		return attackList;
@@ -189,7 +192,7 @@ public class FrameData {
 	 * @return The value of input information
 	 */
 	public KeyData getKeyData() {
-		return new KeyData(keyData);
+		return new KeyData(this.keyData);
 	}
 
 	/**

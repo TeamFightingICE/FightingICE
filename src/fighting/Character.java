@@ -124,6 +124,7 @@ public class Character {
 		this.hitCount = character.getHitCount();
 	}
 
+	// シミュレータで呼び出す用
 	public Character(CharacterData characterData, ArrayList<Motion> motionList) {
 		initializeList();
 
@@ -143,7 +144,7 @@ public class Character {
 		this.hitConfirm = characterData.isHitConfirm();
 		this.front = characterData.isFront();
 		this.control = characterData.isControl();
-		this.attack = characterData.getAttack();
+		this.attack = new Attack(characterData.getAttack());
 		this.remainingFrame = characterData.getRemainingFrame();
 		this.inputCommands = characterData.getInputCommand();
 		this.processedCommands = characterData.getProcessedCommand();

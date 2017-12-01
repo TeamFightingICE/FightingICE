@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import enumerate.Action;
 import enumerate.State;
-import fighting.Attack;
 import fighting.Character;
 
 public class CharacterData {
@@ -16,10 +15,10 @@ public class CharacterData {
 
 	private int energy;
 
-	/** キャラクター画像の一番左上のx座標*/
+	/** キャラクター画像の一番左上のx座標 */
 	private int x;
 
-    /** キャラクター画像の一番左上のy座標*/
+	/** キャラクター画像の一番左上のy座標 */
 	private int y;
 
 	private int left;
@@ -42,13 +41,19 @@ public class CharacterData {
 
 	private boolean control;
 
-	private Attack attack;
+	private AttackData attackData;
 
 	private int remainingFrame;
+
+	private boolean hitConfirm;
 
 	private int graphicSizeX;
 
 	private int graphicSizeY;
+
+	private int graphicCenterX;
+
+	private int graphicCenterY;
 
 	private int hitCount;
 
@@ -66,6 +71,8 @@ public class CharacterData {
 		this.y = character.getY();
 		this.graphicSizeX = character.getGraphicSizeX();
 		this.graphicSizeY = character.getGraphicSizeY();
+		this.graphicCenterX = character.getGraphicCenterX();
+		this.graphicCenterY = character.getGraphicCenterY();
 		this.left = character.getHitAreaLeft();
 		this.right = character.getHitAreaRight();
 		this.top = character.getHitAreaTop();
@@ -76,8 +83,9 @@ public class CharacterData {
 		this.action = character.getAction();
 		this.front = character.isFront();
 		this.control = character.isControl();
-		this.attack = character.getAttack();
+		this.attackData = new AttackData(character.getAttack());
 		this.remainingFrame = character.getRemainingFrame();
+		this.hitConfirm = character.isHitConfirm();
 		this.hitCount = character.getHitCount();
 		this.lastHitFrame = character.getLastHitFrame();
 	}
@@ -91,6 +99,8 @@ public class CharacterData {
 		this.y = characterData.getY();
 		this.graphicSizeX = characterData.getGraphicSizeX();
 		this.graphicSizeY = characterData.getGraphicSizeY();
+		this.graphicCenterX = characterData.getGraphicCenterX();
+		this.graphicCenterY = characterData.getGraphicCenterY();
 		this.left = characterData.getLeft();
 		this.right = characterData.getRight();
 		this.top = characterData.getTop();
@@ -101,8 +111,9 @@ public class CharacterData {
 		this.action = characterData.getAction();
 		this.front = characterData.isFront();
 		this.control = characterData.isControl();
-		this.attack = characterData.getAttack();
+		this.attackData = new AttackData(characterData.getAttack());
 		this.remainingFrame = characterData.getRemainingFrame();
+		this.hitConfirm = characterData.isHitConfirm();
 		this.hitCount = characterData.getHitCount();
 		this.lastHitFrame = characterData.getLastHitFrame();
 	}
@@ -172,8 +183,8 @@ public class CharacterData {
 		return this.remainingFrame;
 	}
 
-	public Attack getAttack() {
-		return new Attack(this.attack);
+	public AttackData getAttack() {
+		return new AttackData(this.attackData);
 	}
 
 	public int getGraphicSizeX() {
@@ -184,6 +195,17 @@ public class CharacterData {
 		return this.graphicSizeY;
 	}
 
+	public int getGraphicCenterX() {
+		return this.graphicCenterX;
+	}
+
+	public int getGraphicCenterY() {
+		return this.graphicCenterY;
+	}
+
+	public boolean isHitConfirm() {
+		return this.hitConfirm;
+	}
 
 	public int getHitCount() {
 		return this.hitCount;
@@ -192,7 +214,6 @@ public class CharacterData {
 	public int getLastHitFrame() {
 		return this.lastHitFrame;
 	}
-
 
 	/**
 	 * Returns a list storing keys of the action that the character will be
@@ -293,8 +314,8 @@ public class CharacterData {
 		this.right = right;
 	}
 
-	public void setAttack(Attack attack) {
-		this.attack = attack;
+	public void setAttack(AttackData attack) {
+		this.attackData = attack;
 	}
 
 	public void setGraphicSizeX(int graphicSizeX) {
@@ -311,6 +332,10 @@ public class CharacterData {
 
 	public void setLastHitFrame(int lastHitFrame) {
 		this.lastHitFrame = lastHitFrame;
+	}
+
+	public void setHitConfirm(boolean hitConfirm) {
+		this.hitConfirm = hitConfirm;
 	}
 
 	/**
@@ -341,19 +366,6 @@ public class CharacterData {
 	 */
 	public void setProcessedCommand(Deque<Key> inputCommand) {
 		this.processedCommands = new LinkedList<Key>(inputCommand);
-	}
-
-	public int getGraphicCenterX() {
-		return 0;
-	}
-
-	public int getGraphicCenterY() {
-		return 0;
-	}
-
-	public boolean isHitConfirm() {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
 	}
 
 }

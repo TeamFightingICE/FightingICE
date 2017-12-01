@@ -23,10 +23,10 @@ public class RoundResult {
 	}
 
 	public RoundResult(FrameData frameData) {
-		this.currentRound = frameData.getCurrentRound();
-		this.remainingHPs = new int[] { Math.max(frameData.getMyCharacter(true).getHp(), 0),
-				Math.max(frameData.getMyCharacter(false).getHp(), 0) };
-		this.elapsedFrame = frameData.getCurrentFrameNumber();
+		this.currentRound = frameData.getRound();
+		this.remainingHPs = new int[] { Math.max(frameData.getCharacter(true).getHp(), 0),
+				Math.max(frameData.getCharacter(false).getHp(), 0) };
+		this.elapsedFrame = frameData.getFramesNumber();
 	}
 
 	public int getRound() {

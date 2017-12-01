@@ -4,26 +4,31 @@ import java.util.ArrayList;
 
 import fighting.Character;
 import fighting.Motion;
+import setting.GameSetting;
 import setting.LaunchSetting;
 import simulator.Simulator;
 
 public class GameData {
-	/**
-	 * delete private int
-	 * "stageXMax,stageYMax,playerOneMaxEnergy,playerTwoMaxEnergy" ,GameData
-	 * Function args"int stageX, int stageY" and public int getter
-	 * "getMyMaxEnergy,getOpponentMaxEnergy"
-	 */
+
+	private int stageWidth;
+
+	private int stageHeight;
+
+	private int[] maxHPs;
+
+	private int[] maxEnergies;
 
 	private ArrayList<ArrayList<MotionData>> characterMotions;
 
-	private String[] characterNames = new String[2];
+	private String[] characterNames;
 
-	private String[] aiNames = new String[2];
+	private String[] aiNames;
 
 	private Simulator simulator;
 
 	public GameData() {
+		this.maxHPs = new int[2];
+		this.maxEnergies = new int[2];
 		this.characterMotions = new ArrayList<ArrayList<MotionData>>(2);
 		this.characterNames = new String[2];
 		this.aiNames = new String[2];
@@ -33,18 +38,22 @@ public class GameData {
 		this();
 
 		for (int i = 0; i < 2; i++) {
-			this.characterMotions.add(new ArrayList<MotionData>());
-			this.characterNames[i] = LaunchSetting.characterNames[i];
-			this.aiNames[i] = LaunchSetting.aiNames[i];
-
 			// 各アクションのMotionDataを格納
 			ArrayList<MotionData> motionDataList = new ArrayList<MotionData>();
 			ArrayList<Motion> temp = players[i].getMotionList();
 			for (Motion motion : temp) {
 				motionDataList.add(new MotionData(motion));
 			}
+
 			this.characterMotions.add(motionDataList);
 		}
+
+		this.stageWidth = GameSetting.STAGE_WIDTH;
+		this.stageHeight = GameSetting.STAGE_HEIGHT;
+		this.maxHPs = LaunchSetting.maxHp.clone();
+		this.maxEnergies = LaunchSetting.maxEnergy.clone();
+		this.characterNames = LaunchSetting.characterNames.clone();
+		this.aiNames = LaunchSetting.aiNames.clone();
 
 		this.simulator = new Simulator(this);
 	}
@@ -62,6 +71,7 @@ public class GameData {
 		return temp;
 	}
 
+	// シミュレータ用
 	public ArrayList<Motion> getMotion(boolean playerNumber) {
 		ArrayList<Motion> temp = new ArrayList<Motion>();
 		ArrayList<MotionData> copy = this.characterMotions.get(playerNumber ? 0 : 1);
@@ -72,6 +82,22 @@ public class GameData {
 		}
 
 		return temp;
+	}
+
+	public int getStageWidth() {
+		return this.stageWidth;
+	}
+
+	public int getStageHeight() {
+		return this.stageHeight;
+	}
+
+	public int getMaxHP(boolean playerNumber) {
+		return playerNumber ? this.maxHPs[0] : this.maxHPs[1];
+	}
+
+	public int getMaxEnergy(boolean playerNumber) {
+		return playerNumber ? this.maxEnergies[0] : this.maxEnergies[1];
 	}
 
 	public String getCharacterName(boolean playerNumber) {

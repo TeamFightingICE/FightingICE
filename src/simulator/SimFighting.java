@@ -14,6 +14,7 @@ import fighting.LoopEffect;
 import fighting.Motion;
 import input.KeyData;
 import setting.GameSetting;
+import struct.AttackData;
 import struct.CharacterData;
 import struct.FrameData;
 import struct.Key;
@@ -40,7 +41,7 @@ public class SimFighting extends Fighting {
 			FrameData frameData, boolean playerNumber) {
 
 		for (int i = 0; i < 2; i++) {
-			this.playerCharacters[i] = new Character(frameData.getMyCharacter(i == 0), motionList.get(i));
+			this.playerCharacters[i] = new Character(frameData.getCharacter(i == 0), motionList.get(i));
 
 			this.inputKeys.add(this.playerCharacters[i].getProcessedCommand());
 			this.inputActions.add(actionList.get(i));
@@ -49,9 +50,9 @@ public class SimFighting extends Fighting {
 			this.commandCenter[i].setFrameData(frameData, i == 0);
 		}
 
-		Deque<Attack> projectiles = frameData.getProjectiles();
-		for (Attack temp : projectiles) {
-			this.projectileDeque.addLast(new LoopEffect(temp, null));
+		Deque<AttackData> projectiles = frameData.getProjectiles();
+		for (AttackData temp : projectiles) {
+			this.projectileDeque.addLast(new LoopEffect(new Attack(temp), null));
 		}
 	}
 
@@ -189,9 +190,9 @@ public class SimFighting extends Fighting {
 			characterData[i].setProcessedCommand(this.inputKeys.get(i));
 		}
 
-		Deque<Attack> newAttackDeque = new LinkedList<Attack>();
+		Deque<AttackData> newAttackDeque = new LinkedList<AttackData>();
 		for (LoopEffect loopEffect : this.projectileDeque) {
-			newAttackDeque.addLast(loopEffect.getAttack());
+			newAttackDeque.addLast(new AttackData(loopEffect.getAttack()));
 		}
 
 		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData);
