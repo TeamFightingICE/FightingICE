@@ -9,10 +9,16 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import enumerate.GameSceneName;
 import manager.InputManager;
 
+/**
+ * キー入力を扱うクラス
+ */
 public class Keyboard extends GLFWKeyCallback {
+
+	/** キーを格納 */
 	public static boolean[] keys = new boolean[65536];
 
 	private static boolean[] preKeys = new boolean[65536];
+
 
 	public Keyboard() {
 		Arrays.fill(keys, false);
@@ -29,14 +35,27 @@ public class Keyboard extends GLFWKeyCallback {
 		}
 	}
 
-	// boolean method that returns true if a given key is pressed.
+	/**
+	 * 指定されたキーが押されている間に使われるメソッド
+	 * @param keycode 指定されたキーコード
+	 * @return {@code true} 指定されたキーコードが入力されたとき
+	 */
 	public static boolean getKey(int keycode) {
 		if (keys[keycode])
 			;// System.out.println("pless");
 		return keys[keycode];
 	}
 
-	// boolean method that returns true if キーを押したとき.
+	/**
+	 * 指定されたキーが押されたときに使うメソッド
+	 * @param keycode 指定されたキーコード
+	 * @return ゲームシーン時<p>
+	 * 			{@code true} 指定されたキーが存在するとき<p>
+	 * 			{@code false} 指定されたキーが存在しないとき<p>
+	 * 			ゲームシーン以外<p>
+	 * 			{@code true} 指定されたキーが存在するとき<p>
+	 * 			{@code false} 指定されたキーが存在しない,または指定されたキーが押されているとき
+	 */
 	public static boolean getKeyDown(int keycode) {
 		if (InputManager.getInstance().getSceneName() == GameSceneName.PLAY) {
 			if (!keys[keycode]) {
