@@ -61,4 +61,9 @@ public class Effect {
 		return this.attack;
 	}
 
+	public void setAttack(Attack attack) {
+		this.attack = attack;
+
+	}
+
 }
