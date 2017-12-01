@@ -117,6 +117,7 @@ public class DisplayManager {
 		long lastTime = 0;
 		long error = 0;
 		long idealSleep = (1000 << 16) / GameSetting.FPS;
+		int count = 0;
 		glfwSetTime(0.0);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -145,6 +146,11 @@ public class DisplayManager {
 			if (this.enableWindow) {
 				// ゲーム状態の更新
 				gm.update();
+				if(++count / 60 >= 1){
+					System.out.println(count);
+					count = 0;
+				}
+				
 
 				// バックバッファに描画する
 				GraphicManager.getInstance().render();
