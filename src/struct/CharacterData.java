@@ -196,6 +196,17 @@ public class CharacterData {
 		return this.graphicSizeY;
 	}
 
+	public int getGraphicCenterX() {
+		return this.graphicCenterX;
+	}
+
+	public int getGraphicCenterY() {
+		return this.graphicCenterY;
+	}
+
+	public boolean isHitConfirm() {
+		return this.hitConfirm;
+	}
 
 	public int getHitCount() {
 		return this.hitCount;
@@ -325,6 +336,10 @@ public class CharacterData {
 		this.lastHitFrame = lastHitFrame;
 	}
 
+	public void setHitConfirm(boolean hitConfirm) {
+		this.hitConfirm = hitConfirm;
+	}
+
 	/**
 	 * Sets a list storing keys of the action that the character will be
 	 * executing in the simulator
@@ -355,17 +370,5 @@ public class CharacterData {
 		this.processedCommands = new LinkedList<Key>(inputCommand);
 	}
 
-	public int getGraphicCenterX() {
-		return 0;
-	}
-
-	public int getGraphicCenterY() {
-		return 0;
-	}
-
-	public boolean isHitConfirm() {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
 
 }

@@ -124,6 +124,7 @@ public class Character {
 		this.hitCount = character.getHitCount();
 	}
 
+	//シミュレータで呼び出す用
 	public Character(CharacterData characterData, ArrayList<Motion> motionList) {
 		initializeList();
 
