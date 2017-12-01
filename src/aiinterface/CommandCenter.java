@@ -175,7 +175,7 @@ public class CommandCenter {
 	private void createKeys(String str){
 		Key buf;
 		String[] commands = str.split(" ");
-		if(!this.frameData.getMyCharacter(playerNumber).isFront()){
+		if(!this.frameData.getCharacter(playerNumber).isFront()){
 			commands = reverseKey(commands);
 		}
 		

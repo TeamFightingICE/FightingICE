@@ -58,7 +58,7 @@ public class Simulator {
 		tempMotionList.add(myMotionData);
 		tempMotionList.add(oppMotionData);
 
-		int nowFrame = frameData.getCurrentFrameNumber();
+		int nowFrame = frameData.getFramesNumber();
 
 		SimFighting simFighting = new SimFighting();
 		simFighting.initialize(tempMotionList, tempActionList, new FrameData(frameData), playerNumber);
@@ -68,7 +68,7 @@ public class Simulator {
 			nowFrame++;
 		}
 
-		return simFighting.createFrameData(nowFrame, frameData.getCurrentRound(), null);
+		return simFighting.createFrameData(nowFrame, frameData.getRound(), null);
 	}
 
 }

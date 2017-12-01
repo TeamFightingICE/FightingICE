@@ -183,8 +183,8 @@ public class Play extends GameScene {
 	}
 
 	private boolean isBeaten() {
-		return FlagSetting.limitHpFlag && (this.frameData.getMyCharacter(true).getHp() <= 0
-				|| this.frameData.getMyCharacter(false).getHp() <= 0);
+		return FlagSetting.limitHpFlag && (this.frameData.getCharacter(true).getHp() <= 0
+				|| this.frameData.getCharacter(false).getHp() <= 0);
 	}
 
 	private boolean isTimeOver() {

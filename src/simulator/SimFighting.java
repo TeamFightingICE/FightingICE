@@ -41,7 +41,7 @@ public class SimFighting extends Fighting {
 			FrameData frameData, boolean playerNumber) {
 
 		for (int i = 0; i < 2; i++) {
-			this.playerCharacters[i] = new Character(frameData.getMyCharacter(i == 0), motionList.get(i));
+			this.playerCharacters[i] = new Character(frameData.getCharacter(i == 0), motionList.get(i));
 
 			this.inputKeys.add(this.playerCharacters[i].getProcessedCommand());
 			this.inputActions.add(actionList.get(i));

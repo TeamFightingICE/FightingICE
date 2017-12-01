@@ -29,8 +29,6 @@ public class FrameData {
 	 */
 	private boolean emptyFlag;
 
-
-
 	/**
 	 * This is the default constructor.
 	 */
@@ -44,8 +42,8 @@ public class FrameData {
 
 	}
 
-	public FrameData(CharacterData[] characterData, int currentFrame, int currentRound, Deque<AttackData> projectileData,
-			KeyData keyData) {
+	public FrameData(CharacterData[] characterData, int currentFrame, int currentRound,
+			Deque<AttackData> projectileData, KeyData keyData) {
 		this.characterData = new CharacterData[] { characterData[0], characterData[1] };
 		this.currentFrameNumber = currentFrame;
 		this.currentRound = currentRound;
@@ -53,7 +51,7 @@ public class FrameData {
 		// make deep copy of the attacks list
 		this.projectileData = new LinkedList<AttackData>();
 		for (AttackData attack : projectileData) {
-			 this.projectileData.add(new AttackData(attack));
+			this.projectileData.add(new AttackData(attack));
 		}
 
 		this.keyData = keyData;
@@ -63,16 +61,16 @@ public class FrameData {
 	// Copy constructor for the FrameData class
 	public FrameData(FrameData frameData) {
 		this.characterData = new CharacterData[2];
-		this.characterData[0] = frameData.getMyCharacter(true);
-		this.characterData[1] = frameData.getMyCharacter(false);
-		this.currentFrameNumber = frameData.getCurrentFrameNumber();
-		this.currentRound = frameData.getCurrentRound();
+		this.characterData[0] = frameData.getCharacter(true);
+		this.characterData[1] = frameData.getCharacter(false);
+		this.currentFrameNumber = frameData.getFramesNumber();
+		this.currentRound = frameData.getRound();
 
 		// make deep copy of the attacks list
 		this.projectileData = new LinkedList<AttackData>();
 		Deque<AttackData> temp = frameData.getProjectiles();
 		for (AttackData attack : temp) {
-			 this.projectileData.add(new AttackData(attack));
+			this.projectileData.add(new AttackData(attack));
 		}
 
 		this.keyData = new KeyData(frameData.getKeyData());
@@ -80,12 +78,8 @@ public class FrameData {
 
 	}
 
-	public CharacterData getMyCharacter(boolean playerNumber) {
+	public CharacterData getCharacter(boolean playerNumber) {
 		return playerNumber ? new CharacterData(this.characterData[0]) : new CharacterData(this.characterData[1]);
-	}
-
-	public CharacterData getOpponentCharacter(boolean playerNumber) {
-		return playerNumber ? new CharacterData(this.characterData[1]) : new CharacterData(this.characterData[0]);
 	}
 
 	/**
@@ -115,7 +109,7 @@ public class FrameData {
 	 *
 	 * @return The number of remaining frames of the round.
 	 */
-	public int getRemainingFrameNumber() {
+	public int getRemainingFramesNumber() {
 		return (GameSetting.ROUND_FRAME_NUMBER - currentFrameNumber);
 	}
 
@@ -124,7 +118,7 @@ public class FrameData {
 	 *
 	 * @return The number of frames since the beginning of the round.
 	 */
-	public int getCurrentFrameNumber() {
+	public int getFramesNumber() {
 		return this.currentFrameNumber;
 	}
 
@@ -133,7 +127,7 @@ public class FrameData {
 	 *
 	 * @return The current round number
 	 */
-	public int getCurrentRound() {
+	public int getRound() {
 		return this.currentRound;
 	}
 
@@ -146,7 +140,7 @@ public class FrameData {
 		// create a deep copy of the attacks list
 		LinkedList<AttackData> attackList = new LinkedList<AttackData>();
 		for (AttackData attack : this.projectileData) {
-			 attackList.add(new AttackData(attack));
+			attackList.add(new AttackData(attack));
 		}
 
 		return attackList;
@@ -188,7 +182,7 @@ public class FrameData {
 	 * @return The value of input information
 	 */
 	public KeyData getKeyData() {
-		return new KeyData(keyData);
+		return new KeyData(this.keyData);
 	}
 
 	/**
