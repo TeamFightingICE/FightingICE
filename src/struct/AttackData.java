@@ -4,6 +4,12 @@ import fighting.Attack;
 
 public class AttackData {
 
+	private HitArea settingHitArea;
+
+	private int settingSpeedX;
+
+	private int settingSpeedY;
+
 	private HitArea currentHitArea;
 
 	private int currentFrame;
@@ -43,6 +49,9 @@ public class AttackData {
 	private boolean isProjectile;
 
 	public AttackData() {
+		this.settingHitArea = new HitArea();
+		this.settingSpeedX = 0;
+		this.settingSpeedY = 0;
 		this.currentHitArea = new HitArea();
 		this.currentFrame = -1;
 		this.playerNumber = true;
@@ -66,6 +75,9 @@ public class AttackData {
 
 	public AttackData(Attack attack) {
 		if (attack != null) {
+			this.settingHitArea = attack.getSettingHitArea();
+			this.settingSpeedX = attack.getSettingSpeedX();
+			this.settingSpeedY = attack.getSettingSpeedY();
 			this.currentHitArea = attack.getCurrentHitArea();
 			this.currentFrame = attack.getCurrentFrame();
 			this.playerNumber = attack.isPlayerNumber();
@@ -90,6 +102,9 @@ public class AttackData {
 
 	public AttackData(AttackData attackData) {
 		if (attackData != null) {
+			this.settingHitArea = attackData.getSettingHitArea();
+			this.settingSpeedX = attackData.getSettingSpeedX();
+			this.settingSpeedY = attackData.getSettingSpeedY();
 			this.currentHitArea = attackData.getCurrentHitArea();
 			this.currentFrame = attackData.getCurrentFrame();
 			this.playerNumber = attackData.isPlayerNumber();
@@ -195,7 +210,31 @@ public class AttackData {
 		return new HitArea(this.currentHitArea);
 	}
 
+	public int getSettingSpeedX() {
+		return this.settingSpeedX;
+	}
+
+	public int getSettingSpeedY() {
+		return this.settingSpeedY;
+	}
+
+	public HitArea getSettingHitArea() {
+		return new HitArea(this.settingHitArea);
+	}
+
 	////// Setter//////
+	public void setSettingHitArea(HitArea settingHitArea) {
+		this.settingHitArea = settingHitArea;
+	}
+
+	public void setSettingSpeedX(int settingSpeedX) {
+		this.settingSpeedX = settingSpeedX;
+	}
+
+	public void setSettingSpeedY(int settingSpeedY) {
+		this.settingSpeedY = settingSpeedY;
+	}
+
 	public void setCurrentFrame(int nowFrame) {
 		this.currentFrame = nowFrame;
 	}

@@ -1,5 +1,6 @@
 package fighting;
 
+import struct.AttackData;
 import struct.HitArea;
 
 public class Attack {
@@ -100,6 +101,36 @@ public class Attack {
 			this.giveGuardRecov = attack.getGiveGuardRecov();
 			this.attackType = attack.getAttackType();
 			this.downProperty = attack.isDownProperty();
+		}
+	}
+
+	public Attack(AttackData attackData) {
+		if (attackData != null) {
+			this.settingHitArea = attackData.getSettingHitArea();
+			this.settingSpeedX = attackData.getSettingSpeedX();
+			this.settingSpeedY = attackData.getSettingSpeedY();
+
+			this.currentHitArea = attackData.getCurrentHitArea();
+			this.currentFrame = attackData.getCurrentFrame();
+			this.playerNumber = attackData.isPlayerNumber();
+			this.speedX = attackData.getSpeedX();
+			this.speedY = attackData.getSpeedY();
+			;
+			this.startUp = attackData.getStartUp();
+			this.active = attackData.getActive();
+
+			this.hitDamage = attackData.getHitDamage();
+			this.guardDamage = attackData.getGuardDamage();
+			this.startAddEnergy = attackData.getStartAddEnergy();
+			this.hitAddEnergy = attackData.getHitAddEnergy();
+			this.guardAddEnergy = attackData.getGuardAddEnergy();
+			this.giveEnergy = attackData.getGiveEnergy();
+
+			this.impactX = attackData.getImpactX();
+			this.impactY = attackData.getImpactY();
+			this.giveGuardRecov = attackData.getGiveGuardRecov();
+			this.attackType = attackData.getAttackType();
+			this.downProperty = attackData.isDownProperty();
 		}
 	}
 

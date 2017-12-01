@@ -5,10 +5,10 @@ import java.util.LinkedList;
 
 import enumerate.Action;
 import enumerate.State;
-import fighting.Attack;
 import fighting.Character;
 
 public class CharacterData {
+
 
 	private boolean playerNumber;
 
@@ -42,13 +42,19 @@ public class CharacterData {
 
 	private boolean control;
 
-	private Attack attack;
+	private AttackData attackData;
 
 	private int remainingFrame;
+
+	private boolean hitConfirm;
 
 	private int graphicSizeX;
 
 	private int graphicSizeY;
+
+	private int graphicCenterX;
+
+	private int graphicCenterY;
 
 	private int hitCount;
 
@@ -66,6 +72,8 @@ public class CharacterData {
 		this.y = character.getY();
 		this.graphicSizeX = character.getGraphicSizeX();
 		this.graphicSizeY = character.getGraphicSizeY();
+		this.graphicCenterX = character.getGraphicCenterX();
+		this.graphicCenterY = character.getGraphicCenterY();
 		this.left = character.getHitAreaLeft();
 		this.right = character.getHitAreaRight();
 		this.top = character.getHitAreaTop();
@@ -76,8 +84,9 @@ public class CharacterData {
 		this.action = character.getAction();
 		this.front = character.isFront();
 		this.control = character.isControl();
-		this.attack = character.getAttack();
+		this.attackData = new AttackData(character.getAttack());
 		this.remainingFrame = character.getRemainingFrame();
+		this.hitConfirm = character.isHitConfirm();
 		this.hitCount = character.getHitCount();
 		this.lastHitFrame = character.getLastHitFrame();
 	}
@@ -91,6 +100,8 @@ public class CharacterData {
 		this.y = characterData.getY();
 		this.graphicSizeX = characterData.getGraphicSizeX();
 		this.graphicSizeY = characterData.getGraphicSizeY();
+		this.graphicCenterX = characterData.getGraphicCenterX();
+		this.graphicCenterY = characterData.getGraphicCenterY();
 		this.left = characterData.getLeft();
 		this.right = characterData.getRight();
 		this.top = characterData.getTop();
@@ -101,8 +112,9 @@ public class CharacterData {
 		this.action = characterData.getAction();
 		this.front = characterData.isFront();
 		this.control = characterData.isControl();
-		this.attack = characterData.getAttack();
+		this.attackData =new AttackData(characterData.getAttack());
 		this.remainingFrame = characterData.getRemainingFrame();
+		this.hitConfirm = characterData.isHitConfirm();
 		this.hitCount = characterData.getHitCount();
 		this.lastHitFrame = characterData.getLastHitFrame();
 	}
@@ -172,8 +184,8 @@ public class CharacterData {
 		return this.remainingFrame;
 	}
 
-	public Attack getAttack() {
-		return new Attack(this.attack);
+	public AttackData getAttack() {
+		return new AttackData(this.attackData);
 	}
 
 	public int getGraphicSizeX() {
@@ -293,8 +305,8 @@ public class CharacterData {
 		this.right = right;
 	}
 
-	public void setAttack(Attack attack) {
-		this.attack = attack;
+	public void setAttack(AttackData attack) {
+		this.attackData = attack;
 	}
 
 	public void setGraphicSizeX(int graphicSizeX) {
