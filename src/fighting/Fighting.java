@@ -28,6 +28,8 @@ public class Fighting {
 
 	protected CommandTable commandTable;
 
+	private int count = 0;
+
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
@@ -73,6 +75,11 @@ public class Fighting {
 		// 4. キャラクター情報の更新
 		updateCharacter();
 
+		if(++count >= GameSetting.FPS){
+			System.out.println(count);
+			count = 0;
+		}
+		
 	}
 
 	/** 入力されたキーを基にアクションを実行する */

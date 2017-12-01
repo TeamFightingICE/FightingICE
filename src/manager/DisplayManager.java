@@ -146,10 +146,10 @@ public class DisplayManager {
 			if (this.enableWindow) {
 				// ゲーム状態の更新
 				gm.update();
-				if(++count / 60 >= 1){
+				/*if(++count / 60 >= 1){
 					System.out.println(count);
 					count = 0;
-				}
+				}*/
 				
 
 				// バックバッファに描画する
