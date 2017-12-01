@@ -3,47 +3,47 @@ package setting;
 public class ResourceSetting {
 
 	/**
-	 * Directory for projectile's pictures.
+	 * 発射物のディレクトリ
 	 */
 	public static final String PROJECTILE_DIRECTORY = "hadouken/";
 
 	/**
-	 * Directory for Super skill's pictures.
+	 * スーパースキルのディレクトリ
 	 */
 	public static final String SUPER_DIRECTORY = "super/";
 
 	/**
-	 * Directory for Upper skill's pictures.
+	 * アッパースキルのディレクトリ
 	 */
 	public static final String UPPER_DIRECTORY = "upper/";
 
 	/**
-	 * Directory for Hit effects' directories.
+	 * ヒットエフェクトのディレクトリ
 	 */
 	public static final String HIT_DIRECTORY = "hitEffect/";
 
 	/**
-	 * Directory for counter text pictures.
+	 * カウンターテキストのディレクトリ
 	 */
 	public static final String COUNTER_DIRECTORY = "counter/";
 
 	/**
-	 * Directory for counter text pictures.
+	 * ヒットテキストのディレクトリ
 	 */
 	public static final String HIT_TEXT_DIRECTORY = "hitText/";
 
 	/**
-	 * Directory for background picture.
+	 * 背景のディレクトリ
 	 */
 	public static final String BACKGROUND_DIRECTORY = "background/";
 
 	/**
-	 * Name of the file for Background Music.
+	 * BGMファイル名
 	 */
 	public static final String BGM_FILE = "BGM0.wav";
 
 	/**
-	 * The path of all sounds effects.
+	 * サウンドのディレクトリ
 	 */
 	public static String SOUND_DIRECTORY = "./data/sounds/";
 
