@@ -309,7 +309,10 @@ public class ResourceDrawer {
 					int positionY = area.getTop() - (image.getHeight() - area.getBottom() + area.getTop()) / 2
 							+ hitEffect.getYVariation();
 					screenGraphic.drawImage(tmpImage, positionX, positionY, image.getWidth(), image.getHeight(), null);
-
+					
+					if(hitEffect.getXVariation() == 0 && hitEffect.getYVariation() == 0){
+						positionX += 30;
+					}
 					GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(),
 							image.getHeight(), i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT);
 				}

@@ -185,7 +185,6 @@ public class CommandTable {
 
 					// normal move
 				} else if (nowKeyData.getLever(isFront) == 3) {
-					System.out.println("in !");
 					return Action.CROUCH_FB;// STAND3B
 
 				} else if (nowKeyData.getLever(isFront) == 2) {
