@@ -5,16 +5,16 @@ import enumerate.BackgroundType;
 /** キャラクターの体力や試合の繰り返し回数などといった、試合を行う際に必要な情報をまとめたクラス */
 public final class LaunchSetting {
 
-	/** P1P2の最大HP */
+	/** P1,P2の最大HP */
 	public static int[] maxHp = { 400, 400 };
 
-	/** P1P2の最大エネルギー */
+	/** P1,P2の最大エネルギー */
 	public static int[] maxEnergy = { 300, 300 };
 
-	/** P1P2のAI名 */
+	/** P1,P2のAI名 */
 	public static String[] aiNames = { "KeyBoard", "KeyBoard" };
 
-	/** P1P2のキャラクター名 */
+	/** P1,P2のキャラクター名 */
 	public static String[] characterNames = { "ZEN", "ZEN" };
 
 	/**

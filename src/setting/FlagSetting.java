@@ -26,7 +26,7 @@ public class FlagSetting {
 	/** 練習モードを利用するかどうか */
 	public static boolean trainingModeFlag = false;
 
-	/** P1P2に最大HPを設定するかどうか */
+	/** P1,P2に最大HPを設定するかどうか */
 	public static boolean limitHpFlag = false;
 
 	/** 音をミュートにするかどうか */

@@ -11,7 +11,7 @@ public class KeyData {
 	private Key[] keys;
 
 	/**
-	 * 指定されたキー番号のキーを生成するメソッド
+	 * 指定されたキー番号のキーを生成するコンストラクタ
 	 *
 	 * @param keyNumber
 	 *            キー番号
@@ -24,7 +24,7 @@ public class KeyData {
 	}
 
 	/**
-	 * 2つのKey入力から各プレーヤーに1つのKeyDataを作成するメソッド
+	 * 2つのKey入力から各プレーヤーに1つのKeyDataを作成するコンストラクタ
 	 *
 	 * @param keys
 	 *            プレイヤーからのキー入力

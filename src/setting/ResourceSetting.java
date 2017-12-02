@@ -3,37 +3,37 @@ package setting;
 public class ResourceSetting {
 
 	/**
-	 * 発射物のディレクトリ
+	 * 発射物の画像が格納されているディレクトリ
 	 */
 	public static final String PROJECTILE_DIRECTORY = "hadouken/";
 
 	/**
-	 * スーパースキルのディレクトリ
+	 * スーパースキルの画像が格納されているディレクトリ
 	 */
 	public static final String SUPER_DIRECTORY = "super/";
 
 	/**
-	 * アッパースキルのディレクトリ
+	 * アッパースキルの画像が格納されているディレクトリ
 	 */
 	public static final String UPPER_DIRECTORY = "upper/";
 
 	/**
-	 * ヒットエフェクトのディレクトリ
+	 * ヒットエフェクトの画像が格納されているディレクトリ
 	 */
 	public static final String HIT_DIRECTORY = "hitEffect/";
 
 	/**
-	 * カウンターテキストのディレクトリ
+	 * カウンターテキストの画像が格納されているディレクトリ
 	 */
 	public static final String COUNTER_DIRECTORY = "counter/";
 
 	/**
-	 * ヒットテキストのディレクトリ
+	 * ヒットテキストの画像が格納されているディレクトリ
 	 */
 	public static final String HIT_TEXT_DIRECTORY = "hitText/";
 
 	/**
-	 * 背景のディレクトリ
+	 * 背景の画像が格納されているディレクトリ
 	 */
 	public static final String BACKGROUND_DIRECTORY = "background/";
 
@@ -43,7 +43,7 @@ public class ResourceSetting {
 	public static final String BGM_FILE = "BGM0.wav";
 
 	/**
-	 * サウンドのディレクトリ
+	 * サウンドが格納されているディレクトリ
 	 */
 	public static String SOUND_DIRECTORY = "./data/sounds/";
 

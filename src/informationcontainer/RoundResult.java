@@ -14,7 +14,7 @@ public class RoundResult {
 	private int elapsedFrame;
 
 	/**
-	 * RoundResultの初期化を行うメソッド
+	 * RoundResultの初期化を行うコンストラクタ
 	 */
 	public RoundResult() {
 		this.currentRound = -1;
@@ -23,12 +23,12 @@ public class RoundResult {
 	}
 
 	/**
-	 * 指定された値でRoundResultを更新するメソッド
+	 * 指定された値でRoundResultを更新するコンストラクタ
 	 *
 	 * @param round
 	 *            ラウンド数
 	 * @param hp
-	 *            2つのプレイヤーの残HP
+	 *            P1,P2の残りHP
 	 * @param frame
 	 *            経過フレーム数
 	 */
@@ -39,7 +39,7 @@ public class RoundResult {
 	}
 
 	/**
-	 * フレーム内のゲームデータからRoundResultを更新するメソッド
+	 * フレーム内のゲームデータからRoundResultを更新するコンストラクタ
 	 *
 	 * @param frameData
 	 *            フレーム内のゲームデータ
@@ -61,9 +61,9 @@ public class RoundResult {
 	}
 
 	/**
-	 * 2つのプレイヤーの残HPを返すメソッド
+	 * P1,P2の残りHPを返すメソッド
 	 *
-	 * @return 2つのプレイヤーの残HP
+	 * @return P1,P2の残りHP
 	 */
 	public int[] getRemainingHPs() {
 		return new int[] { this.remainingHPs[0], this.remainingHPs[1] };
