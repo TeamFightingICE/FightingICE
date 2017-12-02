@@ -20,6 +20,8 @@ import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import javax.imageio.ImageIO;
 
@@ -221,6 +223,7 @@ public class ResourceLoader {
 	 */
 	public ArrayList<String> loadFileNames(String directoryPath, String extension) {
 		File[] files = new File(directoryPath).listFiles();
+		sortByFileName(files);
 		ArrayList<String> fileNames = new ArrayList<String>();
 
 		for (int i = 0; i < files.length; i++) {
@@ -261,6 +264,8 @@ public class ResourceLoader {
 
 						// 指定キャラクターのグラフィックが格納されているディレクトリを取得
 						File[] files = new File(dirPath).listFiles();
+						sortByFileName(files);
+
 						int num = 0;
 						for (int j = 0; j < files.length; j++) {
 							if (j >= frameNumber) {
@@ -397,6 +402,8 @@ public class ResourceLoader {
 	 */
 	private void loadImages(ArrayList<Image> container, String path) {
 		File[] files = new File(path).listFiles();
+		sortByFileName(files);
+
 		for (File file : files) {
 			container.add(loadImage(file.getPath()));
 		}
@@ -426,6 +433,8 @@ public class ResourceLoader {
 			}
 
 			File[] files = new File(tempPath).listFiles();
+			sortByFileName(files);
+
 			for (int j = 0; j < files.length; j++) {
 				GraphicManager.getInstance().getUpperImageContainer()[i][j] = loadImage(files[j].getPath());
 			}
@@ -440,8 +449,11 @@ public class ResourceLoader {
 	 */
 	private void loadHitEffectImage(String path) {
 		File[] dir = new File(path).listFiles();
+		sortByFileName(dir);
+
 		for (int i = 0; i < dir.length; i++) {
 			File[] files = new File(dir[i].getPath()).listFiles();
+			sortByFileName(files);
 
 			for (int j = 0; j < files.length; j++) {
 				GraphicManager.getInstance().getHitEffectImageContaier()[i][j] = loadImage(files[j].getPath());
@@ -451,6 +463,7 @@ public class ResourceLoader {
 
 	private void loadSoundEffect() {
 		File[] files = new File(ResourceSetting.SOUND_DIRECTORY).listFiles();
+		sortByFileName(files);
 
 		for (File file : files) {
 			if (!file.getName().equals(ResourceSetting.BGM_FILE)) {
@@ -471,6 +484,14 @@ public class ResourceLoader {
 
 	public void addLoadedGraphic(String graphicName) {
 		this.loadedGraphics.add(graphicName);
+	}
+
+	public void sortByFileName(File[] files) {
+		Arrays.sort(files, new Comparator<File>() {
+			public int compare(File file1, File file2) {
+				return file1.getName().compareTo(file2.getName());
+			}
+		});
 	}
 
 }
