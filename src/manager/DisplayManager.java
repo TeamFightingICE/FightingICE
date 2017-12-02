@@ -99,7 +99,7 @@ public class DisplayManager {
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(this.window);
 		// Enable v-sync
-		glfwSwapInterval(0);
+		glfwSwapInterval(1);
 
 		// Make the window visible
 		glfwShowWindow(this.window);
@@ -112,12 +112,6 @@ public class DisplayManager {
 	 *            ゲームマネージャー
 	 */
 	private void gameLoop(GameManager gm) {
-
-		long newTime = System.currentTimeMillis() << 16;
-		long lastTime = 0;
-		long error = 0;
-		long idealSleep = (1000 << 16) / GameSetting.FPS;
-		int count = 0;
 		glfwSetTime(0.0);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -143,37 +137,19 @@ public class DisplayManager {
 				break;
 			}
 
-			if (this.enableWindow) {
-				// ゲーム状態の更新
-				gm.update();
-				/*if(++count / 60 >= 1){
-					System.out.println(count);
-					count = 0;
-				}*/
-				
+			// ゲーム状態の更新
+			gm.update();
 
+			if (this.enableWindow) {
 				// バックバッファに描画する
 				GraphicManager.getInstance().render();
 
 				glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
-			}
 
-			newTime = System.currentTimeMillis() << 16;
-			long sleepTime = idealSleep - (newTime - lastTime) - error; // 休止できる時間
-			if (sleepTime < 0x20000) {
-				sleepTime = 0x20000;
+				// Poll for window events. The key callback above will only be
+				// invoked during this call.
+				glfwPollEvents();
 			}
-
-			lastTime = newTime;
-			try {
-				Thread.sleep(sleepTime >> 16);
-			} catch (Exception e) {
-				gm.close();
-				break;
-			}
-			newTime = System.currentTimeMillis() << 16;
-			error = newTime - lastTime - sleepTime; // 休止時間の誤差
-			lastTime = newTime;
 		}
 	}
 

@@ -63,10 +63,6 @@ public class InputManager<Data> {
 	}
 
 	public void update() {
-		// Poll for window events. The key callback above will only be
-		// invoked during this call.
-		glfwPollEvents();
-
 		int aiCount = 0;
 
 		Key[] keys = new Key[this.deviceTypes.length];
