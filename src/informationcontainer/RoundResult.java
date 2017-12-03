@@ -1,5 +1,6 @@
 package informationcontainer;
 
+import setting.FlagSetting;
 import struct.FrameData;
 
 /**
@@ -46,9 +47,13 @@ public class RoundResult {
 	 */
 	public RoundResult(FrameData frameData) {
 		this.currentRound = frameData.getRound();
-		this.remainingHPs = new int[] { Math.max(frameData.getCharacter(true).getHp(), 0),
-				Math.max(frameData.getCharacter(false).getHp(), 0) };
 		this.elapsedFrame = frameData.getFramesNumber() + 1;
+		this.remainingHPs = new int[] { frameData.getCharacter(true).getHp(), frameData.getCharacter(false).getHp() };
+
+		if (FlagSetting.limitHpFlag) {
+			this.remainingHPs[0] = Math.max(this.remainingHPs[0], 0);
+			this.remainingHPs[1] = Math.max(this.remainingHPs[1], 0);
+		}
 	}
 
 	/**
@@ -66,7 +71,7 @@ public class RoundResult {
 	 * @return P1,P2の残りHP
 	 */
 	public int[] getRemainingHPs() {
-		return new int[] { this.remainingHPs[0], this.remainingHPs[1] };
+		return this.remainingHPs.clone();
 	}
 
 	/**
