@@ -12,6 +12,8 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
@@ -50,7 +52,7 @@ public class SoundManager {
 
 	/** コンストラクタ */
 	private SoundManager() {
-		System.out.println("create instance: " + SoundManager.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " +  SoundManager.class.getName());
 
 		this.loadedFiles = new ArrayList<String>();
 		this.buffers = new ArrayList<Integer>();

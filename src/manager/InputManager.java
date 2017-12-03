@@ -2,6 +2,9 @@ package manager;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import aiinterface.AIController;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
@@ -40,7 +43,8 @@ public class InputManager<Data> {
 	private char[] deviceTypes;
 
 	private InputManager() {
-		System.out.println("Create instance: " + InputManager.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + InputManager.class.getName());
+
 		keyboard = new Keyboard();
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		sceneName = GameSceneName.HOME_MENU;

@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import enumerate.GameSceneName;
 import fighting.Fighting;
@@ -108,18 +110,16 @@ public class Play extends GameScene {
 			}
 
 		} else {
-			System.out.println("Result遷移");
+			Logger.getAnonymousLogger().log(Level.INFO, "Game over");
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
 
 			Result result = new Result(this.roundResults, this.timeInfo);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
-
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			System.out.println("ESC is pressed");
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
 

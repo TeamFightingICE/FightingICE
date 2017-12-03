@@ -1,6 +1,8 @@
 package aiinterface;
 
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import informationcontainer.RoundResult;
 import struct.FrameData;
@@ -39,7 +41,7 @@ public class AIController extends Thread {
 
 	@Override
 	public void run() {
-		System.out.println("Start run");
+		Logger.getAnonymousLogger().log(Level.INFO, "Start to run");
 		while (true) {
 			synchronized (this.waitObj) {
 				try {

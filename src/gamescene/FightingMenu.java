@@ -39,7 +39,6 @@ public class FightingMenu extends GameScene {
 
 	@Override
 	public void initialize() {
-		System.out.println("Fighting Menu initialize");
 		InputManager.getInstance().setSceneName(GameSceneName.FIGHTING_MENU);
 		// Initialization
 
@@ -238,7 +237,6 @@ public class FightingMenu extends GameScene {
 
 	@Override
 	public void close() {
-		System.out.println("Fighting Menu close");
 
 	}
 

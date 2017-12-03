@@ -1,5 +1,8 @@
 package gamescene;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import enumerate.GameSceneName;
 import loader.ResourceLoader;
 import manager.GraphicManager;
@@ -33,7 +36,6 @@ public class Launcher extends GameScene {
 
 	@Override
 	public void initialize() {
-		System.out.println("Launcher initialize");
 		InputManager.getInstance().setSceneName(GameSceneName.LAUNCH);
 	}
 
@@ -45,20 +47,20 @@ public class Launcher extends GameScene {
 		} else {
 			switch (this.nextGameSceneName.name()) {
 			case "PLAY":
-				System.out.println("Play遷移");
+				Logger.getAnonymousLogger().log(Level.INFO, "Transition to PLAY");
 				Play play = new Play();
 				this.setTransitionFlag(true);
 				this.setNextGameScene(play);
 				break;
 
 			case "REPLAY":
-				System.out.println("Replay遷移");
+				Logger.getAnonymousLogger().log(Level.INFO, "Transition to REPLAY");
 				Replay replay = new Replay();
 				this.setTransitionFlag(true);
 				this.setNextGameScene(replay);
 				break;
 			default:
-				System.out.println("存在しないシーン名です");
+				Logger.getAnonymousLogger().log(Level.INFO, "This scene does not exist");
 				this.setGameEndFlag(true);
 			}
 

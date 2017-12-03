@@ -7,6 +7,8 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import enumerate.GameSceneName;
 import fighting.Fighting;
@@ -107,7 +109,6 @@ public class Replay extends GameScene {
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			System.out.println("ESC is pressed");
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
 
@@ -197,8 +198,7 @@ public class Replay extends GameScene {
 				dis.readInt(); // y
 				keyByte = dis.readByte();
 			} catch (EOFException e) {
-				System.out.println(
-						"The replay file was finished in the middle");
+				Logger.getAnonymousLogger().log(Level.INFO, "The replay file was finished in the middle");
 				try {
 					dis.close();
 				} catch (IOException e1) {
