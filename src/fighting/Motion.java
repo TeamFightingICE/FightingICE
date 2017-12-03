@@ -4,6 +4,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BandCombineOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import enumerate.State;
 import image.CharacterActionImage;
@@ -253,7 +255,7 @@ public class Motion {
 		int index = temp.indexOf(new CharacterActionImage(characterName, this.actionName));
 
 		if (index == -1) {
-			System.out.println("対応する画像がありません");
+			Logger.getAnonymousLogger().log(Level.INFO, "There is no character graphic according to the action");
 
 		} else {
 			// アクション名に対応する画像を読み込む

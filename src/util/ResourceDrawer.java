@@ -7,6 +7,8 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import fighting.Attack;
 import fighting.Character;
@@ -22,7 +24,7 @@ import struct.HitArea;
 public class ResourceDrawer {
 
 	private ResourceDrawer() {
-		System.out.println("Create instance: " + ResourceDrawer.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceDrawer.class.getName());
 	}
 
 	public static ResourceDrawer getInstance() {
@@ -309,8 +311,8 @@ public class ResourceDrawer {
 					int positionY = area.getTop() - (image.getHeight() - area.getBottom() + area.getTop()) / 2
 							+ hitEffect.getYVariation();
 					screenGraphic.drawImage(tmpImage, positionX, positionY, image.getWidth(), image.getHeight(), null);
-					
-					if(hitEffect.getXVariation() == 0 && hitEffect.getYVariation() == 0){
+
+					if (hitEffect.getXVariation() == 0 && hitEffect.getYVariation() == 0) {
 						positionX += 30;
 					}
 					GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(),

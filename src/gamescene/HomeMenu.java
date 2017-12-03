@@ -14,7 +14,7 @@ public class HomeMenu extends GameScene {
 
 	// 表示する項目数
 	private final int NUMBER_OF_ITEM = 3;
-	private MenuItem[] menuItems = new MenuItem[NUMBER_OF_ITEM];
+	private MenuItem[] menuItems;
 	private ArrayList<String> allReplayNames;
 
 	// 現在のカーソル位置
@@ -33,7 +33,6 @@ public class HomeMenu extends GameScene {
 
 	@Override
 	public void initialize() {
-		System.out.println("Home Menu initialize");
 		InputManager.getInstance().setSceneName(GameSceneName.HOME_MENU);
 		// Initialization
 		this.menuItems = new MenuItem[] { new MenuItem("FIGHT ", 50, 50, 0), new MenuItem("REPLAY : ", 50, 100, 1),
@@ -129,7 +128,7 @@ public class HomeMenu extends GameScene {
 
 	@Override
 	public void close() {
-		System.out.println("Home Menu close");
+
 	}
 
 }

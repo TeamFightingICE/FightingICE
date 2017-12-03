@@ -22,6 +22,8 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -41,7 +43,7 @@ public class ResourceLoader {
 	private ArrayList<String> loadedGraphics;
 
 	private ResourceLoader() {
-		System.out.println("Create instance: " + ResourceLoader.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceLoader.class.getName());
 		this.loadedGraphics = new ArrayList<String>();
 	}
 
@@ -55,6 +57,7 @@ public class ResourceLoader {
 	}
 
 	public void loadResource() {
+		Logger.getAnonymousLogger().log(Level.INFO, "Loading the resources");
 		String graphicPath = "./data/graphics/";
 		String characterGraphicPath = "./data/characters/";
 
@@ -64,7 +67,7 @@ public class ResourceLoader {
 					graphicPath + ResourceSetting.PROJECTILE_DIRECTORY);
 
 			addLoadedGraphic("hadouken");
-			System.out.println("波動拳読み込み完了");
+			Logger.getAnonymousLogger().log(Level.INFO, "Hadouken images have been loaded.");
 		}
 
 		// 必殺技読み込み
@@ -73,7 +76,7 @@ public class ResourceLoader {
 					graphicPath + ResourceSetting.SUPER_DIRECTORY);
 
 			addLoadedGraphic("super");
-			System.out.println("必殺技読み込み完了");
+			Logger.getAnonymousLogger().log(Level.INFO, "Ultimate attack images have been loaded.");
 		}
 
 		// 0~9の文字カウンタ読み込み
@@ -82,7 +85,7 @@ public class ResourceLoader {
 					graphicPath + ResourceSetting.COUNTER_DIRECTORY);
 
 			addLoadedGraphic("hitCounter");
-			System.out.println("文字カウンタ読み込み完了");
+			Logger.getAnonymousLogger().log(Level.INFO, "Hit counter text images have been loaded.");
 		}
 
 		// "Hit"文字読み込み
@@ -91,7 +94,7 @@ public class ResourceLoader {
 					graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
 
 			addLoadedGraphic("hitText");
-			System.out.println("Hit文字読み込み完了");
+			Logger.getAnonymousLogger().log(Level.INFO, "Hit text image has been loaded.");
 		}
 
 		// ヒットエフェクト読み込み
@@ -99,7 +102,7 @@ public class ResourceLoader {
 			loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
 
 			addLoadedGraphic("hitEffect");
-			System.out.println("ヒットエフェクト読み込み完了");
+			Logger.getAnonymousLogger().log(Level.INFO, "Hit effect images have been loaded.");
 		}
 
 		// 背景画像読み込み
@@ -108,23 +111,23 @@ public class ResourceLoader {
 					graphicPath + ResourceSetting.BACKGROUND_DIRECTORY);
 
 			addLoadedGraphic("background");
-			System.out.println("背景読み込み完了");
+			Logger.getAnonymousLogger().log(Level.INFO, "Background image has been loaded.");
 		}
 
 		// アッパー画像読み込み
 		loadUpperImages(graphicPath + ResourceSetting.UPPER_DIRECTORY);
-		System.out.println("アッパー読み込み完了");
+		Logger.getAnonymousLogger().log(Level.INFO, "Upper attack images have been loaded.");
 
 		// キャラクター画像読み込み
 		loadCharacterImages(characterGraphicPath);
-		System.out.println("キャラクター画像読み込み完了");
+		Logger.getAnonymousLogger().log(Level.INFO, "Character images have been loaded.");
 
 		// サウンドエフェクト読み込み
 		if (!isLoaded("soundEffect")) {
 			loadSoundEffect();
 
 			addLoadedGraphic("soundEffect");
-			System.out.println("サウンドエフェクト読み込み完了");
+			Logger.getAnonymousLogger().log(Level.INFO, "Sound effects have been loaded.");
 		}
 
 		// BGM読み込み
@@ -132,7 +135,7 @@ public class ResourceLoader {
 			loadBackGroundMusic();
 
 			addLoadedGraphic("BGM");
-			System.out.println("BGM読み込み完了");
+			Logger.getAnonymousLogger().log(Level.INFO, "BGM has been loaded.");
 		}
 
 	}
@@ -201,7 +204,7 @@ public class ResourceLoader {
 			ClassLoader cl = URLClassLoader.newInstance(new URL[] { file.toURI().toURL() });
 			Class<?> c = cl.loadClass(aiName);
 			AIInterface ai = (AIInterface) c.newInstance();
-			System.out.println("ai");
+
 			return new AIController(ai);
 		} catch (MalformedURLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block

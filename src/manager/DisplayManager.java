@@ -7,6 +7,8 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.IntBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -103,6 +105,8 @@ public class DisplayManager {
 
 		// Make the window visible
 		glfwShowWindow(this.window);
+
+		Logger.getAnonymousLogger().log(Level.INFO, "Create Window " + width + "x" + height);
 	}
 
 	/**

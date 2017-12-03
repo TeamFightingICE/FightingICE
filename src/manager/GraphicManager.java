@@ -4,6 +4,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import image.CharacterActionImage;
 import image.Image;
@@ -43,7 +45,7 @@ public class GraphicManager {
 	private ArrayList<Image> backGroundImage;
 
 	private GraphicManager() {
-		System.out.println("Create instance: " + GraphicManager.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + GraphicManager.class.getName());
 
 		this.renderTaskList = new LinkedList<RenderTask>();
 		this.letterImage = new LetterImage();

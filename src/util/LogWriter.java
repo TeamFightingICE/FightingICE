@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import fighting.Character;
 import informationcontainer.RoundResult;
@@ -24,7 +26,7 @@ public class LogWriter {
 
 	/** コンストラクタ */
 	private LogWriter() {
-		System.out.println("create instance: " + LogWriter.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + LogWriter.class.getName());
 	}
 
 	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */

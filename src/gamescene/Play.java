@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import enumerate.GameSceneName;
 import fighting.Fighting;
@@ -66,7 +68,7 @@ public class Play extends GameScene {
 		this.fighting = new Fighting();
 		this.fighting.initialize();
 
-		this.nowFrame = 1;
+		this.nowFrame = 0;
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
@@ -108,18 +110,16 @@ public class Play extends GameScene {
 			}
 
 		} else {
-			System.out.println("Result遷移");
+			Logger.getAnonymousLogger().log(Level.INFO, "Game over");
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
 
 			Result result = new Result(this.roundResults, this.timeInfo);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
-
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			System.out.println("ESC is pressed");
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
 
@@ -132,7 +132,7 @@ public class Play extends GameScene {
 
 	private void initRound() {
 		this.fighting.initRound();
-		this.nowFrame = 1;
+		this.nowFrame = 0;
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 
@@ -183,15 +183,15 @@ public class Play extends GameScene {
 	}
 
 	private boolean isBeaten() {
-		return FlagSetting.limitHpFlag && (this.frameData.getCharacter(true).getHp() <= 0
-				|| this.frameData.getCharacter(false).getHp() <= 0);
+		return FlagSetting.limitHpFlag
+				&& (this.frameData.getCharacter(true).getHp() <= 0 || this.frameData.getCharacter(false).getHp() <= 0);
 	}
 
 	private boolean isTimeOver() {
 		if (FlagSetting.trainingModeFlag) {
 			return this.nowFrame == Integer.MAX_VALUE;
 		} else {
-			return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER;
+			return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
 		}
 
 	}
