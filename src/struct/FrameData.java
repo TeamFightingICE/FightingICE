@@ -206,4 +206,12 @@ public class FrameData {
 		return this.emptyFlag;
 	}
 
+	public int getDistanceX(){
+		return Math.abs((this.characterData[0].getCenterX() - this.characterData[1].getCenterX()));
+	}
+
+	public int getDistanceY(){
+		return Math.abs((this.characterData[0].getCenterY() - this.characterData[1].getCenterY()));
+	}
+
 }
