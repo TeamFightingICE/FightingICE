@@ -106,7 +106,7 @@ public class DisplayManager {
 		// Make the window visible
 		glfwShowWindow(this.window);
 
-		Logger.getAnonymousLogger().log(Level.INFO, "Create Window" + width + "x" + height);
+		Logger.getAnonymousLogger().log(Level.INFO, "Create Window " + width + "x" + height);
 	}
 
 	/**

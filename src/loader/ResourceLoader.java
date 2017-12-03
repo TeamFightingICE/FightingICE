@@ -44,7 +44,6 @@ public class ResourceLoader {
 
 	private ResourceLoader() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceLoader.class.getName());
-		Logger.getAnonymousLogger().log(Level.INFO, "Loading the resources");
 		this.loadedGraphics = new ArrayList<String>();
 	}
 
@@ -58,6 +57,7 @@ public class ResourceLoader {
 	}
 
 	public void loadResource() {
+		Logger.getAnonymousLogger().log(Level.INFO, "Loading the resources");
 		String graphicPath = "./data/graphics/";
 		String characterGraphicPath = "./data/characters/";
 
