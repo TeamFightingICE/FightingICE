@@ -8,6 +8,9 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import simulator.Simulator;
 
+/**
+ * ゲームデータを扱うクラス
+ */
 public class GameData {
 
 	private int stageWidth;
@@ -26,6 +29,9 @@ public class GameData {
 
 	private Simulator simulator;
 
+	/**
+	 * ゲームデータを初期化するコンストラクタ
+	 */
 	public GameData() {
 		this.maxHPs = new int[2];
 		this.maxEnergies = new int[2];
@@ -34,6 +40,12 @@ public class GameData {
 		this.aiNames = new String[2];
 	}
 
+	/**
+	 * プレイヤーデータを用いてゲームデータを更新するコンストラクタ
+	 *
+	 * @param players
+	 *            プレイヤーデータ
+	 */
 	public GameData(Character[] players) {
 		this();
 
@@ -60,6 +72,13 @@ public class GameData {
 
 	/** Getter */
 
+	/**
+	 * 指定されたプレイヤーのモーションデータを返すメソッド
+	 *
+	 * @param playerNumber
+	 *            プレイヤー番号(P1 or P2)
+	 * @return モーションデータ
+	 */
 	public ArrayList<MotionData> getMotionData(boolean playerNumber) {
 		ArrayList<MotionData> temp = new ArrayList<MotionData>();
 		ArrayList<MotionData> copy = this.characterMotions.get(playerNumber ? 0 : 1);
@@ -72,6 +91,13 @@ public class GameData {
 	}
 
 	// シミュレータ用
+	/**
+	 * 指定されたプレイヤーのモーションを返すメソッド
+	 *
+	 * @param playerNumber
+	 *            playerNumber プレイヤー番号(P1 or P2)
+	 * @return モーション
+	 */
 	public ArrayList<Motion> getMotion(boolean playerNumber) {
 		ArrayList<Motion> temp = new ArrayList<Motion>();
 		ArrayList<MotionData> copy = this.characterMotions.get(playerNumber ? 0 : 1);
@@ -84,30 +110,73 @@ public class GameData {
 		return temp;
 	}
 
+	/**
+	 * ゲームステージの横幅を返すメソッド
+	 *
+	 * @return ゲームステージの横幅
+	 */
 	public int getStageWidth() {
 		return this.stageWidth;
 	}
 
+	/**
+	 * ゲームステージの縦幅を返すメソッド
+	 *
+	 * @return ゲームステージの縦幅
+	 */
 	public int getStageHeight() {
 		return this.stageHeight;
 	}
 
+	/**
+	 * 指定されたプレイヤーの最大HPを返すメソッド
+	 *
+	 * @param playerNumber
+	 *            プレイヤー番号(P1 or P2)
+	 * @return 最大HP
+	 */
 	public int getMaxHP(boolean playerNumber) {
 		return playerNumber ? this.maxHPs[0] : this.maxHPs[1];
 	}
 
+	/**
+	 * 指定されたプレイヤーの最大エネルギー量を返すメソッド
+	 *
+	 * @param playerNumber
+	 *            プレイヤー番号(P1 or P2)
+	 * @return 最大エネルギー量
+	 */
 	public int getMaxEnergy(boolean playerNumber) {
 		return playerNumber ? this.maxEnergies[0] : this.maxEnergies[1];
 	}
 
+	/**
+	 * 指定されたプレイヤーのキャラクターの名前を返すメソッド
+	 *
+	 * @param playerNumber
+	 *            playerNumber プレイヤー番号(P1 or P2)
+	 * @return キャラクターの名前
+	 */
 	public String getCharacterName(boolean playerNumber) {
 		return playerNumber ? this.characterNames[0] : this.characterNames[1];
 	}
 
+	/**
+	 * 指定されたプレイヤーのAIの名前を返すメソッド
+	 *
+	 * @param playerNumber
+	 *            playerNumber プレイヤー番号(P1 or P2)
+	 * @return AIの名前
+	 */
 	public String getAiName(boolean playerNumber) {
 		return playerNumber ? this.aiNames[0] : this.aiNames[1];
 	}
 
+	/**
+	 * シミュレータを返すメソッド
+	 *
+	 * @return シミュレータ
+	 */
 	public Simulator getSimulator() {
 		return this.simulator;
 	}
