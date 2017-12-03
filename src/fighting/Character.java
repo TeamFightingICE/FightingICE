@@ -56,9 +56,7 @@ public class Character {
 
 	private int graphicSizeY;
 
-	private int graphicCenterX;
-
-	private int graphicCenterY;
+	private int graphicAdjustX;
 
 	private int lastHitFrame;
 
@@ -81,8 +79,7 @@ public class Character {
 		this.y = 0;
 		this.graphicSizeX = 0;
 		this.graphicSizeY = 0;
-		this.graphicCenterX = 0;
-		this.graphicCenterY = 0;
+		this.graphicAdjustX = 0;
 		this.speedX = 0;
 		this.speedY = 0;
 		this.state = State.STAND;
@@ -106,8 +103,7 @@ public class Character {
 		this.y = character.getY();
 		this.graphicSizeX = character.getGraphicSizeX();
 		this.graphicSizeY = character.getGraphicSizeY();
-		this.graphicCenterX = character.getGraphicCenterX();
-		this.graphicCenterY = character.getGraphicCenterY();
+		this.graphicAdjustX = character.getGraphicAdjustX();
 		this.speedX = character.getSpeedX();
 		this.speedY = character.getSpeedY();
 		this.state = character.getState();
@@ -135,8 +131,7 @@ public class Character {
 		this.y = characterData.getY();
 		this.graphicSizeX = characterData.getGraphicSizeX();
 		this.graphicSizeY = characterData.getGraphicSizeY();
-		this.graphicCenterX = characterData.getGraphicCenterX();
-		this.graphicCenterY = characterData.getGraphicCenterY();
+		this.graphicAdjustX = characterData.getGraphicAdjustX();
 		this.speedX = characterData.getSpeedX();
 		this.speedY = characterData.getSpeedY();
 		this.state = characterData.getState();
@@ -164,8 +159,7 @@ public class Character {
 
 			this.graphicSizeX = Integer.valueOf(size[0]);
 			this.graphicSizeY = Integer.valueOf(size[1]);
-			this.graphicCenterX = Integer.valueOf(center[0]);
-			this.graphicCenterY = Integer.valueOf(center[1]);
+			this.graphicAdjustX = Integer.valueOf(center[0]);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -510,13 +504,13 @@ public class Character {
 			if (getHitAreaCenterX() < opponentCenterX) {
 				this.front = true;
 			} else {
-				this.x = this.x - this.graphicSizeX + graphicCenterX * 2;
+				this.x = this.x - this.graphicSizeX + this.graphicAdjustX * 2;
 				this.front = false;
 			}
 
 		} else {
 			if (getHitAreaCenterX() < opponentCenterX) {
-				this.x = this.x + this.graphicSizeX - graphicCenterX * 2;
+				this.x = this.x + this.graphicSizeX - this.graphicAdjustX * 2;
 				this.front = true;
 			} else {
 				this.front = false;
@@ -641,12 +635,8 @@ public class Character {
 		return this.attack;
 	}
 
-	public int getGraphicCenterX() {
-		return this.graphicCenterX;
-	}
-
-	public int getGraphicCenterY() {
-		return this.graphicCenterY;
+	public int getGraphicAdjustX() {
+		return this.graphicAdjustX;
 	}
 
 	public int getGraphicSizeX() {
@@ -780,14 +770,6 @@ public class Character {
 
 	public void setAttack(Attack attack) {
 		this.attack = attack;
-	}
-
-	public void setGraphicCenterX(int graphicCenterX) {
-		this.graphicCenterX = graphicCenterX;
-	}
-
-	public void setGraphicCenterY(int graphicCenterY) {
-		this.graphicCenterY = graphicCenterY;
 	}
 
 	public void setGraphicSizeX(int graphicSizeX) {
