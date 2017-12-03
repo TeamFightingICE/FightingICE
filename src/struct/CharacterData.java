@@ -7,6 +7,9 @@ import enumerate.Action;
 import enumerate.State;
 import fighting.Character;
 
+/**
+ * 使用するキャラクターのデータを扱うクラス
+ */
 public class CharacterData {
 
 	/**
@@ -101,6 +104,12 @@ public class CharacterData {
 	 */
 	private Deque<Key> processedCommands;
 
+	/**
+	 * 指定されたデータでキャラクターのデータを更新するコンストラクタ
+	 *
+	 * @param character
+	 *            キャラクターのデータ
+	 */
 	public CharacterData(Character character) {
 		this.playerNumber = character.isPlayerNumber();
 		this.hp = character.getHp();
