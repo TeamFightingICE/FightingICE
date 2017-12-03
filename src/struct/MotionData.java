@@ -3,6 +3,9 @@ package struct;
 import enumerate.State;
 import fighting.Motion;
 
+/**
+ * キャラクターモーションのデータを扱うクラス
+ */
 public class MotionData {
 
 	/**
@@ -159,6 +162,9 @@ public class MotionData {
 	 */
 	public boolean landingFlag;
 
+	/**
+	 * 指定されたデータでキャラクターのモーションデータを更新するコンストラクタ
+	 */
 	public MotionData(Motion motion) {
 		this.actionName = motion.getActionName();
 		this.frameNumber = motion.getFrameNumber();

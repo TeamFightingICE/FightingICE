@@ -12,6 +12,9 @@ import org.lwjgl.BufferUtils;
 
 import setting.GameSetting;
 
+/**
+ * ゲーム画面のデータを扱うクラス
+ */
 public class ScreenData {
 
 	/**
@@ -24,17 +27,32 @@ public class ScreenData {
 	 */
 	private BufferedImage screenImage;
 
+	/**
+	 * ゲーム画面のデータを初期化するコンストラクタ
+	 */
 	public ScreenData() {
 		this.displayByteBuffer = createDisplayByteBuffer();
 		this.screenImage = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT,
 				BufferedImage.TYPE_INT_RGB);
 	}
 
+	/**
+	 * 指定された画像でゲーム画面を更新するコンストラクタ
+	 *
+	 * @param screenImage
+	 *            ゲーム画面に使う画像
+	 */
 	public ScreenData(BufferedImage screenImage) {
 		this.displayByteBuffer = createDisplayByteBuffer();
 		this.screenImage = screenImage;
 	}
 
+	/**
+	 * 指定されたデータでゲーム画面を更新するコンストラクタ
+	 *
+	 * @param screenData
+	 *            ゲーム画面のデータ
+	 */
 	public ScreenData(ScreenData screenData) {
 		this.displayByteBuffer = screenData.getDisplayByteBuffer();
 		this.screenImage = screenData.getScreenImage();
@@ -110,6 +128,11 @@ public class ScreenData {
 		return dst;
 	}
 
+	/**
+	 * 現在のゲーム画面の画像を返すメソッド
+	 *
+	 * @return 現在のゲーム画面の画像
+	 */
 	public BufferedImage getScreenImage() {
 		return this.screenImage;
 	}
