@@ -48,7 +48,7 @@ public class RoundResult {
 		this.currentRound = frameData.getRound();
 		this.remainingHPs = new int[] { Math.max(frameData.getCharacter(true).getHp(), 0),
 				Math.max(frameData.getCharacter(false).getHp(), 0) };
-		this.elapsedFrame = frameData.getFramesNumber();
+		this.elapsedFrame = frameData.getFramesNumber() + 1;
 	}
 
 	/**

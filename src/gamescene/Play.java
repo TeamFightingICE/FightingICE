@@ -66,7 +66,7 @@ public class Play extends GameScene {
 		this.fighting = new Fighting();
 		this.fighting.initialize();
 
-		this.nowFrame = 1;
+		this.nowFrame = 0;
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
@@ -132,7 +132,7 @@ public class Play extends GameScene {
 
 	private void initRound() {
 		this.fighting.initRound();
-		this.nowFrame = 1;
+		this.nowFrame = 0;
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 
@@ -191,7 +191,7 @@ public class Play extends GameScene {
 		if (FlagSetting.trainingModeFlag) {
 			return this.nowFrame == Integer.MAX_VALUE;
 		} else {
-			return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER;
+			return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
 		}
 
 	}
