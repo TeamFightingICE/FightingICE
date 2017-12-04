@@ -28,6 +28,8 @@ public class HitArea {
 	 *
 	 * @param hitArea
 	 *            当たり判定の領域のデータ
+	 *
+	 * @see HitArea
 	 */
 	public HitArea(HitArea hitArea) {
 		if (!(hitArea == null)) {

@@ -216,6 +216,8 @@ public class FrameData {
 	 * Returns the value of input information.
 	 *
 	 * @return The value of input information
+	 *
+	 * @see KeyData
 	 */
 	public KeyData getKeyData() {
 		return new KeyData(this.keyData);

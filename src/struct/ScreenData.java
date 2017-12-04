@@ -41,6 +41,8 @@ public class ScreenData {
 	 *
 	 * @param screenImage
 	 *            ゲーム画面に使う画像
+	 *
+	 * @see BufferedImage
 	 */
 	public ScreenData(BufferedImage screenImage) {
 		this.displayByteBuffer = createDisplayByteBuffer();
@@ -52,6 +54,8 @@ public class ScreenData {
 	 *
 	 * @param screenData
 	 *            ゲーム画面のデータ
+	 *
+	 * @see ScreenData
 	 */
 	public ScreenData(ScreenData screenData) {
 		this.displayByteBuffer = screenData.getDisplayByteBuffer();

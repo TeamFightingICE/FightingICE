@@ -115,7 +115,7 @@ public class AttackData {
 	/**
 	 * 指定された値で攻撃データを更新するコンストラクタ
 	 *
-	 * @param attack
+	 * @param attackData
 	 *            攻撃データ
 	 */
 	public AttackData(AttackData attackData) {
@@ -379,7 +379,7 @@ public class AttackData {
 	/**
 	 * Sets HitArea's setting information.
 	 *
-	 * @param hitAreaSetting
+	 * @param settingHitArea
 	 *            HitArea's setting information
 	 */
 	public void setSettingHitArea(HitArea settingHitArea) {
@@ -434,7 +434,7 @@ public class AttackData {
 	 * Sets the horizontal speed of the attack hit box (minus when moving left
 	 * and plus when moving right).
 	 *
-	 * @param speed_x
+	 * @param speedX
 	 *            The horizontal speed of the attack hit box (minus when moving
 	 *            left and plus when moving right)
 	 */
@@ -446,7 +446,7 @@ public class AttackData {
 	 * Sets the vertical speed of the attack hit box (minus when moving up and
 	 * plus when moving down).
 	 *
-	 * @param speed_y
+	 * @param speedY
 	 *            The vertical speed of the attack hit box (minus when moving up
 	 *            and plus when moving down)
 	 */

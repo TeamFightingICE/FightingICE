@@ -164,6 +164,9 @@ public class MotionData {
 
 	/**
 	 * 指定されたデータでキャラクターのモーションデータを更新するコンストラクタ
+	 * @param motion モーションデータ
+	 *
+	 * @see Motion
 	 */
 	public MotionData(Motion motion) {
 		this.actionName = motion.getActionName();
@@ -522,8 +525,10 @@ public class MotionData {
 	/**
 	 * Sets the hit area of this action.
 	 *
-	 * @param hit
+	 * @param attackHitArea
 	 *            the hit area.
+	 *
+	 * @see HitArea
 	 */
 	public void setAttackHitArea(HitArea attackHitArea) {
 		this.attackHitArea = attackHitArea;
@@ -532,8 +537,10 @@ public class MotionData {
 	/**
 	 * Sets the hit area of this motion.
 	 *
-	 * @param hit
+	 * @param characterHitArea
 	 *            the hit area.
+	 *
+	 * @see HitArea
 	 */
 	public void setCharacterHitArea(HitArea characterHitArea) {
 		this.characterHitArea = characterHitArea;

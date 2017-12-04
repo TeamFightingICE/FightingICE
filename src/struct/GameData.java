@@ -45,6 +45,8 @@ public class GameData {
 	 *
 	 * @param players
 	 *            プレイヤーデータ
+	 *
+	 * @see Character
 	 */
 	public GameData(Character[] players) {
 		this();
