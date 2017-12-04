@@ -41,10 +41,10 @@ public class GameData {
 	}
 
 	/**
-	 * プレイヤーデータを用いてゲームデータを更新するコンストラクタ
+	 * キャラクターのデータを用いてゲームデータのインスタンスを作成するコンストラクタ
 	 *
 	 * @param players
-	 *            プレイヤーデータ
+	 *            P1, P2のキャラクターのデータ
 	 *
 	 * @see Character
 	 */
@@ -72,14 +72,13 @@ public class GameData {
 		this.simulator = new Simulator(this);
 	}
 
-	/** Getter */
-
 	/**
 	 * 指定されたプレイヤーのモーションデータを返すメソッド
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(P1 or P2)
-	 * @return モーションデータ
+	 *            プレイヤー番号(true: P1; false: P2)
+	 * @return 指定されたプレイヤーのモーションデータ
+	 * @see MotionData
 	 */
 	public ArrayList<MotionData> getMotionData(boolean playerNumber) {
 		ArrayList<MotionData> temp = new ArrayList<MotionData>();
@@ -88,7 +87,6 @@ public class GameData {
 		for (MotionData motionData : copy) {
 			temp.add(motionData);
 		}
-
 		return temp;
 	}
 
@@ -97,8 +95,9 @@ public class GameData {
 	 * 指定されたプレイヤーのモーションを返すメソッド
 	 *
 	 * @param playerNumber
-	 *            playerNumber プレイヤー番号(P1 or P2)
-	 * @return モーション
+	 *            playerNumber プレイヤー番号(true: P1; false: P2)
+	 * @return 指定されたプレイヤーのモーション
+	 * @see Motion
 	 */
 	public ArrayList<Motion> getMotion(boolean playerNumber) {
 		ArrayList<Motion> temp = new ArrayList<Motion>();
@@ -108,7 +107,6 @@ public class GameData {
 			Motion motion = new Motion(motionData);
 			temp.add(motion);
 		}
-
 		return temp;
 	}
 
@@ -134,8 +132,8 @@ public class GameData {
 	 * 指定されたプレイヤーの最大HPを返すメソッド
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(P1 or P2)
-	 * @return 最大HP
+	 *            プレイヤー番号(true: P1; false: P2)
+	 * @return 指定されたプレイヤーの最大HP
 	 */
 	public int getMaxHP(boolean playerNumber) {
 		return playerNumber ? this.maxHPs[0] : this.maxHPs[1];
@@ -145,8 +143,8 @@ public class GameData {
 	 * 指定されたプレイヤーの最大エネルギー量を返すメソッド
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(P1 or P2)
-	 * @return 最大エネルギー量
+	 *            プレイヤー番号(true: P1; false: P2)
+	 * @return 指定されたプレイヤーの最大エネルギー量
 	 */
 	public int getMaxEnergy(boolean playerNumber) {
 		return playerNumber ? this.maxEnergies[0] : this.maxEnergies[1];
@@ -156,8 +154,8 @@ public class GameData {
 	 * 指定されたプレイヤーのキャラクターの名前を返すメソッド
 	 *
 	 * @param playerNumber
-	 *            playerNumber プレイヤー番号(P1 or P2)
-	 * @return キャラクターの名前
+	 *            playerNumber プレイヤー番号(true: P1; false: P2)
+	 * @return 指定されたプレイヤーのキャラクターの名前
 	 */
 	public String getCharacterName(boolean playerNumber) {
 		return playerNumber ? this.characterNames[0] : this.characterNames[1];
@@ -167,8 +165,8 @@ public class GameData {
 	 * 指定されたプレイヤーのAIの名前を返すメソッド
 	 *
 	 * @param playerNumber
-	 *            playerNumber プレイヤー番号(P1 or P2)
-	 * @return AIの名前
+	 *            playerNumber プレイヤー番号(true: P1; false: P2)
+	 * @return 指定されたプレイヤーのAIの名前
 	 */
 	public String getAiName(boolean playerNumber) {
 		return playerNumber ? this.aiNames[0] : this.aiNames[1];
@@ -178,6 +176,7 @@ public class GameData {
 	 * シミュレータを返すメソッド
 	 *
 	 * @return シミュレータ
+	 * @see Simulator
 	 */
 	public Simulator getSimulator() {
 		return this.simulator;

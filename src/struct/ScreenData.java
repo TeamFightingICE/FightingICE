@@ -37,7 +37,7 @@ public class ScreenData {
 	}
 
 	/**
-	 * 指定された画像でゲーム画面を更新するコンストラクタ
+	 * 指定された画像でゲーム画面の画像と画素情報を作成するコンストラクタ
 	 *
 	 * @param screenImage
 	 *            ゲーム画面に使う画像
@@ -50,12 +50,10 @@ public class ScreenData {
 	}
 
 	/**
-	 * 指定されたデータでゲーム画面を更新するコンストラクタ
+	 * 指定されたデータでゲーム画面と画素情報を作成するコンストラクタ
 	 *
 	 * @param screenData
 	 *            ゲーム画面のデータ
-	 *
-	 * @see ScreenData
 	 */
 	public ScreenData(ScreenData screenData) {
 		this.displayByteBuffer = screenData.getDisplayByteBuffer();

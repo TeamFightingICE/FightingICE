@@ -1,7 +1,7 @@
 package struct;
 
 /**
- * 当たり判定の境界値などの、キャラクターの当たり判定に関する情報を扱うクラス
+ * 当たり判定の境界値などの、キャラクターや攻撃の当たり判定の領域に関する情報を扱うクラス
  */
 public class HitArea {
 
@@ -28,8 +28,6 @@ public class HitArea {
 	 *
 	 * @param hitArea
 	 *            当たり判定の領域のデータ
-	 *
-	 * @see HitArea
 	 */
 	public HitArea(HitArea hitArea) {
 		if (!(hitArea == null)) {
@@ -49,13 +47,13 @@ public class HitArea {
 	 * 指定された値で当たり判定の領域を初期化するコンストラクタ
 	 *
 	 * @param left
-	 *            左側の境界値
+	 *            ヒットボックスの一番左のx座標
 	 * @param right
-	 *            右側の境界値
+	 *            ヒットボックスの一番右のx座標
 	 * @param top
-	 *            上側の境界値
+	 *            ヒットボックスの一番上のy座標
 	 * @param bottom
-	 *            下側の境界値
+	 *            ヒットボックスの一番下のy座標
 	 */
 	public HitArea(int left, int right, int top, int bottom) {
 		this.left = left;
@@ -65,12 +63,12 @@ public class HitArea {
 	}
 
 	/**
-	 * 指定された値で当たり判定を動かすメソッド
+	 * 指定された値で当たり判定の座標を更新するメソッド
 	 *
 	 * @param speedX
-	 *            横方向のスピード
+	 *            水平方向のスピード
 	 * @param speedY
-	 *            縦方向のスピード
+	 *            鉛直方向のスピード
 	 */
 	public void move(int speedX, int speedY) {
 		this.left += speedX;
@@ -80,36 +78,36 @@ public class HitArea {
 	}
 
 	/**
-	 * 左側の境界値を返すメソッド
+	 * ヒットボックスの一番左のx座標を返すメソッド
 	 *
-	 * @return 左側の境界値
+	 * @return ヒットボックスの一番左のx座標
 	 */
 	public int getLeft() {
 		return this.left;
 	}
 
 	/**
-	 * 右側の境界値を返すメソッド
+	 * ヒットボックスの一番右のx座標を返すメソッド
 	 *
-	 * @return 右側の境界値
+	 * @return ヒットボックスの一番右のx座標
 	 */
 	public int getRight() {
 		return this.right;
 	}
 
 	/**
-	 * 上側の境界値を返すメソッド
+	 * ヒットボックスの一番上のy座標を返すメソッド
 	 *
-	 * @return 上側の境界値
+	 * @return ヒットボックスの一番上のy座標
 	 */
 	public int getTop() {
 		return this.top;
 	}
 
 	/**
-	 * 下側の境界値を返すメソッド
+	 * ヒットボックスの一番下のy座標を返すメソッド
 	 *
-	 * @return 下側の境界値
+	 * @return ヒットボックスの一番下のy座標
 	 */
 	public int getBottom() {
 		return this.bottom;

@@ -7,12 +7,12 @@ import input.KeyData;
 import setting.GameSetting;
 
 /**
- * 現在のフレーム番号やラウンド数などのフレームデータを扱うクラス
+ * 現在のフレーム番号やラウンド数, キャラクター情報など, ゲーム内の可変情報を扱うクラス
  */
 public class FrameData {
 
 	/**
-	 * The character's data<br>
+	 * The character's data of both characters<br>
 	 * Index 0 is P1, index 1 is P2.
 	 */
 	private CharacterData[] characterData;
@@ -33,7 +33,7 @@ public class FrameData {
 	private Deque<AttackData> projectileData;
 
 	/**
-	 * The value of input information
+	 * The input information of both characters
 	 */
 	private KeyData keyData;
 
@@ -43,7 +43,7 @@ public class FrameData {
 	private boolean emptyFlag;
 
 	/**
-	 * This is the default constructor.
+	 * フレームデータを初期化するするコンストラクタ
 	 */
 	public FrameData() {
 		this.characterData = new CharacterData[2];
@@ -87,7 +87,12 @@ public class FrameData {
 		this.emptyFlag = false;
 	}
 
-	// Copy constructor for the FrameData class
+	/**
+	 * 指定されたデータでフレームデータのインスタンスを作成するコンストラクタ
+	 *
+	 * @param frameData
+	 *            指定されたフレームデータ
+	 */
 	public FrameData(FrameData frameData) {
 		this.characterData = new CharacterData[2];
 		this.characterData[0] = frameData.getCharacter(true);
@@ -111,7 +116,7 @@ public class FrameData {
 	 * 自分のキャラクターデータを返すメソッド
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(P1 or P2)
+	 *            プレイヤー番号(true: P1; false: P2)
 	 * @return 自分のキャラクターデータ
 	 */
 	public CharacterData getCharacter(boolean playerNumber) {
@@ -124,8 +129,6 @@ public class FrameData {
 	 * @return The expected remaining time in milliseconds of the current round
 	 */
 	public int getRemainingTimeMilliseconds() {
-		// Calculate the expected remaining time in milliseconds (based on the
-		// current frame)
 		return GameSetting.ROUND_TIME - (int) (((float) this.currentFrameNumber / GameSetting.FPS) * 1000);
 	}
 
@@ -178,7 +181,6 @@ public class FrameData {
 		for (AttackData attack : this.projectileData) {
 			attackList.add(new AttackData(attack));
 		}
-
 		return attackList;
 	}
 
@@ -213,9 +215,9 @@ public class FrameData {
 	}
 
 	/**
-	 * Returns the value of input information.
+	 * Returns the input information of both characters.
 	 *
-	 * @return The value of input information
+	 * @return The input information of both characters
 	 *
 	 * @see KeyData
 	 */
@@ -235,18 +237,18 @@ public class FrameData {
 	}
 
 	/**
-	 * P1,P2間の横方向の距離を返すメソッド
+	 * P1,P2間の水平方向の距離を返すメソッド
 	 *
-	 * @return P1,P2間の横方向の距離
+	 * @return P1,P2間の水平方向の距離
 	 */
 	public int getDistanceX() {
 		return Math.abs((this.characterData[0].getCenterX() - this.characterData[1].getCenterX()));
 	}
 
 	/**
-	 * P1,P2間の縦方向の距離を返すメソッド
+	 * P1,P2間の鉛直方向の距離を返すメソッド
 	 *
-	 * @return P1,P2間の縦方向の距離
+	 * @return P1,P2間の鉛直方向の距離
 	 */
 	public int getDistanceY() {
 		return Math.abs((this.characterData[0].getCenterY() - this.characterData[1].getCenterY()));

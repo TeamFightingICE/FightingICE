@@ -105,12 +105,10 @@ public class CharacterData {
 	private Deque<Key> processedCommands;
 
 	/**
-	 * 指定されたデータでキャラクターのデータを更新するコンストラクタ
+	 * 指定されたデータでキャラクターのデータのインスタンスを作成するコンストラクタ
 	 *
 	 * @param character
 	 *            キャラクターのデータ
-	 *
-	 * @see CharacterData
 	 */
 	public CharacterData(Character character) {
 		this.playerNumber = character.isPlayerNumber();
@@ -138,7 +136,12 @@ public class CharacterData {
 		this.lastHitFrame = character.getLastHitFrame();
 	}
 
-	// Copy constructor for the CharacterData class
+	/**
+	 * 指定されたデータでキャラクターのデータのインスタンスを作成するコンストラクタ
+	 *
+	 * @param characterData
+	 *            キャラクターのデータ
+	 */
 	public CharacterData(CharacterData characterData) {
 		this.playerNumber = characterData.isPlayerNumber();
 		this.hp = characterData.getHp();

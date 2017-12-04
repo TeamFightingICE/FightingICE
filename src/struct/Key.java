@@ -1,7 +1,7 @@
 package struct;
 
 /**
- * キーが押されたときの処理を扱うクラス
+ * ゲーム内で使用されるキーを扱うクラス
  */
 public class Key {
 	/**
@@ -41,11 +41,10 @@ public class Key {
 	}
 
 	/**
-	 * This is the copy constructor of the Key class.
+	 * 指定されたデータでキーを初期化するコンストラクタ.
 	 *
 	 * @param key
 	 *            An object key
-	 * @see Key
 	 */
 	public Key(Key key) {
 		if (key != null) {

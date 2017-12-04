@@ -163,8 +163,10 @@ public class MotionData {
 	public boolean landingFlag;
 
 	/**
-	 * 指定されたデータでキャラクターのモーションデータを更新するコンストラクタ
-	 * @param motion モーションデータ
+	 * 指定されたデータでキャラクターのモーションデータを作成するコンストラクタ
+	 *
+	 * @param motion
+	 *            指定されたモーション
 	 *
 	 * @see Motion
 	 */
@@ -199,67 +201,65 @@ public class MotionData {
 
 	}
 
-	////// Getter//////
-
 	/**
-	 * Gets the name of this motion.
+	 * Returns the name of this motion.
 	 *
-	 * @return the name of this motion.
+	 * @return The name of this motion.
 	 */
 	public String getActionName() {
 		return this.actionName;
 	}
 
 	/**
-	 * Gets the number of frames in this motion.
+	 * Returns the number of frames in this motion.
 	 *
-	 * @return Number of frames in this motion
+	 * @return The number of frames in this motion
 	 */
 	public int getFrameNumber() {
 		return this.frameNumber;
 	}
 
 	/**
-	 * Gets the horizontal speed applied to a character using this motion.
+	 * Returns the horizontal speed applied to a character using this motion.
 	 *
-	 * @return the horizontal speed applied to a character using this motion.
+	 * @return The horizontal speed applied to a character using this motion.
 	 */
 	public int getSpeedX() {
 		return this.speedX;
 	}
 
 	/**
-	 * Gets the vertical speed applied to a character using this motion.
+	 * Returns the vertical speed applied to a character using this motion.
 	 *
-	 * @return the vertical speed applied to a character using this motion.
+	 * @return The vertical speed applied to a character using this motion.
 	 */
 	public int getSpeedY() {
 		return this.speedY;
 	}
 
 	/**
-	 * Gets the hit area associated to this motion.
+	 * Returns the attack's hit area associated to this motion.
 	 *
-	 * @return the hit area associated to this motion.
+	 * @return The attack's hit area associated to this motion.
 	 */
 	public HitArea getAttackHitArea() {
 		return this.attackHitArea;
 	}
 
 	/**
-	 * Gets the hit area associated to this character.
+	 * Returns the character's hit area associated to this motion.
 	 *
-	 * @return the hit area associated to this motion.
+	 * @return The character's hit area associated to this motion.
 	 */
 	public HitArea getCharacterHitArea() {
 		return this.characterHitArea;
 	}
 
 	/**
-	 * Gets the state that is assigned to a character after this motion is
+	 * Returns the state that is assigned to a character after this motion is
 	 * completed.
 	 *
-	 * @return the state that is assigned to a character after this motion is
+	 * @return The state that is assigned to a character after this motion is
 	 *         completed.
 	 */
 	public State getState() {
@@ -325,7 +325,7 @@ public class MotionData {
 	}
 
 	/**
-	 * Gets the controllable state associated to this motion. If the flag is
+	 * Returns the controllable state associated to this motion. If the flag is
 	 * false, a character using this motion cannot be controlled until this
 	 * motion finishes.
 	 *
@@ -348,11 +348,11 @@ public class MotionData {
 	}
 
 	/**
-	 * Gets the first frame in which this motion can be canceled. Notice that
+	 * Returns the first frame in which this motion can be canceled. Notice that
 	 * only a motion whose {@link #motionLevel} is lower than the
 	 * {@link #cancelAbleMotionLevel} of this one can cancel this motion.
 	 *
-	 * @return the first frame in which this motion can be canceled.
+	 * @return The first frame in which this motion can be canceled.
 	 */
 	public int getCancelAbleFrame() {
 		return this.cancelAbleFrame;
@@ -426,10 +426,10 @@ public class MotionData {
 
 	/**
 	 * Returns the value of the attack type:<br>
-	 * 1 = high,<br>
-	 * 2 = middle,<br>
-	 * 3 = low,<br>
-	 * 4 = throw,<br>
+	 * 1 = high<br>
+	 * 2 = middle<br>
+	 * 3 = low<br>
+	 * 4 = throw<br>
 	 *
 	 * @return The value of the attack type
 	 */
@@ -447,10 +447,10 @@ public class MotionData {
 	}
 
 	/**
-	 * Gets the maximum {@link #motionLevel} a motion can have in order to be
+	 * Returns the maximum {@link #motionLevel} a motion can have in order to be
 	 * able to cancel this motion.
 	 *
-	 * @return the maximum {@link #motionLevel} a motion can have in order to be
+	 * @return The maximum {@link #motionLevel} a motion can have in order to be
 	 *         able to cancel this motion.
 	 */
 	public int getCancelAbleMotionLevel() {
@@ -458,18 +458,18 @@ public class MotionData {
 	}
 
 	/**
-	 * Gets the level of this motion. Notice that this motion can cancel other
-	 * motions (after their {@link #cancelAbleFrame}) if such motions have a
-	 * {@link #cancelAbleMotionLevel} higher than the level of this motion.
+	 * Returns the level of this motion. Notice that this motion can cancel
+	 * other motions (after their {@link #cancelAbleFrame}) if such motions have
+	 * a {@link #cancelAbleMotionLevel} higher than the level of this motion.
 	 *
-	 * @return the level of this motion
+	 * @return The level of this motion
 	 */
 	public int getMotionLevel() {
 		return this.motionLevel;
 	}
 
 	/**
-	 * Returns {@code true} if the Landing motion can cancel this motion,
+	 * Returns {@code true} if the landing motion can cancel this motion,
 	 * {@code false} otherwise.
 	 *
 	 * @return Value that expresses whether or not character lands in this
@@ -484,7 +484,7 @@ public class MotionData {
 	 * Sets the name of this motion.
 	 *
 	 * @param motionName
-	 *            the motion name to be set.
+	 *            The motion name to be set.
 	 */
 	public void setMotionName(String motionName) {
 		this.actionName = motionName;
@@ -494,7 +494,7 @@ public class MotionData {
 	 * Set the number of frames in this motion.
 	 *
 	 * @param frameNumber
-	 *            the number of frames to be set.
+	 *            The number of frames to be set.
 	 */
 	public void setFrameNumber(int frameNumber) {
 		this.frameNumber = frameNumber;
@@ -505,7 +505,7 @@ public class MotionData {
 	 * applied to a character using this motion.
 	 *
 	 * @param speedX
-	 *            the value to assign to the {@link #speedX} setting.
+	 *            The value to assign to the {@link #speedX} setting.
 	 */
 	public void setSpeedX(int speedX) {
 		this.speedX = speedX;
@@ -516,17 +516,17 @@ public class MotionData {
 	 * to a character using this motion.
 	 *
 	 * @param speedY
-	 *            the value to assign to the {@link #speedY} setting.
+	 *            The value to assign to the {@link #speedY} setting.
 	 */
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
 	}
 
 	/**
-	 * Sets the hit area of this action.
+	 * Sets the attack's hit area of this action.
 	 *
 	 * @param attackHitArea
-	 *            the hit area.
+	 *            The attack's hit area.
 	 *
 	 * @see HitArea
 	 */
@@ -535,10 +535,10 @@ public class MotionData {
 	}
 
 	/**
-	 * Sets the hit area of this motion.
+	 * Sets the character's hit area of this motion.
 	 *
 	 * @param characterHitArea
-	 *            the hit area.
+	 *            The character's hit area.
 	 *
 	 * @see HitArea
 	 */
@@ -713,7 +713,7 @@ public class MotionData {
 	 * this motion cannot be controlled until this motion finishes.
 	 *
 	 * @param control
-	 *            the value to give to the flag.
+	 *            The value to give to the flag.
 	 */
 	public void setControl(boolean control) {
 		this.control = control;
@@ -736,7 +736,7 @@ public class MotionData {
 	 * when this motion can be cancelled.
 	 *
 	 * @param cancelAbleFrame
-	 *            the value to assign to the {@link #cancelAbleFrame} setting.
+	 *            The value to assign to the {@link #cancelAbleFrame} setting.
 	 */
 	public void setCancelAbleFrame(int cancelAbleFrame) {
 		this.cancelAbleFrame = cancelAbleFrame;
@@ -749,7 +749,7 @@ public class MotionData {
 	 * cancel the current motion.
 	 *
 	 * @param cancelAbleMotionLevel
-	 *            the value to assign to the {@link #cancelAbleMotionLevel}
+	 *            The value to assign to the {@link #cancelAbleMotionLevel}
 	 *            setting.
 	 */
 	public void setCancelAbleMotionLevel(int cancelAbleMotionLevel) {
@@ -760,7 +760,7 @@ public class MotionData {
 	 * Sets the {@link #motionLevel} of this motion.
 	 *
 	 * @param motionLevel
-	 *            the value to assign to the {@link #motionLevel} setting.
+	 *            The value to assign to the {@link #motionLevel} setting.
 	 */
 	public void setMotionLevel(int motionLevel) {
 		this.motionLevel = motionLevel;
@@ -771,7 +771,7 @@ public class MotionData {
 	 * the character at the end of this motion.
 	 *
 	 * @param state
-	 *            the value to assign to the {@link #state} setting.
+	 *            The value to assign to the {@link #state} setting.
 	 */
 	public void setState(State state) {
 		this.state = state;
@@ -782,7 +782,7 @@ public class MotionData {
 	 * Landing motion can cancel this motion.
 	 *
 	 * @param landingFlag
-	 *            the value to assign to the {@link #landingFlag} setting.
+	 *            The value to assign to the {@link #landingFlag} setting.
 	 */
 	public void setLandingFlag(boolean landingFlag) {
 		this.landingFlag = landingFlag;

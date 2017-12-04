@@ -80,7 +80,7 @@ public class AttackData {
 	}
 
 	/**
-	 * 指定された値で攻撃データを更新するコンストラクタ
+	 * 指定された値で攻撃データのインスタンスを作成するコンストラクタ
 	 *
 	 * @param attack
 	 *            攻撃データ
@@ -113,7 +113,7 @@ public class AttackData {
 	}
 
 	/**
-	 * 指定された値で攻撃データを更新するコンストラクタ
+	 * 指定された値で攻撃データのインスタンスを作成するコンストラクタ
 	 *
 	 * @param attackData
 	 *            攻撃データ
@@ -145,8 +145,6 @@ public class AttackData {
 		}
 	}
 
-	//////// Getter//////////
-
 	/**
 	 * Returns the player side's flag.
 	 *
@@ -165,6 +163,11 @@ public class AttackData {
 		return this.downProperty;
 	}
 
+	/**
+	 * Returns the boolean value whether this skill is projectile or not.
+	 *
+	 * @return true: this skill is projectile; false: otherwise
+	 */
 	public boolean isProjectile() {
 		return this.isProjectile;
 	}
@@ -179,8 +182,8 @@ public class AttackData {
 	}
 
 	/**
-	 * Returns the integer number indicating the player of the attack. (0 for P1
-	 * and 1 for P2)
+	 * Returns the integer number indicating the player of the attack. (0: P1;
+	 * 1: P2)
 	 *
 	 * @return The integer number indicating the player of the attack.
 	 */
@@ -213,6 +216,8 @@ public class AttackData {
 	/**
 	 * Returns the number of frames in Startup.
 	 *
+	 * @see MotionData#attackStartUp
+	 *
 	 * @return The number of frames in Startup
 	 */
 	public int getStartUp() {
@@ -221,6 +226,8 @@ public class AttackData {
 
 	/**
 	 * Returns the number of frames in Active.
+	 *
+	 * @see MotionData#attackActive
 	 *
 	 * @return The number of frames in Active
 	 */
@@ -325,7 +332,7 @@ public class AttackData {
 
 	/**
 	 * Returns the value of the attack type: 1 = high, 2 = middle, 3 = low, 4 =
-	 * throw,
+	 * throw.
 	 *
 	 * @return The value of the attack type
 	 */
@@ -336,6 +343,8 @@ public class AttackData {
 	/**
 	 * Returns HitArea's information of this attack hit box in the current
 	 * frame.
+	 *
+	 * @see HitArea
 	 *
 	 * @return HitArea's information of this attack hit box in the current frame
 	 */
@@ -367,6 +376,7 @@ public class AttackData {
 
 	/**
 	 * Returns HitArea's setting information.
+	 *
 	 *
 	 * @return HitArea's setting information
 	 */
@@ -457,6 +467,8 @@ public class AttackData {
 	/**
 	 * Sets the number of frames in Startup.
 	 *
+	 * @see MotionData#attackStartUp
+	 *
 	 * @param startUp
 	 *            The number of frames in Startup
 	 */
@@ -466,6 +478,8 @@ public class AttackData {
 
 	/**
 	 * Sets the number of frames in Active.
+	 *
+	 * @see MotionData#attackActive
 	 *
 	 * @param active
 	 *            The number of frames in Active
@@ -579,7 +593,7 @@ public class AttackData {
 
 	/**
 	 * Sets the value of the attack type: 1 = high, 2 = middle, 3 = low, 4 =
-	 * throw,
+	 * throw.
 	 *
 	 * @param attackType
 	 *            The value of the attack type
@@ -599,6 +613,12 @@ public class AttackData {
 		this.downProperty = downProperty;
 	}
 
+	/**
+	 * Sets the boolean value whether this skill is projectile or not.
+	 *
+	 * @param boolean
+	 *            value whether this skill is projectile (true) or not (false)
+	 */
 	public void setIsProjectile(boolean isProjectile) {
 		this.isProjectile = isProjectile;
 	}
