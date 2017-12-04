@@ -7,6 +7,9 @@ import enumerate.Action;
 import enumerate.State;
 import fighting.Character;
 
+/**
+ * キャラクターのHPやエネルギー、座標などのキャラクターに関するデータを扱うクラス
+ */
 public class CharacterData {
 
 	/**
@@ -101,6 +104,14 @@ public class CharacterData {
 	 */
 	private Deque<Key> processedCommands;
 
+	/**
+	 * 指定されたデータでキャラクターのデータを更新するコンストラクタ
+	 *
+	 * @param character
+	 *            キャラクターのデータ
+	 *
+	 * @see CharacterData
+	 */
 	public CharacterData(Character character) {
 		this.playerNumber = character.isPlayerNumber();
 		this.hp = character.getHp();
@@ -303,6 +314,8 @@ public class CharacterData {
 	 * Returns the character's state: STAND / CROUCH/ AIR / DOWN.
 	 *
 	 * @return The character's state: STAND / CROUCH/ AIR / DOWN
+	 *
+	 * @see State
 	 */
 	public State getState() {
 		return this.state;
@@ -312,6 +325,8 @@ public class CharacterData {
 	 * Returns the character's action.
 	 *
 	 * @return The character's action
+	 *
+	 * @see Action
 	 */
 	public Action getAction() {
 		return this.action;
@@ -332,6 +347,8 @@ public class CharacterData {
 	 * Returns the attack data that the character is using.
 	 *
 	 * @return The attack data that the character is using
+	 *
+	 * @see AttackData
 	 */
 	public AttackData getAttack() {
 		return new AttackData(this.attackData);
@@ -595,6 +612,8 @@ public class CharacterData {
 	 *
 	 * @param attack
 	 *            The attack you want to set.
+	 *
+	 * @see AttackData
 	 */
 	public void setAttack(AttackData attack) {
 		this.attackData = attack;

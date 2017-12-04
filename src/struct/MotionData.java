@@ -3,6 +3,9 @@ package struct;
 import enumerate.State;
 import fighting.Motion;
 
+/**
+ * モーション名やモーションのエネルギー量などの、ゲーム内で不変の情報を扱うクラス
+ */
 public class MotionData {
 
 	/**
@@ -159,6 +162,12 @@ public class MotionData {
 	 */
 	public boolean landingFlag;
 
+	/**
+	 * 指定されたデータでキャラクターのモーションデータを更新するコンストラクタ
+	 * @param motion モーションデータ
+	 *
+	 * @see Motion
+	 */
 	public MotionData(Motion motion) {
 		this.actionName = motion.getActionName();
 		this.frameNumber = motion.getFrameNumber();
@@ -516,8 +525,10 @@ public class MotionData {
 	/**
 	 * Sets the hit area of this action.
 	 *
-	 * @param hit
+	 * @param attackHitArea
 	 *            the hit area.
+	 *
+	 * @see HitArea
 	 */
 	public void setAttackHitArea(HitArea attackHitArea) {
 		this.attackHitArea = attackHitArea;
@@ -526,8 +537,10 @@ public class MotionData {
 	/**
 	 * Sets the hit area of this motion.
 	 *
-	 * @param hit
+	 * @param characterHitArea
 	 *            the hit area.
+	 *
+	 * @see HitArea
 	 */
 	public void setCharacterHitArea(HitArea characterHitArea) {
 		this.characterHitArea = characterHitArea;

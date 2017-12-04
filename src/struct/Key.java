@@ -1,5 +1,8 @@
 package struct;
 
+/**
+ * キーが押されたときの処理を扱うクラス
+ */
 public class Key {
 	/**
 	 * If the value is set to true, then the "A" button will be pressed.
@@ -36,22 +39,24 @@ public class Key {
 	public Key() {
 		this.empty();
 	}
+
 	/**
 	 * This is the copy constructor of the Key class.
 	 *
-	 * @param key An object key
+	 * @param key
+	 *            An object key
 	 * @see Key
 	 */
 	public Key(Key key) {
-		if(key!=null){
-		this.A = key.A;
-		this.B = key.B;
-		this.C = key.C;
-		this.U = key.U;
-		this.R = key.R;
-		this.D = key.D;
-		this.L = key.L;
-		}else{
+		if (key != null) {
+			this.A = key.A;
+			this.B = key.B;
+			this.C = key.C;
+			this.U = key.U;
+			this.R = key.R;
+			this.D = key.D;
+			this.L = key.L;
+		} else {
 			this.empty();
 		}
 	}
@@ -70,25 +75,26 @@ public class Key {
 	}
 
 	/**
-	 * Returns the value indicating the direction key input by the player using the numeric keypad.
+	 * Returns the value indicating the direction key input by the player using
+	 * the numeric keypad.
 	 *
 	 * @param isFront
-	 *           The boolean value representing the player's orientation
+	 *            The boolean value representing the player's orientation
 	 * @return The correct direction value from the numeric keypad.
 	 */
 	public int getLever(boolean isFront) {
 		int lever = 5;
 
-		if (this.U){
+		if (this.U) {
 			lever += 3;
 		}
-		if (this.D){
+		if (this.D) {
 			lever -= 3;
 		}
-		if (this.L){
+		if (this.L) {
 			lever += isFront ? -1 : 1;
 		}
-		if (this.R){
+		if (this.R) {
 			lever += isFront ? 1 : -1;
 		}
 

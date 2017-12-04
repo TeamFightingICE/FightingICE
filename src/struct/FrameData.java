@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import input.KeyData;
 import setting.GameSetting;
 
+/**
+ * 現在のフレーム番号やラウンド数などのフレームデータを扱うクラス
+ */
 public class FrameData {
 
 	/**
@@ -52,6 +55,22 @@ public class FrameData {
 
 	}
 
+	/**
+	 * This method receives the data from an instance of the Fighting class. It
+	 * sets all the received data to an instance of the FrameData class. This
+	 * method must be called in each frame by Play.
+	 *
+	 * @param characterData
+	 *            is player's data
+	 * @param currentFrame
+	 *            is the current frame in the round.
+	 * @param currentRound
+	 *            is the current round.
+	 * @param projectileData
+	 *            is a queue which stores all attacks.
+	 * @param keyData
+	 *            contains informations of all players.
+	 */
 	public FrameData(CharacterData[] characterData, int currentFrame, int currentRound,
 			Deque<AttackData> projectileData, KeyData keyData) {
 		this.characterData = new CharacterData[] { characterData[0], characterData[1] };
@@ -88,6 +107,13 @@ public class FrameData {
 
 	}
 
+	/**
+	 * 自分のキャラクターデータを返すメソッド
+	 *
+	 * @param playerNumber
+	 *            プレイヤー番号(P1 or P2)
+	 * @return 自分のキャラクターデータ
+	 */
 	public CharacterData getCharacter(boolean playerNumber) {
 		return playerNumber ? new CharacterData(this.characterData[0]) : new CharacterData(this.characterData[1]);
 	}
@@ -190,6 +216,8 @@ public class FrameData {
 	 * Returns the value of input information.
 	 *
 	 * @return The value of input information
+	 *
+	 * @see KeyData
 	 */
 	public KeyData getKeyData() {
 		return new KeyData(this.keyData);
@@ -206,11 +234,21 @@ public class FrameData {
 		return this.emptyFlag;
 	}
 
-	public int getDistanceX(){
+	/**
+	 * P1,P2間の横方向の距離を返すメソッド
+	 *
+	 * @return P1,P2間の横方向の距離
+	 */
+	public int getDistanceX() {
 		return Math.abs((this.characterData[0].getCenterX() - this.characterData[1].getCenterX()));
 	}
 
-	public int getDistanceY(){
+	/**
+	 * P1,P2間の縦方向の距離を返すメソッド
+	 *
+	 * @return P1,P2間の縦方向の距離
+	 */
+	public int getDistanceY() {
 		return Math.abs((this.characterData[0].getCenterY() - this.characterData[1].getCenterY()));
 	}
 
