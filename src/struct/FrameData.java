@@ -7,7 +7,7 @@ import input.KeyData;
 import setting.GameSetting;
 
 /**
- * フレームデータを扱うクラス
+ * 現在のフレーム番号やラウンド数などのフレームデータを扱うクラス
  */
 public class FrameData {
 

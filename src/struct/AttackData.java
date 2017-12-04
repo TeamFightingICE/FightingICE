@@ -3,7 +3,7 @@ package struct;
 import fighting.Attack;
 
 /**
- * キャラクターの攻撃データを扱うクラス
+ * 攻撃のダメージ量などのキャラクターの攻撃に関するデータを扱うクラス
  */
 public class AttackData {
 

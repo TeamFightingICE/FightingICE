@@ -13,7 +13,7 @@ import org.lwjgl.BufferUtils;
 import setting.GameSetting;
 
 /**
- * ゲーム画面のデータを扱うクラス
+ * ゲーム画面の画像や背景色などの画面情報を扱うクラス
  */
 public class ScreenData {
 

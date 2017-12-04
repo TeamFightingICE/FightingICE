@@ -1,7 +1,7 @@
 package struct;
 
 /**
- * キー入力の処理を扱うクラス
+ * キーが押されたときの処理を扱うクラス
  */
 public class Key {
 	/**

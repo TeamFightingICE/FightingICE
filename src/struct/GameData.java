@@ -9,7 +9,7 @@ import setting.LaunchSetting;
 import simulator.Simulator;
 
 /**
- * ゲームデータを扱うクラス
+ * ステージの画面幅や最大HPなどの、ゲーム内で不変の情報を扱うクラス
  */
 public class GameData {
 

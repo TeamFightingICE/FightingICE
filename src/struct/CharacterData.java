@@ -8,7 +8,7 @@ import enumerate.State;
 import fighting.Character;
 
 /**
- * 使用するキャラクターのデータを扱うクラス
+ * キャラクターのHPやエネルギー、座標などのキャラクターに関するデータを扱うクラス
  */
 public class CharacterData {
 

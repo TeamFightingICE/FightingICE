@@ -4,7 +4,7 @@ import enumerate.State;
 import fighting.Motion;
 
 /**
- * キャラクターモーションのデータを扱うクラス
+ * モーション名やモーションのエネルギー量などの、ゲーム内で不変の情報を扱うクラス
  */
 public class MotionData {
 
