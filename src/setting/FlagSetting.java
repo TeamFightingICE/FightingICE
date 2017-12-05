@@ -37,5 +37,8 @@ public class FlagSetting {
 
 	/** エラーログを出力するかどうか */
 	public static boolean outputErrorAndLogFlag = false;
+	
+	/** fastModeで起動するかどうか*/
+	public static boolean fastModeFlag = false;
 
 }
