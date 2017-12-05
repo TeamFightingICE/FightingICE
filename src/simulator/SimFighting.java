@@ -137,6 +137,7 @@ public class SimFighting extends Fighting {
 			if (detectionHit(this.playerCharacters[opponentIndex], attack)) {
 				isHit[i] = true;
 				// HP等のパラメータの更新
+				// Fightingと共通してcharacterを用いているため、音が鳴る処理が実行されてしまう
 				this.playerCharacters[opponentIndex].hitAttack(this.playerCharacters[i], attack, currentFrame);
 			}
 		}
