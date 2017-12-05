@@ -31,23 +31,29 @@ public class InputManager<Data> {
 	/** Default number of devices **/
 	private final static int DEFAULT_DEVICE_NUMBER = 2;
 
-	/** Default device type is keyboard **/
+	/** デバイスタイプでキーボードを指定する場合の定数 */
 	public final static char DEVICE_TYPE_KEYBOARD = 0;
+
+	/** デバイスタイプでAIを指定する場合の定数 */
 	public final static char DEVICE_TYPE_AI = 1;
 
 	// to recognize the input devices
 	private char[] deviceTypes;
 
+	/** InputManagerクラスのコンストラクタ．<br>
+	 *	デバイスタイプはデフォルトでキーボードを指定する．
+	 */
 	private InputManager() {
 		System.out.println("Create instance: " + InputManager.class.getName());
-		keyboard = new Keyboard();
-		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
-		sceneName = GameSceneName.HOME_MENU;
+		this.keyboard = new Keyboard();
+		this.deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
+		this.sceneName = GameSceneName.HOME_MENU;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
 	}
 
+	/** InputManagerクラスの唯一のインスタンスを取得するgetterメソッド． */
 	public static InputManager getInstance() {
 		return InputManagerHolder.instance;
 	}
@@ -57,10 +63,12 @@ public class InputManager<Data> {
 		private static final InputManager instance = new InputManager();
 	}
 
+	/** Keyboardクラスのインスタンスを取得するgetterメソッド． */
 	public Keyboard getKeyboard() {
 		return this.keyboard;
 	}
 
+	/** 毎フレーム実行され，キーボード入力及びAIの入力を受け付けるメソッド．*/
 	public void update() {
 		// Poll for window events. The key callback above will only be
 		// invoked during this call.
@@ -86,6 +94,13 @@ public class InputManager<Data> {
 		this.setKeyData(new KeyData(keys));
 	}
 
+	/**
+	 * キーボードで押されたキーを取得するgetterメソッド．
+	 * 引数でプレイヤーがP1(true)かP2(false)かを指定する．
+	 *
+	 * @param playerNumber trueはP1，falseはP2
+	 * @return 押されたキー
+	 */
 	private Key getKeyFromKeyboard(boolean playerNumber) {
 		Key key = new Key();
 
@@ -110,17 +125,24 @@ public class InputManager<Data> {
 		return key;
 	}
 
+	/** AIの情報を格納したコントローラをInputManagerクラスに取り込むメソッド． */
 	public void createAIcontroller() {
 		String[] aiNames = LaunchSetting.aiNames.clone();
 		this.deviceTypes = LaunchSetting.deviceTypes.clone();
 		this.ais = new AIController[aiNames.length];
 		for (int i = 0; i < aiNames.length; i++) {
 			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
+				this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
 			}
 		}
 	}
 
+	/**
+	 * AIコントローラの動作を開始させるメソッド．<br>
+	 * 引数のGameDataクラスのインスタンスを用いてAIコントローラを初期化し，動作を開始する．
+	 *
+	 * @param gameData GameDataクラスのインスタンス
+	 */
 	public void startAI(GameData gameData) {
 		int count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
@@ -128,9 +150,9 @@ public class InputManager<Data> {
 				// ais[count].initialize(waitFrame, gd,
 				// !Transform.iTob(i));//Call the initialize function of the AI
 				// of interest
-				ais[count].initialize(ThreadController.getInstance().getAIsObject(i), gameData,
+				this.ais[count].initialize(ThreadController.getInstance().getAIsObject(i), gameData,
 						Transform.convertPlayerNumberfromItoB(i));
-				ais[count].start();// start the thread
+				this.ais[count].start();// start the thread
 				count++;
 			}
 		}
@@ -143,14 +165,19 @@ public class InputManager<Data> {
 		return new Key(ai.getInput());
 	}
 
+	/**
+	 * 引数のフレームデータをAIコントローラにセットするsetterメソッド．
+	 *
+	 * @param frameData フレームデータ
+	 */
 	public void setFrameData(FrameData frameData) {
 		int count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (deviceTypes[i] == DEVICE_TYPE_AI) {
 				if (!frameData.getEmptyFlag()) {
-					ais[count].setFrameData(new FrameData(frameData));
+					this.ais[count].setFrameData(new FrameData(frameData));
 				} else {
-					ais[count].setFrameData(new FrameData());
+					this.ais[count].setFrameData(new FrameData());
 				}
 				ThreadController.getInstance().resetFlag(i);
 				count++;
@@ -158,6 +185,11 @@ public class InputManager<Data> {
 		}
 	}
 
+	/**
+	 * AIコントローラにラウンド結果を送信するメソッド．
+	 *
+	 * @param roundResult ラウンド結果
+	 */
 	public void sendRoundResult(RoundResult roundResult) {
 		for (AIController ai : this.ais) {
 			if (ai != null) {
@@ -167,18 +199,34 @@ public class InputManager<Data> {
 		}
 	}
 
+	/**
+	 * 入力されたキーを格納しているキーバッファを取得するgetterメソッド．
+	 *
+	 * @return キーバッファ
+	 */
 	public KeyData getKeyData() {
 		return this.buffer;
 	}
 
+	/**
+	 * 入力されたキーをバッファにセットするsetterメソッド．
+	 *
+	 * @param data 入力キーデータ
+	 */
 	public void setKeyData(KeyData data) {
 		this.buffer = data;
 	}
 
+	/**
+	 * シーン名を取得するgetterメソッド．
+	 *
+	 * @return 現在のシーン名
+	 */
 	public GameSceneName getSceneName() {
 		return this.sceneName;
 	}
 
+	/** 引数のシーン名をフィールド変数にセットするsetterメソッド． */
 	public void setSceneName(GameSceneName sceneName) {
 		this.sceneName = sceneName;
 	}

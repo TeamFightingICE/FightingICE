@@ -73,7 +73,7 @@ public class SoundManager {
 	}
 
 	/**
-	 * このクラスの唯一のインスタンスを返すgetterメソッド
+	 * このクラスの唯一のインスタンスを返すgetterメソッド．
 	 *
 	 * @return このクラスの唯一のインスタンス
 	 */
@@ -81,12 +81,12 @@ public class SoundManager {
 		return SoundManagerHolder.instance;
 	}
 
-	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス． */
 	private static class SoundManagerHolder {
 		private static final SoundManager instance = new SoundManager();
 	}
 
-	/** OpenAL関連の準備を行う */
+	/** OpenAL関連の準備を行うメソッド． */
 	private void initialize() {
 		// OpenALのデフォルトデバイスに接続する
 		String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
@@ -101,7 +101,7 @@ public class SoundManager {
 		this.setListenerValues();
 	}
 
-	/** リスナーのパラメータを設定 */
+	/** リスナーのパラメータ(Position, Velocity, Orientation)を設定するメソッド． */
 	private void setListenerValues() {
 		alListenerfv(AL_POSITION, this.listenerPos);
 		alListenerfv(AL_VELOCITY, this.listenerVel);
@@ -109,20 +109,20 @@ public class SoundManager {
 	}
 
 	/**
-	 * 音声の読み込みとパラメータの設定を行い、再生準備済みの音声を返す
+	 * 音声の読み込みとパラメータの設定を行い，再生準備済みの音源を返すメソッド．<br>
+	 * 音声バッファを取得して，生成した音源にセットし，ピッチ・ゲインなどのパラメータを設定した後，設定済みの音源を返す．
 	 *
-	 * @param filePath
-	 *            音声のファイルパス
-	 * @param loop
-	 *            ループさせるかどうか(させる場合はtrue)
+	 * @param filePath 音声のファイルパス
+	 * @param loop ループさせるかどうか(させる場合はtrue)
 	 *
-	 * @return 設定済みの音声
+	 * @return 設定済みの音源
 	 */
 	public int loadSoundResource(String filePath, boolean loop) {
-		IntBuffer source = BufferUtils.createIntBuffer(1);
-
-		// 音声バッファ
+		// 音声バッファの取得
 		int buffer = this.getLoadedALBuffer(filePath);
+
+		// 音源バッファを生成
+		IntBuffer source = BufferUtils.createIntBuffer(1);
 
 		// 音源の生成
 		alGenSources(source);
@@ -137,51 +137,56 @@ public class SoundManager {
 		// ループ設定
 		alSourcei(source.get(0), AL_LOOPING, loop ? 1 : 0);
 
+		// 音源リストに追加
 		this.sources.add(new Integer(source.get(0)));
 
 		return source.get(0);
 	}
 
 	/**
-	 * 音声バッファのgetterメソッド
-	 * registerSound()で新たに音声バッファを用意し、リストに登録した後に返す
-	 * 既に読み込んだファイルの場合新たに読み込まずに返す
+	 * 音声バッファを取得するgetterメソッド．<br>
+	 * 新たに音声をバッファに取り込み、読み込み済みファイルのリストに登録した後に返す．
+	 * 既に読み込んでいたファイルの場合新たに取り込まずに返す．
 	 *
-	 * @param filePath
-	 *            音声のファイルパス
+	 * @param filePath 音声のファイルパス
 	 *
 	 * @return 音声バッファ
 	 */
 	private int getLoadedALBuffer(String filePath) {
 		int buffer;
 
+		// 読み込み済みのファイルかどうかチェック
 		for (int count = 0; count < this.loadedFiles.size(); count++) {
 			if (((String) this.loadedFiles.get(count)).equals(filePath)) {
 				return ((Integer) this.buffers.get(count)).intValue();
 			}
 		}
 
+		// 音声バッファを取得
 		buffer = this.registerSound(filePath);
 
+		// バッファリストに追加
 		this.buffers.add(new Integer(buffer));
+
+		// 読み込み済みファイルのリストに追加
 		this.loadedFiles.add(filePath);
 
 		return buffer;
 	}
 
 	/**
-	 * wav音声ファイルを読み込んでバッファに取り込む
+	 * Wav音声ファイルを読み込んでバッファに取り込み，音声バッファを返すメソッド．
 	 *
-	 * @param filePath
-	 *            音声のファイルパス
+	 * @param filePath 音声のファイルパス
 	 *
 	 * @return 音声バッファ
 	 */
 	private int registerSound(String filePath) {
+		// バッファを生成
 		IntBuffer buffer = BufferUtils.createIntBuffer(1);
-
 		alGenBuffers(buffer);
 
+		// Wav音声ファイルをバッファに取り込む
 		try {
 			BufferedInputStream e = new BufferedInputStream(new FileInputStream(new File(filePath)));
 			WaveData waveFile = WaveData.create(e);
@@ -197,12 +202,12 @@ public class SoundManager {
 		return buffer.get(0);
 	}
 
-	/** 再生 */
+	/** 引数で指定された音源を再生 */
 	public void play(int source) {
 		alSourcePlay(source);
 	}
 
-	/** 停止 */
+	/** 引数で指定された音源を停止 */
 	public void stop(int source) {
 		alSourceStop(source);
 	}
@@ -225,7 +230,7 @@ public class SoundManager {
 				alDeleteBuffers(scratch);
 			}
 
-			// 音声とバッファのリストを空にする
+			// 読み込み済み音声・バッファ・音源のリストを空にする
 			this.loadedFiles.clear();
 			this.buffers.clear();
 			this.sources.clear();
@@ -238,14 +243,29 @@ public class SoundManager {
 		}
 	}
 
+	/**
+	 * SEを格納したマップを取得するgetterメソッド．
+	 *
+	 * @return SEを格納したマップ
+	 */
 	public Map<String, Integer> getSoundEffect() {
 		return this.soundEffect;
 	}
 
+	/**
+	 * BGMを取得するgetterメソッド．
+	 *
+	 * @return BackGroundMusic
+	 */
 	public Integer getBackGroundMusic() {
 		return this.backGroundMusic;
 	}
 
+	/**
+	 * 引数の音源をBGMとしてセットするsetterメソッド．
+	 *
+	 * @param source
+	 */
 	public void setBackGroundMusic(int source) {
 		this.backGroundMusic = source;
 	}

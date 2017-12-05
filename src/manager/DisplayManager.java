@@ -23,12 +23,21 @@ public class DisplayManager {
 	/** GLFWで使用されるwindow作成用の変数 */
 	private long window;
 
+	/**
+	 * DisplayManagerクラスのコンストラクタ．<br>
+	 * ウィンドウ表示を有効(true)にしてインスタンスを生成する．
+	 */
 	public DisplayManager() {
 		enableWindow = true;
 	}
 
 	/**
-	 * ゲームをスタートさせる 1. OpenGL及びwindowの初期化 2. ゲームのメインループ 3. windowをクローズする
+	 * ゲームをスタートさせるメソッド．<br>
+	 * 1. OpenGL及びウィンドウの初期化を行う．<br>
+	 * 2.ゲームの終了処理命令が来るまで，ゲーム状態の更新，描画処理などのメインループ処理を行う．<br>
+	 * 3. ゲームの終了処理を行ってウィンドウを閉じる．<br>
+	 *
+	 * @param game GameManagerクラスのインスタンス
 	 */
 	public void start(GameManager game) {
 		if (enableWindow) {
@@ -105,10 +114,9 @@ public class DisplayManager {
 	}
 
 	/**
-	 * ゲームのメインループの処理を行う
+	 * ゲームのメインループの処理を行うメソッド．
 	 *
-	 * @param gm
-	 *            ゲームマネージャー
+	 * @param gm GameManagerクラスのインスタンス
 	 */
 	private void gameLoop(GameManager gm) {
 
@@ -151,11 +159,11 @@ public class DisplayManager {
 		}
 	}
 
-	/** ゲームの終了処理を行い,ウィンドウを閉じる. */
+	/** ゲームの終了処理を行い，ウィンドウを閉じる. */
 	private void close() {
 		GraphicManager.getInstance().close();
 		SoundManager.getInstance().close();
-		//InputManager.getInstance().close();
+		// InputManager.getInstance().close();
 
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(this.window);
@@ -166,6 +174,7 @@ public class DisplayManager {
 		glfwSetErrorCallback(null).free();
 	}
 
+	/** ウィンドウ表示を無効(false)にするメソッド． */
 	public void disableWindow() {
 		this.enableWindow = false;
 	}
