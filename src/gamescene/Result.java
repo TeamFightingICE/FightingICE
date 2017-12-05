@@ -17,12 +17,16 @@ import util.LogWriter;
 
 public class Result extends GameScene {
 
+	/** 各ラウンド終了時のP1, P2の残り体力, 経過時間を格納するリスト */
 	private ArrayList<RoundResult> roundResults;
 
+	/** 現在の年月日, 時刻を表す文字列 */
 	private String timeInfo;
 
+	/** リザルトの表示フレーム数 */
 	private int displayedTime;
 
+	/** リプレイシーンを初期化するコンストラクタ */
 	public Result() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.FIGHTING_MENU;
@@ -36,6 +40,7 @@ public class Result extends GameScene {
 		this.displayedTime = 0;
 	}
 
+	/** 各ラウンドの結果を格納したリスト及び現在の時間情報をセットし, リプレイシーンを初期化するコンストラクタ */
 	public Result(ArrayList<RoundResult> roundResults, String timeInfo) {
 		super();
 
@@ -49,6 +54,7 @@ public class Result extends GameScene {
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.RESULT);
 
+		// pointファイルの書き出し
 		LogWriter.getInstance().outputResult(this.roundResults, LogWriter.CSV, this.timeInfo);
 	}
 
@@ -79,8 +85,10 @@ public class Result extends GameScene {
 			}
 		}
 
+		// -aや-nを引数にして起動 or Repeat Countを2以上にして起動した場合の処理
 		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag) {
 			if (++this.displayedTime > 300) {
+				// まだ繰り返し回数が残っている場合
 				if (FlagSetting.automationFlag && LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
 					LaunchSetting.repeatedCount++;
 
@@ -88,8 +96,9 @@ public class Result extends GameScene {
 					this.setTransitionFlag(true);
 					this.setNextGameScene(launcher);
 
+					// まだ全AIの総当り対戦が終わっていない場合
 				} else if (FlagSetting.allCombinationFlag && !isRoundRobinEnd()) {
-					if(++AIContainer.p1Index == AIContainer.allAINameList.size()){
+					if (++AIContainer.p1Index == AIContainer.allAINameList.size()) {
 						AIContainer.p1Index = 0;
 						AIContainer.p2Index++;
 					}
@@ -98,11 +107,13 @@ public class Result extends GameScene {
 					this.setTransitionFlag(true);
 					this.setNextGameScene(launcher);
 
+					// 総当り対戦が終了 or 指定した繰り返し回数分対戦が終わった場合
 				} else {
 					this.setGameEndFlag(true);
 				}
 			}
 
+			// 通常の対戦の場合, Enterキーが押されるまでResult画面を表示する
 		} else {
 			String string = "Press Enter key to return menu";
 			GraphicManager.getInstance().drawString(string, GameSetting.STAGE_WIDTH / 2 - string.length() * 5 - 30,
@@ -124,7 +135,7 @@ public class Result extends GameScene {
 	}
 
 	/**
-	 * どちらがそのラウンドで勝ったかを返す
+	 * P1, P2のどちらがそのラウンドで勝ったかを返す
 	 *
 	 * @return 0: 引き分け, 1: P1の勝ち, -1: P2の勝ち
 	 */
@@ -140,6 +151,11 @@ public class Result extends GameScene {
 		}
 	}
 
+	/**
+	 * 全AIの総当り対戦が終わったかどうかを返す.
+	 *
+	 * @return true: 全AIの総当り対戦が終わった; false: otherwise
+	 */
 	private boolean isRoundRobinEnd() {
 		return AIContainer.p1Index == AIContainer.allAINameList.size()
 				&& AIContainer.p2Index == AIContainer.allAINameList.size();
