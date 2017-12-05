@@ -17,17 +17,34 @@ import struct.Key;
 
 public class FightingMenu extends GameScene {
 
-	// 表示する項目数
+	/** 画面に表示する項目数 */
 	private final int NUMBER_OF_ITEM = 7;
+
+	/** 表示する各項目のインデックス,名前,座標を格納している配列 */
 	private MenuItem[] menuItems;
+
+	/** aiフォルダ内にある全AIの名前を格納したリスト */
 	private ArrayList<String> allAiNames;
 
-	// 現在のカーソル位置
+	/** 現在のカーソル位置 */
 	private int cursorPosition;
+
+	/** 繰り返し回数(Repeat Count)の項目における現在の選択位置 */
 	private int numberIndex;
+
+	/**
+	 * PLAYERの項目における現在の選択位置<br>
+	 * Index 0: P1; Index 1: P2
+	 */
 	private int[] playerIndexes;
+
+	/**
+	 * CHARACTERの項目における現在の選択位置<br>
+	 * Index 0: P1; Index 1: P2
+	 */
 	private int[] characterIndexes;
 
+	/** FightingMenuシーンを初期化するコンストラクタ */
 	public FightingMenu() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.FIGHTING_MENU;
@@ -42,13 +59,9 @@ public class FightingMenu extends GameScene {
 		InputManager.getInstance().setSceneName(GameSceneName.FIGHTING_MENU);
 		// Initialization
 
-		this.menuItems = new MenuItem[] {
-				new MenuItem("PLAY ", 50, 50, 0),
-				new MenuItem("PLAYER1 : ", 75, 90, 1),
-				new MenuItem("PLAYER2 : ", 75, 130, 2),
-				new MenuItem("CHARACTER1 : ", 75, 170, 3),
-				new MenuItem("CHARACTER2 : ", 75, 210, 4),
-				new MenuItem("Repeat Count : ", 50, 260, 5),
+		this.menuItems = new MenuItem[] { new MenuItem("PLAY ", 50, 50, 0), new MenuItem("PLAYER1 : ", 75, 90, 1),
+				new MenuItem("PLAYER2 : ", 75, 130, 2), new MenuItem("CHARACTER1 : ", 75, 170, 3),
+				new MenuItem("CHARACTER2 : ", 75, 210, 4), new MenuItem("Repeat Count : ", 50, 260, 5),
 				new MenuItem("RETURN ", 50, 310, 6) };
 
 		this.playerIndexes = new int[2];
@@ -65,29 +78,30 @@ public class FightingMenu extends GameScene {
 		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
 
 		if (key.U) {
-			if (cursorPosition == 0) {
-				cursorPosition = menuItems[NUMBER_OF_ITEM - 1].getCursorPosition();
+			if (this.cursorPosition == 0) {
+				this.cursorPosition = this.menuItems[this.NUMBER_OF_ITEM - 1].getCursorPosition();
 			} else {
-				cursorPosition = menuItems[cursorPosition - 1].getCursorPosition();
+				this.cursorPosition = this.menuItems[cursorPosition - 1].getCursorPosition();
 			}
 
 		}
 
 		if (key.D) {
-			if (cursorPosition == NUMBER_OF_ITEM - 1) {
-				cursorPosition = menuItems[0].getCursorPosition();
+			if (this.cursorPosition == this.NUMBER_OF_ITEM - 1) {
+				this.cursorPosition = this.menuItems[0].getCursorPosition();
 			} else {
-				cursorPosition = menuItems[cursorPosition + 1].getCursorPosition();
+				this.cursorPosition = this.menuItems[this.cursorPosition + 1].getCursorPosition();
 			}
 		}
 
-		switch (cursorPosition) {
+		switch (this.cursorPosition) {
+		// PLAYの項目の位置のとき
 		case 0:
 			if (key.A) {
-				//Launch情報をセット
+				// Launch情報をセット
 				for (int i = 0; i < 2; i++) {
-					LaunchSetting.aiNames[i] = allAiNames.get(playerIndexes[i]);
-					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[characterIndexes[i]];
+					LaunchSetting.aiNames[i] = this.allAiNames.get(this.playerIndexes[i]);
+					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[this.characterIndexes[i]];
 
 					if (LaunchSetting.aiNames[i].equals("KeyBoard")) {
 						LaunchSetting.deviceTypes[i] = 0;
@@ -97,7 +111,7 @@ public class FightingMenu extends GameScene {
 
 				}
 
-				LaunchSetting.repeatNumber = GameSetting.REPEAT_NUMBERS[numberIndex];
+				LaunchSetting.repeatNumber = GameSetting.REPEAT_NUMBERS[this.numberIndex];
 				if (LaunchSetting.repeatNumber > 1) {
 					FlagSetting.automationFlag = true;
 				}
@@ -109,91 +123,96 @@ public class FightingMenu extends GameScene {
 			}
 			break;
 
+		// PLAYER1の位置のとき
 		case 1:
 			if (key.R) {
-				if (playerIndexes[0] == allAiNames.size() - 1) {
-					playerIndexes[0] = 0;
+				if (this.playerIndexes[0] == this.allAiNames.size() - 1) {
+					this.playerIndexes[0] = 0;
 				} else {
-					playerIndexes[0]++;
+					this.playerIndexes[0]++;
 				}
 			}
 			if (key.L) {
-				if (playerIndexes[0] == 0) {
-					playerIndexes[0] = allAiNames.size() - 1;
+				if (this.playerIndexes[0] == 0) {
+					this.playerIndexes[0] = this.allAiNames.size() - 1;
 				} else {
-					playerIndexes[0]--;
+					this.playerIndexes[0]--;
 				}
 			}
 			break;
 
+		// PLAYER2の位置のとき
 		case 2:
 			if (key.R) {
-				if (playerIndexes[1] == allAiNames.size() - 1) {
-					playerIndexes[1] = 0;
+				if (this.playerIndexes[1] == this.allAiNames.size() - 1) {
+					this.playerIndexes[1] = 0;
 				} else {
-					playerIndexes[1]++;
+					this.playerIndexes[1]++;
 				}
 			}
 			if (key.L) {
-				if (playerIndexes[1] == 0) {
-					playerIndexes[1] = allAiNames.size() - 1;
+				if (this.playerIndexes[1] == 0) {
+					this.playerIndexes[1] = this.allAiNames.size() - 1;
 				} else {
-					playerIndexes[1]--;
+					this.playerIndexes[1]--;
 				}
 			}
 			break;
 
+		// CHARACTER1の位置のとき
 		case 3:
 			if (key.R) {
-				if (characterIndexes[0] == GameSetting.CHARACTERS.length - 1) {
-					characterIndexes[0] = 0;
+				if (this.characterIndexes[0] == GameSetting.CHARACTERS.length - 1) {
+					this.characterIndexes[0] = 0;
 				} else {
-					characterIndexes[0]++;
+					this.characterIndexes[0]++;
 				}
 			}
 			if (key.L) {
-				if (characterIndexes[0] == 0) {
-					characterIndexes[0] = GameSetting.CHARACTERS.length - 1;
+				if (this.characterIndexes[0] == 0) {
+					this.characterIndexes[0] = GameSetting.CHARACTERS.length - 1;
 				} else {
-					characterIndexes[0]--;
+					this.characterIndexes[0]--;
 				}
 			}
 			break;
 
+		// CHARACTER2の位置のとき
 		case 4:
 			if (key.R) {
-				if (characterIndexes[1] == GameSetting.CHARACTERS.length - 1) {
-					characterIndexes[1] = 0;
+				if (this.characterIndexes[1] == GameSetting.CHARACTERS.length - 1) {
+					this.characterIndexes[1] = 0;
 				} else {
-					characterIndexes[1]++;
+					this.characterIndexes[1]++;
 				}
 			}
 			if (key.L) {
-				if (characterIndexes[1] == 0) {
-					characterIndexes[1] = GameSetting.CHARACTERS.length - 1;
+				if (this.characterIndexes[1] == 0) {
+					this.characterIndexes[1] = GameSetting.CHARACTERS.length - 1;
 				} else {
-					characterIndexes[1]--;
+					this.characterIndexes[1]--;
 				}
 			}
 			break;
-
+		// Repeat Countの位置のとき
 		case 5:
 			if (key.R) {
-				if (numberIndex == GameSetting.REPEAT_NUMBERS.length - 1) {
-					numberIndex = 0;
+				if (this.numberIndex == GameSetting.REPEAT_NUMBERS.length - 1) {
+					this.numberIndex = 0;
 				} else {
-					numberIndex++;
+					this.numberIndex++;
 				}
 			}
 			if (key.L) {
-				if (numberIndex == 0) {
-					numberIndex = GameSetting.REPEAT_NUMBERS.length - 1;
+				if (this.numberIndex == 0) {
+					this.numberIndex = GameSetting.REPEAT_NUMBERS.length - 1;
 				} else {
-					numberIndex--;
+					this.numberIndex--;
 				}
 			}
 			break;
 
+		// RETURNの位置のとき
 		case 6:
 			if (key.A) {
 				HomeMenu homeMenu = new HomeMenu(); // 次のシーンのコンストラクタ作成
@@ -212,27 +231,33 @@ public class FightingMenu extends GameScene {
 			this.setNextGameScene(homeMenu); // 次のシーンをセットする
 		}
 
+		// 画面の描画
 		this.drawScreen();
-
 	}
 
+	/** 対戦の設定を行うメニュー画面を描画する */
 	public void drawScreen() {
-		GraphicManager.getInstance().drawString(menuItems[0].getString(), menuItems[0].getCoordinateX(),
-				menuItems[0].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[1].getString() + allAiNames.get(playerIndexes[0]),
-				menuItems[1].getCoordinateX(), menuItems[1].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[2].getString() + allAiNames.get(playerIndexes[1]),
-				menuItems[2].getCoordinateX(), menuItems[2].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[3].getString() + GameSetting.CHARACTERS[characterIndexes[0]],
-				menuItems[3].getCoordinateX(), menuItems[3].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[4].getString() + GameSetting.CHARACTERS[characterIndexes[1]],
-				menuItems[4].getCoordinateX(), menuItems[4].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[5].getString() + GameSetting.REPEAT_NUMBERS[numberIndex],
-				menuItems[5].getCoordinateX(), menuItems[5].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[6].getString(), menuItems[6].getCoordinateX(),
-				menuItems[6].getCoordinateY());
-		GraphicManager.getInstance().drawString("=>", menuItems[cursorPosition].getCoordinateX() - 30,
-				menuItems[cursorPosition].getCoordinateY());
+		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(),
+				this.menuItems[0].getCoordinateY());
+		GraphicManager.getInstance().drawString(
+				this.menuItems[1].getString() + this.allAiNames.get(this.playerIndexes[0]),
+				this.menuItems[1].getCoordinateX(), this.menuItems[1].getCoordinateY());
+		GraphicManager.getInstance().drawString(
+				this.menuItems[2].getString() + this.allAiNames.get(this.playerIndexes[1]),
+				this.menuItems[2].getCoordinateX(), this.menuItems[2].getCoordinateY());
+		GraphicManager.getInstance().drawString(
+				this.menuItems[3].getString() + GameSetting.CHARACTERS[this.characterIndexes[0]],
+				this.menuItems[3].getCoordinateX(), this.menuItems[3].getCoordinateY());
+		GraphicManager.getInstance().drawString(
+				this.menuItems[4].getString() + GameSetting.CHARACTERS[this.characterIndexes[1]],
+				this.menuItems[4].getCoordinateX(), this.menuItems[4].getCoordinateY());
+		GraphicManager.getInstance().drawString(
+				this.menuItems[5].getString() + GameSetting.REPEAT_NUMBERS[this.numberIndex],
+				this.menuItems[5].getCoordinateX(), this.menuItems[5].getCoordinateY());
+		GraphicManager.getInstance().drawString(this.menuItems[6].getString(), this.menuItems[6].getCoordinateX(),
+				this.menuItems[6].getCoordinateY());
+		GraphicManager.getInstance().drawString("=>", this.menuItems[this.cursorPosition].getCoordinateX() - 30,
+				this.menuItems[this.cursorPosition].getCoordinateY());
 	}
 
 	@Override

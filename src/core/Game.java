@@ -118,7 +118,7 @@ public class Game extends GameManager {
 
 		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag) {
 			if (FlagSetting.allCombinationFlag) {
-				AIContainer.allAINameList = ResourceLoader.getInstance().loadAllAINames();
+				AIContainer.allAINameList = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
 
 				if (AIContainer.allAINameList.size() < 2) {
 					Logger.getAnonymousLogger().log(Level.INFO, "Cannot launch FightingICE with Round-robin mode.");

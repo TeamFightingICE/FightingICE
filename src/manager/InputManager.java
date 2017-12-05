@@ -117,7 +117,7 @@ public class InputManager<Data> {
 		String[] aiNames = LaunchSetting.aiNames.clone();
 
 		if (FlagSetting.allCombinationFlag) {
-			if(AIContainer.p1Index == AIContainer.p2Index){
+			if (AIContainer.p1Index == AIContainer.p2Index) {
 				AIContainer.p1Index++;
 			}
 			aiNames[0] = AIContainer.allAINameList.get(AIContainer.p1Index);
@@ -178,6 +178,12 @@ public class InputManager<Data> {
 				ai.informRoundResult(roundResult);
 				ai.clear();
 			}
+		}
+	}
+
+	public void clear() {
+		for (AIController ai : this.ais) {
+			ai.clear();
 		}
 	}
 

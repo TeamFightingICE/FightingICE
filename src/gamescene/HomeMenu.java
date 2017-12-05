@@ -12,16 +12,22 @@ import struct.Key;
 
 public class HomeMenu extends GameScene {
 
-	// 表示する項目数
+	/** 画面に表示する項目数 */
 	private final int NUMBER_OF_ITEM = 3;
+
+	/** 表示する各項目のインデックス,名前,座標を格納している配列 */
 	private MenuItem[] menuItems;
+
+	/** replayフォルダ内にある全replayの名前を格納したリスト */
 	private ArrayList<String> allReplayNames;
 
-	// 現在のカーソル位置
+	/** 現在のカーソル位置 */
 	private int cursorPosition;
-	// 現在選択されているreplayのIndex
+
+	/** REPLAYの項目における現在の選択位置 */
 	private int replayIndex;
 
+	/** HomeMenuシーンを初期化するコンストラクタ */
 	public HomeMenu() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.HOME_MENU;
@@ -34,15 +40,14 @@ public class HomeMenu extends GameScene {
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.HOME_MENU);
-		// Initialization
+
 		this.menuItems = new MenuItem[] { new MenuItem("FIGHT ", 50, 50, 0), new MenuItem("REPLAY : ", 50, 100, 1),
 				new MenuItem("EXIT ", 50, 310, 2) };
-
 		this.cursorPosition = 0;
 		this.replayIndex = 0;
 
 		this.allReplayNames = ResourceLoader.getInstance().loadFileNames("./log/replay/", ".dat");
-		if (allReplayNames.size() == 0) {
+		if (this.allReplayNames.size() == 0) {
 			allReplayNames.add("None");
 		}
 
@@ -53,21 +58,22 @@ public class HomeMenu extends GameScene {
 		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
 
 		if (key.U) {
-			if (cursorPosition == 0) {
-				cursorPosition = menuItems[NUMBER_OF_ITEM - 1].getCursorPosition();
+			if (this.cursorPosition == 0) {
+				this.cursorPosition = this.menuItems[this.NUMBER_OF_ITEM - 1].getCursorPosition();
 			} else {
-				cursorPosition = menuItems[cursorPosition - 1].getCursorPosition();
+				this.cursorPosition = this.menuItems[this.cursorPosition - 1].getCursorPosition();
 			}
 		}
 		if (key.D) {
-			if (cursorPosition == NUMBER_OF_ITEM - 1) {
-				cursorPosition = menuItems[0].getCursorPosition();
+			if (this.cursorPosition == this.NUMBER_OF_ITEM - 1) {
+				this.cursorPosition = this.menuItems[0].getCursorPosition();
 			} else {
-				cursorPosition = menuItems[cursorPosition + 1].getCursorPosition();
+				this.cursorPosition = this.menuItems[this.cursorPosition + 1].getCursorPosition();
 			}
 		}
 
-		switch (cursorPosition) {
+		switch (this.cursorPosition) {
+		// FIGHTの位置のとき
 		case 0:
 			if (key.A) {
 				FightingMenu fightingMenu = new FightingMenu(); // 次のシーンのコンストラクタ作成
@@ -76,21 +82,24 @@ public class HomeMenu extends GameScene {
 			}
 			break;
 
+		// REPLAYの位置のとき
 		case 1:
 			if (key.R) {
-				if (replayIndex == allReplayNames.size() - 1) {
-					replayIndex = 0;
+				if (this.replayIndex == this.allReplayNames.size() - 1) {
+					this.replayIndex = 0;
 				} else {
-					replayIndex++;
+					this.replayIndex++;
 				}
 			}
+
 			if (key.L) {
-				if (replayIndex == 0) {
-					replayIndex = allReplayNames.size() - 1;
+				if (this.replayIndex == 0) {
+					this.replayIndex = this.allReplayNames.size() - 1;
 				} else {
-					replayIndex--;
+					this.replayIndex--;
 				}
 			}
+
 			if (key.A) {
 				LaunchSetting.replayName = this.allReplayNames.get(this.replayIndex);
 				// Launcherの次の遷移先を登録
@@ -101,6 +110,7 @@ public class HomeMenu extends GameScene {
 			}
 			break;
 
+		// EXITの位置のとき
 		case 2:
 			if (key.A) {
 				this.setGameEndFlag(true);
@@ -115,15 +125,17 @@ public class HomeMenu extends GameScene {
 
 	}
 
+	/** 対戦の設定を行うメニュー画面を描画する */
 	public void drawScreen() {
-		GraphicManager.getInstance().drawString(menuItems[0].getString(), menuItems[0].getCoordinateX(),
-				menuItems[0].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[1].getString() + allReplayNames.get(replayIndex),
-				menuItems[1].getCoordinateX(), menuItems[1].getCoordinateY());
-		GraphicManager.getInstance().drawString(menuItems[2].getString(), menuItems[2].getCoordinateX(),
-				menuItems[2].getCoordinateY());
-		GraphicManager.getInstance().drawString("=>", menuItems[cursorPosition].getCoordinateX() - 30,
-				menuItems[cursorPosition].getCoordinateY());
+		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(),
+				this.menuItems[0].getCoordinateY());
+		GraphicManager.getInstance().drawString(
+				this.menuItems[1].getString() + this.allReplayNames.get(this.replayIndex),
+				this.menuItems[1].getCoordinateX(), this.menuItems[1].getCoordinateY());
+		GraphicManager.getInstance().drawString(this.menuItems[2].getString(), this.menuItems[2].getCoordinateX(),
+				this.menuItems[2].getCoordinateY());
+		GraphicManager.getInstance().drawString("=>", this.menuItems[cursorPosition].getCoordinateX() - 30,
+				this.menuItems[this.cursorPosition].getCoordinateY());
 	}
 
 	@Override
