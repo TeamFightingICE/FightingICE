@@ -11,7 +11,7 @@ public abstract class GameManager {
 	protected GameScene currentGameScene;
 
 	/** ゲームの終了要求があったかを表すフラグ */
-	private boolean isExitFlag;
+	protected boolean isExitFlag;
 
 	/** フィールドの初期化を行うコンストラクタ */
 	public GameManager() {

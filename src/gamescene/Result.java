@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
+import informationcontainer.AIContainer;
 import informationcontainer.RoundResult;
 import input.Keyboard;
 import manager.GraphicManager;
@@ -78,10 +79,20 @@ public class Result extends GameScene {
 			}
 		}
 
-		if (FlagSetting.automationFlag) {
+		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag) {
 			if (++this.displayedTime > 300) {
-				if (LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
+				if (FlagSetting.automationFlag && LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
 					LaunchSetting.repeatedCount++;
+
+					Launcher launcher = new Launcher(GameSceneName.PLAY);
+					this.setTransitionFlag(true);
+					this.setNextGameScene(launcher);
+
+				} else if (FlagSetting.allCombinationFlag && !isRoundRobinEnd()) {
+					if(++AIContainer.p1Index == AIContainer.allAINameList.size()){
+						AIContainer.p1Index = 0;
+						AIContainer.p2Index++;
+					}
 
 					Launcher launcher = new Launcher(GameSceneName.PLAY);
 					this.setTransitionFlag(true);
@@ -127,5 +138,10 @@ public class Result extends GameScene {
 		} else {
 			return -1;
 		}
+	}
+
+	private boolean isRoundRobinEnd() {
+		return AIContainer.p1Index == AIContainer.allAINameList.size()
+				&& AIContainer.p2Index == AIContainer.allAINameList.size();
 	}
 }

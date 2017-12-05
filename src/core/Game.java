@@ -2,12 +2,16 @@ package core;
 
 import java.awt.Font;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import enumerate.BackgroundType;
 import enumerate.GameSceneName;
 import gamescene.HomeMenu;
 import gamescene.Launcher;
 import image.LetterImage;
+import informationcontainer.AIContainer;
+import loader.ResourceLoader;
 import manager.GameManager;
 import manager.GraphicManager;
 import setting.FlagSetting;
@@ -25,9 +29,11 @@ public class Game extends GameManager {
 		// Read the configurations here
 		for (int i = 0; i < options.length; ++i) {
 			switch (options[i]) {
-			/*
-			 * case "-a": case "--all": allCombinationFlag = true; break;
-			 */
+			case "-a":
+			case "--all":
+				FlagSetting.allCombinationFlag = true;
+				LaunchSetting.deviceTypes = new char[] { 1, 1 };
+				break;
 			case "-n":
 			case "--number":
 				LaunchSetting.repeatNumber = Integer.parseInt(options[++i]);
@@ -35,9 +41,11 @@ public class Game extends GameManager {
 				break;
 			case "--a1":
 				LaunchSetting.aiNames[0] = options[++i];
+				LaunchSetting.deviceTypes[0] = 1;
 				break;
 			case "--a2":
 				LaunchSetting.aiNames[1] = options[++i];
+				LaunchSetting.deviceTypes[1] = 1;
 				break;
 			case "--c1":
 				LaunchSetting.characterNames[0] = getCharacterName(options[++i]);
@@ -109,6 +117,15 @@ public class Game extends GameManager {
 		createLogDirectories();
 
 		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag) {
+			if (FlagSetting.allCombinationFlag) {
+				AIContainer.allAINameList = ResourceLoader.getInstance().loadAllAINames();
+
+				if (AIContainer.allAINameList.size() < 2) {
+					Logger.getAnonymousLogger().log(Level.INFO, "Cannot launch FightingICE with Round-robin mode.");
+					this.isExitFlag = true;
+				}
+			}
+
 			Launcher launcher = new Launcher(GameSceneName.PLAY);
 			this.startGame(launcher);
 		} else {

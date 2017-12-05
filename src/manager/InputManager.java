@@ -8,10 +8,12 @@ import java.util.logging.Logger;
 import aiinterface.AIController;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
+import informationcontainer.AIContainer;
 import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
+import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.FrameData;
 import struct.GameData;
@@ -113,6 +115,15 @@ public class InputManager<Data> {
 
 	public void createAIcontroller() {
 		String[] aiNames = LaunchSetting.aiNames.clone();
+
+		if (FlagSetting.allCombinationFlag) {
+			if(AIContainer.p1Index == AIContainer.p2Index){
+				AIContainer.p1Index++;
+			}
+			aiNames[0] = AIContainer.allAINameList.get(AIContainer.p1Index);
+			aiNames[1] = AIContainer.allAINameList.get(AIContainer.p2Index);
+		}
+
 		this.deviceTypes = LaunchSetting.deviceTypes.clone();
 		this.ais = new AIController[aiNames.length];
 		for (int i = 0; i < aiNames.length; i++) {

@@ -170,6 +170,7 @@ public class DisplayManager {
 		// Terminate GLFW and free the error callback
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
+		Logger.getAnonymousLogger().log(Level.INFO, "Close FightingICE");
 	}
 
 	public void disableWindow() {
