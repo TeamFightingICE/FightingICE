@@ -8,7 +8,7 @@ import fighting.Attack;
 public class AttackData {
 
 	/**
-	 * HitArea`s information and position
+	 * HitArea's information of this attack hit box set in Motion.csv
 	 *
 	 * @see HitArea
 	 */
@@ -27,7 +27,8 @@ public class AttackData {
 	private int settingSpeedY;
 
 	/**
-	 * Current hitArea`s information and position
+	 * HitArea's information of this attack hit box in the current
+	 * frame
 	 *
 	 * @see HitArea
 	 */
@@ -39,7 +40,7 @@ public class AttackData {
 	private int currentFrame;
 
 	/**
-	 * Player side`s flag
+	 * The player side`s flag
 	 */
 	private boolean playerNumber;
 
@@ -57,11 +58,15 @@ public class AttackData {
 
 	/**
 	 * The number of frames in Startup
+	 *
+	 * @see MotionData#attackStartUp
 	 */
 	private int startUp;
 
 	/**
 	 * The number of frames in Active
+	 *
+	 * @see MotionData#attackActive
 	 */
 	private int active;
 
@@ -121,7 +126,7 @@ public class AttackData {
 	private boolean downProperty;
 
 	/**
-	 * Projectile flag whether this skill is projectile (true) or not (false)
+	 * The projectile flag whether this skill is projectile (true) or not (false)
 	 */
 	private boolean isProjectile;
 
@@ -222,7 +227,7 @@ public class AttackData {
 	/**
 	 * Returns the player side's flag.
 	 *
-	 * @return The player side's flag
+	 * @return true: P1; false: P2
 	 */
 	public boolean isPlayerNumber() {
 		return this.playerNumber;

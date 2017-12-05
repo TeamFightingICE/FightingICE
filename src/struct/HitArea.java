@@ -6,22 +6,22 @@ package struct;
 public class HitArea {
 
 	/**
-	 * Value of arena`s left boundary
+	 * ヒットボックスの一番左のx座標
 	 */
 	private int left;
 
 	/**
-	 * Value of arena`s right boundary
+	 * ヒットボックスの一番右のx座標
 	 */
 	private int right;
 
 	/**
-	 * Value of arena`s top boundary
+	 * ヒットボックスの一番上のy座標
 	 */
 	private int top;
 
 	/**
-	 * Value of arena`s bottom boundary
+	 * ヒットボックスの一番下のy座標
 	 */
 	private int bottom;
 

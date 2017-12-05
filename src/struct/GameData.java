@@ -14,43 +14,48 @@ import simulator.Simulator;
 public class GameData {
 
 	/**
-	 * Horizontal size of battle stage
+	 * The horizontal size of the game stage
 	 */
 	private int stageWidth;
 
 	/**
-	 * Vertical size of battle stage
+	 * The vertical size of the game stage
 	 */
 	private int stageHeight;
 
 	/**
-	 * Value of HP limits
+	 * The values of both characters' HP limits.<br>
+	 * Index 0 is P1, index 1 is P2.
 	 */
 	private int[] maxHPs;
 
 	/**
-	 * Value of energy limits
+	 * The values of both characters' energy limits.<br>
+	 * Index 0 is P1, index 1 is P2.
 	 */
 	private int[] maxEnergies;
 
 	/**
-	 * Returns MotionData of the character
+	 * The list of MotionData of both characters<br>
+	 * Index 0 is P1, index 1 is P2.
 	 */
 	private ArrayList<ArrayList<MotionData>> characterMotions;
 
 	/**
-	 * String of character name
+	 * The both characters' names<br>
+	 * Index 0 is P1, index 1 is P2.
 	 */
 	private String[] characterNames;
 
 	/**
-	 * String of AI name
+	 * The both AIs' names<br>
+	 * Index 0 is P1, index 1 is P2.
 	 */
 	private String[] aiNames;
 
 	/**
-	 * Simulates the progression of a fight starting from a given
-	 * {@link FrameData} instance and executing specified actions for both
+	 * The simulator which simulates the progression of a fight starting from a
+	 * given {@link FrameData} instance and executing specified actions for both
 	 * players.
 	 *
 	 * @see Simulator
@@ -118,9 +123,9 @@ public class GameData {
 		return temp;
 	}
 
-	// シミュレータ用
 	/**
-	 * 指定されたプレイヤーのモーションを返すメソッド
+	 * 指定されたプレイヤーのモーションを返すメソッド<br>
+	 * シミュレータでのみ呼び出される.
 	 *
 	 * @param playerNumber
 	 *            playerNumber プレイヤー番号(true: P1; false: P2)
