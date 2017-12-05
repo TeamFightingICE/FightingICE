@@ -70,6 +70,9 @@ public class FrameData {
 	 *            is a queue which stores all attacks.
 	 * @param keyData
 	 *            contains informations of all players.
+	 *
+	 * @see CharacterData
+	 * @see KeyData
 	 */
 	public FrameData(CharacterData[] characterData, int currentFrame, int currentRound,
 			Deque<AttackData> projectileData, KeyData keyData) {

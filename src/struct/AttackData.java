@@ -7,48 +7,118 @@ import fighting.Attack;
  */
 public class AttackData {
 
+	/**
+	 * HitArea`s information and position
+	 *
+	 * @see HitArea
+	 */
 	private HitArea settingHitArea;
 
+	/**
+	 * Attack action's moving value x
+	 */
 	private int settingSpeedX;
 
+	/**
+	 * Attack action's moving value y
+	 */
 	private int settingSpeedY;
 
+	/**
+	 * Current hitArea`s information and position
+	 *
+	 * @see HitArea
+	 */
 	private HitArea currentHitArea;
 
+	/**
+	 * The number of frame
+	 */
 	private int currentFrame;
 
+	/**
+	 * Player side`s flag
+	 */
 	private boolean playerNumber;
 
+	/**
+	 * Attack action's moving value x
+	 */
 	private int speedX;
 
+	/**
+	 * Attack action's moving value y
+	 */
 	private int speedY;
 
+	/**
+	 * Attack effect start sign (per frame)
+	 */
 	private int startUp;
 
+	/**
+	 * Attack action`s active time
+	 */
 	private int active;
 
+	/**
+	 * Attack hit`s damage
+	 */
 	private int hitDamage;
 
+	/**
+	 * Attack guard`s damage
+	 */
 	private int guardDamage;
 
+	/**
+	 * ExEnergy value of start
+	 */
 	private int startAddEnergy;
 
+	/**
+	 * ExEnergy value of hit
+	 */
 	private int hitAddEnergy;
 
+	/**
+	 * ExEnergy value of guard
+	 */
 	private int guardAddEnergy;
 
+	/**
+	 * ExEnergy value
+	 */
 	private int giveEnergy;
 
+	/**
+	 * Feedback value x
+	 */
 	private int impactX;
 
+	/**
+	 * Feedback value y
+	 */
 	private int impactY;
 
+	/**
+	 * Recovery guard time
+	 */
 	private int giveGuardRecov;
 
+	/**
+	 * Attack's typeA 1=high 2=mid 3=low
+	 */
 	private int attackType;
 
+	/**
+	 * Down flag , 1 = can push down 0=normal hit
+	 */
 	private boolean downProperty;
 
+	/**
+	 * Projectile flag whether this skill is projectile (true) or not (false)
+	 */
 	private boolean isProjectile;
 
 	/**
@@ -166,7 +236,7 @@ public class AttackData {
 	/**
 	 * Returns the boolean value whether this skill is projectile or not.
 	 *
-	 * @return true: this skill is projectile; false: otherwise
+	 * @return true: This skill is projectile; false: otherwise
 	 */
 	public boolean isProjectile() {
 		return this.isProjectile;
