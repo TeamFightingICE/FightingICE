@@ -129,8 +129,8 @@ public class InputManager<Data> {
 				// ais[count].initialize(waitFrame, gd,
 				// !Transform.iTob(i));//Call the initialize function of the AI
 				// of interest
-				ais[count].initialize(ThreadController.getInstance().getAIsObject(i), gameData,
-						Transform.convertPlayerNumberfromItoB(i));
+				ais[count].initialize(ThreadController.getInstance().getAIsObject(Transform.convertPlayerNumberfromItoB(i))
+						, gameData, Transform.convertPlayerNumberfromItoB(i));
 				ais[count].start();// start the thread
 				count++;
 			}

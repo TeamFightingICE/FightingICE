@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import informationcontainer.RoundResult;
+import setting.FlagSetting;
 import struct.FrameData;
 import struct.GameData;
 import struct.Key;
@@ -55,7 +56,6 @@ public class AIController extends Thread {
 				}
 
 			}
-
 			this.ai.getInformation(this.framesData.removeFirst());
 			this.ai.getScreenData(this.screenData);
 			this.ai.processing();
