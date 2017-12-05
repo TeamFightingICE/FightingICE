@@ -188,6 +188,19 @@ public class ResourceLoader {
 		}
 	}
 
+	public ArrayList<String> loadAllAINames() {
+		String[] files = new File("./data/ai").list();
+		ArrayList<String> temp = new ArrayList<String>();
+
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].endsWith(".jar")) {
+				temp.add(files[i].substring(0, files[i].indexOf(".jar")));
+			}
+		}
+
+		return temp;
+	}
+
 	/**
 	 * 指定されたAI名のjarファイルを読み込み、その情報を格納したコントローラを返す
 	 *
