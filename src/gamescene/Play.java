@@ -30,28 +30,40 @@ import util.ResourceDrawer;
 
 public class Play extends GameScene {
 
+	/** 対戦処理を行うクラスのインスタンス */
 	private Fighting fighting;
 
+	/** 現在のフレームナンバー */
 	private int nowFrame;
 
+	/** 各ラウンド前に行う初期化処理内における経過フレーム数 */
 	private int elapsedBreakTime;
 
+	/** 現在のラウンド */
 	private int currentRound;
 
+	/** 各ラウンドの開始時かどうかを表すフラグ */
 	private boolean roundStartFlag;
 
+	/** 対戦処理後のキャラクターデータといったゲーム情報を格納したフレームデータ */
 	private FrameData frameData;
 
+	/** 対戦処理後のゲーム画面の情報 */
 	private ScreenData screenData;
 
+	/** 対戦処理に用いるP1, P2の入力情報 */
 	private KeyData keyData;
 
+	/** 各ラウンド終了時のP1, P2の残り体力, 経過時間を格納するリスト */
 	private ArrayList<RoundResult> roundResults;
 
+	/** Replayファイルに出力するための出力ストリーム */
 	private DataOutputStream dos;
 
+	/** 現在の年月日, 時刻を表す文字列 */
 	private String timeInfo;
 
+	/** Playシーンを初期化するコンストラクタ */
 	public Play() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.PLAY;
@@ -82,7 +94,7 @@ public class Play extends GameScene {
 			openReplayFile();
 		}
 
-		GameData gameData = new GameData(fighting.getCharacters());
+		GameData gameData = new GameData(this.fighting.getCharacters());
 
 		InputManager.getInstance().createAIcontroller();
 		InputManager.getInstance().startAI(gameData);
@@ -92,7 +104,6 @@ public class Play extends GameScene {
 
 	@Override
 	public void update() {
-
 		if (this.currentRound <= GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
@@ -130,15 +141,17 @@ public class Play extends GameScene {
 
 	}
 
+	/** 各ラウンド開始時に, 対戦情報や現在のフレームなどの初期化を行う */
 	private void initRound() {
 		this.fighting.initRound();
 		this.nowFrame = 0;
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 
-		// Input clear
+		InputManager.getInstance().clear();
 	}
 
+	/** 各ラウンド開始時における, インターバル処理を行う */
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
 		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
@@ -147,6 +160,17 @@ public class Play extends GameScene {
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 	}
 
+	/**
+	 * 対戦処理を行う.<br>
+	 *
+	 * 1. P1, P2の入力を受け取る.<br>
+	 * 2. 対戦処理を行う.<br>
+	 * 3. 対戦後のFrameData, 及びScreenDataを取得する.<br>
+	 * 4. AIにFrameDataとScreenDataを渡す.<br>
+	 * 5. ラウンドが終了しているか判定する.<br>
+	 * 6. リプレイファイルにログを出力する.<br>
+	 * 7. ゲーム画面を描画する.
+	 */
 	private void processingGame() {
 		this.keyData = new KeyData(InputManager.getInstance().getKeyData());
 
@@ -172,6 +196,7 @@ public class Play extends GameScene {
 
 	}
 
+	/** 各ラウンド終了時の処理を行う. */
 	private void processingRoundEnd() {
 		RoundResult roundResult = new RoundResult(this.frameData);
 		this.roundResults.add(roundResult);
@@ -182,11 +207,22 @@ public class Play extends GameScene {
 		this.roundStartFlag = true;
 	}
 
+	/**
+	 * キャラクターが倒されたかどうかを判定する.
+	 *
+	 * @return true: P1 or P2が倒された; false: otherwise
+	 */
 	private boolean isBeaten() {
 		return FlagSetting.limitHpFlag
 				&& (this.frameData.getCharacter(true).getHp() <= 0 || this.frameData.getCharacter(false).getHp() <= 0);
 	}
 
+	/**
+	 * 1ラウンドの制限時間が経過したかどうかを判定する.<br>
+	 * Training modeのときは, Integerの最大との比較を行う.
+	 *
+	 * @return true: 1ラウンドの制限時間が経過した; false: otherwise
+	 */
 	private boolean isTimeOver() {
 		if (FlagSetting.trainingModeFlag) {
 			return this.nowFrame == Integer.MAX_VALUE;
@@ -196,6 +232,7 @@ public class Play extends GameScene {
 
 	}
 
+	/** リプレイファイルを作成し, 使用キャラクターを表すインデックスといったヘッダ情報を記述する. */
 	private void openReplayFile() {
 		this.timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
 

@@ -44,7 +44,7 @@ public class FightingMenu extends GameScene {
 	 */
 	private int[] characterIndexes;
 
-	/** FightingMenuシーンを初期化するコンストラクタ*/
+	/** FightingMenuシーンを初期化するコンストラクタ */
 	public FightingMenu() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.FIGHTING_MENU;
@@ -95,7 +95,7 @@ public class FightingMenu extends GameScene {
 		}
 
 		switch (this.cursorPosition) {
-		//PLAYの項目の位置のとき
+		// PLAYの項目の位置のとき
 		case 0:
 			if (key.A) {
 				// Launch情報をセット
@@ -123,7 +123,7 @@ public class FightingMenu extends GameScene {
 			}
 			break;
 
-			//PLAYER1の位置のとき
+		// PLAYER1の位置のとき
 		case 1:
 			if (key.R) {
 				if (this.playerIndexes[0] == this.allAiNames.size() - 1) {
@@ -141,7 +141,7 @@ public class FightingMenu extends GameScene {
 			}
 			break;
 
-			//PLAYER2の位置のとき
+		// PLAYER2の位置のとき
 		case 2:
 			if (key.R) {
 				if (this.playerIndexes[1] == this.allAiNames.size() - 1) {
@@ -159,7 +159,7 @@ public class FightingMenu extends GameScene {
 			}
 			break;
 
-			//CHARACTER1の位置のとき
+		// CHARACTER1の位置のとき
 		case 3:
 			if (key.R) {
 				if (this.characterIndexes[0] == GameSetting.CHARACTERS.length - 1) {
@@ -177,7 +177,7 @@ public class FightingMenu extends GameScene {
 			}
 			break;
 
-			//CHARACTER2の位置のとき
+		// CHARACTER2の位置のとき
 		case 4:
 			if (key.R) {
 				if (this.characterIndexes[1] == GameSetting.CHARACTERS.length - 1) {
@@ -194,7 +194,7 @@ public class FightingMenu extends GameScene {
 				}
 			}
 			break;
-			//Repeat Countの位置のとき
+		// Repeat Countの位置のとき
 		case 5:
 			if (key.R) {
 				if (this.numberIndex == GameSetting.REPEAT_NUMBERS.length - 1) {
@@ -212,7 +212,7 @@ public class FightingMenu extends GameScene {
 			}
 			break;
 
-			//RETURNの位置のとき
+		// RETURNの位置のとき
 		case 6:
 			if (key.A) {
 				HomeMenu homeMenu = new HomeMenu(); // 次のシーンのコンストラクタ作成
@@ -231,11 +231,11 @@ public class FightingMenu extends GameScene {
 			this.setNextGameScene(homeMenu); // 次のシーンをセットする
 		}
 
-		//画面の描画
+		// 画面の描画
 		this.drawScreen();
 	}
 
-	/**対戦の設定を行うメニュー画面を描画する*/
+	/** 対戦の設定を行うメニュー画面を描画する */
 	public void drawScreen() {
 		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(),
 				this.menuItems[0].getCoordinateY());

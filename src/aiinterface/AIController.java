@@ -88,7 +88,6 @@ public class AIController extends Thread {
 	}
 
 	public void clear() {
-		System.out.println("init AI");
 		this.framesData.clear();
 
 		while (this.framesData.size() < DELAY) {

@@ -14,10 +14,10 @@ public class GameScene {
 	/** 次のゲームシーンへの遷移要求があったかどうかを表すフラグ */
 	protected boolean isTransitionFlag;
 
-	/**次の遷移先のゲームシーン*/
+	/** 次の遷移先のゲームシーン */
 	protected GameScene nextGameScene;
 
-	/**ゲームシーンを初期化するするコンストラクタ*/
+	/** ゲームシーンを初期化するするコンストラクタ */
 	public GameScene() {
 		this.gameSceneName = GameSceneName.HOME_MENU;
 		this.isGameEndFlag = false;
@@ -25,7 +25,6 @@ public class GameScene {
 		this.nextGameScene = null;
 
 	}
-
 
 	/**
 	 * 指定されたデータでゲームシーンを作成するコンストラクタ
@@ -44,10 +43,14 @@ public class GameScene {
 	/**
 	 * 指定されたデータでゲームシーンを作成するコンストラクタ
 	 *
-	 * @param gameSceneName 指定されたゲームシーン名
-	 * @param isEndingFlag 現在のシーンが終わったかどうかを表すフラグ
-	 * @param isTransitionFlag 遷移要求があったかどうかを表すフラグ
-	 * @param nextGameScene 次に遷移するゲームシーン
+	 * @param gameSceneName
+	 *            指定されたゲームシーン名
+	 * @param isEndingFlag
+	 *            現在のシーンが終わったかどうかを表すフラグ
+	 * @param isTransitionFlag
+	 *            遷移要求があったかどうかを表すフラグ
+	 * @param nextGameScene
+	 *            次に遷移するゲームシーン
 	 *
 	 */
 	public GameScene(GameSceneName gameSceneName, boolean isEndFlag, boolean isTransitionFlag,
@@ -58,15 +61,15 @@ public class GameScene {
 		this.nextGameScene = nextGameScene;
 	}
 
-	/** 現在のゲームシーンの初期化を行う*/
+	/** 現在のゲームシーンの初期化を行う */
 	public void initialize() {
 	}
 
-	/**現在のゲームシーンの更新を行う*/
+	/** 現在のゲームシーンの更新を行う */
 	public void update() {
 	}
 
-	/**現在のゲームシーンの終了処理を行う*/
+	/** 現在のゲームシーンの終了処理を行う */
 	public void close() {
 	}
 
@@ -90,7 +93,9 @@ public class GameScene {
 
 	/**
 	 * 次の遷移先のゲームシーンをセットする
-	 * @param next 次の遷移先のゲームシーン
+	 *
+	 * @param next
+	 *            次の遷移先のゲームシーン
 	 */
 	public void setNextGameScene(GameScene next) {
 		this.nextGameScene = next;
@@ -99,7 +104,8 @@ public class GameScene {
 	/**
 	 * 現在のゲームシーンのシーン名をセットする
 	 *
-	 * @param gameSceneName 現在のゲームシーン名
+	 * @param gameSceneName
+	 *            現在のゲームシーン名
 	 */
 	public void setCurrentSceneName(GameSceneName gameSceneName) {
 		this.gameSceneName = gameSceneName;
