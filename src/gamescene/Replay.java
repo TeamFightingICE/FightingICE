@@ -45,6 +45,12 @@ public class Replay extends GameScene {
 
 	private KeyData keyData;
 
+	private int playSpeedIndex;
+
+	private int[] playSpeedArray;
+
+	private boolean isFinished;
+
 	public Replay() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.REPLAY;
@@ -69,7 +75,7 @@ public class Replay extends GameScene {
 		this.fighting = new Fighting();
 		this.fighting.initialize();
 
-		this.nowFrame = 1;
+		this.nowFrame = 0;
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
@@ -77,6 +83,9 @@ public class Replay extends GameScene {
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
 		this.keyData = new KeyData();
+		this.playSpeedIndex = 1;
+		this.playSpeedArray = new int[] { 0, 1, 2, 4 };
+		this.isFinished = false;
 
 		SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
 	}
@@ -94,9 +103,21 @@ public class Replay extends GameScene {
 				this.elapsedBreakTime++;
 
 			} else {
+				updatePlaySpeed();
 				// processing
-				processingGame();
-				this.nowFrame++;
+				for (int i = 0; i < this.playSpeedArray[this.playSpeedIndex] && !this.isFinished; i++) {
+					processingGame();
+					this.nowFrame++;
+				}
+
+				// 画面をDrawerクラスで描画
+				ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(),
+						this.fighting.getProjectileDeque(), this.fighting.getHitEffectList(),
+						this.screenData.getScreenImage(), this.frameData.getRemainingTimeMilliseconds(),
+						this.currentRound);
+
+				GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50,
+						550);
 			}
 
 		} else {
@@ -136,6 +157,7 @@ public class Replay extends GameScene {
 
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
+		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
 
 		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
@@ -152,33 +174,29 @@ public class Replay extends GameScene {
 		if (isBeaten() || isTimeOver()) {
 			processingRoundEnd();
 		}
-
-		// 画面をDrawerクラスで描画
-		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
-				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
-				this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
-
 	}
 
 	private void processingRoundEnd() {
+		this.isFinished = true;
 		this.currentRound++;
 		this.roundStartFlag = true;
 	}
 
 	private boolean isBeaten() {
-		return FlagSetting.limitHpFlag && (this.frameData.getCharacter(true).getHp() <= 0
-				|| this.frameData.getCharacter(false).getHp() <= 0);
+		return FlagSetting.limitHpFlag
+				&& (this.frameData.getCharacter(true).getHp() <= 0 || this.frameData.getCharacter(false).getHp() <= 0);
 	}
 
 	private boolean isTimeOver() {
-		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER;
+		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
 	}
 
 	private void initRound() {
 		this.fighting.initRound();
-		this.nowFrame = 1;
+		this.nowFrame = 0;
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
+		this.isFinished = false;
 	}
 
 	private KeyData createKeyData() {
@@ -189,18 +207,19 @@ public class Replay extends GameScene {
 			byte keyByte = 0;
 
 			try {
-				dis.readBoolean(); // front
-				dis.readByte(); // remaingFrame
-				dis.readByte(); // actionOrdinal
-				dis.readInt(); // hp
-				dis.readInt(); // energy
-				dis.readInt(); // x
-				dis.readInt(); // y
-				keyByte = dis.readByte();
+				this.dis.readBoolean(); // front
+				this.dis.readByte(); // remaingFrame
+				this.dis.readByte(); // actionOrdinal
+				this.dis.readInt(); // hp
+				this.dis.readInt(); // energy
+				this.dis.readInt(); // x
+				this.dis.readInt(); // y
+				keyByte = this.dis.readByte();
 			} catch (EOFException e) {
 				Logger.getAnonymousLogger().log(Level.INFO, "The replay file was finished in the middle");
 				try {
-					dis.close();
+					this.dis.close();
+					this.isFinished = true;
 				} catch (IOException e1) {
 					// TODO 自動生成された catch ブロック
 					e1.printStackTrace();
@@ -266,6 +285,17 @@ public class Replay extends GameScene {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	}
+
+	private void updatePlaySpeed() {
+		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
+
+		if (key.U) {
+			this.playSpeedIndex = ++this.playSpeedIndex % this.playSpeedArray.length;
+		}
+		if (key.D) {
+			this.playSpeedIndex = (--this.playSpeedIndex + this.playSpeedArray.length) % this.playSpeedArray.length;
 		}
 	}
 
