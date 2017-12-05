@@ -15,12 +15,14 @@ public class AttackData {
 	private HitArea settingHitArea;
 
 	/**
-	 * Attack action's moving value x
+	 * The absolute value of the horizontal speed of the attack hit box
+	 * (zero means the attack hit box will track the character)
 	 */
 	private int settingSpeedX;
 
 	/**
-	 * Attack action's moving value y
+	 * The absolute value of the vertical speed of the attack hit box
+	 * (zero means the attack hit box will track the character)
 	 */
 	private int settingSpeedY;
 
@@ -32,7 +34,7 @@ public class AttackData {
 	private HitArea currentHitArea;
 
 	/**
-	 * The number of frame
+	 * The number of frames since this attack was used
 	 */
 	private int currentFrame;
 
@@ -42,77 +44,79 @@ public class AttackData {
 	private boolean playerNumber;
 
 	/**
-	 * Attack action's moving value x
+	 * The horizontal speed of the attack hit box (minus when moving
+	 * left and plus when moving right)
 	 */
 	private int speedX;
 
 	/**
-	 * Attack action's moving value y
+	 * The vertical speed of the attack hit box (minus when moving up
+	 * and plus when moving down)
 	 */
 	private int speedY;
 
 	/**
-	 * Attack effect start sign (per frame)
+	 * The number of frames in Startup
 	 */
 	private int startUp;
 
 	/**
-	 * Attack action`s active time
+	 * The number of frames in Active
 	 */
 	private int active;
 
 	/**
-	 * Attack hit`s damage
+	 * The damage value to the unguarded opponent hit by this skill
 	 */
 	private int hitDamage;
 
 	/**
-	 * Attack guard`s damage
+	 * The damage value to the guarded opponent hit by this skill
 	 */
 	private int guardDamage;
 
 	/**
-	 * ExEnergy value of start
+	 *  The value of the energy added to the character when it uses this skill
 	 */
 	private int startAddEnergy;
 
 	/**
-	 * ExEnergy value of hit
+	 * The value of the energy added to the character when this skill hits the opponent
 	 */
 	private int hitAddEnergy;
 
 	/**
-	 * ExEnergy value of guard
+	 * The value of the energy added to the character when this skill is blocked by the opponent
 	 */
 	private int guardAddEnergy;
 
 	/**
-	 * ExEnergy value
+	 * The value of the energy added to the opponent when it is hit by this skill
 	 */
 	private int giveEnergy;
 
 	/**
-	 * Feedback value x
+	 * The change in the horizontal speed of the opponent when it is hit by this skill
 	 */
 	private int impactX;
 
 	/**
-	 * Feedback value y
+	 * The change in the vertical speed of the opponent when it is hit by this skill
 	 */
 	private int impactY;
 
 	/**
-	 * Recovery guard time
+	 * The number of frames that the guarded opponent needs to resume to his normal status after being hit by this skill
 	 */
 	private int giveGuardRecov;
 
 	/**
-	 * Attack's typeA 1=high 2=mid 3=low
+	 * The value of the attack type: 1 = high, 2 = middle, 3 = low, 4 = throw.
 	 */
 	private int attackType;
 
 	/**
-	 * Down flag , 1 = can push down 0=normal hit
+	 * The flag whether this skill can push down the opponent when hit , 1 = can push down 0=normal hit
 	 */
 	private boolean downProperty;
 
@@ -236,7 +240,7 @@ public class AttackData {
 	/**
 	 * Returns the boolean value whether this skill is projectile or not.
 	 *
-	 * @return true: This skill is projectile; false: otherwise
+	 * @return true: this skill is projectile; false: otherwise
 	 */
 	public boolean isProjectile() {
 		return this.isProjectile;
