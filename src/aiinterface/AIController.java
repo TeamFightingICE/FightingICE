@@ -16,6 +16,8 @@ public class AIController extends Thread {
 
 	private boolean playerNumber;
 
+	private boolean isFighting;
+	
 	private Key key;
 
 	private final static int DELAY = 14;
@@ -36,13 +38,14 @@ public class AIController extends Thread {
 		this.key = new Key();
 		this.framesData = new LinkedList<FrameData>();
 		this.clear();
+		this.isFighting = true;
 		this.ai.initialize(gameData, playerNumber);
 	}
 
 	@Override
 	public void run() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Start to run");
-		while (true) {
+		while (isFighting) {
 			synchronized (this.waitObj) {
 				try {
 					// System.out.println("lock AI"+(this.playerNumber? 1:2));
@@ -61,10 +64,12 @@ public class AIController extends Thread {
 			// System.out.println("AI" +
 			// Transform.convertPlayerNumberfromBtoI(playerNumber) + "run");
 		}
+		//ai.close();
+		
 
 	}
 
-	public Key getInput() {
+	public synchronized Key getInput() {
 		if (this.key != null) {
 			return this.key;
 		} else {
@@ -72,11 +77,11 @@ public class AIController extends Thread {
 		}
 	}
 
-	public void setInput(Key key) {
+	private synchronized void setInput(Key key) {
 		this.key = new Key(key);
 	}
 
-	public void setFrameData(FrameData fd) {
+	public synchronized void setFrameData(FrameData fd) {
 		this.framesData.addLast(fd);
 		while (this.framesData.size() > DELAY) {
 			this.framesData.removeFirst();
@@ -88,7 +93,6 @@ public class AIController extends Thread {
 	}
 
 	public void clear() {
-		System.out.println("init AI");
 		this.framesData.clear();
 
 		while (this.framesData.size() < DELAY) {
@@ -99,5 +103,13 @@ public class AIController extends Thread {
 	public void informRoundResult(RoundResult roundResult) {
 		this.ai.roundEnd(roundResult.getRemainingHPs()[0], roundResult.getRemainingHPs()[1],
 				roundResult.getElapsedFrame());
+	}
+	
+	public synchronized void gameEnd(){
+		isFighting = false;
+		synchronized(this.waitObj) {
+			this.ai.close();
+			this.waitObj.notifyAll();
+		}
 	}
 }

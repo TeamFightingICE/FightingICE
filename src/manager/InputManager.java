@@ -137,6 +137,15 @@ public class InputManager<Data> {
 		}
 	}
 
+	public void closeAI() {
+		for (AIController ai : this.ais) {
+			if(ai!=null)
+				ai.gameEnd();
+		}
+		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
+		this.ais = null;
+	}
+	
 	// private synchronized Key getInputFromAI(AIController ai){
 	private Key getKeyFromAI(AIController ai) {
 		if (ai == null)

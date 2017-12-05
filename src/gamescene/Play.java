@@ -113,7 +113,6 @@ public class Play extends GameScene {
 			Logger.getAnonymousLogger().log(Level.INFO, "Game over");
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
-
 			Result result = new Result(this.roundResults, this.timeInfo);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
@@ -122,7 +121,6 @@ public class Play extends GameScene {
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
-
 			HomeMenu homeMenu = new HomeMenu();
 			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 			this.setNextGameScene(homeMenu); // 次のシーンをセットする
@@ -211,6 +209,8 @@ public class Play extends GameScene {
 		this.frameData = null;
 		this.screenData = null;
 		this.keyData = null;
+		// AIの実行を終了する
+		InputManager.getInstance().closeAI();
 		this.roundResults.clear();
 
 		try {
