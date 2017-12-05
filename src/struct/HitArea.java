@@ -5,12 +5,24 @@ package struct;
  */
 public class HitArea {
 
+	/**
+	 * Value of arena`s left boundary
+	 */
 	private int left;
 
+	/**
+	 * Value of arena`s right boundary
+	 */
 	private int right;
 
+	/**
+	 * Value of arena`s top boundary
+	 */
 	private int top;
 
+	/**
+	 * Value of arena`s bottom boundary
+	 */
 	private int bottom;
 
 	/**

@@ -7,48 +7,122 @@ import fighting.Attack;
  */
 public class AttackData {
 
+	/**
+	 * HitArea`s information and position
+	 *
+	 * @see HitArea
+	 */
 	private HitArea settingHitArea;
 
+	/**
+	 * The absolute value of the horizontal speed of the attack hit box
+	 * (zero means the attack hit box will track the character)
+	 */
 	private int settingSpeedX;
 
+	/**
+	 * The absolute value of the vertical speed of the attack hit box
+	 * (zero means the attack hit box will track the character)
+	 */
 	private int settingSpeedY;
 
+	/**
+	 * Current hitArea`s information and position
+	 *
+	 * @see HitArea
+	 */
 	private HitArea currentHitArea;
 
+	/**
+	 * The number of frames since this attack was used
+	 */
 	private int currentFrame;
 
+	/**
+	 * Player side`s flag
+	 */
 	private boolean playerNumber;
 
+	/**
+	 * The horizontal speed of the attack hit box (minus when moving
+	 * left and plus when moving right)
+	 */
 	private int speedX;
 
+	/**
+	 * The vertical speed of the attack hit box (minus when moving up
+	 * and plus when moving down)
+	 */
 	private int speedY;
 
+	/**
+	 * The number of frames in Startup
+	 */
 	private int startUp;
 
+	/**
+	 * The number of frames in Active
+	 */
 	private int active;
 
+	/**
+	 * The damage value to the unguarded opponent hit by this skill
+	 */
 	private int hitDamage;
 
+	/**
+	 * The damage value to the guarded opponent hit by this skill
+	 */
 	private int guardDamage;
 
+	/**
+	 *  The value of the energy added to the character when it uses this skill
+	 */
 	private int startAddEnergy;
 
+	/**
+	 * The value of the energy added to the character when this skill hits the opponent
+	 */
 	private int hitAddEnergy;
 
+	/**
+	 * The value of the energy added to the character when this skill is blocked by the opponent
+	 */
 	private int guardAddEnergy;
 
+	/**
+	 * The value of the energy added to the opponent when it is hit by this skill
+	 */
 	private int giveEnergy;
 
+	/**
+	 * The change in the horizontal speed of the opponent when it is hit by this skill
+	 */
 	private int impactX;
 
+	/**
+	 * The change in the vertical speed of the opponent when it is hit by this skill
+	 */
 	private int impactY;
 
+	/**
+	 * The number of frames that the guarded opponent needs to resume to his normal status after being hit by this skill
+	 */
 	private int giveGuardRecov;
 
+	/**
+	 * The value of the attack type: 1 = high, 2 = middle, 3 = low, 4 = throw.
+	 */
 	private int attackType;
 
+	/**
+	 * The flag whether this skill can push down the opponent when hit , 1 = can push down 0=normal hit
+	 */
 	private boolean downProperty;
 
+	/**
+	 * Projectile flag whether this skill is projectile (true) or not (false)
+	 */
 	private boolean isProjectile;
 
 	/**

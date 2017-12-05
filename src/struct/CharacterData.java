@@ -176,7 +176,7 @@ public class CharacterData {
 	 * Returns the character's side.<br>
 	 * True: the character is P1; false: the character is P2.
 	 *
-	 * @return the character's side
+	 * @return The character's side
 	 */
 	public boolean isPlayerNumber() {
 		return this.playerNumber;

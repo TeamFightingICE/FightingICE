@@ -13,20 +13,48 @@ import simulator.Simulator;
  */
 public class GameData {
 
+	/**
+	 * Horizontal size of battle stage
+	 */
 	private int stageWidth;
 
+	/**
+	 * Vertical size of battle stage
+	 */
 	private int stageHeight;
 
+	/**
+	 * Value of HP limits
+	 */
 	private int[] maxHPs;
 
+	/**
+	 * Value of energy limits
+	 */
 	private int[] maxEnergies;
 
+	/**
+	 * Returns MotionData of the character
+	 */
 	private ArrayList<ArrayList<MotionData>> characterMotions;
 
+	/**
+	 * String of character name
+	 */
 	private String[] characterNames;
 
+	/**
+	 * String of AI name
+	 */
 	private String[] aiNames;
 
+	/**
+	 * Simulates the progression of a fight starting from a given
+	 * {@link FrameData} instance and executing specified actions for both
+	 * players.
+	 *
+	 * @see Simulator
+	 */
 	private Simulator simulator;
 
 	/**
