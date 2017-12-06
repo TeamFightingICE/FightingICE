@@ -18,10 +18,21 @@ public class LetterImage {
 
 	private HashMap<Character, Image> letterImageMap;
 
+	/**
+	 * LetterImageクラスのデフォルトコンストラクタ．
+	 */
 	public LetterImage() {
 
 	}
 
+	/**
+	 * 文字画像インスタンスを生成するためのコンストラクタ．
+	 * 文字フォントと，アンチエイリアシング処理を行うかどうかを引数としてインスタンスの初期化を行う．
+	 * 引数に対応した処理が施された英数字及び記号の画像がハッシュマップに登録される．
+	 *
+	 * @param font 文字フォント
+	 * @param antiAliasing アンチエイリアシング処理を行うかどうか(true or false)
+	 */
 	public LetterImage(Font font, boolean antiAliasing) {
 		this.font = font;
 		this.antiAliasing = antiAliasing;
@@ -30,6 +41,13 @@ public class LetterImage {
 		createLetterImage();
 	}
 
+	/**
+	 * 文字を引数として，文字画像を取得するgetterメソッド．
+	 *
+	 * @param letter 画像として表示させる文字
+	 * @return 検索された文字の画像
+	 *         文字画像が存在しない場合はnullを返す．
+	 */
 	public Image getLetterImage(char letter) {
 		return letterImageMap.get(letter);
 	}
