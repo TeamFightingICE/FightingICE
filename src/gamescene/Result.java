@@ -97,17 +97,22 @@ public class Result extends GameScene {
 					this.setNextGameScene(launcher);
 
 					// まだ全AIの総当り対戦が終わっていない場合
-				} else if (FlagSetting.allCombinationFlag && !isRoundRobinEnd()) {
+				} else if (FlagSetting.allCombinationFlag) {
 					if (++AIContainer.p1Index == AIContainer.allAINameList.size()) {
 						AIContainer.p1Index = 0;
 						AIContainer.p2Index++;
 					}
 
-					Launcher launcher = new Launcher(GameSceneName.PLAY);
-					this.setTransitionFlag(true);
-					this.setNextGameScene(launcher);
+					// 総当り対戦が終了したかどうか
+					if (!endRoundRobin()) {
+						Launcher launcher = new Launcher(GameSceneName.PLAY);
+						this.setTransitionFlag(true);
+						this.setNextGameScene(launcher);
+					} else {
+						this.setGameEndFlag(true);
+					}
 
-					// 総当り対戦が終了 or 指定した繰り返し回数分対戦が終わった場合
+					// 指定した繰り返し回数分対戦が終わった場合
 				} else {
 					this.setGameEndFlag(true);
 				}
@@ -156,8 +161,8 @@ public class Result extends GameScene {
 	 *
 	 * @return true: 全AIの総当り対戦が終わった; false: otherwise
 	 */
-	private boolean isRoundRobinEnd() {
-		return AIContainer.p1Index == AIContainer.allAINameList.size()
-				&& AIContainer.p2Index == AIContainer.allAINameList.size();
+	private boolean endRoundRobin() {
+		return (AIContainer.p1Index + 1) == AIContainer.allAINameList.size()
+				&& (AIContainer.p2Index + 1) == AIContainer.allAINameList.size();
 	}
 }
