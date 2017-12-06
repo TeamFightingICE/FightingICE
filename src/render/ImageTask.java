@@ -15,6 +15,7 @@ public class ImageTask extends RenderTask {
 	private int posY;
 	private boolean direction;
 
+	/** コンストラクタ */
 	public ImageTask() {
 		this.textureId = -1;
 		this.posX = -1;
@@ -24,6 +25,15 @@ public class ImageTask extends RenderTask {
 		this.direction = true;
 	}
 
+	/**
+	 * インスタンスの初期値をセットする場合のコンストラクタ．<br>
+	 * 画像を直接指定してテクスチャID，幅，高さを取得する．
+	 *
+	 * @param img 画像
+	 * @param x 画像を描画するX座標
+	 * @param y 画像を描画するY座標
+	 * @param dir 画像の左右の向き(右がtrue)
+	 */
 	public ImageTask(Image img, int x, int y, boolean dir) {
 		this.textureId = img.getTextureId();
 		this.posX = x;
@@ -33,6 +43,16 @@ public class ImageTask extends RenderTask {
 		this.direction = dir;
 	}
 
+	/**
+	 * インスタンスの初期値をセットする場合のコンストラクタ．
+	 *
+	 * @param id 画像テクスチャのID
+	 * @param x 画像を描画するX座標
+	 * @param y 画像を描画するY座標
+	 * @param width 画像の幅
+	 * @param height 画像の高さ
+	 * @param dir 画像の左右の向き(右がtrue)
+	 */
 	public ImageTask(int id, int x, int y, int width, int height, boolean dir) {
 		this.textureId = id;
 		this.posX = x;
@@ -42,6 +62,10 @@ public class ImageTask extends RenderTask {
 		this.direction = dir;
 	}
 
+	/**
+	 * 画像をレンダリングするメソッド．<br>
+	 * テクスチャを貼り付けた四角形を用意して画像をレンダリングする．
+	 */
 	@Override
 	public void render() {
 		GL11.glEnable(GL_TEXTURE_2D);
