@@ -10,6 +10,7 @@ import informationcontainer.RoundResult;
 import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
+import python.PyManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -85,52 +86,7 @@ public class Result extends GameScene {
 			}
 		}
 
-		// -aや-nを引数にして起動 or Repeat Countを2以上にして起動した場合の処理
-		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag) {
-			if (++this.displayedTime > 300) {
-				// まだ繰り返し回数が残っている場合
-				if (FlagSetting.automationFlag && LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
-					LaunchSetting.repeatedCount++;
-
-					Launcher launcher = new Launcher(GameSceneName.PLAY);
-					this.setTransitionFlag(true);
-					this.setNextGameScene(launcher);
-
-					// まだ全AIの総当り対戦が終わっていない場合
-				} else if (FlagSetting.allCombinationFlag) {
-					if (++AIContainer.p1Index == AIContainer.allAINameList.size()) {
-						AIContainer.p1Index = 0;
-						AIContainer.p2Index++;
-					}
-
-					// 総当り対戦が終了したかどうか
-					if (!endRoundRobin()) {
-						Launcher launcher = new Launcher(GameSceneName.PLAY);
-						this.setTransitionFlag(true);
-						this.setNextGameScene(launcher);
-					} else {
-						this.setGameEndFlag(true);
-					}
-
-					// 指定した繰り返し回数分対戦が終わった場合
-				} else {
-					this.setGameEndFlag(true);
-				}
-			}
-
-			// 通常の対戦の場合, Enterキーが押されるまでResult画面を表示する
-		} else {
-			String string = "Press Enter key to return menu";
-			GraphicManager.getInstance().drawString(string, GameSetting.STAGE_WIDTH / 2 - string.length() * 5 - 30,
-					400);
-
-			if (Keyboard.getKeyDown(GLFW_KEY_ENTER)) {
-				HomeMenu homeMenu = new HomeMenu();
-				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-				this.setNextGameScene(homeMenu); // 次のシーンをセットする
-			}
-		}
-
+		endProcess();
 	}
 
 	@Override
@@ -164,5 +120,62 @@ public class Result extends GameScene {
 	private boolean endRoundRobin() {
 		return (AIContainer.p1Index + 1) == AIContainer.allAINameList.size()
 				&& (AIContainer.p2Index + 1) == AIContainer.allAINameList.size();
+	}
+
+	private void endProcess() {
+		// -aや-nを引数にして起動 or Repeat Countを2以上にして起動した場合の処理
+		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag || FlagSetting.py4j) {
+			if (++this.displayedTime > 300) {
+				// まだ繰り返し回数が残っている場合
+				if (FlagSetting.automationFlag && LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
+					LaunchSetting.repeatedCount++;
+
+					Launcher launcher = new Launcher(GameSceneName.PLAY);
+					this.setTransitionFlag(true);
+					this.setNextGameScene(launcher);
+
+					// まだ全AIの総当り対戦が終わっていない場合
+				} else if (FlagSetting.allCombinationFlag) {
+					if (++AIContainer.p1Index == AIContainer.allAINameList.size()) {
+						AIContainer.p1Index = 0;
+						AIContainer.p2Index++;
+					}
+
+					// 総当り対戦が終了したかどうか
+					if (!endRoundRobin()) {
+						Launcher launcher = new Launcher(GameSceneName.PLAY);
+						this.setTransitionFlag(true);
+						this.setNextGameScene(launcher);
+					} else {
+						this.setGameEndFlag(true);
+					}
+
+				} else if (FlagSetting.py4j) {
+					synchronized (PyManager.python.getCurrentGame().end) {
+						PyManager.python.getCurrentGame().end.notifyAll();
+					}
+					LaunchSetting.pyGatewayServer.close();
+					Python python = new Python();
+					this.setTransitionFlag(true);
+					this.setNextGameScene(python);
+
+					// 指定した繰り返し回数分対戦が終わった場合
+				} else {
+					this.setGameEndFlag(true);
+				}
+			}
+
+			// 通常の対戦の場合, Enterキーが押されるまでResult画面を表示する
+		} else {
+			String string = "Press Enter key to return menu";
+			GraphicManager.getInstance().drawString(string, GameSetting.STAGE_WIDTH / 2 - string.length() * 5 - 30,
+					400);
+
+			if (Keyboard.getKeyDown(GLFW_KEY_ENTER)) {
+				HomeMenu homeMenu = new HomeMenu();
+				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+				this.setNextGameScene(homeMenu); // 次のシーンをセットする
+			}
+		}
 	}
 }

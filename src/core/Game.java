@@ -9,6 +9,7 @@ import enumerate.BackgroundType;
 import enumerate.GameSceneName;
 import gamescene.HomeMenu;
 import gamescene.Launcher;
+import gamescene.Python;
 import image.LetterImage;
 import informationcontainer.AIContainer;
 import loader.ResourceLoader;
@@ -128,7 +129,12 @@ public class Game extends GameManager {
 
 			Launcher launcher = new Launcher(GameSceneName.PLAY);
 			this.startGame(launcher);
-		} else {
+
+		} else if(FlagSetting.py4j){
+			Python python = new Python();
+			this.startGame(python);
+
+		}else{
 			HomeMenu homeMenu = new HomeMenu();
 			this.startGame(homeMenu);
 		}
