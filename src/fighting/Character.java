@@ -18,11 +18,21 @@ import struct.CharacterData;
 import struct.HitArea;
 import struct.Key;
 
+/**
+ * キャラクターのHPやエネルギー、座標などのキャラクターに関するデータを扱うクラス
+ */
 public class Character {
+
+	/**
+	 * The character's side.<br>
+	 * True: the character is P1; false: the character is P2.
+	 */
 	private boolean playerNumber;
 
+	/** The character's HP. */
 	private int hp;
 
+	/** The character's energy. */
 	private int energy;
 
 	/** キャラクター画像の最も左端のx座標 */
@@ -31,20 +41,35 @@ public class Character {
 	/** キャラクター画像の最も上端のy座標 */
 	private int y;
 
+	/** The character's horizontal speed. */
 	private int speedX;
 
+	/** The character's vertical speed. */
 	private int speedY;
 
+	/** The character's state: STAND / CROUCH/ AIR / DOWN. */
 	private State state;
 
+	/** The character's action. */
 	private Action action;
 
+	/**
+	 * The character's facing direction<br>
+	 * true: facing right; false: facing left).
+	 */
 	private boolean front;
 
+	/**
+	 * The flag whether this character is able to control (true) or not (false).
+	 */
 	private boolean control;
 
 	private Attack attack;
 
+	/**
+	 * The number of frames that the character needs to resume to its normal
+	 * status.
+	 */
 	private int remainingFrame;
 
 	/**
@@ -52,23 +77,41 @@ public class Character {
 	 */
 	private boolean hitConfirm;
 
+	/** The character's graphic width. */
 	private int graphicSizeX;
 
+	/** The character's graphic height. */
 	private int graphicSizeY;
 
+	/** キャラクターの正面判定時に,x座標を調整するために用いる水平方向の移動量 */
 	private int graphicAdjustX;
 
+	/** 最後の攻撃が当たった時のフレームナンバー */
 	private int lastHitFrame;
 
+	/**
+	 * The list storing keys of the action that the character will be executing
+	 * in the simulator.
+	 */
 	private Deque<Key> inputCommands;
 
+	/**
+	 * The list storing up to 30 keys that the character executed in the
+	 * simulator.
+	 */
 	private Deque<Key> processedCommands;
 
+	/**
+	 * キャラクターのモーションリスト
+	 */
 	private ArrayList<Motion> motionList;
 
 	/** 攻撃の連続ヒット数 */
 	private int hitCount;
 
+	/**
+	 * Characterを初期化するコンストラクタ
+	 */
 	public Character() {
 		initializeList();
 
@@ -93,6 +136,12 @@ public class Character {
 		this.hitCount = 0;
 	}
 
+	/**
+	 * 指定されたデータでCharacterを更新するコンストラクタ
+	 *
+	 * @param character
+	 *            キャラクターのデータ
+	 */
 	public Character(Character character) {
 		initializeList();
 
@@ -148,6 +197,14 @@ public class Character {
 		this.hitCount = characterData.getHitCount();
 	}
 
+	/**
+	 * テキストファイルの情報からキャラクターの大きさを初期化する
+	 *
+	 * @param characterName
+	 *            キャラクターの名前
+	 * @param playerNumber
+	 *            プレイヤー番号 (0: P1, 1: P2)
+	 */
 	public void initialize(String characterName, boolean playerNumber) {
 		try {
 			// gSetting.txtは名前や内容変える可能性大
@@ -169,6 +226,9 @@ public class Character {
 		setMotionList(characterName);
 	}
 
+	/**
+	 * リストのデータを初期化する
+	 */
 	public void initializeList() {
 		this.inputCommands = new LinkedList<Key>();
 		this.processedCommands = new LinkedList<Key>();
@@ -518,51 +578,118 @@ public class Character {
 		}
 	}
 
+	/**
+	 * Destroys the actual motion.
+	 */
 	public void destroyAttackInstance() {
 		this.attack = null;
 	}
 
+	/**
+	 * Returns the character's side.<br>
+	 * True: the character is P1; false: the character is P2.
+	 *
+	 * @return The character's side
+	 */
 	public boolean isPlayerNumber() {
 		return this.playerNumber;
 	}
 
+	/**
+	 * Returns the character's facing direction.
+	 *
+	 * @return The character's facing direction (true for facing right; false
+	 *         for facing left).
+	 */
 	public boolean isFront() {
 		return this.front;
 	}
 
+	/**
+	 * Returns the flag whether this character can run a new motion with the
+	 * motion's command.
+	 *
+	 * @return The flag whether this character is able to control (true) or not
+	 *         (false).
+	 */
 	public boolean isControl() {
 		return this.control;
 	}
 
 	////// Getter//////
+
+	/**
+	 * Returns the character's HP.
+	 *
+	 * @return The character's HP
+	 */
 	public int getHp() {
 		return this.hp;
 	}
 
+	/**
+	 * Returns the character's energy.
+	 *
+	 * @return The character's energy
+	 */
 	public int getEnergy() {
 		return this.energy;
 	}
 
+	/**
+	 * Returns the character graphic's most top-left x-coordinate.
+	 *
+	 * @return The character graphic's most top-left x-coordinate.
+	 */
 	public int getX() {
 		return this.x;
 	}
 
+	/**
+	 * Returns the character graphic's most top-left y-coordinate.
+	 *
+	 * @return The character graphic's most top-left y-coordinate.
+	 */
 	public int getY() {
 		return this.y;
 	}
 
+	/**
+	 * Returns the character's horizontal speed.
+	 *
+	 * @return The character's horizontal speed
+	 */
 	public int getSpeedX() {
 		return this.speedX;
 	}
 
+	/**
+	 * Returns the character's vertical speed.
+	 *
+	 * @return The character's vertical speed
+	 */
 	public int getSpeedY() {
 		return this.speedY;
 	}
 
+	/**
+	 * Returns the character's state: STAND / CROUCH/ AIR / DOWN.
+	 *
+	 * @return The character's state: STAND / CROUCH/ AIR / DOWN
+	 *
+	 * @see State
+	 */
 	public State getState() {
 		return this.state;
 	}
 
+	/**
+	 * Returns the character's action.
+	 *
+	 * @return The character's action
+	 *
+	 * @see Action
+	 */
 	public Action getAction() {
 		return this.action;
 	}
@@ -600,10 +727,16 @@ public class Character {
 
 	}
 
+	/**
+	 * @return The character's hit box's x-coordinate.
+	 */
 	public int getHitAreaCenterX() {
 		return (getHitAreaRight() + getHitAreaLeft()) / 2;
 	}
 
+	/**
+	 * @return The character's hit box's y-coordinate.
+	 */
 	public int getHitAreaCenterY() {
 		return (getHitAreaTop() + getHitAreaBottom()) / 2;
 	}
@@ -627,26 +760,61 @@ public class Character {
 		return this.hitConfirm;
 	}
 
+	/**
+	 * Returns the number of frames that the character needs to resume to its
+	 * normal status.
+	 *
+	 * @return The number of frames that the character needs to resume to its
+	 *         normal status
+	 */
 	public int getRemainingFrame() {
 		return this.remainingFrame;
 	}
 
+	/**
+	 * Returns the attack that the character is using.
+	 *
+	 * @return The attack that the character is using
+	 *
+	 * @see Attack
+	 */
 	public Attack getAttack() {
 		return this.attack;
 	}
 
+	/**
+	 * x座標を調整するために用いる水平方向の移動量を返す.<br>
+	 * キャラクターの正面判定時に用いられる.
+	 *
+	 * @return x座標を調整するために用いる水平方向の移動量
+	 */
 	public int getGraphicAdjustX() {
 		return this.graphicAdjustX;
 	}
 
+	/**
+	 * Returns the character's graphic width.
+	 *
+	 * @return The character's graphic width.
+	 */
 	public int getGraphicSizeX() {
 		return this.graphicSizeX;
 	}
 
+	/**
+	 * Returns the character's graphic height.
+	 *
+	 * @return The character's graphic height.
+	 */
 	public int getGraphicSizeY() {
 		return this.graphicSizeY;
 	}
 
+	/**
+	 * キャラクターのモーションリストを返す
+	 *
+	 * @return キャラクターのモーションリスト
+	 */
 	public ArrayList<Motion> getMotionList() {
 		ArrayList<Motion> temp = new ArrayList<Motion>();
 		for (Motion motion : this.motionList) {
@@ -702,10 +870,20 @@ public class Character {
 		return this.hitCount;
 	}
 
+	/**
+	 * 最後の攻撃が当たった時のフレームナンバーを返す.
+	 *
+	 * @return 最後の攻撃が当たった時のフレームナンバー
+	 */
 	public int getLastHitFrame() {
 		return this.lastHitFrame;
 	}
 
+	/**
+	 * エクストラダメージを返す
+	 *
+	 * @return エクストラダメージ
+	 */
 	public int getExtraDamage() {
 		int requireHit = 4; // ボーナスダメージに必要な最小限のヒット数
 		int damage = 5; // ボーナスダメージ
@@ -714,34 +892,85 @@ public class Character {
 	}
 
 	////// Setter//////
+
+	/**
+	 * Sets the character's HP.
+	 *
+	 * @param hp
+	 *            The amount of HP.
+	 */
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
 
+	/**
+	 * Sets the character's energy.
+	 *
+	 * @param energy
+	 *            The amount of energy.
+	 */
 	public void setEnergy(int energy) {
 		this.energy = energy;
 	}
 
+	/**
+	 * Sets the character's horizontal position.
+	 *
+	 * @param x
+	 *            The horizontal position.
+	 */
 	public void setX(int x) {
 		this.x = x;
 	}
 
+	/**
+	 * Sets the character's vertical position.
+	 *
+	 * @param y
+	 *            The vertical position.
+	 */
 	public void setY(int y) {
 		this.y = y;
 	}
 
+	/**
+	 * Sets the character's horizontal speed.
+	 *
+	 * @param speedX
+	 *            Horizontal speed.
+	 */
 	public void setSpeedX(int speedX) {
 		this.speedX = speedX;
 	}
 
+	/**
+	 * Sets the character's vertical speed.
+	 *
+	 * @param speedY
+	 *            Vertical speed.
+	 */
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
 	}
 
+	/**
+	 * Sets the character's state.
+	 *
+	 * @param state
+	 *            A given state.
+	 * @see State
+	 */
 	public void setState(State state) {
 		this.state = state;
 	}
 
+	/**
+	 * Sets the character's action.
+	 *
+	 * @param action
+	 *            A given action.
+	 * @see Action
+	 */
 	public void setAction(Action action) {
 		this.action = action;
 	}
@@ -756,26 +985,71 @@ public class Character {
 		this.hitConfirm = hitConfirm;
 	}
 
+	/**
+	 * Sets the character's facing direction.
+	 *
+	 * @param front
+	 *            The character's facing direction (true for facing right; false
+	 *            for facing left).
+	 */
 	public void setFront(boolean front) {
 		this.front = front;
 	}
 
+	/**
+	 * Sets the flag whether this character can run a new motion with the
+	 * motion's command.
+	 *
+	 * @param control
+	 *            The boolean value to set (true if the character can run a
+	 *            motion, false otherwise).
+	 */
 	public void setControl(boolean control) {
 		this.control = control;
 	}
 
+	/**
+	 * Sets the number of frames that the character needs to resume to its
+	 * normal status.
+	 *
+	 * @param remainingFrame
+	 *            The number of frames that the character needs to resume to its
+	 *            normal status you want to set.
+	 */
 	public void setRemainingFrame(int remainingFrame) {
 		this.remainingFrame = remainingFrame;
 	}
 
+	/**
+	 * Sets the character's attack.
+	 *
+	 * @param attack
+	 *            The attack you want to set.
+	 *
+	 * @see Attack
+	 */
 	public void setAttack(Attack attack) {
 		this.attack = attack;
 	}
 
+	/**
+	 *
+	 * Sets the width of the character's graphic.
+	 *
+	 * @param graphicSizeX
+	 *            The width of the character's graphic.
+	 */
 	public void setGraphicSizeX(int graphicSizeX) {
 		this.graphicSizeX = graphicSizeX;
 	}
 
+	/**
+	 *
+	 * Sets the height of the character's graphic.
+	 *
+	 * @param graphicSizeY
+	 *            The height of the character's graphic.
+	 */
 	public void setGraphicSizeY(int graphicSizeY) {
 		this.graphicSizeY = graphicSizeY;
 	}
@@ -785,7 +1059,7 @@ public class Character {
 	 * Sets motions.
 	 *
 	 * @param characterName
-	 *            the character's name.
+	 *            The character's name.
 	 */
 	private void setMotionList(String characterName) {
 		try {
@@ -808,10 +1082,21 @@ public class Character {
 		}
 	}
 
+	/**
+	 * Sets a boolean value whether the motion hits the opponent or not
+	 *
+	 * @param hitConfirm
+	 *            A boolean value whether the motion hits the opponent or not
+	 */
 	public void setHitCount(int hitCount) {
 		this.hitCount = hitCount;
 	}
 
+	/**
+	 * 最後の攻撃が当たった時のフレームナンバーをセットする.
+	 *
+	 * @return 最後の攻撃が当たった時のフレームナンバー
+	 */
 	public void setLastHitFrame(int currentFrame) {
 		this.lastHitFrame = currentFrame;
 	}
@@ -844,7 +1129,7 @@ public class Character {
 	 * Get a boolean value whether the combo is still valid or not.
 	 *
 	 * @param nowFrame
-	 *            the current frame.
+	 *            The current frame.
 	 *
 	 * @return <em>True</em> if the combo is still valid, <em>False</em>
 	 *         otherwise.
