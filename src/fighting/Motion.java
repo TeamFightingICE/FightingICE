@@ -181,6 +181,16 @@ public class Motion {
 	 */
 	private ArrayList<Image> imageList;
 
+	/**
+	 * 指定されたデータでMotionを更新するコンストラクタ
+	 *
+	 * @param data
+	 *            アクションの名前
+	 * @param characterName
+	 *            キャラクターの名前
+	 * @param playerIndex
+	 *            プレイヤー番号(0:P1 1:P2)
+	 */
 	public Motion(String[] data, String characterName, int playerIndex) {
 		this.actionName = data[0];
 		this.frameNumber = Integer.valueOf(data[1]);
@@ -217,6 +227,13 @@ public class Motion {
 		setMotionImage(characterName, playerIndex);
 	}
 
+	/**
+	 * 指定荒れたデータでMotionを更新するコンストラクタ
+	 *
+	 * @param motionData
+	 *            モーションデータ
+	 * @see MotionData
+	 */
 	public Motion(MotionData motionData) {
 		this.actionName = motionData.getActionName();
 		this.frameNumber = motionData.getFrameNumber();
@@ -249,6 +266,14 @@ public class Motion {
 		// 画像は読み込まない
 	}
 
+	/**
+	 * キャラクターのモーション画像を設定するメソッド
+	 *
+	 * @param characterName
+	 *            キャラクターの名前
+	 * @param playerIndex
+	 *            プレイヤー番号(0:P1 1:P2)
+	 */
 	private void setMotionImage(String characterName, int playerIndex) {
 		this.imageList = new ArrayList<Image>();
 		ArrayList<CharacterActionImage> temp = GraphicManager.getInstance().getCharacterImageContainer();
@@ -274,6 +299,14 @@ public class Motion {
 		}
 	}
 
+	/**
+	 * 画像を反転させるメソッド
+	 *
+	 * @param image
+	 *            入力画像
+	 * @return 反転された画像
+	 * @see Image
+	 */
 	private Image invert(Image image) {
 		BufferedImage temp = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		BufferedImage invertedImage = image.getBufferedImage();
