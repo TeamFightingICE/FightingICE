@@ -18,10 +18,13 @@ import setting.LaunchSetting;
 
 public class LogWriter {
 
+	/** 試合結果の出力ファイル拡張子を.csvに指定する定数 */
 	public static final int CSV = 0;
 
+	/** 試合結果の出力ファイル拡張子を.txtに指定する定数 */
 	public static final int TXT = 1;
 
+	/** 試合結果の出力ファイル拡張子を.PLOGに指定する定数 */
 	public static final int PLOG = 2;
 
 	/** コンストラクタ */
@@ -35,21 +38,24 @@ public class LogWriter {
 	}
 
 	/**
-	 * このクラスの唯一のインスタンスを返すgetterメソッド
+	 * LogWriterクラスの唯一のインスタンスを取得するgetterメソッド．
 	 *
-	 * @return このクラスの唯一のインスタンス
+	 * @return LogWriterクラスの唯一のインスタンス
 	 */
 	public static LogWriter getInstance() {
 		return LogWriterHolder.instance;
 	}
 
 	/**
-	 * 試合結果を指定した拡張子のファイルへ出力する
+	 * 試合結果を指定した拡張子のファイルへ出力する．<br>
+	 * 引数によって拡張子を指定し，また引数の現在の時間情報は出力ファイル名に用いられる．
 	 *
 	 * @param roundResults
 	 *            各ラウンドの結果を格納しているリスト
 	 * @param extension
 	 *            指定した拡張子
+	 * @param timeInfo
+	 *            現在の時間情報
 	 */
 	public void outputResult(ArrayList<RoundResult> roundResults, int extension, String timeInfo) {
 		String path = "./log/point/";
@@ -77,7 +83,16 @@ public class LogWriter {
 		pw.close();
 	}
 
-	/** リプレイファイルに現フレームのゲーム情報を出力する*/
+	/**
+	 * リプレイファイルのログを出力するメソッド． 現在フレームのキャラクター情報とキー入力のデータが書き込まれる．
+	 *
+	 * @param dos
+	 *            リプレイファイルに書き込みを行うためのデータ出力ストリーム
+	 * @param keyData
+	 *            KeyDataクラスのインスタンス
+	 * @param playerCharacters
+	 *            P1とP2のキャラクターを格納した配列
+	 */
 	public void outputLog(DataOutputStream dos, KeyData keyData, Character[] playerCharacters) {
 		// output log file for replay
 		try {
@@ -90,12 +105,9 @@ public class LogWriter {
 				dos.writeInt(playerCharacters[i].getX());
 				dos.writeInt(playerCharacters[i].getY());
 
-				byte input = (byte) (convertBtoI(keyData.getKeys()[i].A)
-						+ convertBtoI(keyData.getKeys()[i].B) * 2
-						+ convertBtoI(keyData.getKeys()[i].C) * 4
-						+ convertBtoI(keyData.getKeys()[i].D) * 8
-						+ convertBtoI(keyData.getKeys()[i].L) * 16
-						+ convertBtoI(keyData.getKeys()[i].R) * 32
+				byte input = (byte) (convertBtoI(keyData.getKeys()[i].A) + convertBtoI(keyData.getKeys()[i].B) * 2
+						+ convertBtoI(keyData.getKeys()[i].C) * 4 + convertBtoI(keyData.getKeys()[i].D) * 8
+						+ convertBtoI(keyData.getKeys()[i].L) * 16 + convertBtoI(keyData.getKeys()[i].R) * 32
 						+ convertBtoI(keyData.getKeys()[i].U) * 64);
 
 				dos.writeByte(input);
@@ -108,7 +120,12 @@ public class LogWriter {
 
 	}
 
-	/** リプレイファイルに起動モード(HP mode or Time mode)や使用キャラといったヘッダ情報を記述する */
+	/**
+	 * リプレイファイルに起動モード(HP mode or Time mode)や使用キャラといったヘッダ情報を記述するメソッド．
+	 *
+	 * @param dos
+	 *            リプレイファイルに書き込みを行うためのデータ出力ストリーム
+	 */
 	public void writeHeader(DataOutputStream dos) {
 		try {
 			for (int i = 0; i < 2; i++) {
@@ -124,6 +141,17 @@ public class LogWriter {
 		}
 	}
 
+	/**
+	 * 出力ファイルの名前を生成するメソッド．<br>
+	 * "ファイル出力場所のパス+ゲームモード+P1のAI名+P2のAI名+現在時間"をファイル名として返す．
+	 *
+	 * @param path
+	 *            ファイルを出力する場所のパス
+	 * @param timeInfo
+	 *            現在の時間情報
+	 *
+	 * @return 出力ファイル名
+	 */
 	public String createOutputFileName(String path, String timeInfo) {
 		String mode = FlagSetting.limitHpFlag ? "HPMode" : "TimeMode";
 

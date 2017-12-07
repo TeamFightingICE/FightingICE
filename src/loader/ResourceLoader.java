@@ -47,6 +47,11 @@ public class ResourceLoader {
 		this.loadedGraphics = new ArrayList<String>();
 	}
 
+	/**
+	 * ResourceLoaderクラスの唯一のインスタンスを取得するgetterメソッド．
+	 *
+	 * @return ResourceLoaderクラスの唯一のインスタンス
+	 */
 	public static ResourceLoader getInstance() {
 		return ResourceLoaderHolder.instance;
 	}

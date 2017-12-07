@@ -27,6 +27,11 @@ public class ResourceDrawer {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceDrawer.class.getName());
 	}
 
+	/**
+	 * ResourceDrawerクラスの唯一のインスタンスを取得するgetterメソッド．
+	 *
+	 * @return ResourceDrawerクラスの唯一のインスタンス
+	 */
 	public static ResourceDrawer getInstance() {
 		return ResourceDrawerHolder.instance;
 	}

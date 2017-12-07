@@ -66,7 +66,11 @@ public class GraphicManager {
 
 	}
 
-	/** GraphicManagerクラスの唯一のインスタンスを取得するメソッド． */
+	/**
+	 * GraphicManagerクラスの唯一のインスタンスを取得するgetterメソッド．
+	 *
+	 * @return GameManagerクラスの唯一のインスタンス
+	 */
 	public static GraphicManager getInstance() {
 		return GraphicManagerHolder.instance;
 	}
@@ -172,10 +176,14 @@ public class GraphicManager {
 	 * 画像をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．<br>
 	 * 画像，画像をレンダリングするX座標とY座標(この座標で画像の左上端からレンダリングされる)，画像の左右の向きを引数で指定する．
 	 *
-	 * @param img 画像
-	 * @param x 画像をレンダリングするX座標
-	 * @param y 画像をレンダリングするY座標
-	 * @param direction 画像の左右の向き(右がtrue)
+	 * @param img
+	 *            画像
+	 * @param x
+	 *            画像をレンダリングするX座標
+	 * @param y
+	 *            画像をレンダリングするY座標
+	 * @param direction
+	 *            画像の左右の向き(右がtrue)
 	 */
 	public void drawImage(Image img, int x, int y, boolean direction) {
 		ImageTask task = new ImageTask(img, x, y, direction);
@@ -187,12 +195,18 @@ public class GraphicManager {
 	 * 画像，画像をレンダリングするX座標とY座標(この座標で画像の左上端からレンダリングされる)，
 	 * 画像のX軸サイズとY軸サイズ，画像の左右の向きを引数で指定する．
 	 *
-	 * @param img 画像
-	 * @param x 画像をレンダリングするX座標
-	 * @param y 画像をレンダリングするY座標
-	 * @param sizeX 画像のX軸サイズ
-	 * @param sizeY 画像のY軸サイズ
-	 * @param direction 画像の左右の向き(右がtrue)
+	 * @param img
+	 *            画像
+	 * @param x
+	 *            画像をレンダリングするX座標
+	 * @param y
+	 *            画像をレンダリングするY座標
+	 * @param sizeX
+	 *            画像のX軸サイズ
+	 * @param sizeY
+	 *            画像のY軸サイズ
+	 * @param direction
+	 *            画像の左右の向き(右がtrue)
 	 */
 	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction) {
 		ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
@@ -202,9 +216,12 @@ public class GraphicManager {
 	/**
 	 * 文字画像をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．
 	 *
-	 * @param string 文字
-	 * @param x 文字画像をレンダリングするX座標
-	 * @param y 文字画像をレンダリングするY座標
+	 * @param string
+	 *            文字
+	 * @param x
+	 *            文字画像をレンダリングするX座標
+	 * @param y
+	 *            文字画像をレンダリングするY座標
 	 */
 	public void drawString(String string, int x, int y) {
 		StringTask task = new StringTask(letterImage, string, x, y);
@@ -215,14 +232,22 @@ public class GraphicManager {
 	 * 指定色で塗りつぶされた四角形をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．<br>
 	 * 塗りつぶし色は引数で指定することができる．
 	 *
-	 * @param x 四角形をレンダリングするX座標
-	 * @param y 四角形をレンダリングするY座標
-	 * @param sizeX 四角形のX軸サイズ
-	 * @param sizeY 四角形のY軸サイズ
-	 * @param red 塗りつぶし色の赤み
-	 * @param green 塗りつぶし色の緑み
-	 * @param blue 塗りつぶし色の青み
-	 * @param alpha 塗りつぶし色の不透明度
+	 * @param x
+	 *            四角形をレンダリングするX座標
+	 * @param y
+	 *            四角形をレンダリングするY座標
+	 * @param sizeX
+	 *            四角形のX軸サイズ
+	 * @param sizeY
+	 *            四角形のY軸サイズ
+	 * @param red
+	 *            塗りつぶし色の赤み
+	 * @param green
+	 *            塗りつぶし色の緑み
+	 * @param blue
+	 *            塗りつぶし色の青み
+	 * @param alpha
+	 *            塗りつぶし色の不透明度
 	 */
 	public void drawQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
 		QuadTask task = new QuadTask(QuadTask.FILLED_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
@@ -233,14 +258,22 @@ public class GraphicManager {
 	 * 線で四角形をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．<br>
 	 * 線の色は引数で指定することができる．
 	 *
-	 * @param x 四角形をレンダリングするX座標
-	 * @param y 四角形をレンダリングするY座標
-	 * @param sizeX 四角形のX軸サイズ
-	 * @param sizeY 四角形のY軸サイズ
-	 * @param red 線の赤み
-	 * @param green 線の緑み
-	 * @param blue 線の青み
-	 * @param alpha 線の色の不透明度
+	 * @param x
+	 *            四角形をレンダリングするX座標
+	 * @param y
+	 *            四角形をレンダリングするY座標
+	 * @param sizeX
+	 *            四角形のX軸サイズ
+	 * @param sizeY
+	 *            四角形のY軸サイズ
+	 * @param red
+	 *            線の赤み
+	 * @param green
+	 *            線の緑み
+	 * @param blue
+	 *            線の青み
+	 * @param alpha
+	 *            線の色の不透明度
 	 */
 	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
 		QuadTask task = new QuadTask(QuadTask.LINE_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
@@ -250,7 +283,8 @@ public class GraphicManager {
 	/**
 	 * 引数で指定された文字フォントを設定するsetterメソッド．
 	 *
-	 * @param lf 文字フォント
+	 * @param lf
+	 *            文字フォント
 	 */
 	public void setLetterFont(LetterImage lf) {
 		this.letterImage = lf;

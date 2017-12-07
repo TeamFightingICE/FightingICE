@@ -14,9 +14,9 @@ public class DeleteFiles {
 	}
 
 	/**
-	 * このクラスの唯一のインスタンスを返すgetterメソッド
+	 * DeleteFilesクラスの唯一のインスタンスを取得するgetterメソッド．
 	 *
-	 * @return このクラスの唯一のインスタンス
+	 * @return DeleteFilesクラスの唯一のインスタンス
 	 */
 	public static DeleteFiles getInstance() {
 		return DeleteFilesHolder.instance;
