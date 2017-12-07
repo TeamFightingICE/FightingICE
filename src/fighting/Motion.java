@@ -185,7 +185,7 @@ public class Motion {
 	 * 指定されたデータでMotionを更新するコンストラクタ
 	 *
 	 * @param data
-	 *            アクションの名前
+	 *            Motion.csvから読み込んできたキャラクターのパラメータなどのデータ
 	 * @param characterName
 	 *            キャラクターの名前
 	 * @param playerIndex
@@ -228,7 +228,7 @@ public class Motion {
 	}
 
 	/**
-	 * 指定荒れたデータでMotionを更新するコンストラクタ
+	 * 指定されたデータでMotionを更新するコンストラクタ
 	 *
 	 * @param motionData
 	 *            モーションデータ

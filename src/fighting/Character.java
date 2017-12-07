@@ -579,7 +579,7 @@ public class Character {
 	}
 
 	/**
-	 * Destroy the actual motion.
+	 * Destroys the actual motion.
 	 */
 	public void destroyAttackInstance() {
 		this.attack = null;
@@ -640,9 +640,6 @@ public class Character {
 	 * Returns the character graphic's most top-left x-coordinate.
 	 *
 	 * @return The character graphic's most top-left x-coordinate.
-	 * @deprecated Use {@link #getLeft()} or {@link #getRight()} or
-	 *             {@link #getCenterX()} instead
-	 *
 	 */
 	public int getX() {
 		return this.x;
@@ -652,9 +649,6 @@ public class Character {
 	 * Returns the character graphic's most top-left y-coordinate.
 	 *
 	 * @return The character graphic's most top-left y-coordinate.
-	 * @deprecated Use {@link #getTop()} or {@link #getBottom()} or
-	 *             {@link #getCenterY()} instead
-	 *
 	 */
 	public int getY() {
 		return this.y;
@@ -903,7 +897,7 @@ public class Character {
 	 * Sets the character's HP.
 	 *
 	 * @param hp
-	 *            Amount of HP.
+	 *            The amount of HP.
 	 */
 	public void setHp(int hp) {
 		this.hp = hp;
@@ -913,7 +907,7 @@ public class Character {
 	 * Sets the character's energy.
 	 *
 	 * @param energy
-	 *            Amount of energy.
+	 *            The amount of energy.
 	 */
 	public void setEnergy(int energy) {
 		this.energy = energy;
@@ -923,7 +917,7 @@ public class Character {
 	 * Sets the character's horizontal position.
 	 *
 	 * @param x
-	 *            Horizontal value.
+	 *            The horizontal position.
 	 */
 	public void setX(int x) {
 		this.x = x;
@@ -933,7 +927,7 @@ public class Character {
 	 * Sets the character's vertical position.
 	 *
 	 * @param y
-	 *            Vertical value.
+	 *            The vertical position.
 	 */
 	public void setY(int y) {
 		this.y = y;
@@ -1043,7 +1037,7 @@ public class Character {
 	 * Sets the width of the character's graphic.
 	 *
 	 * @param graphicSizeX
-	 *            the width of the character's graphic.
+	 *            The width of the character's graphic.
 	 */
 	public void setGraphicSizeX(int graphicSizeX) {
 		this.graphicSizeX = graphicSizeX;
@@ -1054,7 +1048,7 @@ public class Character {
 	 * Sets the height of the character's graphic.
 	 *
 	 * @param graphicSizeY
-	 *            the height of the character's graphic.
+	 *            The height of the character's graphic.
 	 */
 	public void setGraphicSizeY(int graphicSizeY) {
 		this.graphicSizeY = graphicSizeY;
@@ -1065,7 +1059,7 @@ public class Character {
 	 * Sets motions.
 	 *
 	 * @param characterName
-	 *            the character's name.
+	 *            The character's name.
 	 */
 	private void setMotionList(String characterName) {
 		try {
@@ -1135,7 +1129,7 @@ public class Character {
 	 * Get a boolean value whether the combo is still valid or not.
 	 *
 	 * @param nowFrame
-	 *            the current frame.
+	 *            The current frame.
 	 *
 	 * @return <em>True</em> if the combo is still valid, <em>False</em>
 	 *         otherwise.
