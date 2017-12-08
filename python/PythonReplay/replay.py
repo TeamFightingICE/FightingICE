@@ -9,9 +9,6 @@ manager = gateway.entry_point
 print("Replay: Loading")
 replay = manager.loadReplay("Replay_File_Name") # Load replay data
 
-replay.setInvertedPlayer(1)  # Set the character number you want to invert (1: P1, 2: P2)
-replay.setEnableBackground(False) # True: original background, False: no background (black)
-
 print("Replay: Init")
 replay.init()
 

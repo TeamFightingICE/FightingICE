@@ -1,13 +1,13 @@
 package python;
 
-import manager.GraphicManager;
-import manager.InputManager;
-import manager.SoundManager;
-
 public class PyReplay implements StateInhibitor {
 
+	public PyReplay() {
+		// TODO 自動生成されたコンストラクター・スタブ
+	}
+
 	@Override
-	public void update(GraphicManager gm, SoundManager sm, InputManager<?> im) {
+	public void update() {
 
 
 	}

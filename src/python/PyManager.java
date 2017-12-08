@@ -3,6 +3,7 @@ package python;
 import aiinterface.AIInterface;
 import gamescene.Python;
 import manager.InputManager;
+import setting.LaunchSetting;
 
 public class PyManager {
 
@@ -70,6 +71,14 @@ public class PyManager {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public PyReplay loadReplay(String fileName) {
+		PyReplay pyReplay = new PyReplay();
+		LaunchSetting.replayName = fileName;
+
+		return pyReplay;
+
 	}
 
 }

@@ -1,6 +1,5 @@
 package python;
 
-import enumerate.BackgroundType;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 
@@ -23,8 +22,6 @@ public class PyGame {
 
 		this.end = new Object();
 
-		LaunchSetting.backgroundType = BackgroundType.GREY;
-		LaunchSetting.invertedPlayer = 0;
 		LaunchSetting.characterNames[0] = c1;
 		LaunchSetting.characterNames[1] = c2;
 		LaunchSetting.aiNames[0] = name1;
