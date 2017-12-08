@@ -2,7 +2,6 @@ package gamescene;
 
 import enumerate.GameSceneName;
 import manager.GraphicManager;
-import manager.InputManager;
 import python.PyGame;
 import python.PyGatewayServer;
 import python.StateInhibitor;
@@ -10,9 +9,8 @@ import setting.LaunchSetting;
 
 public class Python extends GameScene {
 
-	private StateInhibitor stateInhibitor = null;
-
-	private boolean needRun = false;
+	private StateInhibitor stateInhibitor;
+	boolean needRun = false;
 
 	private PyGame currentGame;
 
@@ -30,16 +28,13 @@ public class Python extends GameScene {
 		this.stateInhibitor = null;
 		this.needRun = false;
 
-		LaunchSetting.deviceTypes[0] = InputManager.DEVICE_TYPE_AI;
-		LaunchSetting.deviceTypes[1] = InputManager.DEVICE_TYPE_AI;
-
 		LaunchSetting.pyGatewayServer = new PyGatewayServer(this);
 	}
 
 	@Override
 	public void update() {
-		if (stateInhibitor != null) {
-			stateInhibitor.update();
+		if (this.stateInhibitor != null) {
+			this.stateInhibitor.replayUpdate();
 			return;
 		}
 
@@ -66,6 +61,10 @@ public class Python extends GameScene {
 
 	public PyGame getCurrentGame() {
 		return this.currentGame;
+	}
+
+	public void setStateInhibitor(StateInhibitor stateInhibitor) {
+		this.stateInhibitor = stateInhibitor;
 	}
 
 }

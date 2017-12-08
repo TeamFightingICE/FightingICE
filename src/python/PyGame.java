@@ -1,5 +1,6 @@
 package python;
 
+import manager.InputManager;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 
@@ -22,6 +23,8 @@ public class PyGame {
 
 		this.end = new Object();
 
+		LaunchSetting.deviceTypes[0] = InputManager.DEVICE_TYPE_AI;
+		LaunchSetting.deviceTypes[1] = InputManager.DEVICE_TYPE_AI;
 		LaunchSetting.characterNames[0] = c1;
 		LaunchSetting.characterNames[1] = c2;
 		LaunchSetting.aiNames[0] = name1;

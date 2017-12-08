@@ -31,7 +31,7 @@ public class Replay extends GameScene {
 	private Fighting fighting;
 
 	/** Replayファイルからログを読み込むための入力ストリーム */
-	private DataInputStream dis;
+	protected DataInputStream dis;
 
 	/** 現在のフレームナンバー */
 	private int nowFrame;
@@ -46,7 +46,7 @@ public class Replay extends GameScene {
 	private boolean roundStartFlag;
 
 	/** 対戦処理後のキャラクターデータといったゲーム情報を格納したフレームデータ */
-	private FrameData frameData;
+	protected FrameData frameData;
 
 	/** 対戦処理後のゲーム画面の情報 */
 	private ScreenData screenData;
@@ -141,19 +141,13 @@ public class Replay extends GameScene {
 		} else {
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
-
-			HomeMenu homeMenu = new HomeMenu();
-			this.setTransitionFlag(true);
-			this.setNextGameScene(homeMenu);
+			transitionProcess();
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
-
-			HomeMenu homeMenu = new HomeMenu();
-			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-			this.setNextGameScene(homeMenu); // 次のシーンをセットする
+			transitionProcess();
 		}
 
 	}
@@ -270,10 +264,8 @@ public class Replay extends GameScene {
 				}
 				// BGMを止める
 				SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+				transitionProcess();
 
-				HomeMenu homeMenu = new HomeMenu();
-				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-				this.setNextGameScene(homeMenu); // 次のシーンをセットする
 				break;
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -311,7 +303,7 @@ public class Replay extends GameScene {
 	}
 
 	/** 使用キャラクターや最大HPといったヘッダ情報を読み込む */
-	private void readHeader() {
+	protected void readHeader() {
 		for (int i = 0; i < 2; i++) {
 			try {
 				int checkMode = dis.readInt();
@@ -343,6 +335,32 @@ public class Replay extends GameScene {
 		if (key.D) {
 			this.playSpeedIndex = (--this.playSpeedIndex + this.playSpeedArray.length) % this.playSpeedArray.length;
 		}
+	}
+
+	private void transitionProcess() {
+		/*if (FlagSetting.py4j) {
+			synchronized (PyManager.python.getCurrentGame().end) {
+				PyManager.python.getCurrentGame().end.notifyAll();
+			}
+
+			LaunchSetting.pyGatewayServer.close();
+			Python python = new Python();
+			this.setTransitionFlag(true);
+			this.setNextGameScene(python);
+
+		} else {*/
+			HomeMenu homeMenu = new HomeMenu();
+			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+			this.setNextGameScene(homeMenu); // 次のシーンをセットする
+		//}
+	}
+
+	public FrameData getFrameData() {
+		return new FrameData(this.frameData);
+	}
+
+	public ScreenData getScreenData() {
+		return new ScreenData(this.screenData);
 	}
 
 }

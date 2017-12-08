@@ -74,8 +74,8 @@ public class PyManager {
 	}
 
 	public PyReplay loadReplay(String fileName) {
-		PyReplay pyReplay = new PyReplay();
 		LaunchSetting.replayName = fileName;
+		PyReplay pyReplay = new PyReplay();
 
 		return pyReplay;
 
