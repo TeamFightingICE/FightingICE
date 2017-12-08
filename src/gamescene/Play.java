@@ -25,6 +25,7 @@ import setting.GameSetting;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
+import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
 
@@ -71,6 +72,7 @@ public class Play extends GameScene {
 		this.isTransitionFlag = false;
 		this.nextGameScene = null;
 		//////////////////////////////////////
+
 	}
 
 	@Override
@@ -93,6 +95,10 @@ public class Play extends GameScene {
 		if (!FlagSetting.trainingModeFlag) {
 			openReplayFile();
 		}
+		if (FlagSetting.debugActionFlag) {
+			DebugActionData.getInstance();
+		}
+
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 
@@ -193,6 +199,10 @@ public class Play extends GameScene {
 		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
 				this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
+		// P1とP2の行った各アクションの数を数える
+		if (FlagSetting.debugActionFlag) {
+			DebugActionData.getInstance().countPlayerAction(this.frameData);
+		}
 
 	}
 
@@ -205,6 +215,11 @@ public class Play extends GameScene {
 		InputManager.getInstance().sendRoundResult(roundResult);
 		this.currentRound++;
 		this.roundStartFlag = true;
+
+		 // P1とP2の行った各アクションの数のデータをCSVに出力する
+		if (FlagSetting.debugActionFlag) {
+			DebugActionData.getInstance().outputActionCount();
+		}
 	}
 
 	/**
@@ -249,6 +264,8 @@ public class Play extends GameScene {
 		this.screenData = null;
 		this.keyData = null;
 		this.roundResults.clear();
+
+		if (FlagSetting.debugActionFlag) DebugActionData.getInstance().closeAllWriters();
 
 		try {
 			this.dos.close();

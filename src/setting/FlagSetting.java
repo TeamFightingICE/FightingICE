@@ -17,7 +17,7 @@ public class FlagSetting {
 	/** Pythonを利用するかどうか */
 	public static boolean py4j = false;
 
-	/**  */
+	/**  行ったアクッションデータをCSVに吐き出すかどうか*/
 	public static boolean debugActionFlag = false;
 
 	/**  */
