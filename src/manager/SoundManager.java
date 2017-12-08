@@ -52,7 +52,7 @@ public class SoundManager {
 
 	/** コンストラクタ */
 	private SoundManager() {
-		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " +  SoundManager.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + SoundManager.class.getName());
 
 		this.loadedFiles = new ArrayList<String>();
 		this.buffers = new ArrayList<Integer>();
@@ -75,9 +75,9 @@ public class SoundManager {
 	}
 
 	/**
-	 * このクラスの唯一のインスタンスを返すgetterメソッド．
+	 * SoundManagerクラスの唯一のインスタンスを取得するgetterメソッド．
 	 *
-	 * @return このクラスの唯一のインスタンス
+	 * @return SoundManagerクラスの唯一のインスタンス
 	 */
 	public static SoundManager getInstance() {
 		return SoundManagerHolder.instance;
@@ -114,8 +114,10 @@ public class SoundManager {
 	 * 音声の読み込みとパラメータの設定を行い，再生準備済みの音源を返すメソッド．<br>
 	 * 音声バッファを取得して，生成した音源にセットし，ピッチ・ゲインなどのパラメータを設定した後，設定済みの音源を返す．
 	 *
-	 * @param filePath 音声のファイルパス
-	 * @param loop ループさせるかどうか(させる場合はtrue)
+	 * @param filePath
+	 *            音声のファイルパス
+	 * @param loop
+	 *            ループさせるかどうか(させる場合はtrue)
 	 *
 	 * @return 設定済みの音源
 	 */
@@ -147,10 +149,10 @@ public class SoundManager {
 
 	/**
 	 * 音声バッファを取得するgetterメソッド．<br>
-	 * 新たに音声をバッファに取り込み、読み込み済みファイルのリストに登録した後に返す．
-	 * 既に読み込んでいたファイルの場合新たに取り込まずに返す．
+	 * 新たに音声をバッファに取り込み、読み込み済みファイルのリストに登録した後に返す． 既に読み込んでいたファイルの場合新たに取り込まずに返す．
 	 *
-	 * @param filePath 音声のファイルパス
+	 * @param filePath
+	 *            音声のファイルパス
 	 *
 	 * @return 音声バッファ
 	 */
@@ -179,7 +181,8 @@ public class SoundManager {
 	/**
 	 * Wav音声ファイルを読み込んでバッファに取り込み，音声バッファを返すメソッド．
 	 *
-	 * @param filePath 音声のファイルパス
+	 * @param filePath
+	 *            音声のファイルパス
 	 *
 	 * @return 音声バッファ
 	 */

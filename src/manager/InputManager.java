@@ -62,7 +62,11 @@ public class InputManager<Data> {
 		}
 	}
 
-	/** InputManagerクラスの唯一のインスタンスを取得するgetterメソッド． */
+	/**
+	 * InputManagerクラスの唯一のインスタンスを取得するgetterメソッド．
+	 *
+	 * @return InputManagerクラスの唯一のインスタンス
+	 */
 	public static InputManager getInstance() {
 		return InputManagerHolder.instance;
 	}

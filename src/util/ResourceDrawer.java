@@ -27,6 +27,11 @@ public class ResourceDrawer {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceDrawer.class.getName());
 	}
 
+	/**
+	 * ResourceDrawerクラスの唯一のインスタンスを取得するgetterメソッド．
+	 *
+	 * @return ResourceDrawerクラスの唯一のインスタンス
+	 */
 	public static ResourceDrawer getInstance() {
 		return ResourceDrawerHolder.instance;
 	}
@@ -36,6 +41,16 @@ public class ResourceDrawer {
 		private static final ResourceDrawer instance = new ResourceDrawer();
 	}
 
+	/**
+	 * 引数で渡された情報を用いて画面を描画するメソッド．<br>
+	 *
+	 * @param characters
+	 * @param projectiles
+	 * @param hitEffects
+	 * @param screen
+	 * @param remainingTime
+	 * @param round
+	 */
 	public void drawResource(Character[] characters, Deque<LoopEffect> projectiles,
 			LinkedList<LinkedList<HitEffect>> hitEffects, BufferedImage screen, int remainingTime, int round) {
 
@@ -65,12 +80,10 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 *
 	 * Draws the background image.
 	 *
 	 * @param screenGraphic
-	 *            the screen graphics
-	 *
+	 *            The screen graphics
 	 */
 	public void drawBackGroundImage(Graphics2D screenGraphic) {
 		Image bg = GraphicManager.getInstance().getBackgroundImage().get(0);
@@ -84,8 +97,10 @@ public class ResourceDrawer {
 	/**
 	 * Draws both characters' images.
 	 *
+	 * @param playerCharacters
+	 *            P1とP2のキャラクターデータを格納した配列
 	 * @param screenGraphic
-	 *            the screen graphics
+	 *            The screen graphics
 	 */
 	public void drawCharacterImage(Character[] playerCharacters, Graphics2D screenGraphic) {
 
@@ -116,8 +131,12 @@ public class ResourceDrawer {
 	/**
 	 * Draw Attack's images.
 	 *
-	 * @param g
-	 *            the Graphic Manager.
+	 * @param projectiles
+	 *            波動拳のループエフェクトを格納した両端キュー
+	 * @param characters
+	 *            P1とP2のキャラクターデータを格納した配列
+	 * @param screenGraphic
+	 *            The screen graphics
 	 */
 	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters, Graphics2D screenGraphic) {
 
@@ -149,8 +168,10 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 *
 	 * Draws both characters' HP information.
+	 *
+	 * @param playerCharacters
+	 *            P1とP2のキャラクターデータを格納した配列
 	 */
 	private void drawHPGaugeImage(Character[] playerCharacters) {
 		if (FlagSetting.limitHpFlag) {
@@ -172,8 +193,10 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 *
 	 * Draws both characters' energy information.
+	 *
+	 * @param playerCharacters
+	 *            P1とP2のキャラクターデータを格納した配列
 	 */
 	private void drawEnergyGaugeImage(Character[] playerCharacters) {
 		if (FlagSetting.limitHpFlag) {
@@ -210,11 +233,10 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 *
 	 * Draws time.
 	 *
 	 * @param remainingTime
-	 *            the remaining time.
+	 *            The remaining time.
 	 */
 	private void drawTimeImage(int remainingTime) {
 		if (FlagSetting.trainingModeFlag) {
@@ -227,20 +249,20 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 *
 	 * Draws round number.
 	 *
+	 * @param round
+	 *            ラウンド
 	 */
 	private void drawRoundNumber(int round) {
 		GraphicManager.getInstance().drawString("ROUND:" + round, 850, 10);
 	}
 
 	/**
-	 *
 	 * Draws the combo hit counter.
 	 *
-	 * @param g
-	 *            the Graphic Manager
+	 * @param playerCharacters
+	 *            P1とP2のキャラクターデータを格納した配列
 	 */
 	private void drawHitCounter(Character[] playerCharacters) {
 		for (int i = 0; i < 2; ++i) {
@@ -258,7 +280,12 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 * Draws character's hit area
+	 * Draws character's hit area.
+	 *
+	 * @param playerCharacters
+	 *            P1とP2のキャラクターデータを格納した配列
+	 * @param projectiles
+	 *            波動拳のループエフェクトを格納した両端キュー
 	 */
 	private void drawHitArea(Character[] playerCharacters, Deque<LoopEffect> projectiles) {
 		for (int i = 0; i < 2; ++i) {
@@ -293,8 +320,16 @@ public class ResourceDrawer {
 		}
 	}
 
+	/**
+	 * ヒットエフェクトを描画するメソッド．<br>
+	 * 攻撃がヒットしているかを確認し，ヒットしていればそのヒットエフェクトを描画する．
+	 *
+	 * @param hitEffects
+	 *            ヒットエフェクトのリストを格納したリスト
+	 * @param screenGraphic
+	 *            The screen graphics
+	 */
 	private void drawHitEffects(LinkedList<LinkedList<HitEffect>> hitEffects, Graphics2D screenGraphic) {
-
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < hitEffects.get(i).size(); ++j) {
 				HitEffect hitEffect = hitEffects.get(i).get(j);
@@ -322,6 +357,17 @@ public class ResourceDrawer {
 		}
 	}
 
+	/**
+	 * 画像を左右反転させるメソッド．<br>
+	 * 画像データは右向きで用意されているため，引数の右向きかどうかを表す変数がfalseなら画像を左右反転させる．
+	 *
+	 * @param image
+	 *            画像
+	 * @param isFront
+	 *            右向きかどうかを表す変数
+	 *
+	 * @return 左右反転画像(isFrontがfalse)か，元の画像(isFrontがtrue)
+	 */
 	private BufferedImage flipImage(BufferedImage image, boolean isFront) {
 		// Flip the image if we need to
 		if (!isFront) {
