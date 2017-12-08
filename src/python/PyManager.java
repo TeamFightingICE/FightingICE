@@ -14,13 +14,13 @@ public class PyManager {
 	}
 
 	/**
-	 * Register one python AI with a given name Should be called before
-	 * createGame (and for each call to createGame)
+	 * Registers one python AI with a given name.<br>
+	 * Should be called before createGame (and for each call to createGame)
 	 *
 	 * @param name
-	 *            the given name of the AI
+	 *            The given name of the AI
 	 * @param ai
-	 *            the instance of a class which inherits from the interface
+	 *            The instance of a class which inherits from the interface
 	 *            "gameInterface.AIInterface"
 	 */
 	public void registerAI(String name, AIInterface ai) {
@@ -28,20 +28,20 @@ public class PyManager {
 	}
 
 	/**
-	 * Create one game
+	 * Creates one game.
 	 *
 	 * @param c1
-	 *            the name of the character for the first AI
+	 *            The name of the character for the first AI
 	 * @param c2
-	 *            the name of the character for the second AI
+	 *            The name of the character for the second AI
 	 * @param name1
-	 *            the name of the first AI (could be the name of a previously
+	 *            The name of the first AI (could be the name of a previously
 	 *            registered AI with registerAI or the name of a Java AI)
 	 * @param name2
-	 *            the name of the second AI (could be the name of a previously
+	 *            The name of the second AI (could be the name of a previously
 	 *            registered AI with registerAI or the name of a Java AI)
 	 * @param num
-	 *            the number of repeat count of the game
+	 *            The number of repeat count of the game
 	 * @return The created game
 	 */
 	public PyGame createGame(String c1, String c2, String name1, String name2, int num) {
@@ -49,7 +49,7 @@ public class PyManager {
 	}
 
 	/**
-	 * Run the given game until the end of this one
+	 * Runs the given game until the end of this one
 	 *
 	 * @param game
 	 *            The given game to run
