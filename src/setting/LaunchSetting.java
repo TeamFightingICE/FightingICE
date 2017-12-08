@@ -1,6 +1,7 @@
 package setting;
 
 import enumerate.BackgroundType;
+import python.PyGatewayServer;
 
 /** キャラクターの体力や試合の繰り返し回数などといった、試合を行う際に必要な情報をまとめたクラス */
 public final class LaunchSetting {
@@ -18,8 +19,7 @@ public final class LaunchSetting {
 	public static String[] characterNames = { "ZEN", "ZEN" };
 
 	/**
-	 * 利用するデバイス
-	 * 0: キーボード 1: AI
+	 * 利用するデバイス 0: キーボード 1: AI
 	 */
 	public static char[] deviceTypes = { 0, 0 };
 
@@ -40,5 +40,7 @@ public final class LaunchSetting {
 
 	/** 繰り返しの回数 */
 	public static int repeatedCount = 0;
+
+	public static PyGatewayServer pyGatewayServer = null;
 
 }

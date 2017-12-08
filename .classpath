@@ -12,5 +12,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="lib/py4j0.10.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

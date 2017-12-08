@@ -2,10 +2,12 @@ package manager;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import aiinterface.AIController;
+import aiinterface.AIInterface;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import informationcontainer.AIContainer;
@@ -33,6 +35,8 @@ public class InputManager<Data> {
 
 	private GameSceneName sceneName;
 
+	private HashMap<String, AIInterface> predifinedAIs;
+
 	// static field
 	/** Default number of devices **/
 	private final static int DEFAULT_DEVICE_NUMBER = 2;
@@ -56,6 +60,7 @@ public class InputManager<Data> {
 		keyboard = new Keyboard();
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		sceneName = GameSceneName.HOME_MENU;
+		this.predifinedAIs = new HashMap<String, AIInterface>();
 
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
@@ -79,6 +84,10 @@ public class InputManager<Data> {
 	/** Keyboardクラスのインスタンスを取得するgetterメソッド． */
 	public Keyboard getKeyboard() {
 		return this.keyboard;
+	}
+
+	public void registerAI(String name, AIInterface ai) {
+		this.predifinedAIs.put(name, ai);
 	}
 
 	/** 毎フレーム実行され，キーボード入力及びAIの入力を受け付けるメソッド． */
@@ -150,7 +159,12 @@ public class InputManager<Data> {
 		this.ais = new AIController[aiNames.length];
 		for (int i = 0; i < aiNames.length; i++) {
 			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
+				if (this.predifinedAIs.containsKey(aiNames[i])) {
+					this.ais[i] = new AIController(this.predifinedAIs.get(aiNames[i]));
+				} else {
+					this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
+				}
+
 			}
 		}
 	}

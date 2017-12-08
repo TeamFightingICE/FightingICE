@@ -39,7 +39,8 @@ public class DisplayManager {
 	 * 2.ゲームの終了処理命令が来るまで，ゲーム状態の更新，描画処理などのメインループ処理を行う．<br>
 	 * 3. ゲームの終了処理を行ってウィンドウを閉じる．<br>
 	 *
-	 * @param game GameManagerクラスのインスタンス
+	 * @param game
+	 *            GameManagerクラスのインスタンス
 	 */
 	public void start(GameManager game) {
 		if (enableWindow) {
@@ -121,7 +122,8 @@ public class DisplayManager {
 	/**
 	 * ゲームのメインループの処理を行うメソッド．
 	 *
-	 * @param gm GameManagerクラスのインスタンス
+	 * @param gm
+	 *            GameManagerクラスのインスタンス
 	 */
 	private void gameLoop(GameManager gm) {
 		glfwSetTime(0.0);
@@ -179,6 +181,7 @@ public class DisplayManager {
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
 		Logger.getAnonymousLogger().log(Level.INFO, "Close FightingICE");
+		System.exit(0);
 	}
 
 	/** ウィンドウ表示を無効(false)にするメソッド． */

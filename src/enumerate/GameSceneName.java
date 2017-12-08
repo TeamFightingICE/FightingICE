@@ -10,5 +10,6 @@ public enum GameSceneName {
 	PLAY,
 	RESULT,
 	REPLAY,
+	PYTHON,
 
 }
