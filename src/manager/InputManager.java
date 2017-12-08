@@ -225,7 +225,9 @@ public class InputManager<Data> {
 	/** 各AIコントローラ内に保持されているフレームデータをクリアする. */
 	public void clear() {
 		for (AIController ai : this.ais) {
-			ai.clear();
+			if (ai != null) {
+				ai.clear();
+			}
 		}
 	}
 
