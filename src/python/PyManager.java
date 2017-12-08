@@ -5,6 +5,7 @@ import gamescene.Python;
 import manager.InputManager;
 import setting.LaunchSetting;
 
+
 public class PyManager {
 
 	public static Python python;

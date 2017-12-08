@@ -7,13 +7,25 @@ import python.PyGatewayServer;
 import python.StateInhibitor;
 import setting.LaunchSetting;
 
+/**
+ * Python側で起動したゲームの実行処理を行うクラス
+ */
 public class Python extends GameScene {
 
+	/** リプレイ再生時の処理を管理するインタフェース */
 	private StateInhibitor stateInhibitor;
-	boolean needRun = false;
 
+	/** 起動したゲームを実行するかどうかを表すフラグ */
+	private boolean needRun = false;
+
+	/**
+	 * 現在のゲーム情報
+	 *
+	 * @see PyGame
+	 */
 	private PyGame currentGame;
 
+	/** コンストラクタ */
 	public Python() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.PYTHON;
@@ -28,6 +40,7 @@ public class Python extends GameScene {
 		this.stateInhibitor = null;
 		this.needRun = false;
 
+		// ゲートウェイを開く
 		LaunchSetting.pyGatewayServer = new PyGatewayServer(this);
 	}
 
@@ -40,29 +53,41 @@ public class Python extends GameScene {
 
 		GraphicManager.getInstance().drawString("Waiting python to launch a game", 300, 200);
 
-		if (needRun) {
-			needRun = false;
+		if (this.needRun) {
+			this.needRun = false;
 
 			Launcher launcher = new Launcher(GameSceneName.PLAY);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(launcher);
 
-		} else if (currentGame != null) {
-			synchronized (currentGame.end) {
-				currentGame.end.notifyAll();
+		} else if (this.currentGame != null) {
+			synchronized (this.currentGame.end) {
+				this.currentGame.end.notifyAll();
 			}
 		}
 	}
 
+	/** 作成したゲームをセットし, ゲームを実行させるフラグをtrueにする. */
 	public void runGame(PyGame game) {
-		currentGame = game;
-		needRun = true;
+		this.currentGame = game;
+		this.needRun = true;
 	}
 
+	/**
+	 * 現在のゲームを取得する.
+	 *
+	 * @return 現在のゲーム
+	 */
 	public PyGame getCurrentGame() {
 		return this.currentGame;
 	}
 
+	/**
+	 * リプレイ再生を管理するインタフェースをセットする
+	 *
+	 * @param stateInhibitor
+	 *            リプレイ再生を管理するインタフェース
+	 */
 	public void setStateInhibitor(StateInhibitor stateInhibitor) {
 		this.stateInhibitor = stateInhibitor;
 	}
