@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import fighting.Fighting;
 import informationcontainer.RoundResult;
@@ -127,6 +128,7 @@ public class Play extends GameScene {
 				this.elapsedBreakTime++;
 
 			} else {
+				fistProcess();
 				// processing
 				processingGame();
 				this.nowFrame++;
@@ -136,7 +138,6 @@ public class Play extends GameScene {
 			Logger.getAnonymousLogger().log(Level.INFO, "Game over");
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
-
 			Result result = new Result(this.roundResults, this.timeInfo);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
@@ -145,7 +146,6 @@ public class Play extends GameScene {
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
 			// BGMを止める
 			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
-
 			HomeMenu homeMenu = new HomeMenu();
 			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 			this.setNextGameScene(homeMenu); // 次のシーンをセットする
@@ -184,6 +184,7 @@ public class Play extends GameScene {
 	 * 7. ゲーム画面を描画する.
 	 */
 	private void processingGame() {
+
 		this.keyData = new KeyData(InputManager.getInstance().getKeyData());
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
@@ -267,12 +268,26 @@ public class Play extends GameScene {
 		LogWriter.getInstance().writeHeader(this.dos);
 	}
 
+	private void fistProcess(){
+		if(FlagSetting.fastModeFlag){
+			synchronized (ThreadController.getInstance().getEndFrame()) {
+				try {
+					ThreadController.getInstance().getEndFrame().wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	@Override
 	public void close() {
 		this.fighting = null;
 		this.frameData = null;
 		this.screenData = null;
 		this.keyData = null;
+		// AIの実行を終了する
+		InputManager.getInstance().closeAI();
 		this.roundResults.clear();
 
 		if (FlagSetting.debugActionFlag) {

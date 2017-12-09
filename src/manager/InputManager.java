@@ -180,15 +180,21 @@ public class InputManager<Data> {
 		int count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				// ais[count].initialize(waitFrame, gd,
-				// !Transform.iTob(i));//Call the initialize function of the AI
-				// of interest
-				this.ais[count].initialize(ThreadController.getInstance().getAIsObject(i), gameData,
-						Transform.convertPlayerNumberfromItoB(i));
-				this.ais[count].start();// start the thread
+				ais[count].initialize(ThreadController.getInstance().getAIsObject(Transform.convertPlayerNumberfromItoB(i))
+						, gameData, Transform.convertPlayerNumberfromItoB(i));
+				ais[count].start();// start the thread
 				count++;
 			}
 		}
+	}
+
+	public void closeAI() {
+		for (AIController ai : this.ais) {
+			if(ai!=null)
+				ai.gameEnd();
+		}
+		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
+		this.ais = null;
 	}
 
 	// private synchronized Key getInputFromAI(AIController ai){
