@@ -92,12 +92,18 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 		this.roundResults = new ArrayList<RoundResult>();
 
+		this.timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
+
 		if (!FlagSetting.trainingModeFlag) {
 			openReplayFile();
 		}
 
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().initialize();
+		}
+		if (FlagSetting.jsonFlag) {
+			String jsonName = LogWriter.getInstance().createOutputFileName("./log/replay/", this.timeInfo);
+			LogWriter.getInstance().initJson(jsonName + ".json");
 		}
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
@@ -195,6 +201,11 @@ public class Play extends GameScene {
 		if (!FlagSetting.trainingModeFlag) {
 			LogWriter.getInstance().outputLog(this.dos, this.keyData, this.fighting.getCharacters());
 		}
+
+		if (FlagSetting.jsonFlag) {
+			LogWriter.getInstance().updateJson(this.frameData, this.keyData);
+		}
+
 		// 画面をDrawerクラスで描画
 		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
@@ -250,8 +261,6 @@ public class Play extends GameScene {
 
 	/** リプレイファイルを作成し, 使用キャラクターを表すインデックスといったヘッダ情報を記述する. */
 	private void openReplayFile() {
-		this.timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
-
 		String fileName = LogWriter.getInstance().createOutputFileName("./log/replay/", this.timeInfo);
 		this.dos = ResourceLoader.getInstance().openDataOutputStream(fileName + ".dat");
 
@@ -274,6 +283,10 @@ public class Play extends GameScene {
 			this.dos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+
+		if (FlagSetting.jsonFlag) {
+			LogWriter.getInstance().finalizeJson();
 		}
 
 	}

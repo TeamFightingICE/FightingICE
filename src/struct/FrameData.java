@@ -43,7 +43,7 @@ public class FrameData {
 	private boolean emptyFlag;
 
 	/**
-	 * フレームデータを初期化するするコンストラクタ
+	 * フレームデータを初期化するコンストラクタ
 	 */
 	public FrameData() {
 		this.characterData = new CharacterData[2];

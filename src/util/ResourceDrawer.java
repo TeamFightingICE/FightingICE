@@ -44,12 +44,18 @@ public class ResourceDrawer {
 	/**
 	 * 引数で渡された情報を用いて画面を描画するメソッド．<br>
 	 *
-	 * @param characters P1とP2のキャラクターデータを格納した配列
-	 * @param projectiles 波動拳のループエフェクトを格納した両端キュー
-	 * @param hitEffects ヒットエフェクトのリストを格納したリスト
-	 * @param screen 背景として描画する画像
-	 * @param remainingTime ラウンドの残り時間
-	 * @param round ラウンド
+	 * @param characters
+	 *            P1とP2のキャラクターデータを格納した配列
+	 * @param projectiles
+	 *            波動拳のループエフェクトを格納した両端キュー
+	 * @param hitEffects
+	 *            ヒットエフェクトのリストを格納したリスト
+	 * @param screen
+	 *            背景として描画する画像
+	 * @param remainingTime
+	 *            ラウンドの残り時間
+	 * @param round
+	 *            ラウンド
 	 */
 	public void drawResource(Character[] characters, Deque<LoopEffect> projectiles,
 			LinkedList<LinkedList<HitEffect>> hitEffects, BufferedImage screen, int remainingTime, int round) {
@@ -129,7 +135,7 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 * Draw Attack's images.
+	 * Draws attack's images.
 	 *
 	 * @param projectiles
 	 *            波動拳のループエフェクトを格納した両端キュー
