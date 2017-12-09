@@ -1,6 +1,6 @@
 package gamescene;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -95,10 +95,10 @@ public class Play extends GameScene {
 		if (!FlagSetting.trainingModeFlag) {
 			openReplayFile();
 		}
-		if (FlagSetting.debugActionFlag) {
-			DebugActionData.getInstance();
-		}
 
+		if (FlagSetting.debugActionFlag) {
+			DebugActionData.getInstance().initialize();
+		}
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 
@@ -199,9 +199,10 @@ public class Play extends GameScene {
 		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
 				this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
+
 		// P1とP2の行った各アクションの数を数える
 		if (FlagSetting.debugActionFlag) {
-			DebugActionData.getInstance().countPlayerAction(this.frameData);
+			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
 		}
 
 	}
@@ -216,7 +217,7 @@ public class Play extends GameScene {
 		this.currentRound++;
 		this.roundStartFlag = true;
 
-		 // P1とP2の行った各アクションの数のデータをCSVに出力する
+		// P1とP2の行った各アクションの数のデータをCSVに出力する
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().outputActionCount();
 		}
@@ -265,7 +266,9 @@ public class Play extends GameScene {
 		this.keyData = null;
 		this.roundResults.clear();
 
-		if (FlagSetting.debugActionFlag) DebugActionData.getInstance().closeAllWriters();
+		if (FlagSetting.debugActionFlag) {
+			DebugActionData.getInstance().closeAllWriters();
+		}
 
 		try {
 			this.dos.close();

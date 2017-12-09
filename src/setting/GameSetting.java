@@ -21,12 +21,12 @@ public class GameSetting {
 	public static final int[] REPEAT_NUMBERS = { 1, 2, 3, 5, 10, 30, 50, 100 };
 
 	/** 1ラウンドのフレーム数 */
-	public static final int ROUND_FRAME_NUMBER = 120;
+	public static final int ROUND_FRAME_NUMBER = 3600;
 
 	/** ラウンド間の休憩時間 */
 	public static final int BREAKTIME_FRAME_NUMBER = 70;
 
-	/** 重力の影響を与えるパラメータ*/
+	/** 重力の影響を与えるパラメータ */
 	public static final int GRAVITY = 1;
 
 	/** 摩擦の影響を与えるパラメータ */

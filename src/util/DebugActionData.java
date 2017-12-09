@@ -1,175 +1,220 @@
 package util;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import fighting.Character;
+import loader.ResourceLoader;
 import setting.LaunchSetting;
-import struct.FrameData;
-
-
 
 public class DebugActionData {
 
-	/** 行動名とその行動の総フレーム数のHashMap */
-	private Map<String, Integer> p1MotionData = new HashMap<String, Integer>();
-	private Map<String, Integer> p2MotionData = new HashMap<String, Integer>();
+	/**
+	 * P1, P2の行動回数をカウントする対象の行動名とその総フレーム数を管理するマップを格納したリスト<br>
+	 * Index 0: P1; Index 1: P2
+	 */
+	private ArrayList<HashMap<String, Integer>> actionList;
 
-	/**カウントする行動名のリスト*/
-	private static final String[] motionName = {
-			"FORWARD_WALK", "DASH", "BACK_STEP", "JUMP", "FOR_JUMP", "BACK_JUMP",
-			"STAND_GUARD", "CROUCH_GUARD", "AIR_GUARD", "THROW_A", "THROW_B", "STAND_A",
-			"STAND_B", "CROUCH_A","CROUCH_B", "AIR_A", "AIR_B", "AIR_DA",
-			"AIR_DB", "STAND_FA", "STAND_FB", "CROUCH_FA", "CROUCH_FB", "AIR_FA",
-			"AIR_FB", "AIR_UA", "AIR_UB", "STAND_D_DF_FA", "STAND_D_DF_FB", "STAND_F_D_DFA",
-			"STAND_F_D_DFB", "STAND_D_DB_BA", "STAND_D_DB_BB", "AIR_D_DF_FA", "AIR_D_DF_FB", "AIR_F_D_DFA",
-			"AIR_F_D_DFB", "AIR_D_DB_BA","AIR_D_DB_BB", "STAND_D_DF_FC"
-		};
+	/**
+	 * P1, P2の行動回数をカウントする対象の行動名と1ラウンド中のその行動回数を管理するマップを格納したリスト<br>
+	 * Index 0: P1; Index 1: P2
+	 */
+	private ArrayList<HashMap<String, Integer>> countedActionContainer;
 
-	private int[] p1MotinoCount = new int[motionName.length];
-	private int[] p2MotionCount = new int[motionName.length];
-	private FileWriter p1FileWriter, p2FileWriterr;
-	private PrintWriter p1PrintWriter, p2PrintWriter;
-	private BufferedReader p1BufferedReader, p2BufferedReader;
-	private int check1, check2;
+	/**
+	 * ファイル読み込み用のReader<br>
+	 * Index 0: P1; Index 1: P2
+	 */
+	private BufferedReader[] bReaders;
 
-	/**DebugActionDataクラスの唯一のインスタンス*/
-	private static DebugActionData instance;
+	/**
+	 * ファイル書き込み用のWriter<br>
+	 * Index 0: P1; Index 1: P2
+	 */
+	private PrintWriter[] pWriters;
 
-	/**  DebugActionDataクラス唯一のインスタンスを取得するgetterメソッド
+	/**
+	 * カウントする行動名を格納した配列
+	 */
+	private final String[] motionName = { "FORWARD_WALK", "DASH", "BACK_STEP", "JUMP", "FOR_JUMP", "BACK_JUMP",
+			"STAND_GUARD", "CROUCH_GUARD", "AIR_GUARD", "THROW_A", "THROW_B", "STAND_A", "STAND_B", "CROUCH_A",
+			"CROUCH_B", "AIR_A", "AIR_B", "AIR_DA", "AIR_DB", "STAND_FA", "STAND_FB", "CROUCH_FA", "CROUCH_FB",
+			"AIR_FA", "AIR_FB", "AIR_UA", "AIR_UB", "STAND_D_DF_FA", "STAND_D_DF_FB", "STAND_F_D_DFA", "STAND_F_D_DFB",
+			"STAND_D_DB_BA", "STAND_D_DB_BB", "AIR_D_DF_FA", "AIR_D_DF_FB", "AIR_F_D_DFA", "AIR_F_D_DFB", "AIR_D_DB_BA",
+			"AIR_D_DB_BB", "STAND_D_DF_FC" };
+
+	/**
+	 * DebugActionDataクラス唯一のインスタンスを取得するgetterメソッド
 	 *
 	 * @return DebugActionDatクラスの唯一のインスタンス
 	 */
-    public static DebugActionData getInstance(){
-	   	if(instance == null) instance = new DebugActionData();
-		return instance;
-    }
+	public static DebugActionData getInstance() {
+		return DebugActionDataHolder.instance;
+	}
 
-    /** コンストラクタ */
-    private DebugActionData() {
-    	String p1CharacterName = LaunchSetting.characterNames[0];
-    	String p2CharacterName = LaunchSetting.characterNames[1];
+	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	private static class DebugActionDataHolder {
+		private static final DebugActionData instance = new DebugActionData();
+	}
 
-    	File newdir = new File("debugActionData");
-		newdir.mkdir();
-		Logger.getAnonymousLogger().log(Level.INFO,"start debug action mode...");
+	/** コンストラクタ */
+	private DebugActionData() {
+		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + DebugActionData.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "start debug action mode...");
+	}
+
+	/**
+	 * DebugActionDataクラスの初期化を行う.<br>
+	 * 1. フィールド変数の初期化<br>
+	 * 2. 出力用のファイルをオープンし, 行動名をヘッダ情報として出力<br>
+	 * 3. カウントする対象の行動名とその総フレーム数をリストに格納<br>
+	 */
+	public void initialize() {
+		this.actionList = new ArrayList<HashMap<String, Integer>>(2);
+		this.countedActionContainer = new ArrayList<HashMap<String, Integer>>(2);
+		this.pWriters = new PrintWriter[2];
+		this.bReaders = new BufferedReader[2];
+
+		for (int i = 0; i < 2; i++) {
+			this.actionList.add(new HashMap<String, Integer>());
+			this.countedActionContainer.add(new HashMap<String, Integer>());
+		}
+
+		String path = "./debugActionData";
+		new File(path).mkdir();
+
+		// 読み込み・書き込みファイルをオープンする
+		for (int i = 0; i < 2; i++) {
+			String fileName = "/" + (i == 0 ? "P1" : "P2") + "ActionFile.csv";
+			this.pWriters[i] = ResourceLoader.getInstance().openWriteFile(path + fileName, true);
+			this.bReaders[i] = ResourceLoader.getInstance().openReadFile(path + fileName);
+
+			writeHeader(i);
+			readMotionData(i);
+		}
+	}
+
+	/**
+	 * P1とP2の各行動の実行回数をカウントする.<br>
+	 * 行動が実行される時点のみカウントする.<br>
+	 * カウントする対象外の行動や, 実行途中の行動に関してはカウントしない.
+	 *
+	 * @param characters
+	 *            P1, P2のキャラクターのデータを格納した配列<br>
+	 *            Index 0: P1; Index 1: P2
+	 *
+	 */
+	public void countPlayerAction(Character[] characters) {
+		String[] actionNames = new String[] { characters[0].getAction().name(), characters[1].getAction().name() };
+		int[] remainingFrames = new int[] { characters[0].getRemainingFrame(), characters[1].getRemainingFrame() };
+
+		for (int i = 0; i < 2; i++) {
+			if (canCount(this.countedActionContainer.get(i), actionNames[i], remainingFrames[i])) {
+				this.countedActionContainer.get(i).replace(actionNames[i],
+						this.countedActionContainer.get(i).get(actionNames[i]) + 1);
+			}
+		}
+	}
+
+	/** P1とP2の各行動の実行回数をCSVに出力する */
+	public void outputActionCount() {
+		for (int i = 0; i < 2; i++) {
+			for (String string : this.motionName) {
+				this.pWriters[i].print(this.countedActionContainer.get(i).get(string) + ",");
+				this.countedActionContainer.get(i).replace(string, 0);
+			}
+
+			this.pWriters[i].println();
+			this.pWriters[i].flush();
+		}
+	}
+
+	/** 出力ファイルのクローズ処理を行い, リストの中身をクリアーする. */
+	public void closeAllWriters() {
+		for (int i = 0; i < 2; i++) {
+			this.pWriters[i].close();
+		}
+		this.actionList.clear();
+		this.countedActionContainer.clear();
+	}
+
+	/**
+	 * 行動名をヘッダ情報として出力ファイルに出力する.
+	 *
+	 * @param i
+	 *            プレイヤーの番号<br>
+	 *            0: P1; 1: P2
+	 */
+	private void writeHeader(int i) {
 		try {
-			p1FileWriter = new FileWriter("debugActionData/p1ActionFile.csv", true);
-			p1PrintWriter = new PrintWriter(new BufferedWriter(p1FileWriter));
-			p2FileWriterr = new FileWriter("debugActionData/p2ActionFile.csv", true);
-			p2PrintWriter = new PrintWriter(new BufferedWriter(p2FileWriterr));
+			if (this.bReaders[i].read() == -1) {
+				for (String string : this.motionName) {
+					this.pWriters[i].print(string + ",");
+				}
+				this.pWriters[i].println();
+			} else {
+				this.pWriters[i].println();
+				this.pWriters[i].println();
+			}
 
-			p1BufferedReader = new BufferedReader(new FileReader("debugActionData/p1ActionFile.csv"));
-			p2BufferedReader = new BufferedReader(new FileReader("debugActionData/p2ActionFile.csv"));
-			check1 = p1BufferedReader.read();
-			check2 = p2BufferedReader.read();
-			p1BufferedReader.close();
-			p2BufferedReader.close();
+			this.bReaders[i].close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
 
-		if (check1 == -1 || check2 == -1) {
-			p1PrintWriter.println();
-			p2PrintWriter.println();
-			for (int i = 0; i < motionName.length; i++) {
-				p1PrintWriter.print(motionName[i] + ",");
-				p2PrintWriter.print(motionName[i] + ",");
-			}
-		}
-		p1PrintWriter.println();
-		p2PrintWriter.println();
-		p1PrintWriter.println();
-		p2PrintWriter.println();
+	/**
+	 * 行動回数をカウントする対象の行動名とその総フレーム数を読み込み, リストに格納する.
+	 *
+	 * @param i
+	 *            プレイヤーの番号<br>
+	 *            0: P1; 1: P2
+	 */
+	private void readMotionData(int i) {
+		String fileName = "./data/characters/" + LaunchSetting.characterNames[i] + "/Motion.csv";
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
+			String s;
+			while ((s = br.readLine()) != null) {
+				String array[] = s.split(","); // カンマで分割
 
-		//p1の各アクションの総フレーム数をp1MotionDataに読み込む
-		 try {
-			 BufferedReader br = new BufferedReader( new FileReader("data/characters/"+p1CharacterName+"/Motion.csv") );
-			 String s;
-			 while( (s = br.readLine()) != null ) {
-				 String array[] = s.split( "," ); //カンマで分割
-				 for(int i = 0; i < motionName.length; i++){
-					 if( motionName[i].equals(array[0])) {
-						 p1MotionData.put(motionName[i], Integer.parseInt(array[1]));
-					 }
-				 }
-			 }
-			 br.close();
-		 } catch( Exception e )  {
-			 System.out.println( e );
-		 }
-		//p2の各アクションの総フレーム数をp2MotionDataに読み込む
-		 try {
-			 BufferedReader br = new BufferedReader( new FileReader("data/characters/"+p2CharacterName+"/Motion.csv") );
-			 String s;
-			 while( (s = br.readLine()) != null ) {
-				 String array[] = s.split( "," );
-				 for(int i = 0; i < motionName.length; i++){
-					 if( motionName[i].equals(array[0])) {
-						 p2MotionData.put(motionName[i], Integer.parseInt(array[1]));
-					 }
-				 }
-			 }
-			 br.close();
-		 } catch( Exception e )  {
-			 System.out.println( e );
-		 }
-    }
-    /** P1とP2の行った各アクションの数を数える*/
-    public void countPlayerAction(FrameData fd) {
-		boolean p1CountFlag = false;
-		boolean p2CountFlag = false;
-		String p1Action = fd.getCharacter(true).getAction().name();
-		String p2Action = fd.getCharacter(false).getAction().name();
-
-		for (int i = 0; i < motionName.length; i++) {
-			if ((p1Action.equals(motionName[i])) && (fd.getCharacter(true).getRemainingFrame() == p1MotionData.get(motionName[i])-1)) {
-				p1MotinoCount[i]++;
-				p1CountFlag = true;
+				for (String string : this.motionName) {
+					if (string.equals(array[0])) {
+						this.actionList.get(i).put(string, Integer.parseInt(array[1]));
+						this.countedActionContainer.get(i).put(string, 0);
+					}
+				}
 			}
-			if ((p2Action.equals(motionName[i])) && (fd.getCharacter(false).getRemainingFrame() == p2MotionData.get(motionName[i])-1)) {
-				p2MotionCount[i]++;
-				p2CountFlag = true;
-			}
-			if (p1CountFlag == true && p2CountFlag == true)
-				break;
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
-    /** P1とP2の行った各アクションの数のデータをCSVに出力する */
-    public void outputActionCount(){
-		for (int i = 0; i < motionName.length; i++) {
-			p1PrintWriter.print(p1MotinoCount[i] + ",");
-			p2PrintWriter.print(p2MotionCount[i] + ",");
+
+	/**
+	 * 行動回数をカウントするかどうかを返す
+	 *
+	 * @param temp
+	 *            行動回数をカウントする対象の行動名とその総フレーム数を管理するマップ
+	 * @param actionName
+	 *            キャラクターが現在行っている行動名
+	 * @param remainingFrame
+	 *            キャラクターが現在行っている行動の残りフレーム数
+	 *
+	 * @return true: 行動をカウントする; false: 行動をカウントしない
+	 */
+	private boolean canCount(HashMap<String, Integer> temp, String actionName, int remainingFrame) {
+		if (temp.containsKey(actionName)) {
+			return temp.get(actionName) == remainingFrame - 1;
+		} else {
+			return false;
 		}
-		p1PrintWriter.println();
-		p1PrintWriter.flush();
-		p2PrintWriter.println();
-		p2PrintWriter.flush();
-		Arrays.fill(p1MotinoCount, 0);
-		Arrays.fill(p2MotionCount, 0);
-    }
-
-    public void closeAllWriters(){
-		p1PrintWriter.close();
-		p2PrintWriter.close();
-    }
-
-
-
-
-
-
-
-
-
-
+	}
 }
