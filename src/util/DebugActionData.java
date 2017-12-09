@@ -106,8 +106,10 @@ public class DebugActionData {
 	 * 行動が実行される時点のみカウントする.<br>
 	 * カウントする対象外の行動や, 実行途中の行動に関してはカウントしない.
 	 *
-	 * @param fd
-	 *            キャラクターのデータといったゲーム情報を格納したフレームデータ
+	 * @param characters
+	 *            P1, P2のキャラクターのデータを格納した配列<br>
+	 *            Index 0: P1; Index 1: P2
+	 *
 	 */
 	public void countPlayerAction(Character[] characters) {
 		String[] actionNames = new String[] { characters[0].getAction().name(), characters[1].getAction().name() };
@@ -134,6 +136,7 @@ public class DebugActionData {
 		}
 	}
 
+	/** 出力ファイルのクローズ処理を行い, リストの中身をクリアーする. */
 	public void closeAllWriters() {
 		for (int i = 0; i < 2; i++) {
 			this.pWriters[i].close();
@@ -142,6 +145,13 @@ public class DebugActionData {
 		this.countedActionContainer.clear();
 	}
 
+	/**
+	 * 行動名をヘッダ情報として出力ファイルに出力する.
+	 *
+	 * @param i
+	 *            プレイヤーの番号<br>
+	 *            0: P1; 1: P2
+	 */
 	private void writeHeader(int i) {
 		try {
 			if (this.bReaders[i].read() == -1) {
@@ -160,6 +170,13 @@ public class DebugActionData {
 		}
 	}
 
+	/**
+	 * 行動回数をカウントする対象の行動名とその総フレーム数を読み込み, リストに格納する.
+	 *
+	 * @param i
+	 *            プレイヤーの番号<br>
+	 *            0: P1; 1: P2
+	 */
 	private void readMotionData(int i) {
 		String fileName = "./data/characters/" + LaunchSetting.characterNames[i] + "/Motion.csv";
 		try {
@@ -181,6 +198,18 @@ public class DebugActionData {
 		}
 	}
 
+	/**
+	 * 行動回数をカウントするかどうかを返す
+	 *
+	 * @param temp
+	 *            行動回数をカウントする対象の行動名とその総フレーム数を管理するマップ
+	 * @param actionName
+	 *            キャラクターが現在行っている行動名
+	 * @param remainingFrame
+	 *            キャラクターが現在行っている行動の残りフレーム数
+	 *
+	 * @return true: 行動をカウントする; false: 行動をカウントしない
+	 */
 	private boolean canCount(HashMap<String, Integer> temp, String actionName, int remainingFrame) {
 		if (temp.containsKey(actionName)) {
 			return temp.get(actionName) == remainingFrame - 1;

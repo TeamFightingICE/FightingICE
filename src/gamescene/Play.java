@@ -1,6 +1,6 @@
 package gamescene;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class Play extends GameScene {
 			openReplayFile();
 		}
 
-		if(FlagSetting.debugActionFlag){
+		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().initialize();
 		}
 
@@ -217,7 +217,7 @@ public class Play extends GameScene {
 		this.currentRound++;
 		this.roundStartFlag = true;
 
-		 // P1とP2の行った各アクションの数のデータをCSVに出力する
+		// P1とP2の行った各アクションの数のデータをCSVに出力する
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().outputActionCount();
 		}

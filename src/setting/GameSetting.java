@@ -26,7 +26,7 @@ public class GameSetting {
 	/** ラウンド間の休憩時間 */
 	public static final int BREAKTIME_FRAME_NUMBER = 70;
 
-	/** 重力の影響を与えるパラメータ*/
+	/** 重力の影響を与えるパラメータ */
 	public static final int GRAVITY = 1;
 
 	/** 摩擦の影響を与えるパラメータ */

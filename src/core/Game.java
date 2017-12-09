@@ -18,7 +18,6 @@ import manager.GraphicManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
-import util.DebugActionData;
 import util.DeleteFiles;
 
 public class Game extends GameManager {
@@ -131,11 +130,11 @@ public class Game extends GameManager {
 			Launcher launcher = new Launcher(GameSceneName.PLAY);
 			this.startGame(launcher);
 
-		} else if(FlagSetting.py4j){
+		} else if (FlagSetting.py4j) {
 			Python python = new Python();
 			this.startGame(python);
 
-		}else{
+		} else {
 			HomeMenu homeMenu = new HomeMenu();
 			this.startGame(homeMenu);
 		}
