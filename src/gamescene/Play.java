@@ -202,7 +202,7 @@ public class Play extends GameScene {
 
 		// P1とP2の行った各アクションの数を数える
 		if (FlagSetting.debugActionFlag) {
-			DebugActionData.getInstance().countPlayerAction(this.frameData);
+			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
 		}
 
 	}

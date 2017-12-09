@@ -10,23 +10,39 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import fighting.Character;
 import loader.ResourceLoader;
 import setting.LaunchSetting;
-import struct.FrameData;
 
 public class DebugActionData {
 
+	/**
+	 * P1, P2の行動回数をカウントする対象の行動名とその総フレーム数を管理するマップを格納したリスト<br>
+	 * Index 0: P1; Index 1: P2
+	 */
 	private ArrayList<HashMap<String, Integer>> actionList;
 
+	/**
+	 * P1, P2の行動回数をカウントする対象の行動名と1ラウンド中のその行動回数を管理するマップを格納したリスト<br>
+	 * Index 0: P1; Index 1: P2
+	 */
 	private ArrayList<HashMap<String, Integer>> countedActionContainer;
 
+	/**
+	 * ファイル読み込み用のReader<br>
+	 * Index 0: P1; Index 1: P2
+	 */
 	private BufferedReader[] bReaders;
 
+	/**
+	 * ファイル書き込み用のWriter<br>
+	 * Index 0: P1; Index 1: P2
+	 */
 	private PrintWriter[] pWriters;
 
-	/** 行動名とその行動の総フレーム数のHashMap */
-
-	/** カウントする行動名のリスト */
+	/**
+	 * カウントする行動名を格納した配列
+	 */
 	private final String[] motionName = { "FORWARD_WALK", "DASH", "BACK_STEP", "JUMP", "FOR_JUMP", "BACK_JUMP",
 			"STAND_GUARD", "CROUCH_GUARD", "AIR_GUARD", "THROW_A", "THROW_B", "STAND_A", "STAND_B", "CROUCH_A",
 			"CROUCH_B", "AIR_A", "AIR_B", "AIR_DA", "AIR_DB", "STAND_FA", "STAND_FB", "CROUCH_FA", "CROUCH_FB",
@@ -51,6 +67,79 @@ public class DebugActionData {
 	/** コンストラクタ */
 	private DebugActionData() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + DebugActionData.class.getName());
+		Logger.getAnonymousLogger().log(Level.INFO, "start debug action mode...");
+	}
+
+	/**
+	 * DebugActionDataクラスの初期化を行う.<br>
+	 * 1. フィールド変数の初期化<br>
+	 * 2. 出力用のファイルをオープンし, 行動名をヘッダ情報として出力<br>
+	 * 3. カウントする対象の行動名とその総フレーム数をリストに格納<br>
+	 */
+	public void initialize() {
+		this.actionList = new ArrayList<HashMap<String, Integer>>(2);
+		this.countedActionContainer = new ArrayList<HashMap<String, Integer>>(2);
+		this.pWriters = new PrintWriter[2];
+		this.bReaders = new BufferedReader[2];
+
+		for (int i = 0; i < 2; i++) {
+			this.actionList.add(new HashMap<String, Integer>());
+			this.countedActionContainer.add(new HashMap<String, Integer>());
+		}
+
+		String path = "./debugActionData";
+		new File(path).mkdir();
+
+		// 読み込み・書き込みファイルをオープンする
+		for (int i = 0; i < 2; i++) {
+			String fileName = "/" + (i == 0 ? "P1" : "P2") + "ActionFile.csv";
+			this.pWriters[i] = ResourceLoader.getInstance().openWriteFile(path + fileName, true);
+			this.bReaders[i] = ResourceLoader.getInstance().openReadFile(path + fileName);
+
+			writeHeader(i);
+			readMotionData(i);
+		}
+	}
+
+	/**
+	 * P1とP2の各行動の実行回数をカウントする.<br>
+	 * 行動が実行される時点のみカウントする.<br>
+	 * カウントする対象外の行動や, 実行途中の行動に関してはカウントしない.
+	 *
+	 * @param fd
+	 *            キャラクターのデータといったゲーム情報を格納したフレームデータ
+	 */
+	public void countPlayerAction(Character[] characters) {
+		String[] actionNames = new String[] { characters[0].getAction().name(), characters[1].getAction().name() };
+		int[] remainingFrames = new int[] { characters[0].getRemainingFrame(), characters[1].getRemainingFrame() };
+
+		for (int i = 0; i < 2; i++) {
+			if (canCount(this.countedActionContainer.get(i), actionNames[i], remainingFrames[i])) {
+				this.countedActionContainer.get(i).replace(actionNames[i],
+						this.countedActionContainer.get(i).get(actionNames[i]) + 1);
+			}
+		}
+	}
+
+	/** P1とP2の各行動の実行回数をCSVに出力する */
+	public void outputActionCount() {
+		for (int i = 0; i < 2; i++) {
+			for (String string : this.motionName) {
+				this.pWriters[i].print(this.countedActionContainer.get(i).get(string) + ",");
+				this.countedActionContainer.get(i).replace(string, 0);
+			}
+
+			this.pWriters[i].println();
+			this.pWriters[i].flush();
+		}
+	}
+
+	public void closeAllWriters() {
+		for (int i = 0; i < 2; i++) {
+			this.pWriters[i].close();
+		}
+		this.actionList.clear();
+		this.countedActionContainer.clear();
 	}
 
 	private void writeHeader(int i) {
@@ -92,32 +181,6 @@ public class DebugActionData {
 		}
 	}
 
-	public void initialize() {
-		this.actionList = new ArrayList<HashMap<String, Integer>>(2);
-		this.countedActionContainer = new ArrayList<HashMap<String, Integer>>(2);
-		this.pWriters = new PrintWriter[2];
-		this.bReaders = new BufferedReader[2];
-
-		for (int i = 0; i < 2; i++) {
-			this.actionList.add(new HashMap<String, Integer>());
-			this.countedActionContainer.add(new HashMap<String, Integer>());
-		}
-
-		String path = "./debugActionData";
-		new File(path).mkdir();
-		Logger.getAnonymousLogger().log(Level.INFO, "start debug action mode...");
-
-		// 読み込み・書き込みファイルをオープンする
-		for (int i = 0; i < 2; i++) {
-			String fileName = "/" + (i == 0 ? "P1" : "P2") + "ActionFile.csv";
-			this.pWriters[i] = ResourceLoader.getInstance().openWriteFile(path + fileName, true);
-			this.bReaders[i] = ResourceLoader.getInstance().openReadFile(path + fileName);
-
-			writeHeader(i);
-			readMotionData(i);
-		}
-	}
-
 	private boolean canCount(HashMap<String, Integer> temp, String actionName, int remainingFrame) {
 		if (temp.containsKey(actionName)) {
 			return temp.get(actionName) == remainingFrame - 1;
@@ -125,41 +188,4 @@ public class DebugActionData {
 			return false;
 		}
 	}
-
-	/** P1とP2の行った各アクションの数を数える */
-	public void countPlayerAction(FrameData fd) {
-		String[] actionNames = new String[] { fd.getCharacter(true).getAction().name(),
-				fd.getCharacter(false).getAction().name() };
-		int[] remainingFrames = new int[] { fd.getCharacter(true).getRemainingFrame(),
-				fd.getCharacter(false).getRemainingFrame() };
-
-		for (int i = 0; i < 2; i++) {
-			if (canCount(this.countedActionContainer.get(i), actionNames[i], remainingFrames[i])) {
-				this.countedActionContainer.get(i).replace(actionNames[i],
-						this.countedActionContainer.get(i).get(actionNames[i]) + 1);
-			}
-		}
-	}
-
-	/** P1とP2の行った各アクションの数のデータをCSVに出力する */
-	public void outputActionCount() {
-		for (int i = 0; i < 2; i++) {
-			for (String string : this.motionName) {
-				this.pWriters[i].print(this.countedActionContainer.get(i).get(string) + ",");
-				this.countedActionContainer.get(i).replace(string, 0);
-			}
-
-			this.pWriters[i].println();
-			this.pWriters[i].flush();
-		}
-	}
-
-	public void closeAllWriters() {
-		for (int i = 0; i < 2; i++) {
-			this.pWriters[i].close();
-		}
-		this.actionList.clear();
-		this.countedActionContainer.clear();
-	}
-
 }
