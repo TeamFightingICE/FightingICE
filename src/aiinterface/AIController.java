@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import informationcontainer.RoundResult;
-import setting.FlagSetting;
 import struct.FrameData;
 import struct.GameData;
 import struct.Key;
@@ -18,7 +17,7 @@ public class AIController extends Thread {
 	private boolean playerNumber;
 
 	private boolean isFighting;
-	
+
 	private Key key;
 
 	private final static int DELAY = 14;
@@ -49,7 +48,6 @@ public class AIController extends Thread {
 		while (isFighting) {
 			synchronized (this.waitObj) {
 				try {
-					// System.out.println("lock AI"+(this.playerNumber? 1:2));
 					this.waitObj.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -59,13 +57,9 @@ public class AIController extends Thread {
 			this.ai.getInformation(this.framesData.removeFirst());
 			this.ai.getScreenData(this.screenData);
 			this.ai.processing();
+			ThreadController.getInstance().notifyEndProcess(this.playerNumber);
 			setInput(this.ai.input());
-			// ThreadController.getInstance().resetFlag(this.Num);
-			// System.out.println("AI" +
-			// Transform.convertPlayerNumberfromBtoI(playerNumber) + "run");
 		}
-		//ai.close();
-		
 
 	}
 
@@ -104,10 +98,10 @@ public class AIController extends Thread {
 		this.ai.roundEnd(roundResult.getRemainingHPs()[0], roundResult.getRemainingHPs()[1],
 				roundResult.getElapsedFrame());
 	}
-	
-	public synchronized void gameEnd(){
+
+	public synchronized void gameEnd() {
 		isFighting = false;
-		synchronized(this.waitObj) {
+		synchronized (this.waitObj) {
 			this.ai.close();
 			this.waitObj.notifyAll();
 		}

@@ -50,6 +50,8 @@ public class InputManager<Data> {
 	// to recognize the input devices
 	private char[] deviceTypes;
 
+	private Object endFrame;
+
 	/**
 	 * InputManagerクラスのコンストラクタ．<br>
 	 * デバイスタイプはデフォルトでキーボードを指定する．
@@ -65,6 +67,8 @@ public class InputManager<Data> {
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
+
+		this.endFrame = ThreadController.getInstance().getEndFrame();
 	}
 
 	/**
@@ -219,10 +223,21 @@ public class InputManager<Data> {
 				} else {
 					this.ais[count].setFrameData(new FrameData());
 				}
-
 				ais[count].setScreenData(new ScreenData(screenData));
-				ThreadController.getInstance().resetFlag(i);
 				count++;
+			}
+		}
+		synchronized (this.endFrame) {
+			try {
+				ThreadController.getInstance().resetAllAIsObj();
+				if (FlagSetting.fastModeFlag){
+					this.endFrame.wait();
+				}else{
+
+				}
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
 			}
 		}
 	}
