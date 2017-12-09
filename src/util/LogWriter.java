@@ -64,13 +64,13 @@ public class LogWriter {
 		PrintWriter pw;
 		switch (extension) {
 		case CSV:
-			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".csv");
+			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".csv", false);
 			break;
 		case TXT:
-			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".txt");
+			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".txt", false);
 			break;
 		default:
-			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".PLOG");
+			pw = ResourceLoader.getInstance().openWriteFile(fileName + ".PLOG", false);
 			break;
 		}
 

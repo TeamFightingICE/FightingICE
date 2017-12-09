@@ -186,10 +186,10 @@ public class ResourceLoader {
 	 * @param filePath
 	 *            読み込みたいファイルまでのパス
 	 */
-	public PrintWriter openWriteFile(String filePath) {
+	public PrintWriter openWriteFile(String filePath, boolean mode) {
 		try {
 			File file = new File(filePath);
-			return new PrintWriter(new BufferedWriter(new FileWriter(file)));
+			return new PrintWriter(new BufferedWriter(new FileWriter(file, mode)));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

@@ -18,6 +18,7 @@ import manager.GraphicManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import util.DebugActionData;
 import util.DeleteFiles;
 
 public class Game extends GameManager {

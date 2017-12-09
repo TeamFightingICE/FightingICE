@@ -95,10 +95,10 @@ public class Play extends GameScene {
 		if (!FlagSetting.trainingModeFlag) {
 			openReplayFile();
 		}
-		if (FlagSetting.debugActionFlag) {
-			DebugActionData.getInstance();
-		}
 
+		if(FlagSetting.debugActionFlag){
+			DebugActionData.getInstance().initialize();
+		}
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 
@@ -199,6 +199,7 @@ public class Play extends GameScene {
 		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
 				this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
+
 		// P1とP2の行った各アクションの数を数える
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().countPlayerAction(this.frameData);
@@ -265,7 +266,9 @@ public class Play extends GameScene {
 		this.keyData = null;
 		this.roundResults.clear();
 
-		if (FlagSetting.debugActionFlag) DebugActionData.getInstance().closeAllWriters();
+		if (FlagSetting.debugActionFlag) {
+			DebugActionData.getInstance().closeAllWriters();
+		}
 
 		try {
 			this.dos.close();
