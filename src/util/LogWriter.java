@@ -1,12 +1,18 @@
 package util;
 
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.json.Json;
+import javax.json.stream.JsonGenerator;
 
 import fighting.Character;
 import informationcontainer.RoundResult;
@@ -15,6 +21,11 @@ import loader.ResourceLoader;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import struct.AttackData;
+import struct.CharacterData;
+import struct.FrameData;
+import struct.HitArea;
+import struct.Key;
 
 public class LogWriter {
 
@@ -26,6 +37,21 @@ public class LogWriter {
 
 	/** 試合結果の出力ファイル拡張子を.PLOGに指定する定数 */
 	public static final int PLOG = 2;
+
+	/**
+	 * This variable stores the current round. It is updated every time
+	 * updateJson() is called. It is used to realise when the round changes.
+	 */
+	private int currentRound = 0;
+
+	/** Stream generator for JSON. */
+	private JsonGenerator generator;
+
+	/**
+	 * A flag marking whether to include display information in instances of
+	 * FrameData
+	 */
+	boolean disableDisplayDataInFrameData;
 
 	/** コンストラクタ */
 	private LogWriter() {
@@ -168,5 +194,286 @@ public class LogWriter {
 	 */
 	private int convertBtoI(boolean b) {
 		return b ? 1 : 0;
+	}
+
+	/**
+	 * Instantiates a JSON generator and writes initial information about the
+	 * match. The JSON structure is as follows:
+	 *
+	 * <pre>
+	 * {
+	 *     "max_hp": {"x": 200, "y": 200},
+	 *     "character_names": {"P1": "ZEN", "P2": "ZEN"},
+	 *     "stage_size": {"x": 200, "y": 200},
+	 *     "rounds": [
+	 *         [
+	 *             {
+	 *                 "current_frame": 123,
+	 *                 "remaining_frames": 123, // actually true only if --limithp is NOT used
+	 *                 "P1": {
+	 *                     "front": true,
+	 *                     "remaining_frames": 48,
+	 *                     "action": "STAND",
+	 *                     "action_id": 1,
+	 *                     "state": "STAND",
+	 *                     "state_id": 0,
+	 *                     "hp": 0,
+	 *                     "energy": 0,
+	 *                     "x": 100,
+	 *                     "y": 335,
+	 *                     "left": 100,
+	 *                     "right": 100,
+	 *                     "top": 100,
+	 *                     "bottom": 100,
+	 *                     "speed_x": 0,
+	 *                     "speed_y": 0,
+	 *                     "key_a": false,
+	 *                     "key_b": false,
+	 *                     "key_c": false,
+	 *                     "key_up": false,
+	 *                     "key_down": false,
+	 *                     "key_left": false,
+	 *                     "key_right": false,
+	 *                     "attack": {
+	 *                         "speed_x": 0,
+	 *                         "speed_y": 0,
+	 *                         "hit_damage": 10,
+	 *                         "guard_damage": 0,
+	 *                         "start_add_energy": -5,
+	 *                         "hit_add_energy": 10,
+	 *                         "guard_add_energy": 4,
+	 *                         "give_energy": 20,
+	 *                         "give_guard_recov": 15,
+	 *                         "attack_type": "MIDDLE",
+	 *                         "attack_type_id": 2,
+	 *                         "impact_x": 10,
+	 *                         "impact_y": 0,
+	 *                         "hit_area": {
+	 *                             "bottom": 415,
+	 *                             "top": 385,
+	 *                             "left": 557,
+	 *                             "right": 642
+	 *                         }
+	 *
+	 *                     }
+	 *                     "projectiles": [~, ~, ...] // each entry has the same structure as "attack"
+	 *                 },
+	 *                 "P2: {~} // same structure as P1
+	 *             },
+	 *             ... // other frames with the same structure
+	 *         ],
+	 *         ... // other rounds with the same structure
+	 *     ]
+	 * }
+	 * </pre>
+	 *
+	 * @param jsonName
+	 *            File name for the JSON file.
+	 */
+	public void initJson(String jsonName) {
+		File file = new File(jsonName);
+
+		try {
+			FileOutputStream fos = new FileOutputStream(file, false);
+			this.generator = Json.createGenerator(fos);
+
+			// Open root object
+			this.generator.writeStartObject();
+
+			// Write max HP
+			this.generator.writeStartObject("max_hp");
+			this.generator.write("P1", LaunchSetting.maxHp[0]);
+			this.generator.write("P2", LaunchSetting.maxHp[1]);
+			this.generator.writeEnd();
+
+			// Write character names
+			this.generator.writeStartObject("character_names");
+			this.generator.write("P1", LaunchSetting.characterNames[0]);
+			this.generator.write("P2", LaunchSetting.characterNames[1]);
+			this.generator.writeEnd();
+
+			// Write stage details
+			this.generator.writeStartObject("stage_size");
+			this.generator.write("x", GameSetting.STAGE_WIDTH);
+			this.generator.write("y", GameSetting.STAGE_HEIGHT);
+			this.generator.writeEnd();
+
+			// TODO: Combo tables
+
+			// Open rounds array
+			this.generator.writeStartArray("rounds");
+
+			// Open frames array
+			this.generator.writeStartArray();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Uses this.generator to write the data of a frame in JSON. Calls to
+	 * writeStartObject() and writeEnd() are handled <em>internally</em>.
+	 *
+	 * @param frameData
+	 *            Frame data
+	 * @param keyDataInput
+	 *            Data about keys input in this frame
+	 */
+	public void updateJson(FrameData frameData, KeyData keyDataInput) {
+		// Check if this is a new round
+		if (frameData.getRound() != this.currentRound) {
+			this.generator.writeEnd();
+			this.generator.writeStartArray();
+			this.currentRound = frameData.getRound();
+		}
+
+		// Open frame object
+		this.generator.writeStartObject();
+
+		this.generator.write("current_frame", frameData.getFramesNumber());
+		this.generator.write("remaining_frames", frameData.getRemainingFramesNumber());
+
+		// Write P1 data
+		this.generator.writeStartObject("P1");
+		this.writeCharacterDataToJson(frameData.getCharacter(true), keyDataInput.getKeys()[0],
+				frameData.getProjectilesByP1());
+		this.generator.writeEnd();
+
+		// Write P2 data
+		this.generator.writeStartObject("P2");
+		this.writeCharacterDataToJson(frameData.getCharacter(false), keyDataInput.getKeys()[1],
+				frameData.getProjectilesByP2());
+		this.generator.writeEnd();
+
+		// Close frame object
+		this.generator.writeEnd(); // Players data
+
+		this.generator.flush();
+	}
+
+	/**
+	 * Uses this.generator to write the data of a character in JSON. Calls to
+	 * writeStartObject() and writeEnd() should be handled <em>by the
+	 * caller</em>.
+	 *
+	 * @param cd
+	 *            The data of the character
+	 * @param keys
+	 *            Keys input by the character
+	 * @param projectiles
+	 *            Projectiles currently active generated by this player
+	 */
+	private void writeCharacterDataToJson(CharacterData cd, Key keys, Deque<AttackData> projectiles) {
+
+		// Character
+		this.generator.write("front", cd.isFront());
+		this.generator.write("remaining_frames", cd.getRemainingFrame());
+		this.generator.write("action", cd.getAction().toString());
+		this.generator.write("action_id", cd.getAction().ordinal());
+		this.generator.write("state", cd.getState().toString());
+		this.generator.write("state_id", cd.getState().ordinal());
+		this.generator.write("hp", cd.getHp());
+		this.generator.write("energy", cd.getEnergy());
+		this.generator.write("x", cd.getX());
+		this.generator.write("y", cd.getY());
+		this.generator.write("left", cd.getLeft());
+		this.generator.write("right", cd.getRight());
+		this.generator.write("top", cd.getTop());
+		this.generator.write("bottom", cd.getBottom());
+		this.generator.write("speed_x", cd.getSpeedX());
+		this.generator.write("speed_y", cd.getSpeedY());
+
+		// Agent decision
+		this.generator.write("key_a", keys.A);
+		this.generator.write("key_b", keys.B);
+		this.generator.write("key_c", keys.C);
+		this.generator.write("key_up", keys.U);
+		this.generator.write("key_down", keys.D);
+		this.generator.write("key_left", keys.L);
+		this.generator.write("key_right", keys.R);
+
+		// Attack
+		AttackData attack = cd.getAttack();
+		if (attack != null && attack.getAttackType() != 0) {
+			this.generator.writeStartObject("attack"); // Attack
+			this.writeAttackToJson(attack);
+			this.generator.writeEnd(); // Attack
+		}
+
+		this.generator.writeStartArray("projectiles"); // Projectiles
+		for (AttackData projectile : projectiles) {
+			this.generator.writeStartObject(); // Projectile
+			this.writeAttackToJson(projectile);
+			this.generator.writeEnd(); // Projectile
+		}
+		this.generator.writeEnd(); // Projectiles
+	}
+
+	/**
+	 * Uses this.generator to write data about an attack in JSON. Calls to
+	 * writeStartObject() and writeEnd() should be handled <em>by the
+	 * caller</em>.
+	 *
+	 * @param attack
+	 *            Data about the attack
+	 */
+	private void writeAttackToJson(AttackData attack) {
+		this.generator.write("speed_x", attack.getSpeedX());
+		this.generator.write("speed_y", attack.getSpeedY());
+		this.generator.write("hit_damage", attack.getHitDamage());
+		this.generator.write("guard_damage", attack.getGuardDamage());
+		this.generator.write("start_add_energy", attack.getStartAddEnergy());
+		this.generator.write("hit_add_energy", attack.getHitAddEnergy());
+		this.generator.write("guard_add_energy", attack.getGuardAddEnergy());
+		this.generator.write("give_energy", attack.getGiveEnergy());
+		this.generator.write("give_guard_recov", attack.getGiveGuardRecov());
+		int attackType = attack.getAttackType();
+		switch (attackType) {
+		case 1:
+			this.generator.write("attack_type", "HIGH");
+			break;
+		case 2:
+			this.generator.write("attack_type", "MIDDLE");
+			break;
+		case 3:
+			this.generator.write("attack_type", "LOW");
+			break;
+		case 4:
+			this.generator.write("attack_type", "THROW");
+			break;
+		default:
+			throw new IllegalArgumentException("Unexpected attack type: " + attackType);
+		}
+		this.generator.write("attack_type_id", attackType);
+		this.generator.write("impact_x", attack.getImpactX());
+		this.generator.write("impact_y", attack.getImpactY());
+
+		HitArea hitArea = attack.getCurrentHitArea();
+		this.generator.writeStartObject("hit_area"); // Hit area
+		this.generator.write("bottom", hitArea.getBottom());
+		this.generator.write("top", hitArea.getTop());
+		this.generator.write("left", hitArea.getLeft());
+		this.generator.write("right", hitArea.getRight());
+		this.generator.writeEnd(); // Hit area
+	}
+
+	/**
+	 * Uses this.generator to close the JSON tags that are still open and then
+	 * closes the generator.
+	 */
+	public void finalizeJson() {
+		// Close rounds array
+		this.generator.writeEnd();
+
+		// Close frames array
+		this.generator.writeEnd();
+
+		// Close root object
+		this.generator.writeEnd();
+
+		// Close the resources
+		this.generator.flush();
+		this.generator.close();
 	}
 }
