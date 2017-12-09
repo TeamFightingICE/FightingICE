@@ -11,7 +11,6 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import fighting.Fighting;
 import informationcontainer.RoundResult;
@@ -82,7 +81,7 @@ public class Play extends GameScene {
 		if (!FlagSetting.trainingModeFlag) {
 			openReplayFile();
 		}
-		
+
 		GameData gameData = new GameData(fighting.getCharacters());
 
 		InputManager.getInstance().createAIcontroller();
@@ -105,9 +104,9 @@ public class Play extends GameScene {
 				this.elapsedBreakTime++;
 
 			} else {
-				fistProcess();
 				// processing
 				processingGame();
+				fastProcess();
 				this.nowFrame++;
 			}
 
@@ -148,7 +147,7 @@ public class Play extends GameScene {
 	}
 
 	private void processingGame() {
-		
+
 		this.keyData = new KeyData(InputManager.getInstance().getKeyData());
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
@@ -206,18 +205,18 @@ public class Play extends GameScene {
 		LogWriter.getInstance().writeHeader(this.dos);
 	}
 
-	private void fistProcess(){
-		if(FlagSetting.fastModeFlag){
-			synchronized (ThreadController.getInstance().getEndFrame()) {
-				try {
-					ThreadController.getInstance().getEndFrame().wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+	private void fastProcess(){
+//		if(FlagSetting.fastModeFlag){
+//			synchronized (ThreadController.getInstance().getEndFrame()) {
+//				try {
+//					ThreadController.getInstance().getEndFrame().wait();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 	}
-	
+
 	@Override
 	public void close() {
 		this.fighting = null;

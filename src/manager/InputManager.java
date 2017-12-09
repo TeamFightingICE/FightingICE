@@ -12,6 +12,7 @@ import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
+import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.FrameData;
 import struct.GameData;
@@ -42,6 +43,8 @@ public class InputManager<Data> {
 	// to recognize the input devices
 	private char[] deviceTypes;
 
+	private Object endFrame;
+
 	private InputManager() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + InputManager.class.getName());
 
@@ -51,6 +54,8 @@ public class InputManager<Data> {
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
+
+		this.endFrame = ThreadController.getInstance().getEndFrame();
 	}
 
 	public static InputManager getInstance() {
@@ -126,9 +131,6 @@ public class InputManager<Data> {
 		int count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				// ais[count].initialize(waitFrame, gd,
-				// !Transform.iTob(i));//Call the initialize function of the AI
-				// of interest
 				ais[count].initialize(ThreadController.getInstance().getAIsObject(Transform.convertPlayerNumberfromItoB(i))
 						, gameData, Transform.convertPlayerNumberfromItoB(i));
 				ais[count].start();// start the thread
@@ -145,7 +147,7 @@ public class InputManager<Data> {
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		this.ais = null;
 	}
-	
+
 	// private synchronized Key getInputFromAI(AIController ai){
 	private Key getKeyFromAI(AIController ai) {
 		if (ai == null)
@@ -162,10 +164,21 @@ public class InputManager<Data> {
 				} else {
 					ais[count].setFrameData(new FrameData());
 				}
-
 				ais[count].setScreenData(new ScreenData(screenData));
-				ThreadController.getInstance().resetFlag(i);
 				count++;
+			}
+		}
+		synchronized (this.endFrame) {
+			try {
+				ThreadController.getInstance().resetAllAIsObj();
+				if (FlagSetting.fastModeFlag){
+					this.endFrame.wait();
+				}else{
+
+				}
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
 			}
 		}
 	}
