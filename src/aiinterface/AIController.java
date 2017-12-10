@@ -82,11 +82,11 @@ public class AIController extends Thread {
 		}
 	}
 
-	public void setScreenData(ScreenData screenData) {
+	public synchronized void setScreenData(ScreenData screenData) {
 		this.screenData = screenData;
 	}
 
-	public void clear() {
+	public synchronized void clear() {
 		this.framesData.clear();
 
 		while (this.framesData.size() < DELAY) {
@@ -94,7 +94,7 @@ public class AIController extends Thread {
 		}
 	}
 
-	public void informRoundResult(RoundResult roundResult) {
+	public synchronized void informRoundResult(RoundResult roundResult) {
 		this.ai.roundEnd(roundResult.getRemainingHPs()[0], roundResult.getRemainingHPs()[1],
 				roundResult.getElapsedFrame());
 	}
