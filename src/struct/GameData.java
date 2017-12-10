@@ -125,7 +125,9 @@ public class GameData {
 
 	/**
 	 * 指定されたプレイヤーのモーションを返すメソッド<br>
-	 * シミュレータでのみ呼び出される.
+	 *
+	 * @deprecated このメソッドはシミュレータの処理で呼び出される.<br>
+	 *             AI developerは使用することができない.
 	 *
 	 * @param playerNumber
 	 *            playerNumber プレイヤー番号(true: P1; false: P2)

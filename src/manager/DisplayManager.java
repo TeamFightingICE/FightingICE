@@ -15,6 +15,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import setting.FlagSetting;
 import setting.GameSetting;
 
 public class DisplayManager {
@@ -110,8 +111,16 @@ public class DisplayManager {
 
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(this.window);
+
+		int sync;
+		if (!this.enableWindow || FlagSetting.fastModeFlag) {
+			sync = 0;
+		} else {
+			sync = 1;
+		}
+
 		// Enable v-sync
-		glfwSwapInterval(1);
+		glfwSwapInterval(sync);
 
 		// Make the window visible
 		glfwShowWindow(this.window);

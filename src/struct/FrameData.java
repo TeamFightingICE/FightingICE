@@ -46,7 +46,7 @@ public class FrameData {
 	 * フレームデータを初期化するコンストラクタ
 	 */
 	public FrameData() {
-		this.characterData = new CharacterData[2];
+		this.characterData = new CharacterData[] { null, null };
 		this.currentFrameNumber = -1;
 		this.currentRound = -1;
 		this.projectileData = new LinkedList<AttackData>();
@@ -123,7 +123,9 @@ public class FrameData {
 	 * @return 自分のキャラクターデータ
 	 */
 	public CharacterData getCharacter(boolean playerNumber) {
-		return playerNumber ? new CharacterData(this.characterData[0]) : new CharacterData(this.characterData[1]);
+		CharacterData temp = this.characterData[playerNumber ? 0 : 1];
+
+		return temp == null ? null : new CharacterData(temp);
 	}
 
 	/**
