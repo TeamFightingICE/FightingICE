@@ -85,11 +85,13 @@ public class Game extends GameManager {
 			case "--inverted-player":
 				LaunchSetting.invertedPlayer = Integer.parseInt(options[++i]);
 				break;
-			case "--disable-window":
 			case "--mute":
 				FlagSetting.muteFlag = true;
-				// Handle in the main
 				break;
+			case "--disable-window":
+			case "--fastmode":
+				FlagSetting.muteFlag = true;
+				FlagSetting.fastModeFlag = true;
 			case "--json":
 				FlagSetting.jsonFlag = true;
 				break;
