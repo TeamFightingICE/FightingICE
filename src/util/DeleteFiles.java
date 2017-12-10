@@ -33,8 +33,8 @@ public class DeleteFiles {
 			File[] fileList = (new File(folderName)).listFiles();
 			if (fileList != null) {
 				for (File file : fileList) {
-					if (!file.delete())
-						System.out.println("could not delete file: " + file.toString());
+					if (!file.getName().equals(".gitkeep"))
+						file.delete();
 				}
 			}
 		}
