@@ -25,6 +25,7 @@ import struct.Key;
 import struct.ScreenData;
 import util.ResourceDrawer;
 
+/** リプレイの再生を行うクラス*/
 public class Replay extends GameScene {
 
 	/** 対戦処理を行うクラスのインスタンス */

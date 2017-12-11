@@ -41,9 +41,9 @@ public class PyManager {
 	 * Creates one game.
 	 *
 	 * @param c1
-	 *            The name of the character for the first AI
+	 *            The name of the character for the first AI (P1)
 	 * @param c2
-	 *            The name of the character for the second AI
+	 *            The name of the character for the second AI (P2)
 	 * @param name1
 	 *            The name of the first AI (could be the name of a previously
 	 *            registered AI with registerAI or the name of a Java AI)
