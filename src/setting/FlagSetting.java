@@ -17,7 +17,7 @@ public class FlagSetting {
 	/** Pythonを利用するかどうか */
 	public static boolean py4j = false;
 
-	/**  行ったアクッションデータをCSVに吐き出すかどうか*/
+	/** 行ったアクッションデータをCSVに吐き出すかどうか */
 	public static boolean debugActionFlag = false;
 
 	/**  */
@@ -38,7 +38,10 @@ public class FlagSetting {
 	/** エラーログを出力するかどうか */
 	public static boolean outputErrorAndLogFlag = false;
 
-	/** fastModeで起動するかどうか*/
+	/** fastModeで起動するかどうか */
 	public static boolean fastModeFlag = false;
+
+	/** ウィンドウを生成するかどうか */
+	public static boolean enableWindow = true;
 
 }

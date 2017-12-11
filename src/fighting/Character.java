@@ -327,7 +327,9 @@ public class Character {
 				runAction(Action.LANDING, true);
 				setSpeedY(0);
 
-				SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("Landing.wav"));
+				if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+					SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("Landing.wav"));
+				}
 			}
 
 			moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
@@ -375,7 +377,9 @@ public class Character {
 			setRemainingFrame(attack.getGiveGuardRecov());
 			opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
-			SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakGuard.wav"));
+			if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+				SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakGuard.wav"));
+			}
 		} else {
 			// 投げ技のときの処理
 			if (attack.getAttackType() == 4) {
@@ -403,7 +407,10 @@ public class Character {
 					runAction(Action.CHANGE_DOWN, false);
 					setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
 
-					SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("StrongHit.wav"));
+					if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+						SoundManager.getInstance()
+								.play(SoundManager.getInstance().getSoundEffect().get("StrongHit.wav"));
+					}
 
 				} else {
 					switch (this.state) {
@@ -423,7 +430,9 @@ public class Character {
 						break;
 					}
 
-					SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakHit.wav"));
+					if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+						SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakHit.wav"));
+					}
 				}
 			}
 		}

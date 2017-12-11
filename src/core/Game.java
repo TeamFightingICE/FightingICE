@@ -63,10 +63,6 @@ public class Game extends GameManager {
 			case "-t":
 				FlagSetting.trainingModeFlag = true;
 				break;
-			/*
-			 * case "-off": LogSystem.getInstance().logger.setLevel(Level.OFF);
-			 * break;
-			 */
 			case "-del":
 				DeleteFiles.getInstance().deleteFiles();
 				break;
@@ -90,8 +86,11 @@ public class Game extends GameManager {
 				break;
 			case "--disable-window":
 			case "--fastmode":
+				FlagSetting.enableWindow = false;
 				FlagSetting.muteFlag = true;
 				FlagSetting.fastModeFlag = true;
+				FlagSetting.automationFlag = true;
+				break;
 			case "--json":
 				FlagSetting.jsonFlag = true;
 				break;
