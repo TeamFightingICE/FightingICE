@@ -5,10 +5,20 @@ import gamescene.Python;
 import manager.InputManager;
 import setting.LaunchSetting;
 
+/**
+ * Python側からFightingICEを操作し, ゲームの作成やリプレイのロードといった処理を管理するマネージャクラス.
+ */
 public class PyManager {
 
+	/** Python側で起動したゲームの実行処理を行うゲームシーン. */
 	public static Python python;
 
+	/**
+	 * 指定されたゲームシーンでPyManagerの初期化を行うコンストラクタ.
+	 *
+	 * @param python
+	 *            指定されたゲームシーン
+	 */
 	public PyManager(Python python) {
 		PyManager.python = python;
 	}
@@ -31,9 +41,9 @@ public class PyManager {
 	 * Creates one game.
 	 *
 	 * @param c1
-	 *            The name of the character for the first AI
+	 *            The name of the character for the first AI (P1)
 	 * @param c2
-	 *            The name of the character for the second AI
+	 *            The name of the character for the second AI (P2)
 	 * @param name1
 	 *            The name of the first AI (could be the name of a previously
 	 *            registered AI with registerAI or the name of a Java AI)
@@ -73,6 +83,14 @@ public class PyManager {
 		}
 	}
 
+	/**
+	 * 指定されたリプレイファイル名をセットし, リプレイを再生するための処理を行うクラスのインスタンスを返す.
+	 *
+	 * @param fileName
+	 *            読み込むファイル名
+	 *
+	 * @return リプレイを再生するための処理を行うクラスのインスタンス
+	 */
 	public PyReplay loadReplay(String fileName) {
 		LaunchSetting.replayName = fileName;
 		PyReplay pyReplay = new PyReplay();

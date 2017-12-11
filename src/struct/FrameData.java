@@ -116,7 +116,7 @@ public class FrameData {
 	}
 
 	/**
-	 * 自分のキャラクターデータを返すメソッド
+	 * 指定したプレイヤーのキャラクターデータを返すメソッド
 	 *
 	 * @param playerNumber
 	 *            プレイヤー番号(true: P1; false: P2)

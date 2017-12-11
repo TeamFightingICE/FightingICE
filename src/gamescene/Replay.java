@@ -25,6 +25,7 @@ import struct.Key;
 import struct.ScreenData;
 import util.ResourceDrawer;
 
+/** リプレイの再生を行うクラス*/
 public class Replay extends GameScene {
 
 	/** 対戦処理を行うクラスのインスタンス */
@@ -338,21 +339,9 @@ public class Replay extends GameScene {
 	}
 
 	private void transitionProcess() {
-		/*if (FlagSetting.py4j) {
-			synchronized (PyManager.python.getCurrentGame().end) {
-				PyManager.python.getCurrentGame().end.notifyAll();
-			}
-
-			LaunchSetting.pyGatewayServer.close();
-			Python python = new Python();
-			this.setTransitionFlag(true);
-			this.setNextGameScene(python);
-
-		} else {*/
-			HomeMenu homeMenu = new HomeMenu();
-			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-			this.setNextGameScene(homeMenu); // 次のシーンをセットする
-		//}
+		HomeMenu homeMenu = new HomeMenu();
+		this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+		this.setNextGameScene(homeMenu); // 次のシーンをセットする
 	}
 
 	public FrameData getFrameData() {

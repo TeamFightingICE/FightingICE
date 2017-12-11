@@ -4,23 +4,47 @@ import gamescene.Replay;
 import loader.ResourceLoader;
 import struct.FrameData;
 
+/** Python側からリプレイの再生を行えるように処理するクラス */
 public class PyReplay implements StateInhibitor {
 
+	/**
+	 * リプレイの状態の種類を管理する列挙型<br>
+	 * NONE: 何もしていない<br>
+	 * INIT: 初期化<br>
+	 * UPDATE: リプレイファイルを再生<br>
+	 * CLOSE: 再生終了
+	 */
 	enum State {
 		NONE, INIT, UPDATE, CLOSE
 	}
 
+	/** リプレイの再生を行うクラス */
 	private Replay replay;
 
+	/**
+	 * 現在のリプレイの状態<br>
+	 * NONE: 何もしていない<br>
+	 * INIT: 初期化<br>
+	 * UPDATE: リプレイファイルを再生<br>
+	 * CLOSE: 再生終了
+	 */
 	private State state;
 
+	/** Python側と同期を取るためのオブジェクト */
 	private Object waiter;
 
+	/** PyReplayを初期化するコンストラクタ */
 	public PyReplay() {
 		this.state = State.NONE;
 		this.waiter = new Object();
 	}
 
+	/**
+	 * Initializes the replay.
+	 *
+	 * @throws InterruptedException
+	 *             If the thread is interrupted while waiting.
+	 */
 	public void init() {
 		PyManager.python.setStateInhibitor(this);
 		this.state = State.INIT;
@@ -59,9 +83,16 @@ public class PyReplay implements StateInhibitor {
 		}
 	}
 
+	/**
+	 * Closes the replay.<br>
+	 * Should be called at the end when you don't need the replay anymore.
+	 *
+	 * @throws InterruptedException
+	 *             If the thread is interrupted while waiting.
+	 */
 	public void close() {
 		this.state = State.CLOSE;
-		
+
 		synchronized (waiter) {
 			try {
 				waiter.wait();
@@ -71,6 +102,12 @@ public class PyReplay implements StateInhibitor {
 		}
 	}
 
+	/**
+	 * Simulates one frame of the replay.
+	 *
+	 * @throws InterruptedException
+	 *             If the thread is interrupted while waiting.
+	 */
 	public void updateState() {
 		this.state = State.UPDATE;
 
@@ -83,10 +120,22 @@ public class PyReplay implements StateInhibitor {
 		}
 	}
 
+	/**
+	 * Gets the frame data of the current frame.
+	 *
+	 *
+	 * @return The frame data of the current frame.
+	 */
 	public FrameData getFrameData() {
 		return this.replay.getFrameData();
 	}
-	
+
+	/**
+	 * Gets the state of the replay.<br>
+	 * NONE/INIT/UPDATE/CLOSE
+	 *
+	 * @return The the state of the replay.
+	 */
 	public State getState() {
 		return this.state;
 	}
