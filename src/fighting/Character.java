@@ -47,10 +47,18 @@ public class Character {
 	/** The character's vertical speed. */
 	private int speedY;
 
-	/** The character's state: STAND / CROUCH/ AIR / DOWN. */
+	/**
+	 * The character's state: STAND / CROUCH/ AIR / DOWN.
+	 *
+	 * @see State
+	 */
 	private State state;
 
-	/** The character's action. */
+	/**
+	 * The character's action.
+	 *
+	 * @see Action
+	 */
 	private Action action;
 
 	/**
@@ -64,6 +72,9 @@ public class Character {
 	 */
 	private boolean control;
 
+	/**
+	 * The attack data that the character is using
+	 */
 	private Attack attack;
 
 	/**
@@ -73,7 +84,7 @@ public class Character {
 	private int remainingFrame;
 
 	/**
-	 * Attack hit confirm.<br>
+	 * The boolean value whether the motion hits the opponent or not
 	 */
 	private boolean hitConfirm;
 
@@ -102,7 +113,9 @@ public class Character {
 	private Deque<Key> processedCommands;
 
 	/**
-	 * キャラクターのモーションリスト
+	 * キャラクターの全モーションが格納されたリスト
+	 *
+	 * @see Motion
 	 */
 	private ArrayList<Motion> motionList;
 
@@ -137,7 +150,7 @@ public class Character {
 	}
 
 	/**
-	 * 指定されたデータでCharacterを更新するコンストラクタ
+	 * 指定されたデータでCharacterのインスタンスを作成するコンストラクタ
 	 *
 	 * @param character
 	 *            キャラクターのデータ
@@ -169,7 +182,18 @@ public class Character {
 		this.hitCount = character.getHitCount();
 	}
 
-	// シミュレータで呼び出す用
+	/**
+	 * 指定されたデータでCharacterのインスタンスを作成するコンストラクタ<br>
+	 * このコンストラクタはシミュレータ内でのみ呼び出される.
+	 *
+	 * @param characterData
+	 *            キャラクターのデータ
+	 * @param motionList
+	 *            キャラクターの全モーションが格納されたリスト
+	 *
+	 * @see CharacterData
+	 * @see Motion
+	 */
 	public Character(CharacterData characterData, ArrayList<Motion> motionList) {
 		initializeList();
 
@@ -297,8 +321,6 @@ public class Character {
 		}
 		this.speedY += exeMotion.getSpeedY();
 		this.control = exeMotion.isControl();
-
-		// createAttackInstance();
 	}
 
 	/**
@@ -363,7 +385,16 @@ public class Character {
 			this.processedCommands.removeFirst();
 	}
 
-	/** 攻撃がヒットしたときに,自身のパラメータや状態を更新する */
+	/**
+	 * 攻撃がヒットしたときに,自身のパラメータや状態を更新する
+	 *
+	 * @param opponent
+	 *            相手キャラクターのデータ
+	 * @param attack
+	 *            自身の攻撃オブジェクトの情報
+	 * @param currentFrame
+	 *            現在のラウンドのフレーム数
+	 */
 	public void hitAttack(Character opponent, Attack attack, int currentFrame) {
 
 		int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
@@ -373,7 +404,7 @@ public class Character {
 		if (isGuard(attack)) {
 			setHp(this.hp - attack.getGuardDamage() - opponent.getExtraDamage());
 			setEnergy(this.energy + attack.getGiveEnergy());
-			setSpeedX(direction * attack.getImpactX() / 2); // 通常の半分のノックバック(旧より変更)
+			setSpeedX(direction * attack.getImpactX() / 2); // 通常の半分のノックバック
 			setRemainingFrame(attack.getGiveGuardRecov());
 			opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
@@ -403,6 +434,7 @@ public class Character {
 				setSpeedY(attack.getImpactY());
 				opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
 
+				// ダウン技の処理
 				if (attack.isDownProperty()) {
 					runAction(Action.CHANGE_DOWN, false);
 					setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
@@ -441,6 +473,9 @@ public class Character {
 	/**
 	 * 攻撃が当たったときに自身がガードしていたかどうかを返す<br>
 	 * また, 自身をガードの種類に対応したリカバリー状態に変化させる
+	 *
+	 * @param attack
+	 *            当てられた攻撃オブジェクト
 	 */
 	private boolean isGuard(Attack attack) {
 		boolean isGuard = false;
@@ -506,6 +541,15 @@ public class Character {
 		}
 	}
 
+	/**
+	 * 攻撃がアクティブ状態になるフレーム数になったかどうかを返す.
+	 *
+	 * @param motion
+	 *            攻撃の総フレーム数やダメージなどの情報を格納したmotionのデータ
+	 * @see Motion
+	 *
+	 * @return true: 攻撃がアクティブ状態になるフレーム数になった; false: otherwise
+	 */
 	public boolean startActive(Motion motion) {
 		int startActive = motion.getFrameNumber() - motion.getAttackStartUp();
 		return startActive == this.remainingFrame;
@@ -513,10 +557,10 @@ public class Character {
 
 	/**
 	 *
-	 * Move the character on the X-axis.
+	 * Moves the character on the x-axis.
 	 *
 	 * @param relativePosition
-	 *            value in pixels.
+	 *            The amount of the movement on the x-axis.
 	 */
 	public void moveX(int relativePosition) {
 		setX(getX() + relativePosition);
@@ -524,19 +568,17 @@ public class Character {
 
 	/**
 	 *
-	 * Move the character on the Y-axis.
+	 * Moves the character on the y-axis.
 	 *
 	 * @param relativePosition
-	 *            value in pixels.
+	 *            The amount of the movement on the y-axis.
 	 */
 	public void moveY(int relativePosition) {
 		setY(getY() + relativePosition);
 	}
 
 	/**
-	 *
 	 * キャラクターが床に接しているときに,摩擦の影響を与える
-	 *
 	 */
 	public void frictionEffect() {
 		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
@@ -549,9 +591,7 @@ public class Character {
 	}
 
 	/**
-	 *
 	 * キャラクターが空中にいるときに, 重力の影響を与える
-	 *
 	 */
 	public void gravityEffect() {
 		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
@@ -564,9 +604,7 @@ public class Character {
 	}
 
 	/**
-	 *
 	 * Defines character's orientation.
-	 *
 	 */
 	public void frontDecision(int opponentCenterX) {
 		if (this.front) {
@@ -624,8 +662,6 @@ public class Character {
 	public boolean isControl() {
 		return this.control;
 	}
-
-	////// Getter//////
 
 	/**
 	 * Returns the character's HP.
@@ -704,6 +740,8 @@ public class Character {
 	}
 
 	/**
+	 * Returns the character's hit box's most-right x-coordinate.
+	 *
 	 * @return The character's hit box's most-right x-coordinate.
 	 */
 	public int getHitAreaRight() {
@@ -713,6 +751,8 @@ public class Character {
 	}
 
 	/**
+	 * Returns the character's hit box's most-left x-coordinate.
+	 *
 	 * @return The character's hit box's most-left x-coordinate.
 	 */
 	public int getHitAreaLeft() {
@@ -722,6 +762,8 @@ public class Character {
 	}
 
 	/**
+	 * Returns the character's hit box's most-top y-coordinate.
+	 *
 	 * @return The character's hit box's most-top y-coordinate.
 	 */
 	public int getHitAreaTop() {
@@ -729,6 +771,8 @@ public class Character {
 	}
 
 	/**
+	 * Returns the character's hit box's most-bottom y-coordinate.
+	 *
 	 * @return The character's hit box's most-bottom y-coordinate.
 	 */
 	public int getHitAreaBottom() {
@@ -737,23 +781,25 @@ public class Character {
 	}
 
 	/**
-	 * @return The character's hit box's x-coordinate.
+	 * Returns the character's hit box's center x-coordinate.
+	 *
+	 * @return The character's hit box's center x-coordinate.
 	 */
 	public int getHitAreaCenterX() {
 		return (getHitAreaRight() + getHitAreaLeft()) / 2;
 	}
 
 	/**
-	 * @return The character's hit box's y-coordinate.
+	 * Returns the character's hit box's center y-coordinate.
+	 *
+	 * @return The character's hit box's center y-coordinate.
 	 */
 	public int getHitAreaCenterY() {
 		return (getHitAreaTop() + getHitAreaBottom()) / 2;
 	}
 
 	/**
-	 *
-	 * Reverse horizontal speed.
-	 *
+	 * Reverses the horizontal speed.
 	 */
 	public void reversalSpeedX() {
 		this.speedX = -(this.speedX / 2);
@@ -820,9 +866,9 @@ public class Character {
 	}
 
 	/**
-	 * キャラクターのモーションリストを返す
+	 * キャラクターの全モーションを格納したリストを返す
 	 *
-	 * @return キャラクターのモーションリスト
+	 * @return キャラクターの全モーションを格納したリスト
 	 */
 	public ArrayList<Motion> getMotionList() {
 		ArrayList<Motion> temp = new ArrayList<Motion>();
@@ -866,7 +912,11 @@ public class Character {
 	}
 
 	/**
-	 * @return The current image handle.
+	 * Returns the current image of the character according to the current
+	 * action and frame number.
+	 *
+	 * @return The current image of the character according to the current
+	 *         action and frame number.
 	 */
 	public Image getNowImage() {
 		Motion motion = motionList.get(this.action.ordinal());
@@ -889,9 +939,9 @@ public class Character {
 	}
 
 	/**
-	 * エクストラダメージを返す
+	 * 連続ヒット数に応じたエクストラダメージを返す<br>
 	 *
-	 * @return エクストラダメージ
+	 * @return 連続ヒット数に応じたエクストラダメージ
 	 */
 	public int getExtraDamage() {
 		int requireHit = 4; // ボーナスダメージに必要な最小限のヒット数
@@ -899,8 +949,6 @@ public class Character {
 
 		return this.hitCount < requireHit ? 0 : damage * requireHit / this.hitCount;
 	}
-
-	////// Setter//////
 
 	/**
 	 * Sets the character's HP.
@@ -926,7 +974,7 @@ public class Character {
 	 * Sets the character's horizontal position.
 	 *
 	 * @param x
-	 *            The horizontal position.
+	 *            The character's horizontal position.
 	 */
 	public void setX(int x) {
 		this.x = x;
@@ -936,7 +984,7 @@ public class Character {
 	 * Sets the character's vertical position.
 	 *
 	 * @param y
-	 *            The vertical position.
+	 *            The character's vertical position.
 	 */
 	public void setY(int y) {
 		this.y = y;
@@ -946,7 +994,7 @@ public class Character {
 	 * Sets the character's horizontal speed.
 	 *
 	 * @param speedX
-	 *            Horizontal speed.
+	 *            The character's horizontal speed.
 	 */
 	public void setSpeedX(int speedX) {
 		this.speedX = speedX;
@@ -956,7 +1004,7 @@ public class Character {
 	 * Sets the character's vertical speed.
 	 *
 	 * @param speedY
-	 *            Vertical speed.
+	 *            The character's vertical speed.
 	 */
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
@@ -985,10 +1033,10 @@ public class Character {
 	}
 
 	/**
-	 * Sets hitConfirm whether the motion hits the opponent or not
+	 * Sets the boolean value whether the motion hits the opponent or not
 	 *
 	 * @param hitConfirm
-	 *            A boolean value whether the motion hits the opponent or not
+	 *            The boolean value whether the motion hits the opponent or not
 	 */
 	public void setHitConfirm(boolean hitConfirm) {
 		this.hitConfirm = hitConfirm;
@@ -1042,7 +1090,6 @@ public class Character {
 	}
 
 	/**
-	 *
 	 * Sets the width of the character's graphic.
 	 *
 	 * @param graphicSizeX
@@ -1053,7 +1100,6 @@ public class Character {
 	}
 
 	/**
-	 *
 	 * Sets the height of the character's graphic.
 	 *
 	 * @param graphicSizeY
@@ -1064,8 +1110,7 @@ public class Character {
 	}
 
 	/**
-	 *
-	 * Sets motions.
+	 * Sets all of possible motions of the given character.
 	 *
 	 * @param characterName
 	 *            The character's name.
@@ -1092,10 +1137,9 @@ public class Character {
 	}
 
 	/**
-	 * Sets a boolean value whether the motion hits the opponent or not
+	 * 現時点での攻撃の連続ヒット回数をセットする
 	 *
-	 * @param hitConfirm
-	 *            A boolean value whether the motion hits the opponent or not
+	 * @param 現時点での攻撃の連続ヒット回数
 	 */
 	public void setHitCount(int hitCount) {
 		this.hitCount = hitCount;
@@ -1135,7 +1179,7 @@ public class Character {
 	}
 
 	/**
-	 * Get a boolean value whether the combo is still valid or not.
+	 * Gets a boolean value whether the combo is still valid or not.
 	 *
 	 * @param nowFrame
 	 *            The current frame.

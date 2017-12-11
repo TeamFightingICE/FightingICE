@@ -127,7 +127,7 @@ public class Game extends GameManager {
 
 		createLogDirectories();
 
-		//
+		// -nまたは-aが指定されたときは, メニュー画面に行かず直接ゲームをLaunchする
 		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag) {
 			if (FlagSetting.allCombinationFlag) {
 				AIContainer.allAINameList = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
@@ -141,10 +141,12 @@ public class Game extends GameManager {
 			Launcher launcher = new Launcher(GameSceneName.PLAY);
 			this.startGame(launcher);
 
+			// -Python側で起動するときは, Pythonシーンからゲームを開始する
 		} else if (FlagSetting.py4j) {
 			Python python = new Python();
 			this.startGame(python);
 
+			// 上記以外の場合, メニュー画面からゲームを開始する
 		} else {
 			HomeMenu homeMenu = new HomeMenu();
 			this.startGame(homeMenu);

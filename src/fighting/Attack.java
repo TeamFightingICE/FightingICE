@@ -134,7 +134,7 @@ public class Attack {
 	private boolean downProperty;
 
 	/**
-	 * Attackのコンストラクタ
+	 * Attackを初期化するコンストラクタ
 	 */
 	public Attack() {
 		this.settingHitArea = new HitArea();
@@ -280,7 +280,7 @@ public class Attack {
 	 *            = throw.
 	 * @param downProp
 	 *            The flag whether this skill can push down the opponent when
-	 *            hit , 1 = can push down 0=normal hit
+	 *            hit , true: can push down; false: normal hit
 	 */
 	public Attack(HitArea hitArea, int settingSpeedX, int settingSpeedY, int startUp, int active, int hitDamage,
 			int guardDamage, int startAddEnergy, int hitAddEnergy, int guardAddEnergy, int giveEnergy, int impactX,
@@ -310,10 +310,11 @@ public class Attack {
 	}
 
 	/**
-	 * 攻撃オブジェクトの初期化を行う
+	 * 指定されたパラメータで攻撃オブジェクトの初期化を行う
 	 *
 	 * @param playerNumber
-	 *            攻撃をP1かP2
+	 *            The player side's flag<br>
+	 *            true: P1; false: P2
 	 */
 	public void initialize(boolean playerNumber, int x, int y, int size, boolean direction) {
 		setParameters(x, y, size, direction);
@@ -371,7 +372,6 @@ public class Attack {
 			this.speedY = this.settingSpeedY;
 
 		} else {
-			// ちょっとバグが発生する可能性あり
 			left = x + size - this.settingHitArea.getRight();
 			right = x + size - this.settingHitArea.getLeft();
 			this.speedX = -this.settingSpeedX;
@@ -383,8 +383,6 @@ public class Attack {
 
 		this.currentHitArea = new HitArea(left, right, top, bottom);
 	}
-
-	//////// Getter//////////
 
 	/**
 	 * Returns the player side's flag.
@@ -412,8 +410,6 @@ public class Attack {
 	public boolean isProjectile() {
 		return (this.settingSpeedX + this.settingSpeedY) != 0;
 	}
-
-	// get
 
 	/**
 	 * Returns the number of frames since this attack was used.
@@ -626,8 +622,6 @@ public class Attack {
 	public HitArea getCurrentHitArea() {
 		return new HitArea(this.currentHitArea);
 	}
-
-	////// Setter//////
 
 	/**
 	 * Sets the number of frames since this attack was used.
