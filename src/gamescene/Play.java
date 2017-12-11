@@ -1,6 +1,6 @@
 package gamescene;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -111,7 +111,9 @@ public class Play extends GameScene {
 		InputManager.getInstance().createAIcontroller();
 		InputManager.getInstance().startAI(gameData);
 
-		SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
+		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+			SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
+		}
 	}
 
 	@Override
@@ -135,16 +137,22 @@ public class Play extends GameScene {
 
 		} else {
 			Logger.getAnonymousLogger().log(Level.INFO, "Game over");
-			// BGMを止める
-			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+			if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+				// BGMを止める
+				SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+			}
+
 			Result result = new Result(this.roundResults, this.timeInfo);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			// BGMを止める
-			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+			if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+				// BGMを止める
+				SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+			}
+
 			HomeMenu homeMenu = new HomeMenu();
 			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 			this.setNextGameScene(homeMenu); // 次のシーンをセットする
@@ -167,8 +175,10 @@ public class Play extends GameScene {
 		// ダミーフレームをAIにセット
 		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
 
-		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
-		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
+		if (FlagSetting.enableWindow) {
+			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
+			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
+		}
 	}
 
 	/**
@@ -206,10 +216,12 @@ public class Play extends GameScene {
 			LogWriter.getInstance().updateJson(this.frameData, this.keyData);
 		}
 
-		// 画面をDrawerクラスで描画
-		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
-				this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
-				this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
+		if (FlagSetting.enableWindow) {
+			// 画面をDrawerクラスで描画
+			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
+					this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
+					this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
+		}
 
 		// P1とP2の行った各アクションの数を数える
 		if (FlagSetting.debugActionFlag) {
@@ -267,16 +279,16 @@ public class Play extends GameScene {
 		LogWriter.getInstance().writeHeader(this.dos);
 	}
 
-	private void fastProcess(){
-//		if(FlagSetting.fastModeFlag){
-//			synchronized (ThreadController.getInstance().getEndFrame()) {
-//				try {
-//					ThreadController.getInstance().getEndFrame().wait();
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
+	private void fastProcess() {
+		// if(FlagSetting.fastModeFlag){
+		// synchronized (ThreadController.getInstance().getEndFrame()) {
+		// try {
+		// ThreadController.getInstance().getEndFrame().wait();
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// }
 	}
 
 	@Override

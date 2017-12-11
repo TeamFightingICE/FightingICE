@@ -61,28 +61,30 @@ public class Result extends GameScene {
 
 	@Override
 	public void update() {
-		int[] positionX = new int[] { GameSetting.STAGE_WIDTH / 2 - 70, GameSetting.STAGE_WIDTH / 2 + 10 };
+		if (FlagSetting.enableWindow) {
+			int[] positionX = new int[] { GameSetting.STAGE_WIDTH / 2 - 70, GameSetting.STAGE_WIDTH / 2 + 10 };
 
-		for (int i = 0; i < this.roundResults.size(); i++) {
-			String[] score = new String[] { String.valueOf(this.roundResults.get(i).getRemainingHPs()[0]),
-					String.valueOf(this.roundResults.get(i).getRemainingHPs()[1]) };
+			for (int i = 0; i < this.roundResults.size(); i++) {
+				String[] score = new String[] { String.valueOf(this.roundResults.get(i).getRemainingHPs()[0]),
+						String.valueOf(this.roundResults.get(i).getRemainingHPs()[1]) };
 
-			// スコアの描画
-			GraphicManager.getInstance().drawString(score[0], positionX[0], 50 + i * 100);
-			GraphicManager.getInstance().drawString(score[1], positionX[1], 50 + i * 100);
+				// スコアの描画
+				GraphicManager.getInstance().drawString(score[0], positionX[0], 50 + i * 100);
+				GraphicManager.getInstance().drawString(score[1], positionX[1], 50 + i * 100);
 
-			// 勝ちや引き分けに応じてWin !やDrawをスコアの横に印字
-			switch (getWinPlayer(i)) {
-			case 1:
-				GraphicManager.getInstance().drawString("Win !", positionX[0] - 100, 50 + i * 100);
-				break;
-			case -1:
-				GraphicManager.getInstance().drawString("Win !", positionX[1] + 80, 50 + i * 100);
-				break;
-			default:
-				GraphicManager.getInstance().drawString("Draw", positionX[0] - 100, 50 + i * 100);
-				GraphicManager.getInstance().drawString("Draw", positionX[1] + 80, 50 + i * 100);
-				break;
+				// 勝ちや引き分けに応じてWin !やDrawをスコアの横に印字
+				switch (getWinPlayer(i)) {
+				case 1:
+					GraphicManager.getInstance().drawString("Win !", positionX[0] - 100, 50 + i * 100);
+					break;
+				case -1:
+					GraphicManager.getInstance().drawString("Win !", positionX[1] + 80, 50 + i * 100);
+					break;
+				default:
+					GraphicManager.getInstance().drawString("Draw", positionX[0] - 100, 50 + i * 100);
+					GraphicManager.getInstance().drawString("Draw", positionX[1] + 80, 50 + i * 100);
+					break;
+				}
 			}
 		}
 
