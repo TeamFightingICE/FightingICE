@@ -29,7 +29,7 @@ public class Effect {
 	 *
 	 * @param attack
 	 *            攻撃オブジェクト
-	 * @param image
+	 * @param hitImages
 	 *            攻撃オブジェクトに対応する全てのエフェクト画像
 	 * @param framesPerImage
 	 *            1枚のエフェクト画像の表示フレーム数
@@ -46,7 +46,7 @@ public class Effect {
 	 *
 	 * @param attack
 	 *            攻撃オブジェクト
-	 * @param image
+	 * @param hitImages
 	 *            攻撃オブジェクトに対応する全てのエフェクト画像
 	 */
 	public Effect(Attack attack, Image[] hitImages) {
