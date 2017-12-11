@@ -20,14 +20,22 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import util.DeleteFiles;
 
+/** ゲームの起動情報を設定し, 開始するゲームシーンを設定するクラス. */
 public class Game extends GameManager {
 
+	/** 親クラスであるGameManagerを初期化するコンストラクタ */
 	public Game() {
 		super();
 	}
 
+	/**
+	 * 起動時の引数を基に, ゲームの起動情報をセットする.
+	 *
+	 * @param options
+	 *            起動時のすべての引数を格納した配列
+	 */
 	public void setOptions(String[] options) {
-		// Read the configurations here
+		// Reads the configurations here
 		for (int i = 0; i < options.length; ++i) {
 			switch (options[i]) {
 			case "-a":
@@ -104,7 +112,8 @@ public class Game extends GameManager {
 				FlagSetting.outputErrorAndLogFlag = true;
 				break;
 			default:
-				System.err.println("arguments error: unknown format is exist. -> " + options[i] + " ?");
+				Logger.getAnonymousLogger().log(Level.WARNING,
+						"Arguments error: unknown format is exist. -> " + options[i] + " ?");
 			}
 		}
 
@@ -112,12 +121,13 @@ public class Game extends GameManager {
 
 	@Override
 	public void initialize() {
-		// 各マネージャの初期化
+		// 使用フォントの初期化
 		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
 		GraphicManager.getInstance().setLetterFont(new LetterImage(awtFont, true));
 
 		createLogDirectories();
 
+		// -nまたは-aが指定されたときは, メニュー画面に行かず直接ゲームをLaunchする
 		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag) {
 			if (FlagSetting.allCombinationFlag) {
 				AIContainer.allAINameList = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
@@ -131,10 +141,12 @@ public class Game extends GameManager {
 			Launcher launcher = new Launcher(GameSceneName.PLAY);
 			this.startGame(launcher);
 
+			// -Python側で起動するときは, Pythonシーンからゲームを開始する
 		} else if (FlagSetting.py4j) {
 			Python python = new Python();
 			this.startGame(python);
 
+			// 上記以外の場合, メニュー画面からゲームを開始する
 		} else {
 			HomeMenu homeMenu = new HomeMenu();
 			this.startGame(homeMenu);
@@ -142,17 +154,27 @@ public class Game extends GameManager {
 
 	}
 
+	/**
+	 * 指定されたキャラクター名が使用可能キャラクター内にあるかどうか検索し, あればその名前を返す.<br>
+	 * 無ければ警告文を出し, ZENをデフォルトキャラクターとして返す.
+	 *
+	 * @param 指定されたキャラクター名
+	 *
+	 * @return 使用キャラクター名
+	 */
 	private String getCharacterName(String characterName) {
 		for (String character : GameSetting.CHARACTERS) {
 			if (character.equals(characterName)) {
 				return character;
 			}
 		}
-		return null;
+		Logger.getAnonymousLogger().log(Level.WARNING,
+				characterName + " is does not exist. Please check the set character name.");
+		return "ZEN"; // Default character
 	}
 
 	/**
-	 * Create logs directories if not present
+	 * Creates log directories if they do not exist.
 	 */
 	private void createLogDirectories() {
 		new File("log").mkdir();

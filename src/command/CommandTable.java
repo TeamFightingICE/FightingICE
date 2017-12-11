@@ -9,12 +9,28 @@ import fighting.Character;
 import input.KeyData;
 import struct.Key;
 
+/**
+ * キー入力とそれに対応するアクションを管理するクラス<br>
+ * キー入力を基に,それに対応するアクションに変換する処理を行う
+ */
 public class CommandTable {
 
+	/** コンストラクタ */
 	public CommandTable() {
 
 	}
 
+	/**
+	 * P1, P2の入力情報を基に, 指定されたプレイヤーキー入力から変換されたアクションを返す.
+	 *
+	 * @param character
+	 *            対象キャラクターのデータ
+	 * @param input
+	 *            P1, P2の入力情報が格納されたキュー
+	 *
+	 * @return キー入力を基に変換されたアクション
+	 * @see Action
+	 */
 	public Action interpretationCommandFromKeyData(Character character, Deque<KeyData> input) {
 		Key nowKeyData;
 		boolean pushA = false;
@@ -60,6 +76,18 @@ public class CommandTable {
 				character.isFront());
 	}
 
+	/**
+	 * P1またはP2の入力情報を基に, 指定されたプレイヤーキー入力から変換されたアクションを返す.<br>
+	 * このメソッドはシミュレータ内でのみ呼び出される.
+	 *
+	 * @param character
+	 *            対象キャラクターのデータ
+	 * @param input
+	 *            対象キャラクターの入力情報が格納されたキュー
+	 *
+	 * @return キー入力を基に変換されたアクション
+	 * @see Action
+	 */
 	public Action interpretationCommandFromKey(Character character, Deque<Key> input) {
 		boolean pushA = false;
 		boolean pushB = false;
@@ -98,12 +126,36 @@ public class CommandTable {
 		return convertKeyToAction(pushA, pushB, pushC, nowKey, commandList, character.getState(), character.isFront());
 	}
 
+	/**
+	 * キーの入力情報を基に, それに対応するアクションを返す.<br>
+	 *
+	 * @param pushA
+	 *            Aキー(P1: Z, P2: T)が押されたかどうか
+	 * @param pushB
+	 *            Bキー(P1: X, P2: Y)が押されたかどうか
+	 * @param pushC
+	 *            Cキー(P1: C, P2: U)が押されたかどうか
+	 * @param nowKeyData
+	 *            最新の入力キー情報
+	 * @param commandList
+	 *            何も押されていないキー(=5)を除いた直近4つ分のキー入力を格納した配列
+	 * @param state
+	 *            対象キャラクターの現在の状態
+	 * @param isFront
+	 *            対象キャラクターが相手より左側にいるかどうか
+	 *
+	 * @return キー入力から変換されたアクション
+	 *
+	 * @see Key
+	 * @see State
+	 * @see Action
+	 */
 	private Action convertKeyToAction(boolean pushA, boolean pushB, boolean pushC, Key nowKeyData, int[] commandList,
 			State state, boolean isFront) {
-		// return which command whether the inputed
 		// 789
 		// 456
 		// 123
+
 		// AIR Action
 		if (state == State.AIR) {
 			if (pushB) {

@@ -18,20 +18,17 @@ import org.lwjgl.system.MemoryStack;
 import setting.FlagSetting;
 import setting.GameSetting;
 
+/** ゲームの進行管理を行うマネージャクラス */
 public class DisplayManager {
-
-	/** ウィンドウの表示が有効かどうか */
-	private boolean enableWindow;
 
 	/** GLFWで使用されるwindow作成用の変数 */
 	private long window;
 
 	/**
-	 * DisplayManagerクラスのコンストラクタ．<br>
-	 * ウィンドウ表示を有効(true)にしてインスタンスを生成する．
+	 * コンストラクタ．<br>
 	 */
 	public DisplayManager() {
-		enableWindow = true;
+
 	}
 
 	/**
@@ -41,7 +38,8 @@ public class DisplayManager {
 	 * 3. ゲームの終了処理を行ってウィンドウを閉じる．<br>
 	 *
 	 * @param game
-	 *            GameManagerクラスのインスタンス
+	 *            ゲームマネージャのインスタンス
+	 * @see GameManager
 	 */
 	public void start(GameManager game) {
 		// Window, OpenGLの初期化
@@ -55,7 +53,7 @@ public class DisplayManager {
 
 	}
 
-	/** ウィンドウを作成する際の初期化処理を行う */
+	/** ウィンドウを作成する際の初期化及びOpenGLの初期化処理を行う */
 	private void initialize() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
@@ -82,13 +80,6 @@ public class DisplayManager {
 
 		// Setup a key callback. It will be called every time a key is pressed,
 		// repeated or released.
-		// glfwSetKeyCallback(this.window, (window, key, scancode, action, mods)
-		// -> {
-		// if (windowCloseRequest(key, action)) {
-		// glfwSetWindowShouldClose(window, true); // We will detect this
-		// // in the rendering loop
-		// }
-		// });
 		glfwSetKeyCallback(this.window, InputManager.getInstance().getKeyboard());
 
 		// Get the thread stack and push a new frame
@@ -154,8 +145,8 @@ public class DisplayManager {
 		// ゲームマネージャ初期化
 		gm.initialize();
 
-		// Run the rendering loop until the user has attempted to close
-		// the window or has pressed the DELETE key.
+		// Run the rendering loop until the user has attempted to close the
+		// window.
 		while (!glfwWindowShouldClose(this.window)) {
 			// ゲーム終了の場合,リソースを解放してループを抜ける
 			if (gm.isExit()) {
@@ -170,7 +161,8 @@ public class DisplayManager {
 				// バックバッファに描画する
 				GraphicManager.getInstance().render();
 
-				glfwSwapBuffers(this.window); // バックバッファとフレームバッファを入れ替える
+				// バックバッファとフレームバッファを入れ替える
+				glfwSwapBuffers(this.window);
 
 				// Poll for window events. The key callback above will only be
 				// invoked during this call.
@@ -196,25 +188,7 @@ public class DisplayManager {
 		System.exit(0);
 	}
 
-	/** ウィンドウ表示を無効(false)にするメソッド． */
-	public void disableWindow() {
-		this.enableWindow = false;
-	}
-
-	/**
-	 * ウィンドウを閉じる要求を出す.<br>
-	 * return文内に指定されたキーと操作の組み合わせが満たされたとき,windowを閉じる要求を出す.
-	 *
-	 * @param key
-	 *            指定キー
-	 * @param action
-	 *            keyに対する操作 (e.g. Press, Release)
-	 * @return windowを閉じる要求が出されたかどうか
-	 */
-	private boolean windowCloseRequest(int key, int action) {
-		return key == GLFW_KEY_DELETE && action == GLFW_RELEASE;
-	}
-
+	/** OpenGLの初期化処理を行う */
 	private void initGL() {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();

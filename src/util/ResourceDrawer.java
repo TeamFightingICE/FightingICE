@@ -348,12 +348,12 @@ public class ResourceDrawer {
 					tmpImage = flipImage(tmpImage, i != 0);
 
 					int positionX = area.getLeft() - (image.getWidth() - area.getRight() + area.getLeft()) / 2
-							+ hitEffect.getXVariation();
+							+ hitEffect.getVariationX();
 					int positionY = area.getTop() - (image.getHeight() - area.getBottom() + area.getTop()) / 2
-							+ hitEffect.getYVariation();
+							+ hitEffect.getVariationY();
 					screenGraphic.drawImage(tmpImage, positionX, positionY, image.getWidth(), image.getHeight(), null);
 
-					if (hitEffect.getXVariation() == 0 && hitEffect.getYVariation() == 0) {
+					if (hitEffect.getVariationX() == 0 && hitEffect.getVariationY() == 0) {
 						positionX += 30;
 					}
 					GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(),
