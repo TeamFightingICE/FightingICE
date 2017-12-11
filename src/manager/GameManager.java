@@ -2,11 +2,14 @@ package manager;
 
 import gamescene.GameScene;
 
+/** 各ゲームシーンの初期化, 更新, 終了処理を管理するマネージャクラス */
 public abstract class GameManager {
 
 	/**
 	 * 現在のゲームシーン．<br>
 	 * Menu, Launch, Play, Resultなどが入る．
+	 *
+	 * @see GameScene
 	 */
 	protected GameScene currentGameScene;
 
@@ -65,7 +68,8 @@ public abstract class GameManager {
 	 * ゲームをスタートするメソッド．<br>
 	 * 引数に指定したゲームシーンを現在のゲームシーンとして設定し，ゲームの開始処理を行う．
 	 *
-	 * @param startGameScene 開始させるゲームシーン
+	 * @param startGameScene
+	 *            開始させるゲームシーン
 	 */
 	public void startGame(GameScene startGameScene) {
 		this.currentGameScene = startGameScene;
