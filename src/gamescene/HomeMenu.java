@@ -10,6 +10,7 @@ import manager.InputManager;
 import setting.LaunchSetting;
 import struct.Key;
 
+/** 対戦メニュー画面, リプレイ再生, ゲーム終了を選択するメニュー画面を管理するクラス */
 public class HomeMenu extends GameScene {
 
 	/** 画面に表示する項目数 */
@@ -41,8 +42,11 @@ public class HomeMenu extends GameScene {
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.HOME_MENU);
 
-		this.menuItems = new MenuItem[] { new MenuItem("FIGHT ", 50, 50, 0), new MenuItem("REPLAY : ", 50, 100, 1),
-				new MenuItem("EXIT ", 50, 310, 2) };
+		this.menuItems = new MenuItem[] {
+				new MenuItem("FIGHT ", 50, 50, 0),
+				new MenuItem("REPLAY : ", 50, 100, 1),
+				new MenuItem("EXIT ", 50, 310, 2)
+				};
 		this.cursorPosition = 0;
 		this.replayIndex = 0;
 
@@ -126,7 +130,7 @@ public class HomeMenu extends GameScene {
 	}
 
 	/** 対戦の設定を行うメニュー画面を描画する */
-	public void drawScreen() {
+	private void drawScreen() {
 		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(),
 				this.menuItems[0].getCoordinateY());
 		GraphicManager.getInstance().drawString(
@@ -140,7 +144,8 @@ public class HomeMenu extends GameScene {
 
 	@Override
 	public void close() {
-
+		this.allReplayNames.clear();
+		this.menuItems = null;
 	}
 
 }

@@ -23,7 +23,6 @@ public class GameScene {
 		this.isGameEndFlag = false;
 		this.isTransitionFlag = false;
 		this.nextGameScene = null;
-
 	}
 
 	/**
