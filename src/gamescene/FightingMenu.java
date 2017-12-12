@@ -15,6 +15,7 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.Key;
 
+/** 使用AI, 使用キャラクター, 繰り返し回数をセットするメニュー画面を管理するクラス */
 public class FightingMenu extends GameScene {
 
 	/** 画面に表示する項目数 */
@@ -57,12 +58,16 @@ public class FightingMenu extends GameScene {
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.FIGHTING_MENU);
-		// Initialization
 
-		this.menuItems = new MenuItem[] { new MenuItem("PLAY ", 50, 50, 0), new MenuItem("PLAYER1 : ", 75, 90, 1),
-				new MenuItem("PLAYER2 : ", 75, 130, 2), new MenuItem("CHARACTER1 : ", 75, 170, 3),
-				new MenuItem("CHARACTER2 : ", 75, 210, 4), new MenuItem("Repeat Count : ", 50, 260, 5),
-				new MenuItem("RETURN ", 50, 310, 6) };
+		this.menuItems = new MenuItem[] {
+				new MenuItem("PLAY ", 50, 50, 0),
+				new MenuItem("PLAYER1 : ", 75, 90, 1),
+				new MenuItem("PLAYER2 : ", 75, 130, 2),
+				new MenuItem("CHARACTER1 : ", 75, 170, 3),
+				new MenuItem("CHARACTER2 : ", 75, 210, 4),
+				new MenuItem("Repeat Count : ", 50, 260, 5),
+				new MenuItem("RETURN ", 50, 310, 6)
+				};
 
 		this.playerIndexes = new int[2];
 		this.characterIndexes = new int[2];
@@ -81,7 +86,7 @@ public class FightingMenu extends GameScene {
 			if (this.cursorPosition == 0) {
 				this.cursorPosition = this.menuItems[this.NUMBER_OF_ITEM - 1].getCursorPosition();
 			} else {
-				this.cursorPosition = this.menuItems[cursorPosition - 1].getCursorPosition();
+				this.cursorPosition = this.menuItems[this.cursorPosition - 1].getCursorPosition();
 			}
 
 		}
@@ -215,9 +220,9 @@ public class FightingMenu extends GameScene {
 		// RETURNの位置のとき
 		case 6:
 			if (key.A) {
-				HomeMenu homeMenu = new HomeMenu(); // 次のシーンのコンストラクタ作成
-				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-				this.setNextGameScene(homeMenu); // 次のシーンをセットする
+				HomeMenu homeMenu = new HomeMenu();
+				this.setTransitionFlag(true);
+				this.setNextGameScene(homeMenu);
 			}
 			break;
 
@@ -226,17 +231,16 @@ public class FightingMenu extends GameScene {
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			HomeMenu homeMenu = new HomeMenu(); // 次のシーンのコンストラクタ作成
-			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-			this.setNextGameScene(homeMenu); // 次のシーンをセットする
+			HomeMenu homeMenu = new HomeMenu();
+			this.setTransitionFlag(true);
+			this.setNextGameScene(homeMenu);
 		}
-
 		// 画面の描画
 		this.drawScreen();
 	}
 
 	/** 対戦の設定を行うメニュー画面を描画する */
-	public void drawScreen() {
+	private void drawScreen() {
 		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(),
 				this.menuItems[0].getCoordinateY());
 		GraphicManager.getInstance().drawString(
@@ -262,7 +266,10 @@ public class FightingMenu extends GameScene {
 
 	@Override
 	public void close() {
-
+		this.menuItems = null;
+		this.allAiNames.clear();
+		this.characterIndexes = null;
+		this.playerIndexes = null;
 	}
 
 }
