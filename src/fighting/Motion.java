@@ -21,122 +21,126 @@ public class Motion {
 	/**
 	 * This motion's name
 	 */
-	public String actionName;
+	private String actionName;
 
 	/**
 	 * The number of frames in this motion
 	 */
-	public int frameNumber;
+	private int frameNumber;
 
 	/**
 	 * The speed value in the horizontal direction that will be applied to the
 	 * character when it does this motion
 	 */
-	public int speedX;
+	private int speedX;
 
 	/**
 	 * The speed value in the vertical direction that will be applied to the
 	 * character when it does this motion
 	 */
-	public int speedY;
+	private int speedY;
 
 	/**
-	 * The information on the hit box (boundary box in other games)
+	 * The information on the character's hit box
 	 */
-	public HitArea characterHitArea;
+	private HitArea characterHitArea;
 
 	/**
 	 * The resulting state after running this motion
 	 */
-	public State state;
+	private State state;
 
 	/**
 	 * The information on the attack hit box
 	 */
-	public HitArea attackHitArea;
+	private HitArea attackHitArea;
 
 	/**
 	 * The horizontal speed of the attack hit box
 	 */
-	public int attackSpeedX;
+	private int attackSpeedX;
 
 	/**
 	 * The vertical speed of the attack hit box
 	 */
-	public int attackSpeedY;
+	private int attackSpeedY;
 
 	/**
-	 * The number of startup frames
+	 * The number of startup frames required for this motion to become active
 	 */
-	public int attackStartUp;
+	private int attackStartUp;
 
 	/**
-	 * The number of active frames
+	 * The number of active frames of this motion
 	 */
-	public int attackActive;
+	private int attackActive;
 
 	/**
 	 * The value of the damage to the unguarding opponent when it is hit by this
-	 * skill
+	 * motion
 	 */
-	public int attackHitDamage;
+	private int attackHitDamage;
 
 	/**
 	 * The value of the damage to the guarding opponent when it is hit by this
-	 * skill
+	 * motion
 	 */
-	public int attackGuardDamage;
+	private int attackGuardDamage;
 
 	/**
-	 * The value of the energy added to the character when it uses this skill
+	 * The value of the energy added to the character when it uses this motion
 	 */
-	public int attackStartAddEnergy;
+	private int attackStartAddEnergy;
 
 	/**
-	 * The value of the energy added to the character when this skill hits the
+	 * The value of the energy added to the character when this motion hits the
 	 * opponent
 	 */
-	public int attackHitAddEnergy;
+	private int attackHitAddEnergy;
 
 	/**
-	 * The value of the energy added to the character when this skill is guarded
-	 * by the guarding opponent.
+	 * The value of the energy added to the character when this motion is
+	 * guarded by the guarding opponent.
 	 */
-	public int attackGuardAddEnergy;
+	private int attackGuardAddEnergy;
 
 	/**
 	 * The value of the energy given to the opponent when it is hit by this
-	 * skill
+	 * motion
 	 */
-	public int attackGiveEnergy;
+	private int attackGiveEnergy;
 
 	/**
 	 * The change in the horizontal speed of the opponent when it is hit by this
-	 * skill
+	 * motion
 	 */
-	public int attackImpactX;
+	private int attackImpactX;
 	/**
 	 * The change in the vertical speed of the opponent when it is hit by this
-	 * skill
+	 * motion
 	 */
-	public int attackImpactY;
+	private int attackImpactY;
 
 	/**
 	 * The number of frames that the guarding opponent needs to resume to its
-	 * normal status when it is hit by this skill
+	 * normal status when it is hit by this motion
 	 */
-	public int attackGiveGuardRecov;
+	private int attackGiveGuardRecov;
 
 	/**
-	 * The value of attack type: 1 = high, 2 = middle, 3 = low, 4 = throw,
+	 * The value of attack type.<br>
+	 * 1: high<br>
+	 * 2: middle<br>
+	 * 3: low<br>
+	 * 4: throw
 	 */
-	public int attackType;
+	private int attackType;
 
 	/**
-	 * The flag whether this skill can push down the opponent when it is hit by
-	 * this skill
+	 * The flag whether this motion can push down the opponent when it is hit by
+	 * this motion
 	 */
-	public boolean attackDownProperty;
+	private boolean attackDownProperty;
 
 	/**
 	 * The value of the first frame that the character can cancel this motion.
@@ -145,13 +149,13 @@ public class Motion {
 	 * having a lower value of motionLevel; if this motion has no cancelable
 	 * period, the returned value will be -1.
 	 */
-	public int cancelAbleFrame;
+	private int cancelAbleFrame;
 
 	/**
 	 * The value of the level that can cancel this motion; during cancelable
 	 * frames, any motion whose level is below this value can cancel this motion
 	 */
-	public int cancelAbleMotionLevel;
+	private int cancelAbleMotionLevel;
 
 	/**
 	 * The value of this motion's level
@@ -159,26 +163,21 @@ public class Motion {
 	 * @see #cancelAbleMotionLevel
 	 * @see #cancelAbleFrame
 	 */
-	public int motionLevel;
+	private int motionLevel;
 
 	/**
 	 * The flag whether this character can run a motion with the motion's
 	 * command
 	 */
-	public boolean control;
+	private boolean control;
 
 	/**
 	 * The flag whether a landing motion can cancel this motion
 	 */
-	public boolean landingFlag;
+	private boolean landingFlag;
 
 	/**
-	 * This motion's image file name
-	 */
-	public String imageName;
-
-	/**
-	 * This is a Vector of data structure for image .
+	 * The list of data structure for image .
 	 */
 	private ArrayList<Image> imageList;
 
@@ -230,7 +229,8 @@ public class Motion {
 	}
 
 	/**
-	 * 指定されたデータでMotionを更新するコンストラクタ
+	 * 指定されたデータでMotionのインスタンスを作成するコンストラクタ.<br>
+	 * シミュレータ内でのみ呼び出される.
 	 *
 	 * @param motionData
 	 *            モーションデータ
@@ -282,27 +282,26 @@ public class Motion {
 		int index = temp.indexOf(new CharacterActionImage(characterName, this.actionName));
 
 		if (index == -1) {
-			Logger.getAnonymousLogger().log(Level.INFO, "There is no character graphic according to the action");
+			Logger.getAnonymousLogger().log(Level.WARNING, "There is no character graphic according to the action");
 
 		} else {
 			// アクション名に対応する画像を読み込む
-			// ここでinvertedPlayerによって画素を変更する？
 			Image[] image = temp.get(index).getActionImage();
 
 			for (Image img : image) {
 				if (LaunchSetting.characterNames[0].equals(LaunchSetting.characterNames[1])) {
+					// 画素の反転
 					if (LaunchSetting.invertedPlayer == playerIndex + 1) {
 						img = invert(img);
 					}
 				}
-
 				this.imageList.add(img);
 			}
 		}
 	}
 
 	/**
-	 * 画像を反転させるメソッド
+	 * 画像の画素情報を反転させるメソッド
 	 *
 	 * @param image
 	 *            入力画像
@@ -325,10 +324,8 @@ public class Motion {
 		return image;
 	}
 
-	////// Getter//////
-
 	/**
-	 * Gets the name of this motion.
+	 * Returns the name of this motion.
 	 *
 	 * @return the name of this motion.
 	 */
@@ -337,55 +334,55 @@ public class Motion {
 	}
 
 	/**
-	 * Gets the number of frames in this motion.
+	 * Returns the number of frames in this motion.
 	 *
-	 * @return Number of frames in this motion
+	 * @return The number of frames in this motion
 	 */
 	public int getFrameNumber() {
 		return this.frameNumber;
 	}
 
 	/**
-	 * Gets the horizontal speed applied to a character using this motion.
+	 * Returns the horizontal speed applied to a character using this motion.
 	 *
-	 * @return the horizontal speed applied to a character using this motion.
+	 * @return The horizontal speed applied to a character using this motion.
 	 */
 	public int getSpeedX() {
 		return this.speedX;
 	}
 
 	/**
-	 * Gets the vertical speed applied to a character using this motion.
+	 * Returns the vertical speed applied to a character using this motion.
 	 *
-	 * @return the vertical speed applied to a character using this motion.
+	 * @return The vertical speed applied to a character using this motion.
 	 */
 	public int getSpeedY() {
 		return this.speedY;
 	}
 
 	/**
-	 * Gets the hit area associated to this motion.
+	 * Returns the hit area associated to this motion.
 	 *
-	 * @return the hit area associated to this motion.
+	 * @return The attack hit area associated to this motion.
 	 */
 	public HitArea getAttackHitArea() {
 		return this.attackHitArea;
 	}
 
 	/**
-	 * Gets the hit area associated to this character.
+	 * Returns the hit area associated to this character.
 	 *
-	 * @return the hit area associated to this motion.
+	 * @return The character hit area associated to this motion.
 	 */
 	public HitArea getCharacterHitArea() {
 		return this.characterHitArea;
 	}
 
 	/**
-	 * Gets the state that is assigned to a character after this motion is
+	 * Returns the state that is assigned to a character after this motion is
 	 * completed.
 	 *
-	 * @return the state that is assigned to a character after this motion is
+	 * @return The state that is assigned to a character after this motion is
 	 *         completed.
 	 */
 	public State getState() {
@@ -411,9 +408,11 @@ public class Motion {
 	}
 
 	/**
-	 * Returns the number of startup frames.
+	 * Returns the number of startup frames required for this motion to become
+	 * active
 	 *
-	 * @return The number of startup frames
+	 * @return The number of startup frames required for this motion to become
+	 *         active
 	 */
 	public int getAttackStartUp() {
 		return attackStartUp;
@@ -430,10 +429,10 @@ public class Motion {
 
 	/**
 	 * Returns the value of the damage to the unguarding opponent when it is hit
-	 * by this skill.
+	 * by this motion.
 	 *
 	 * @return The value of the damage to the unguarding opponent when it is hit
-	 *         by this skill
+	 *         by this motion
 	 */
 	public int getAttackHitDamage() {
 		return attackHitDamage;
@@ -441,17 +440,17 @@ public class Motion {
 
 	/**
 	 * Returns the value of the damage to the guarding opponent when it is hit
-	 * by this skill.
+	 * by this motion.
 	 *
 	 * @return The value of the damage to the guarding opponent when it is hit
-	 *         by this skill
+	 *         by this motion
 	 */
 	public int getAttackGuardDamage() {
 		return attackGuardDamage;
 	}
 
 	/**
-	 * Gets the controllable state associated to this motion. If the flag is
+	 * Returns the controllable state associated to this motion. If the flag is
 	 * false, a character using this motion cannot be controlled until this
 	 * motion finishes.
 	 *
@@ -464,31 +463,31 @@ public class Motion {
 
 	/**
 	 * Returns the value of the energy added to the character when it uses this
-	 * skill.
+	 * motion.
 	 *
 	 * @return The value of the energy added to the character when it uses this
-	 *         skill
+	 *         motion
 	 */
 	public int getAttackStartAddEnergy() {
 		return attackStartAddEnergy;
 	}
 
 	/**
-	 * Gets the first frame in which this motion can be canceled. Notice that
+	 * Returns the first frame in which this motion can be canceled. Notice that
 	 * only a motion whose {@link #motionLevel} is lower than the
 	 * {@link #cancelAbleMotionLevel} of this one can cancel this motion.
 	 *
-	 * @return the first frame in which this motion can be canceled.
+	 * @return The first frame in which this motion can be canceled.
 	 */
 	public int getCancelAbleFrame() {
 		return this.cancelAbleFrame;
 	}
 
 	/**
-	 * Returns the value of the energy added to the character when this skill
+	 * Returns the value of the energy added to the character when this motion
 	 * hits the opponent.
 	 *
-	 * @return The value of the energy added to the character when this skill
+	 * @return The value of the energy added to the character when this motion
 	 *         hits the opponent
 	 */
 	public int getAttackHitAddEnergy() {
@@ -496,11 +495,11 @@ public class Motion {
 	}
 
 	/**
-	 * Returns the value of the energy added to the character when this skill is
-	 * guarded by the guarding opponent.
+	 * Returns the value of the energy added to the character when this motion
+	 * is guarded by the guarding opponent.
 	 *
-	 * @return The value of the energy added to the character when this skill is
-	 *         guarded by the guarding opponent
+	 * @return The value of the energy added to the character when this motion
+	 *         is guarded by the guarding opponent
 	 */
 	public int getAttackGuardAddEnergy() {
 		return attackGuardAddEnergy;
@@ -508,10 +507,10 @@ public class Motion {
 
 	/**
 	 * Returns the value of the energy given to the opponent when it is hit by
-	 * this skill.
+	 * this motion.
 	 *
 	 * @return The value of the energy given to the opponent when it is hit by
-	 *         this skill
+	 *         this motion
 	 */
 	public int getAttackGiveEnergy() {
 		return attackGiveEnergy;
@@ -519,10 +518,10 @@ public class Motion {
 
 	/**
 	 * Returns the change in the horizontal speed of the opponent when it is hit
-	 * by this skill.
+	 * by this motion.
 	 *
 	 * @return The change in the horizontal speed of the opponent when it is hit
-	 *         by this skill
+	 *         by this motion
 	 */
 	public int getAttackImpactX() {
 		return attackImpactX;
@@ -530,10 +529,10 @@ public class Motion {
 
 	/**
 	 * Returns the change in the vertical speed of the opponent when it is hit
-	 * by this skill.
+	 * by this motion.
 	 *
 	 * @return The change in the vertical speed of the opponent when it is hit
-	 *         by this skill
+	 *         by this motion
 	 */
 	public int getAttackImpactY() {
 		return attackImpactY;
@@ -541,10 +540,10 @@ public class Motion {
 
 	/**
 	 * Returns the number of frames that the guarding opponent needs to resume
-	 * to its normal status when it is hit by this skill.
+	 * to its normal status when it is hit by this motion.
 	 *
 	 * @return The number of frames that the guarding opponent needs to resume
-	 *         to its normal status when it is hit by this skill
+	 *         to its normal status when it is hit by this motion
 	 */
 	public int getAttackGiveGuardRecov() {
 		return attackGiveGuardRecov;
@@ -564,19 +563,19 @@ public class Motion {
 	}
 
 	/**
-	 * Returns the flag whether this skill can push down the opponent when hit.
+	 * Returns the flag whether this motion can push down the opponent when hit.
 	 *
-	 * @return The flag whether this skill can push down the opponent when hit
+	 * @return The flag whether this motion can push down the opponent when hit
 	 */
 	public boolean isAttackDownProperty() {
 		return attackDownProperty;
 	}
 
 	/**
-	 * Gets the maximum {@link #motionLevel} a motion can have in order to be
+	 * Returns the maximum {@link #motionLevel} a motion can have in order to be
 	 * able to cancel this motion.
 	 *
-	 * @return the maximum {@link #motionLevel} a motion can have in order to be
+	 * @return The maximum {@link #motionLevel} a motion can have in order to be
 	 *         able to cancel this motion.
 	 */
 	public int getCancelAbleMotionLevel() {
@@ -584,11 +583,11 @@ public class Motion {
 	}
 
 	/**
-	 * Gets the level of this motion. Notice that this motion can cancel other
-	 * motions (after their {@link #cancelAbleFrame}) if such motions have a
-	 * {@link #cancelAbleMotionLevel} higher than the level of this motion.
+	 * Returns the level of this motion. Notice that this motion can cancel
+	 * other motions (after their {@link #cancelAbleFrame}) if such motions have
+	 * a {@link #cancelAbleMotionLevel} higher than the level of this motion.
 	 *
-	 * @return the level of this motion
+	 * @return The level of this motion
 	 */
 	public int getMotionLevel() {
 		return this.motionLevel;
@@ -598,30 +597,29 @@ public class Motion {
 	 * Returns {@code true} if the Landing motion can cancel this motion,
 	 * {@code false} otherwise.
 	 *
-	 * @return Value that expresses whether or not character lands in this
-	 *         motion.
+	 * @return The boolean value that expresses whether or not character lands
+	 *         in this motion.
 	 */
 	public boolean isLandingFlag() {
 		return this.landingFlag;
 	}
 
 	/**
-	 * Returns the current image of character.
+	 * Returns the current image of the character.
 	 *
 	 * @param nowFrame
-	 *            the current frame
-	 * @return the current image of the character
+	 *            The current frame
+	 * @return The current image of the character
 	 */
 	public Image getImage(int nowFrame) {
 		return imageList.get((frameNumber - nowFrame) % frameNumber);
 	}
 
-	////// Setter//////
 	/**
 	 * Sets the name of this motion.
 	 *
 	 * @param motionName
-	 *            the motion name to be set.
+	 *            The motion name to be set.
 	 */
 	public void setMotionName(String motionName) {
 		this.actionName = motionName;
@@ -631,7 +629,7 @@ public class Motion {
 	 * Set the number of frames in this motion.
 	 *
 	 * @param frameNumber
-	 *            the number of frames to be set.
+	 *            The number of frames to be set.
 	 */
 	public void setFrameNumber(int frameNumber) {
 		this.frameNumber = frameNumber;
@@ -642,7 +640,7 @@ public class Motion {
 	 * applied to a character using this motion.
 	 *
 	 * @param speedX
-	 *            the value to assign to the {@link #speedX} setting.
+	 *            The value to assign to the {@link #speedX} setting.
 	 */
 	public void setSpeedX(int speedX) {
 		this.speedX = speedX;
@@ -653,27 +651,27 @@ public class Motion {
 	 * to a character using this motion.
 	 *
 	 * @param speedY
-	 *            the value to assign to the {@link #speedY} setting.
+	 *            The value to assign to the {@link #speedY} setting.
 	 */
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
 	}
 
 	/**
-	 * Sets the hit area of this action.
+	 * Sets the hit area of this attack.
 	 *
-	 * @param hit
-	 *            the hit area.
+	 * @param attackHitArea
+	 *            The hit area of this attack.
 	 */
 	public void setAttackHitArea(HitArea attackHitArea) {
 		this.attackHitArea = attackHitArea;
 	}
 
 	/**
-	 * Sets the hit area of this motion.
+	 * Sets the character hit area of this motion.
 	 *
-	 * @param hit
-	 *            the hit area.
+	 * @param characterHitArea
+	 *            The character hit area of this motion.
 	 */
 	public void setCharacterHitArea(HitArea characterHitArea) {
 		this.characterHitArea = characterHitArea;
@@ -700,10 +698,12 @@ public class Motion {
 	}
 
 	/**
-	 * Sets the number of startup frames.
+	 * Sets the number of startup frames required for this motion to become
+	 * active
 	 *
 	 * @param attackStartUp
-	 *            The number of startup frames
+	 *            The number of startup frames required for this motion to
+	 *            become active
 	 */
 	public void setAttackStartUp(int attackStartUp) {
 		this.attackStartUp = attackStartUp;
@@ -721,11 +721,11 @@ public class Motion {
 
 	/**
 	 * Sets the value of the damage to the unguarding opponent when it is hit by
-	 * this skill.
+	 * this motion.
 	 *
 	 * @param attackHitDamage
 	 *            The value of the damage to the unguarding opponent when it is
-	 *            hit by this skill
+	 *            hit by this motion
 	 */
 	public void setAttackHitDamage(int attackHitDamage) {
 		this.attackHitDamage = attackHitDamage;
@@ -733,11 +733,11 @@ public class Motion {
 
 	/**
 	 * Sets the value of the damage to the guarding opponent when it is hit by
-	 * this skill.
+	 * this motion.
 	 *
 	 * @param attackGuardDamage
 	 *            The value of the damage to the guarding opponent when it is
-	 *            hit by this skill
+	 *            hit by this motion
 	 */
 	public void setAttackGuardDamage(int attackGuardDamage) {
 		this.attackGuardDamage = attackGuardDamage;
@@ -745,35 +745,35 @@ public class Motion {
 
 	/**
 	 * Sets the value of the energy added to the character when it uses this
-	 * skill
+	 * motion
 	 *
 	 * @param attackStartAddEnergy
 	 *            The value of the energy added to the character when it uses
-	 *            this skill.
+	 *            this motion.
 	 */
 	public void setAttackStartAddEnergy(int attackStartAddEnergy) {
 		this.attackStartAddEnergy = attackStartAddEnergy;
 	}
 
 	/**
-	 * Sets the value of the energy added to the character when this skill hits
+	 * Sets the value of the energy added to the character when this motion hits
 	 * the opponent.
 	 *
 	 * @param attackHitAddEnergy
-	 *            The value of the energy added to the character when this skill
-	 *            hits the opponent
+	 *            The value of the energy added to the character when this
+	 *            motion hits the opponent
 	 */
 	public void setAttackHitAddEnergy(int attackHitAddEnergy) {
 		this.attackHitAddEnergy = attackHitAddEnergy;
 	}
 
 	/**
-	 * Sets the value of the energy added to the character when this skill is
+	 * Sets the value of the energy added to the character when this motion is
 	 * guarded by the guarding opponent.
 	 *
 	 * @param attackGuardAddEnergy
-	 *            The value of the energy added to the character when this skill
-	 *            is guarded by the guarding opponent
+	 *            The value of the energy added to the character when this
+	 *            motion is guarded by the guarding opponent
 	 */
 	public void setAttackGuardAddEnergy(int attackGuardAddEnergy) {
 		this.attackGuardAddEnergy = attackGuardAddEnergy;
@@ -781,11 +781,11 @@ public class Motion {
 
 	/**
 	 * Sets the value of the energy given to the opponent when it is hit by this
-	 * skill.
+	 * motion.
 	 *
 	 * @param attackGiveEnergy
 	 *            The value of the energy given to the opponent when it is hit
-	 *            by this skill
+	 *            by this motion
 	 */
 	public void setAttackGiveEnergy(int attackGiveEnergy) {
 		this.attackGiveEnergy = attackGiveEnergy;
@@ -793,11 +793,11 @@ public class Motion {
 
 	/**
 	 * Sets the change in the horizontal speed of the opponent when it is hit by
-	 * this skill.
+	 * this motion.
 	 *
 	 * @param attackImpactX
 	 *            The change in the horizontal speed of the opponent when it is
-	 *            hit by this skill
+	 *            hit by this motion
 	 */
 	public void setAttackImpactX(int attackImpactX) {
 		this.attackImpactX = attackImpactX;
@@ -805,11 +805,11 @@ public class Motion {
 
 	/**
 	 * Sets the change in the vertical speed of the opponent when it is hit by
-	 * this skill
+	 * this motion
 	 *
 	 * @param attackImpactY
 	 *            The change in the vertical speed of the opponent when it is
-	 *            hit by this skill
+	 *            hit by this motion
 	 */
 	public void setAttackImpactY(int attackImpactY) {
 		this.attackImpactY = attackImpactY;
@@ -817,11 +817,11 @@ public class Motion {
 
 	/**
 	 * Sets the number of frames that the guarding opponent needs to resume to
-	 * its normal status after being hit by this skill.
+	 * its normal status after being hit by this motion.
 	 *
 	 * @param attackGiveGuardRecov
 	 *            The number of frames that the guarding opponent needs to
-	 *            resume to its normal status after being hit by this skill
+	 *            resume to its normal status after being hit by this motion
 	 */
 	public void setAttackGiveGuardRecov(int attackGiveGuardRecov) {
 		this.attackGiveGuardRecov = attackGiveGuardRecov;
@@ -846,19 +846,19 @@ public class Motion {
 	 * this motion cannot be controlled until this motion finishes.
 	 *
 	 * @param control
-	 *            the value to give to the flag.
+	 *            The boolean value to give to the flag.
 	 */
 	public void setControl(boolean control) {
 		this.control = control;
 	}
 
 	/**
-	 * Sets the flag whether this skill can push down the opponent when it is
-	 * hit by this skill.
+	 * Sets the flag whether this motion can push down the opponent when it is
+	 * hit by this motion.
 	 *
 	 * @param attackDownProperty
-	 *            The flag whether this skill can push down the opponent when it
-	 *            is hit by this skill
+	 *            The flag whether this motion can push down the opponent when
+	 *            it is hit by this motion
 	 */
 	public void setAttackDownProperty(boolean attackDownProperty) {
 		this.attackDownProperty = attackDownProperty;
@@ -869,7 +869,7 @@ public class Motion {
 	 * when this motion can be cancelled.
 	 *
 	 * @param cancelAbleFrame
-	 *            the value to assign to the {@link #cancelAbleFrame} setting.
+	 *            The value to assign to the {@link #cancelAbleFrame} setting.
 	 */
 	public void setCancelAbleFrame(int cancelAbleFrame) {
 		this.cancelAbleFrame = cancelAbleFrame;
@@ -882,7 +882,7 @@ public class Motion {
 	 * cancel the current motion.
 	 *
 	 * @param cancelAbleMotionLevel
-	 *            the value to assign to the {@link #cancelAbleMotionLevel}
+	 *            The value to assign to the {@link #cancelAbleMotionLevel}
 	 *            setting.
 	 */
 	public void setCancelAbleMotionLevel(int cancelAbleMotionLevel) {
@@ -893,7 +893,7 @@ public class Motion {
 	 * Sets the {@link #motionLevel} of this motion.
 	 *
 	 * @param motionLevel
-	 *            the value to assign to the {@link #motionLevel} setting.
+	 *            The value to assign to the {@link #motionLevel} setting.
 	 */
 	public void setMotionLevel(int motionLevel) {
 		this.motionLevel = motionLevel;
@@ -904,7 +904,7 @@ public class Motion {
 	 * the character at the end of this motion.
 	 *
 	 * @param state
-	 *            the value to assign to the {@link #state} setting.
+	 *            The value to assign to the {@link #state} setting.
 	 */
 	public void setState(State state) {
 		this.state = state;
@@ -915,7 +915,7 @@ public class Motion {
 	 * Landing motion can cancel this motion.
 	 *
 	 * @param landingFlag
-	 *            the value to assign to the {@link #landingFlag} setting.
+	 *            The value to assign to the {@link #landingFlag} setting.
 	 */
 	public void setLandingFlag(boolean landingFlag) {
 		this.landingFlag = landingFlag;
