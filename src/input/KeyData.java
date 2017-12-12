@@ -3,8 +3,7 @@ package input;
 import struct.Key;
 
 /**
- *
- *
+ *　同一フレーム内で各プレイヤー(AI,Keyboard)が入力したKeyを一つにまとめるためのクラス
  */
 public class KeyData {
 
@@ -24,10 +23,10 @@ public class KeyData {
 	}
 
 	/**
-	 * 2つのKey入力から各プレーヤーに1つのKeyDataを作成するコンストラクタ
+	 * 2つのKey入力から1つのKeyDataを作成するコンストラクタ
 	 *
 	 * @param keys
-	 *            プレイヤーからのキー入力
+	 *            各プレイヤーからのキー入力
 	 */
 	public KeyData(Key[] keys) {
 		this.keys = new Key[keys.length];
@@ -57,6 +56,7 @@ public class KeyData {
 
 	public KeyData() {
 		// TODO 自動生成されたコンストラクター・スタブ
+		keys = null;
 	}
 
 	/**

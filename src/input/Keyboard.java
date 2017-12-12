@@ -14,9 +14,10 @@ import manager.InputManager;
  */
 public class Keyboard extends GLFWKeyCallback {
 
-	/** キーを格納 */
+	/** 各キーが押されたかを格納 */
 	public static boolean[] keys = new boolean[65536];
 
+	/** 前のステップで各キーが押されていたかを格納 */
 	private static boolean[] preKeys = new boolean[65536];
 
 
@@ -29,11 +30,15 @@ public class Keyboard extends GLFWKeyCallback {
 	// can't be instantiated by itself and must instead be extended
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods) {
-		keys[key] = action != GLFW_RELEASE;
-		if (action == GLFW_RELEASE) {
-			preKeys[key] = false;
+		if (key >= 0 && key <= 65536) {
+			keys[key] = action != GLFW_RELEASE;
+			if (action == GLFW_RELEASE) {
+				preKeys[key] = false;
+			}
 		}
 	}
+
+
 
 	/**
 	 * 指定されたキーが押されている間に使われるメソッド
@@ -41,8 +46,6 @@ public class Keyboard extends GLFWKeyCallback {
 	 * @return {@code true} 指定されたキーコードが入力されたとき
 	 */
 	public static boolean getKey(int keycode) {
-		if (keys[keycode])
-			;// System.out.println("pless");
 		return keys[keycode];
 	}
 
