@@ -178,6 +178,7 @@ public class Play extends GameScene {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 		}
+		this.fighting.initRound();
 	}
 
 	/**

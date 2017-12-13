@@ -160,15 +160,23 @@ public class InputManager<Data> {
 		}
 
 		this.deviceTypes = LaunchSetting.deviceTypes.clone();
-		this.ais = new AIController[aiNames.length];
-		for (int i = 0; i < aiNames.length; i++) {
-			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				if (this.predifinedAIs.containsKey(aiNames[i])) {
-					this.ais[i] = new AIController(this.predifinedAIs.get(aiNames[i]));
-				} else {
-					this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
-				}
+		int count = 0;
+		for (char c : this.deviceTypes) {
+			if (c == DEVICE_TYPE_AI) {
+				count++;
+			}
+		}
 
+		this.ais = new AIController[count];
+		count = 0;
+		for (int i = 0; i < this.deviceTypes.length; i++) {
+			if (this.deviceTypes[i] == DEVICE_TYPE_AI) {
+				if (this.predifinedAIs.containsKey(aiNames[i])) {
+					this.ais[count] = new AIController(this.predifinedAIs.get(aiNames[i]));
+				} else {
+					this.ais[count] = ResourceLoader.getInstance().loadAI(aiNames[i]);
+				}
+				count++;
 			}
 		}
 	}
@@ -181,20 +189,16 @@ public class InputManager<Data> {
 	 *            GameDataクラスのインスタンス
 	 */
 	public void startAI(GameData gameData) {
-		int count = 0;
-		for (int i = 0; i < this.deviceTypes.length; i++) {
-			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				ais[count].initialize(ThreadController.getInstance().getAIsObject(Transform.convertPlayerNumberfromItoB(i))
-						, gameData, Transform.convertPlayerNumberfromItoB(i));
-				ais[count].start();// start the thread
-				count++;
-			}
+		for (int i = 0; i < this.ais.length; i++) {
+			ais[i].initialize(ThreadController.getInstance().getAIsObject(Transform.convertPlayerNumberfromItoB(i)),
+					gameData, Transform.convertPlayerNumberfromItoB(i));
+			ais[i].start();// start the thread
 		}
 	}
 
 	public void closeAI() {
 		for (AIController ai : this.ais) {
-			if(ai!=null)
+			if (ai != null)
 				ai.gameEnd();
 		}
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
@@ -215,24 +219,21 @@ public class InputManager<Data> {
 	 *            フレームデータ
 	 */
 	public void setFrameData(FrameData frameData, ScreenData screenData) {
-		int count = 0;
-		for (int i = 0; i < this.deviceTypes.length; i++) {
-			if (deviceTypes[i] == DEVICE_TYPE_AI) {
-				if (!frameData.getEmptyFlag()) {
-					this.ais[count].setFrameData(new FrameData(frameData));
-				} else {
-					this.ais[count].setFrameData(new FrameData());
-				}
-				ais[count].setScreenData(new ScreenData(screenData));
-				count++;
+		for (int i = 0; i < this.ais.length; i++) {
+			if (!frameData.getEmptyFlag()) {
+				this.ais[i].setFrameData(new FrameData(frameData));
+			} else {
+				this.ais[i].setFrameData(new FrameData());
 			}
+			ais[i].setScreenData(new ScreenData(screenData));
 		}
+
 		synchronized (this.endFrame) {
 			try {
 				ThreadController.getInstance().resetAllAIsObj();
-				if (FlagSetting.fastModeFlag){
+				if (FlagSetting.fastModeFlag) {
 					this.endFrame.wait();
-				}else{
+				} else {
 
 				}
 			} catch (InterruptedException e) {

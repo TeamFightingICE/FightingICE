@@ -59,15 +59,10 @@ public class FightingMenu extends GameScene {
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.FIGHTING_MENU);
 
-		this.menuItems = new MenuItem[] {
-				new MenuItem("PLAY ", 50, 50, 0),
-				new MenuItem("PLAYER1 : ", 75, 90, 1),
-				new MenuItem("PLAYER2 : ", 75, 130, 2),
-				new MenuItem("CHARACTER1 : ", 75, 170, 3),
-				new MenuItem("CHARACTER2 : ", 75, 210, 4),
-				new MenuItem("Repeat Count : ", 50, 260, 5),
-				new MenuItem("RETURN ", 50, 310, 6)
-				};
+		this.menuItems = new MenuItem[] { new MenuItem("PLAY ", 50, 50, 0), new MenuItem("PLAYER1 : ", 75, 90, 1),
+				new MenuItem("PLAYER2 : ", 75, 130, 2), new MenuItem("CHARACTER1 : ", 75, 170, 3),
+				new MenuItem("CHARACTER2 : ", 75, 210, 4), new MenuItem("Repeat Count : ", 50, 260, 5),
+				new MenuItem("RETURN ", 50, 310, 6) };
 
 		this.playerIndexes = new int[2];
 		this.characterIndexes = new int[2];
@@ -109,9 +104,9 @@ public class FightingMenu extends GameScene {
 					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[this.characterIndexes[i]];
 
 					if (LaunchSetting.aiNames[i].equals("KeyBoard")) {
-						LaunchSetting.deviceTypes[i] = 0;
+						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_KEYBOARD;
 					} else {
-						LaunchSetting.deviceTypes[i] = 1;
+						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_AI;
 					}
 
 				}

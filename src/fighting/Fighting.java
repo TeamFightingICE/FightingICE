@@ -468,7 +468,6 @@ public class Fighting {
 
 		this.projectileDeque.clear();
 		this.inputCommands.clear();
-
 	}
 
 	/**

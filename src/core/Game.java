@@ -15,6 +15,7 @@ import informationcontainer.AIContainer;
 import loader.ResourceLoader;
 import manager.GameManager;
 import manager.GraphicManager;
+import manager.InputManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -50,11 +51,11 @@ public class Game extends GameManager {
 				break;
 			case "--a1":
 				LaunchSetting.aiNames[0] = options[++i];
-				LaunchSetting.deviceTypes[0] = 1;
+				LaunchSetting.deviceTypes[0] = InputManager.DEVICE_TYPE_AI;
 				break;
 			case "--a2":
 				LaunchSetting.aiNames[1] = options[++i];
-				LaunchSetting.deviceTypes[1] = 1;
+				LaunchSetting.deviceTypes[1] = InputManager.DEVICE_TYPE_AI;
 				break;
 			case "--c1":
 				LaunchSetting.characterNames[0] = getCharacterName(options[++i]);
