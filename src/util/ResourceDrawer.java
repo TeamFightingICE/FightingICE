@@ -1,7 +1,5 @@
 package util;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -58,15 +56,13 @@ public class ResourceDrawer {
 	 *            ラウンド
 	 */
 	public void drawResource(Character[] characters, Deque<LoopEffect> projectiles,
-			LinkedList<LinkedList<HitEffect>> hitEffects, BufferedImage screen, int remainingTime, int round) {
+			LinkedList<LinkedList<HitEffect>> hitEffects, int remainingTime, int round) {
 
-		Graphics2D screenGraphic = screen.createGraphics();
+		drawBackGroundImage();
 
-		drawBackGroundImage(screenGraphic);
+		drawCharacterImage(characters);
 
-		drawCharacterImage(characters, screenGraphic);
-
-		drawAttackImage(projectiles, characters, screenGraphic);
+		drawAttackImage(projectiles, characters);
 
 		drawHPGaugeImage(characters);
 
@@ -80,9 +76,7 @@ public class ResourceDrawer {
 
 		drawHitArea(characters, projectiles);
 
-		drawHitEffects(hitEffects, screenGraphic);
-
-		screenGraphic.dispose();
+		drawHitEffects(hitEffects);
 	}
 
 	/**
@@ -91,10 +85,8 @@ public class ResourceDrawer {
 	 * @param screenGraphic
 	 *            The screen graphics
 	 */
-	public void drawBackGroundImage(Graphics2D screenGraphic) {
+	public void drawBackGroundImage() {
 		Image bg = GraphicManager.getInstance().getBackgroundImage().get(0);
-		screenGraphic.drawImage(bg.getBufferedImage(), 0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT,
-				Color.black, null);
 
 		GraphicManager.getInstance().drawImage(bg, 0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT,
 				Image.DIRECTION_RIGHT);
@@ -108,7 +100,7 @@ public class ResourceDrawer {
 	 * @param screenGraphic
 	 *            The screen graphics
 	 */
-	public void drawCharacterImage(Character[] playerCharacters, Graphics2D screenGraphic) {
+	public void drawCharacterImage(Character[] playerCharacters) {
 
 		String[] names = { "P1", "P2" };
 
@@ -124,9 +116,6 @@ public class ResourceDrawer {
 			int positionY = playerCharacters[i].getHitAreaTop() - 50;
 
 			GraphicManager.getInstance().drawString(names[i], positionX, positionY);
-
-			screenGraphic.drawImage(image, playerCharacters[i].getX(), playerCharacters[i].getY(),
-					playerCharacters[i].getGraphicSizeX(), playerCharacters[i].getGraphicSizeY(), null);
 
 			GraphicManager.getInstance().drawImage(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
 					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
@@ -144,7 +133,7 @@ public class ResourceDrawer {
 	 * @param screenGraphic
 	 *            The screen graphics
 	 */
-	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters, Graphics2D screenGraphic) {
+	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters) {
 
 		// Is displayed according to the orientation image attack.
 		for (LoopEffect projectile : projectiles) {
@@ -164,8 +153,6 @@ public class ResourceDrawer {
 
 				BufferedImage tmpImage = image.getBufferedImage();
 				tmpImage = flipImage(tmpImage, attack.getSpeedX() >= 0);
-
-				screenGraphic.drawImage(tmpImage, positionX, positionY, image.getWidth(), image.getHeight(), null);
 
 				GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(), image.getHeight(),
 						attack.getSpeedX() >= 0);
@@ -335,7 +322,7 @@ public class ResourceDrawer {
 	 * @param screenGraphic
 	 *            The screen graphics
 	 */
-	private void drawHitEffects(LinkedList<LinkedList<HitEffect>> hitEffects, Graphics2D screenGraphic) {
+	private void drawHitEffects(LinkedList<LinkedList<HitEffect>> hitEffects) {
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < hitEffects.get(i).size(); ++j) {
 				HitEffect hitEffect = hitEffects.get(i).get(j);
@@ -351,7 +338,6 @@ public class ResourceDrawer {
 							+ hitEffect.getVariationX();
 					int positionY = area.getTop() - (image.getHeight() - area.getBottom() + area.getTop()) / 2
 							+ hitEffect.getVariationY();
-					screenGraphic.drawImage(tmpImage, positionX, positionY, image.getWidth(), image.getHeight(), null);
 
 					if (hitEffect.getVariationX() == 0 && hitEffect.getVariationY() == 0) {
 						positionX += 30;
