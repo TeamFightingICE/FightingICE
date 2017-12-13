@@ -291,7 +291,9 @@ public class Play extends GameScene {
 		}
 
 		try {
-			this.dos.close();
+			if (this.dos != null) {
+				this.dos.close();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
