@@ -143,7 +143,7 @@ public class Replay extends GameScene {
 				GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50,
 						550);
 
-				this.screenData = new ScreenData(ResourceDrawer.getInstance().getScreen());
+				this.screenData = new ScreenData();
 			}
 
 		} else {

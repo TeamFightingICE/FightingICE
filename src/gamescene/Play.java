@@ -131,7 +131,6 @@ public class Play extends GameScene {
 			} else {
 				// processing
 				processingGame();
-				fastProcess();
 				this.nowFrame++;
 			}
 
@@ -193,19 +192,9 @@ public class Play extends GameScene {
 	 * 7. ゲーム画面を描画する.
 	 */
 	private void processingGame() {
-
 		this.keyData = new KeyData(InputManager.getInstance().getKeyData());
-
 		this.fighting.processingFight(this.nowFrame, this.keyData);
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, this.keyData);
-		this.screenData = new ScreenData();
-
-		// AIにFrameDataをセット
-		InputManager.getInstance().setFrameData(this.frameData, this.screenData);
-		// 体力が0orタイムオーバーならラウンド終了処理
-		if (isBeaten() || isTimeOver()) {
-			processingRoundEnd();
-		}
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {
@@ -219,8 +208,7 @@ public class Play extends GameScene {
 		if (FlagSetting.enableWindow) {
 			// 画面をDrawerクラスで描画
 			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
-					this.fighting.getHitEffectList(), this.screenData.getScreenImage(),
-					this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
+					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
 		}
 
 		// P1とP2の行った各アクションの数を数える
@@ -228,6 +216,15 @@ public class Play extends GameScene {
 			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
 		}
 
+		this.screenData = new ScreenData();
+
+		// AIにFrameDataをセット
+		InputManager.getInstance().setFrameData(this.frameData, this.screenData);
+
+		// 体力が0orタイムオーバーならラウンド終了処理
+		if (isBeaten() || isTimeOver()) {
+			processingRoundEnd();
+		}
 	}
 
 	/** 各ラウンド終了時の処理を行う. */
@@ -279,18 +276,6 @@ public class Play extends GameScene {
 		LogWriter.getInstance().writeHeader(this.dos);
 	}
 
-	private void fastProcess() {
-		// if(FlagSetting.fastModeFlag){
-		// synchronized (ThreadController.getInstance().getEndFrame()) {
-		// try {
-		// ThreadController.getInstance().getEndFrame().wait();
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
-		// }
-		// }
-	}
-
 	@Override
 	public void close() {
 		this.fighting = null;
@@ -314,7 +299,5 @@ public class Play extends GameScene {
 		if (FlagSetting.jsonFlag) {
 			LogWriter.getInstance().finalizeJson();
 		}
-
 	}
-
 }
