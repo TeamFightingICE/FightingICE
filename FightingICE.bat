@@ -2,11 +2,6 @@
 
 setlocal ENABLEDELAYEDEXPANSION
 
-rem　使用するPCのOS
-set OS = windows
-rem set OS =linux
-rem set OS =macos
-
 rem 実行したいAIの数-1
 set FIGHT_AI_NUM=1
 
