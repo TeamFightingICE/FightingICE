@@ -52,7 +52,7 @@ public class Launcher extends GameScene {
 
 	@Override
 	public void update() {
-		if (this.isFirstUpdate && !FlagSetting.enableWindow) {
+		if (this.isFirstUpdate && FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawString("Now loading ...", GameSetting.STAGE_WIDTH / 2 - 80, 200);
 			this.isFirstUpdate = false;
 

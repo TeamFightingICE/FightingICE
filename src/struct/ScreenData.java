@@ -31,9 +31,9 @@ public class ScreenData {
 	 * ゲーム画面のデータを初期化するコンストラクタ
 	 */
 	public ScreenData() {
-		this.displayByteBuffer = createDisplayByteBuffer();
 		this.screenImage = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT,
 				BufferedImage.TYPE_INT_RGB);
+		this.displayByteBuffer = createDisplayByteBuffer();
 	}
 
 	/**
@@ -45,8 +45,8 @@ public class ScreenData {
 	 * @see BufferedImage
 	 */
 	public ScreenData(BufferedImage screenImage) {
-		this.displayByteBuffer = createDisplayByteBuffer();
 		this.screenImage = screenImage;
+		this.displayByteBuffer = createDisplayByteBuffer();
 	}
 
 	/**
@@ -56,8 +56,8 @@ public class ScreenData {
 	 *            ゲーム画面のデータ
 	 */
 	public ScreenData(ScreenData screenData) {
-		this.displayByteBuffer = screenData.getDisplayByteBuffer();
 		this.screenImage = screenData.getScreenImage();
+		this.displayByteBuffer = screenData.getDisplayByteBuffer();
 	}
 
 	/**
@@ -79,6 +79,7 @@ public class ScreenData {
 	public byte[] getDisplayByteBufferAsBytes() {
 		byte[] buffer = new byte[this.displayByteBuffer.remaining()];
 		this.displayByteBuffer.get(buffer);
+
 		return buffer;
 	}
 
