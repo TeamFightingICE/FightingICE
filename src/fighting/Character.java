@@ -122,6 +122,9 @@ public class Character {
 	/** 攻撃の連続ヒット数 */
 	private int hitCount;
 
+	/** シミュレータ内での処理かどうか */
+	private boolean isSimulateProcess;
+
 	/**
 	 * Characterを初期化するコンストラクタ
 	 */
@@ -147,6 +150,7 @@ public class Character {
 		this.remainingFrame = 0;
 		this.lastHitFrame = 0;
 		this.hitCount = 0;
+		this.isSimulateProcess = false;
 	}
 
 	/**
@@ -180,6 +184,7 @@ public class Character {
 		this.motionList = character.getMotionList();
 		this.lastHitFrame = character.getLastHitFrame();
 		this.hitCount = character.getHitCount();
+		this.isSimulateProcess = character.isSimulateProcess();
 	}
 
 	/**
@@ -219,6 +224,7 @@ public class Character {
 		this.motionList = motionList;
 		this.lastHitFrame = characterData.getLastHitFrame();
 		this.hitCount = characterData.getHitCount();
+		this.isSimulateProcess = true;
 	}
 
 	/**
@@ -349,7 +355,7 @@ public class Character {
 				runAction(Action.LANDING, true);
 				setSpeedY(0);
 
-				if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+				if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
 					SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("Landing.wav"));
 				}
 			}
@@ -408,7 +414,7 @@ public class Character {
 			setRemainingFrame(attack.getGiveGuardRecov());
 			opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
-			if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+			if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
 				SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakGuard.wav"));
 			}
 		} else {
@@ -439,7 +445,7 @@ public class Character {
 					runAction(Action.CHANGE_DOWN, false);
 					setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
 
-					if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+					if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
 						SoundManager.getInstance()
 								.play(SoundManager.getInstance().getSoundEffect().get("StrongHit.wav"));
 					}
@@ -462,7 +468,7 @@ public class Character {
 						break;
 					}
 
-					if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+					if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
 						SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakHit.wav"));
 					}
 				}
@@ -1189,5 +1195,14 @@ public class Character {
 	 */
 	public boolean isComboValid(int nowFrame) {
 		return (nowFrame - this.lastHitFrame) <= GameSetting.COMBO_LIMIT;
+	}
+
+	/**
+	 * シミュレータ内での処理かどうかを返す
+	 *
+	 * @return シミュレータ内での処理かどうか
+	 */
+	public boolean isSimulateProcess() {
+		return this.isSimulateProcess;
 	}
 }

@@ -155,6 +155,29 @@ public class SimFighting extends Fighting {
 	}
 
 	@Override
+	protected void updateAttackParameter() {
+		// Updates the parameters of all of projectiles appearing in the stage
+		int dequeSize = this.projectileDeque.size();
+		for (int i = 0; i < dequeSize; i++) {
+
+			LoopEffect projectile = this.projectileDeque.removeFirst();
+			if (projectile.getAttack().updateProjectileAttack()) {
+				this.projectileDeque.addLast(projectile);
+			}
+		}
+
+		// Updates the parameters of all of attacks excepted projectile
+		// conducted by both characters
+		for (int i = 0; i < 2; ++i) {
+			if (this.playerCharacters[i].getAttack() != null) {
+				if (!this.playerCharacters[i].getAttack().update(this.playerCharacters[i])) {
+					this.playerCharacters[i].destroyAttackInstance();
+				}
+			}
+		}
+	}
+
+	@Override
 	protected void updateCharacter() {
 		for (int i = 0; i < 2; ++i) {
 			// update each character.
