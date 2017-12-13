@@ -10,6 +10,7 @@ import manager.InputManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 
+/** 起動情報を基に次のゲームシーンを初期化し, 必要なリソースを読み込むクラス */
 public class Launcher extends GameScene {
 
 	/** 次の遷移先のゲームシーン */
@@ -51,7 +52,7 @@ public class Launcher extends GameScene {
 
 	@Override
 	public void update() {
-		if (this.isFirstUpdate && !FlagSetting.enableWindow) {
+		if (this.isFirstUpdate && FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawString("Now loading ...", GameSetting.STAGE_WIDTH / 2 - 80, 200);
 			this.isFirstUpdate = false;
 
@@ -65,18 +66,18 @@ public class Launcher extends GameScene {
 				break;
 
 			case "REPLAY":
-				Logger.getAnonymousLogger().log(Level.INFO, "Transition to REPLAY");
+				Logger.getAnonymousLogger().log(Level.WARNING, "Transition to REPLAY");
 				Replay replay = new Replay();
 				this.setTransitionFlag(true);
 				this.setNextGameScene(replay);
 				break;
 			default:
-				Logger.getAnonymousLogger().log(Level.INFO, "This scene does not exist");
+				Logger.getAnonymousLogger().log(Level.WARNING, "This scene does not exist");
 				this.setGameEndFlag(true);
 			}
 
 			if (FlagSetting.enableWindow) {
-				// リソースのロード
+				// Loads resources
 				ResourceLoader.getInstance().loadResource();
 			}
 		}
@@ -86,5 +87,4 @@ public class Launcher extends GameScene {
 	public void close() {
 
 	}
-
 }

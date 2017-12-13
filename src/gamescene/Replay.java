@@ -25,7 +25,7 @@ import struct.Key;
 import struct.ScreenData;
 import util.ResourceDrawer;
 
-/** リプレイの再生を行うクラス*/
+/** リプレイの再生を行うクラス */
 public class Replay extends GameScene {
 
 	/** 対戦処理を行うクラスのインスタンス */
@@ -126,17 +126,24 @@ public class Replay extends GameScene {
 				// processing
 				for (int i = 0; i < this.playSpeedArray[this.playSpeedIndex] && !this.isFinished; i++) {
 					processingGame();
+					// 体力が0orタイムオーバーならラウンド終了処理
+					if (isBeaten() || isTimeOver()) {
+						processingRoundEnd();
+						this.nowFrame++;
+						break;
+					}
 					this.nowFrame++;
 				}
 
 				// 画面をDrawerクラスで描画
 				ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(),
 						this.fighting.getProjectileDeque(), this.fighting.getHitEffectList(),
-						this.screenData.getScreenImage(), this.frameData.getRemainingTimeMilliseconds(),
-						this.currentRound);
+						this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
 
 				GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50,
 						550);
+
+				this.screenData = new ScreenData(ResourceDrawer.getInstance().getScreen());
 			}
 
 		} else {
@@ -170,9 +177,6 @@ public class Replay extends GameScene {
 
 	/** 各ラウンド開始時における, インターバル処理を行う */
 	private void processingBreakTime() {
-		// ダミーフレームをAIにセット
-		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
-
 		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 	}
@@ -190,12 +194,6 @@ public class Replay extends GameScene {
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, this.keyData);
-		this.screenData = new ScreenData();
-
-		// 体力が0orタイムオーバーならラウンド終了処理
-		if (isBeaten() || isTimeOver()) {
-			processingRoundEnd();
-		}
 	}
 
 	/** 各ラウンド終了時の処理を行う. */

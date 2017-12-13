@@ -17,18 +17,47 @@ import struct.AttackData;
 import struct.CharacterData;
 import struct.FrameData;
 
+/** 対戦処理及びそれに伴う攻撃やキャラクターのパラメータの更新処理を管理するクラス */
 public class Fighting {
 
+	/**
+	 * The character's data of both characters<br>
+	 * Index 0 is P1, index 1 is P2.
+	 *
+	 * @see Character
+	 */
 	protected Character[] playerCharacters;
 
+	/**
+	 * The list of projectile data of both characters
+	 *
+	 * @see LoopEffect
+	 */
 	protected Deque<LoopEffect> projectileDeque;
 
+	/**
+	 * The list of the input information of both characters
+	 *
+	 * @see KeyData
+	 */
 	private Deque<KeyData> inputCommands;
 
+	/**
+	 * 攻撃が当たった時に表示するエフェクトや, アッパーのエフェクトの情報を格納するリスト<br>
+	 * Index 0 is P1, index 1 is P2.
+	 *
+	 * @see HitEffect
+	 */
 	private LinkedList<LinkedList<HitEffect>> hitEffects;
 
+	/**
+	 * キー入力とそれに対応するアクションを管理するクラス変数
+	 *
+	 * @see CommandTable
+	 */
 	protected CommandTable commandTable;
 
+	/** 初期化を行うコンストラクタ */
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
@@ -38,57 +67,64 @@ public class Fighting {
 
 	}
 
+	/** P1, P2のキャラクター情報とエフェクトを格納するリストの初期化を行う */
 	public void initialize() {
 		for (int i = 0; i < 2; i++) {
 			this.playerCharacters[i] = new Character();
 			this.playerCharacters[i].initialize(LaunchSetting.characterNames[i], i == 0);
 			this.hitEffects.add(new LinkedList<HitEffect>());
 		}
-
-		this.projectileDeque = new LinkedList<LoopEffect>();
-		this.inputCommands = new LinkedList<KeyData>();
-
-		///// 旧Fighting処理内容/////
-
-		// BGMのロード
-		// SEロード
-		// 画像系ロード←Launcherでやってる
-		// スクリーン画像取得←ここでやる
-		// 背景画像ロード←Launcherでやってる
-		// スコア・経過時間の結果を格納する配列初期化←Playでやってる
-		// 波動拳格納リスト初期化←ここ
-		// コマンド格納リスト初期化←ここ
-		// リプレイ用ファイルオープン←ここかPlay
-		// Json用ファイルオープン←未定
-
 	}
 
+	/**
+	 * 入力されたP1, P2のキーを基に, 1フレーム分の対戦処理を行う. <br>
+	 * 処理順序は以下の通りである.<br>
+	 * <ol>
+	 * <li>入力されたキーを基に, アクションを実行</li>
+	 * <li>攻撃の当たり判定の処理, 及びそれに伴うキャラクターの体力といったパラメータの更新</li>
+	 * <li>攻撃のパラメータの更新</li>
+	 * <li>キャラクターの状態の更新</li>
+	 * </ol>
+	 *
+	 * @param currentFrame
+	 *            現在のフレーム番号
+	 * @param keyData
+	 *            入力されたP1, P2のキー<br>
+	 *            Index 0 is P1, index 1 is P2.
+	 */
 	public void processingFight(int currentFrame, KeyData keyData) {
 
-		// 1. コマンドの実行・対戦処理
+		// 1. 入力されたキーを基に, アクションを実行
 		processingCommands(currentFrame, keyData);
 		// 2. 当たり判定の処理
 		calculationHit(currentFrame);
-		// 3. 攻撃パラメータの更新
+		// 3. 攻撃のパラメータの更新
 		updateAttackParameter();
-		// 4. キャラクター情報の更新
+		// 4. キャラクターの状態の更新
 		updateCharacter();
 
 	}
 
-	/** 入力されたキーを基にアクションを実行する */
+	/**
+	 * 入力されたキーを基にアクションを実行する
+	 *
+	 * @param currentFrame
+	 *            現在のフレーム番号
+	 * @param keyData
+	 *            入力されたP1, P2のキー<br>
+	 *            Index 0 is P1, index 1 is P2.
+	 */
 	protected void processingCommands(int currentFrame, KeyData keyData) {
 		this.inputCommands.addLast(keyData);
 
+		// リストのサイズが上限(INPUT_LIMIT)を超えていたら, 最も古いデータを削除する
 		if (this.inputCommands.size() > GameSetting.INPUT_LIMIT) {
 			this.inputCommands.removeFirst();
 		}
 
+		// アクションの実行
 		for (int i = 0; i < 2; i++) {
 			if (!this.inputCommands.isEmpty()) {
-				// Action executeAction =
-				// this.commandTable.convertKeyToAction(this.playerCharacters[i],this.inputCommands);
-
 				Action executeAction = this.commandTable.interpretationCommandFromKeyData(this.playerCharacters[i],
 						this.inputCommands);
 				if (ableAction(this.playerCharacters[i], executeAction)) {
@@ -98,7 +134,12 @@ public class Fighting {
 		}
 	}
 
-	/** 攻撃の当たり判定と,それに伴うキャラクターのパラメータ・コンボ状態の更新を行う */
+	/**
+	 * 攻撃の当たり判定の処理, 及びそれに伴うキャラクターの体力といったパラメータの更新 を行う.
+	 *
+	 * @param currentFrame
+	 *            現在のフレーム番号
+	 */
 	protected void calculationHit(int currentFrame) {
 		boolean[] isHit = { false, false };
 
@@ -112,7 +153,6 @@ public class Fighting {
 				int myIndex = opponentIndex == 0 ? 1 : 0;
 				this.playerCharacters[opponentIndex].hitAttack(this.playerCharacters[myIndex], projectile.getAttack(),
 						currentFrame);
-
 			} else {
 				this.projectileDeque.addLast(projectile);
 			}
@@ -130,7 +170,7 @@ public class Fighting {
 			}
 		}
 
-		// エフェクト関係の処理
+		// エフェクト関係の処理. Windowが生成されているときのみ行う.
 		for (int i = 0; i < 2; i++) {
 			if (FlagSetting.enableWindow) {
 				if (this.playerCharacters[i].getAttack() != null) {
@@ -167,14 +207,13 @@ public class Fighting {
 	}
 
 	/**
-	 * 攻撃オブジェクトのパラメータ更新を行う.
+	 * 攻撃のパラメータの更新を行う.
 	 */
 	protected void updateAttackParameter() {
-		// update coordinate of Attacks(long distance)
+		// Updates the parameters of all of projectiles appearing in the stage
 		int dequeSize = this.projectileDeque.size();
 		for (int i = 0; i < dequeSize; i++) {
 
-			// if attack's nowFrame reach end of duration, remove it.
 			LoopEffect projectile = this.projectileDeque.removeFirst();
 			if (projectile.getAttack().updateProjectileAttack()) {
 				projectile.update();
@@ -182,7 +221,8 @@ public class Fighting {
 			}
 		}
 
-		// update coordinate of Attacks(short distance)
+		// Updates the parameters of all of attacks excepted projectile
+		// conducted by both characters
 		for (int i = 0; i < 2; ++i) {
 			if (this.playerCharacters[i].getAttack() != null) {
 				if (!this.playerCharacters[i].getAttack().update(this.playerCharacters[i])) {
@@ -193,14 +233,13 @@ public class Fighting {
 	}
 
 	/**
-	 * キャラクターのパラメータや波動拳の情報を更新する
+	 * キャラクターの状態や, エフェクトの更新を行う.
 	 */
 	protected void updateCharacter() {
 		for (int i = 0; i < 2; ++i) {
-			// update each character.
+			// Updates each character.
 			this.playerCharacters[i].update();
 
-			// enque object attack if the data is missile decision
 			if (this.playerCharacters[i].getAttack() != null) {
 				if (this.playerCharacters[i].getAttack().isProjectile()) {
 
@@ -227,12 +266,12 @@ public class Fighting {
 				}
 			}
 
-			// change player's direction
+			// Change player's direction
 			if (playerCharacters[i].isControl()) {
 				playerCharacters[i].frontDecision(playerCharacters[i == 0 ? 1 : 0].getHitAreaCenterX());
 			}
 
-			// エフェクトの更新
+			// Updates the all of effects appearing in this stage
 			for (int j = 0; j < this.hitEffects.get(i).size(); j++) {
 				if (!this.hitEffects.get(i).get(j).update()) {
 					this.hitEffects.get(i).remove(j);
@@ -240,11 +279,11 @@ public class Fighting {
 				}
 			}
 		}
-		// run pushing effect
+		// Runs pushing.
 		detectionPush();
-		// run collision of first and second character.
+		// Runs collision of first and second character.
 		detectionFusion();
-		// run effect when character's are in the end of stage.
+		// Runs effect when character's are in the end of stage.
 		decisionEndStage();
 	}
 
@@ -252,25 +291,17 @@ public class Fighting {
 	 * 各キャラクターの現在の水平方向のスピード量に応じて, プッシュ処理を行う
 	 */
 	protected void detectionPush() {
-		// whether the conflict of first and second player or not?
+		// Whether the conflict of first and second player or not.
 		if (isCollision()) {
-			/*
-			 * int direction = this.playerCharacters[0].isFront() ? 1 : -1; int
-			 * p1SpeedX = direction * this.playerCharacters[0].getSpeedX(); int
-			 * p2SpeedX = -direction * this.playerCharacters[1].getSpeedX();
-			 */
 			int p1SpeedX = Math.abs(this.playerCharacters[0].getSpeedX());
 			int p2SpeedX = Math.abs(this.playerCharacters[1].getSpeedX());
 
 			if (p1SpeedX > p2SpeedX) {
-
 				this.playerCharacters[1]
 						.moveX(this.playerCharacters[0].getSpeedX() - this.playerCharacters[1].getSpeedX());
-
 			} else if (p1SpeedX < p2SpeedX) {
 				this.playerCharacters[0]
 						.moveX(this.playerCharacters[1].getSpeedX() - this.playerCharacters[0].getSpeedX());
-
 			} else {
 				this.playerCharacters[0].moveX(this.playerCharacters[1].getSpeedX());
 				this.playerCharacters[1].moveX(this.playerCharacters[0].getSpeedX());
@@ -282,14 +313,14 @@ public class Fighting {
 	 * 相手と位置が重なってしまった場合, 重ならないように各キャラクターの座標の更新処理を行う
 	 */
 	protected void detectionFusion() {
-		// whether the conflict of first and second player or not?
+		// Whether the conflict of first and second player or not.
 		if (isCollision()) {
 			int direction = 0;
 
-			// if first player is left
+			// If first player is left
 			if (this.playerCharacters[0].getHitAreaCenterX() < this.playerCharacters[1].getHitAreaCenterX()) {
 				direction = 1;
-				// if second player is left
+				// If second player is left
 			} else if (this.playerCharacters[0].getHitAreaCenterX() > this.playerCharacters[1].getHitAreaCenterX()) {
 				direction = -1;
 			} else {
@@ -304,7 +335,11 @@ public class Fighting {
 		}
 	}
 
-	/** 相手キャラクターとぶつかっている状態かを判定する */
+	/**
+	 * 相手キャラクターとぶつかっている状態かを判定する
+	 *
+	 * @return true: 相手キャラクターとぶつかっている状態である; false: otherwise
+	 */
 	private boolean isCollision() {
 		return this.playerCharacters[0].getHitAreaLeft() <= this.playerCharacters[1].getHitAreaRight()
 				&& this.playerCharacters[0].getHitAreaTop() <= this.playerCharacters[1].getHitAreaBottom()
@@ -316,28 +351,35 @@ public class Fighting {
 	 * ステージ端からキャラクターがはみ出ないように, 各キャラクターの座標の更新処理を行う
 	 */
 	protected void decisionEndStage() {
-
 		for (int i = 0; i < 2; ++i) {
-			// if action is down, character will be rebound.
-			// first player's effect
+			// If action is down, character will be rebound.
 			if (playerCharacters[i].getHitAreaRight() > GameSetting.STAGE_WIDTH) {
 				if (playerCharacters[i].getAction() == Action.DOWN) {
 					playerCharacters[i].reversalSpeedX();
 				}
-
 				playerCharacters[i].moveX(-playerCharacters[i].getHitAreaRight() + GameSetting.STAGE_WIDTH);
 
 			} else if (playerCharacters[i].getHitAreaLeft() < 0) {
 				if (playerCharacters[i].getAction() == Action.DOWN) {
 					playerCharacters[i].reversalSpeedX();
 				}
-
 				playerCharacters[i].moveX(-playerCharacters[i].getHitAreaLeft());
 			}
 		}
 	}
 
-	/** 入力されたアクションが実行可能かどうかを返す */
+	/**
+	 * 入力されたアクションが実行可能かどうかを返す
+	 *
+	 * @param character
+	 *            アクションを実行するキャラクター
+	 * @param 実行予定のアクション
+	 *
+	 * @return 入力されたアクションが実行可能かどうか
+	 *
+	 * @see Character
+	 * @see Action
+	 */
 	protected boolean ableAction(Character character, Action nextAction) {
 		Motion nextMotion = character.getMotionList().get(nextAction.ordinal());
 		Motion nowMotion = character.getMotionList().get(character.getAction().ordinal());
@@ -380,15 +422,30 @@ public class Fighting {
 		}
 	}
 
-	/** P1, P2のキャラクター情報が格納された配列を返す */
+	/**
+	 * P1, P2のキャラクター情報が格納された配列を返す
+	 *
+	 * @return P1, P2のキャラクター情報が格納された配列
+	 */
 	public Character[] getCharacters() {
 		return this.playerCharacters.clone();
 	}
 
 	/**
 	 * 現在のフレームにおけるゲーム情報を格納したフレームデータを作成する<br>
-	 * 両キャラクターの情報, 現在のフレーム数, 現在のラウンド, 波動拳の情報を格納したリスト, 両キャラクターのキー情報, 画面のピクセル情報,
-	 * 画面のBufferedImage
+	 * 両キャラクターの情報, 現在のフレーム数, 現在のラウンド, 波動拳の情報を格納したリスト, 両キャラクターのキー情報
+	 *
+	 * @param nowFrame
+	 *            現在のフレーム番号
+	 * @param round
+	 *            現在のラウンド
+	 * @param keyData
+	 *            両キャラクターのキー情報
+	 *
+	 * @return 現在のフレームにおけるゲーム情報を格納したフレームデータ
+	 *
+	 * @see KeyData
+	 * @see FrameData
 	 */
 	public FrameData createFrameData(int nowFrame, int round, KeyData keyData) {
 		CharacterData[] characterData = new CharacterData[] { new CharacterData(playerCharacters[0]),
@@ -414,10 +471,20 @@ public class Fighting {
 
 	}
 
+	/**
+	 * P1, P2のエフェクトのリストを返す
+	 *
+	 * @return P1, P2のエフェクトのリスト
+	 */
 	public LinkedList<LinkedList<HitEffect>> getHitEffectList() {
 		return new LinkedList<LinkedList<HitEffect>>(this.hitEffects);
 	}
 
+	/**
+	 * Returns the list of projectile data of both characters
+	 *
+	 * @return The list of projectile data of both characters
+	 */
 	public Deque<LoopEffect> getProjectileDeque() {
 		return new LinkedList<LoopEffect>(this.projectileDeque);
 	}
