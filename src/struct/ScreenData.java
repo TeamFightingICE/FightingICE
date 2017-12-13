@@ -144,9 +144,6 @@ public class ScreenData {
 	private ByteBuffer createDisplayByteBuffer() {
 		// Allocate memory for the RGB data of the screen
 		ByteBuffer pixels = BufferUtils.createByteBuffer(3 * GameSetting.STAGE_WIDTH * GameSetting.STAGE_HEIGHT);
-
-		// ByteBuffer.allocate(3 * GameSetting.STAGE_WIDTH *
-		// GameSetting.STAGE_HEIGHT);
 		pixels.clear();
 
 		// Assign the RGB data of the screen to pixels, a ByteBuffer
