@@ -1,47 +1,73 @@
 package setting;
 
 /**
- * ゲーム内で用いられるフラグを設定しているクラス。
+ * ゲームの機能に関するフラグを扱うクラス．
  */
 public class FlagSetting {
 
-	/**  */
+	/**
+	 * 繰り返し対戦を行うかどうかのフラグ．
+	 */
 	public static boolean automationFlag = false;
 
-	/**  */
+	/**
+	 * AIの全組み合わせの対戦を行うかどうかのフラグ．
+	 */
 	public static boolean allCombinationFlag = false;
 
-	/** 背景を利用するかどうか */
+	/**
+	 * 背景画像を使用するかどうかのフラグ．
+	 */
 	public static boolean enableBackground = true;
 
-	/** Pythonを利用するかどうか */
+	/**
+	 * Pythonを使用するかどうかのフラグ．
+	 */
 	public static boolean py4j = false;
 
-	/** 行ったアクッションデータをCSVに吐き出すかどうか */
+	/**
+	 * アクションを行った回数をログに出力するかどうかのフラグ．
+	 */
 	public static boolean debugActionFlag = false;
 
-	/**  */
+	/**
+	 * 未使用．
+	 */
 	public static boolean debugFrameDataFlag = false;
 
-	/** 練習モードを利用するかどうか */
+	/**
+	 * トレーニングモードを使用するかどうかのフラグ．
+	 */
 	public static boolean trainingModeFlag = false;
 
-	/** P1,P2に最大HPを設定するかどうか */
+	/**
+	 * P1,P2に最大HPを設定するかどうかのフラグ．
+	 */
 	public static boolean limitHpFlag = false;
 
-	/** 音をミュートにするかどうか */
+	/**
+	 * 音をミュートにするかどうかのフラグ．
+	 */
 	public static boolean muteFlag = false;
 
-	/** jsonファイルを利用するかどうか */
+	/**
+	 * jsonファイルに試合データを出力するかどうかのフラグ．
+	 */
 	public static boolean jsonFlag = false;
 
-	/** エラーログを出力するかどうか */
+	/**
+	 * エラーログを出力するかどうかのフラグ．
+	 */
 	public static boolean outputErrorAndLogFlag = false;
 
-	/** fastModeで起動するかどうか */
+	/**
+	 * FastModeで起動するかどうかのフラグ．
+	 */
 	public static boolean fastModeFlag = false;
 
-	/** ウィンドウを生成するかどうか */
+	/**
+	 * ゲームウィンドウを生成するかどうかのフラグ．
+	 */
 	public static boolean enableWindow = true;
 
 }

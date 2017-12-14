@@ -7,7 +7,7 @@ import input.KeyData;
 import setting.GameSetting;
 
 /**
- * 現在のフレーム番号やラウンド数, キャラクター情報など, ゲーム内の可変情報を扱うクラス
+ * 現在のフレーム番号やラウンド数, キャラクター情報など, ゲーム内の可変情報を扱うクラス．
  */
 public class FrameData {
 
@@ -18,32 +18,32 @@ public class FrameData {
 	private CharacterData[] characterData;
 
 	/**
-	 * The current frame of the round
+	 * The current frame of the round.
 	 */
 	private int currentFrameNumber;
 
 	/**
-	 * The current round number
+	 * The current round number.
 	 */
 	private int currentRound;
 
 	/**
-	 * The projectile data of both characters
+	 * The projectile data of both characters.
 	 */
 	private Deque<AttackData> projectileData;
 
 	/**
-	 * The input information of both characters
+	 * The input information of both characters.
 	 */
 	private KeyData keyData;
 
 	/**
-	 * If this value is true, no data are available or they are dummy data
+	 * If this value is true, no data are available or they are dummy data.
 	 */
 	private boolean emptyFlag;
 
 	/**
-	 * フレームデータを初期化するコンストラクタ
+	 * クラスコンストラクタ．
 	 */
 	public FrameData() {
 		this.characterData = new CharacterData[] { null, null };
@@ -56,20 +56,18 @@ public class FrameData {
 	}
 
 	/**
-	 * This method receives the data from an instance of the Fighting class. It
-	 * sets all the received data to an instance of the FrameData class. This
-	 * method must be called in each frame by Play.
+	 * 引数として渡されたデータを用いてFrameDataクラスの新たなインスタンスを生成するクラスコンストラクタ．
 	 *
 	 * @param characterData
-	 *            is player's data
+	 *            現在のキャラクター情報を持つCharacterDataクラスのインスタンス
 	 * @param currentFrame
-	 *            is the current frame in the round.
+	 *            現在のフレーム数
 	 * @param currentRound
-	 *            is the current round.
+	 *            現在のラウンド数
 	 * @param projectileData
-	 *            is a queue which stores all attacks.
+	 *            P1とP2の波動拳の情報を格納するキュー
 	 * @param keyData
-	 *            contains informations of all players.
+	 *            P1とP2のキー入力
 	 *
 	 * @see CharacterData
 	 * @see KeyData
@@ -91,10 +89,10 @@ public class FrameData {
 	}
 
 	/**
-	 * 指定されたデータでフレームデータのインスタンスを作成するコンストラクタ
+	 * 引数で渡されたFrameDataクラスのインスタンスのコピーを生成するコピーコンストラクタ．
 	 *
 	 * @param frameData
-	 *            指定されたフレームデータ
+	 *            指定されたFrameDataクラスのインスタンス
 	 */
 	public FrameData(FrameData frameData) {
 		this.characterData = new CharacterData[2];
@@ -116,11 +114,12 @@ public class FrameData {
 	}
 
 	/**
-	 * 指定したプレイヤーのキャラクターデータを返すメソッド
+	 * 引数で指定したプレイヤーのCharacterDataクラスのインスタンスを返す．
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(true: P1; false: P2)
-	 * @return 自分のキャラクターデータ
+	 *            プレイヤー番号．
+	 *            {@code true} if the player is P1, or {@code false} if P2.
+	 * @return 指定したプレイヤーのCharacterDataクラスのインスタンス
 	 */
 	public CharacterData getCharacter(boolean playerNumber) {
 		CharacterData temp = this.characterData[playerNumber ? 0 : 1];
@@ -131,7 +130,7 @@ public class FrameData {
 	/**
 	 * Returns the expected remaining time in milliseconds of the current round.
 	 *
-	 * @return The expected remaining time in milliseconds of the current round
+	 * @return the expected remaining time in milliseconds of the current round
 	 */
 	public int getRemainingTimeMilliseconds() {
 		return GameSetting.ROUND_TIME - (int) (((float) this.currentFrameNumber / GameSetting.FPS) * 1000);
@@ -140,7 +139,7 @@ public class FrameData {
 	/**
 	 * Returns the expected remaining time in seconds of the current round.
 	 *
-	 * @return The expected remaining time in seconds of the current round
+	 * @return the expected remaining time in seconds of the current round
 	 * @deprecated Use {@link #getRemainingTimeMilliseconds()} instead. This
 	 *             method has been renamed to more clearly reflect its purpose.
 	 */
@@ -151,7 +150,7 @@ public class FrameData {
 	/**
 	 * Returns the number of remaining frames of the round.
 	 *
-	 * @return The number of remaining frames of the round.
+	 * @return the number of remaining frames of the round
 	 */
 	public int getRemainingFramesNumber() {
 		return (GameSetting.ROUND_FRAME_NUMBER - currentFrameNumber);
@@ -160,7 +159,7 @@ public class FrameData {
 	/**
 	 * Returns the number of frames since the beginning of the round.
 	 *
-	 * @return The number of frames since the beginning of the round.
+	 * @return the number of frames since the beginning of the round
 	 */
 	public int getFramesNumber() {
 		return this.currentFrameNumber;
@@ -169,7 +168,7 @@ public class FrameData {
 	/**
 	 * Returns the current round number.
 	 *
-	 * @return The current round number
+	 * @return the current round number
 	 */
 	public int getRound() {
 		return this.currentRound;
@@ -178,7 +177,7 @@ public class FrameData {
 	/**
 	 * Returns the projectile data of both characters.
 	 *
-	 * @return The projectile data of both characters
+	 * @return the projectile data of both characters
 	 */
 	public Deque<AttackData> getProjectiles() {
 		// create a deep copy of the attacks list
@@ -192,7 +191,7 @@ public class FrameData {
 	/**
 	 * Returns the projectile data of player 1.
 	 *
-	 * @return The projectile data of player 1
+	 * @return the projectile data of player 1
 	 */
 	public Deque<AttackData> getProjectilesByP1() {
 		LinkedList<AttackData> attackList = new LinkedList<AttackData>();
@@ -207,7 +206,7 @@ public class FrameData {
 	/**
 	 * Returns the projectile data of player 2.
 	 *
-	 * @return The projectile data of player 2
+	 * @return the projectile data of player 2
 	 */
 	public Deque<AttackData> getProjectilesByP2() {
 		LinkedList<AttackData> attackList = new LinkedList<AttackData>();
@@ -222,7 +221,7 @@ public class FrameData {
 	/**
 	 * Returns the input information of both characters.
 	 *
-	 * @return The input information of both characters
+	 * @return the input information of both characters
 	 *
 	 * @see KeyData
 	 */
@@ -234,15 +233,15 @@ public class FrameData {
 	 * Returns true if this instance is empty, false if it contains meaningful
 	 * data.
 	 *
-	 * @return emptyFlag true if this instance is empty, false if it contains
-	 *         meaningful data.
+	 * @return {@code true} if this instance is empty, or {@code false} if it contains
+	 *         meaningful data
 	 */
 	public boolean getEmptyFlag() {
 		return this.emptyFlag;
 	}
 
 	/**
-	 * P1,P2間の水平方向の距離を返すメソッド
+	 * P1,P2間の水平方向の距離を返す．
 	 *
 	 * @return P1,P2間の水平方向の距離
 	 */
@@ -251,7 +250,7 @@ public class FrameData {
 	}
 
 	/**
-	 * P1,P2間の鉛直方向の距離を返すメソッド
+	 * P1,P2間の鉛直方向の距離を返す．
 	 *
 	 * @return P1,P2間の鉛直方向の距離
 	 */

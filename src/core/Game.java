@@ -21,10 +21,14 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import util.DeleteFiles;
 
-/** ゲームの起動情報を設定し, 開始するゲームシーンを設定するクラス. */
+/**
+ * ゲームの起動情報を設定し, 開始するゲームシーンを設定するクラス．
+ */
 public class Game extends GameManager {
 
-	/** 親クラスであるGameManagerを初期化するコンストラクタ */
+	/**
+	 * 親クラスであるGameManagerを初期化するクラスコンストラクタ．
+	 */
 	public Game() {
 		super();
 	}
@@ -33,7 +37,7 @@ public class Game extends GameManager {
 	 * 起動時の引数を基に, ゲームの起動情報をセットする.
 	 *
 	 * @param options
-	 *            起動時のすべての引数を格納した配列
+	 *            起動時に入力した全ての引数を格納した配列
 	 */
 	public void setOptions(String[] options) {
 		// Reads the configurations here
@@ -156,10 +160,11 @@ public class Game extends GameManager {
 	}
 
 	/**
-	 * 指定されたキャラクター名が使用可能キャラクター内にあるかどうか検索し, あればその名前を返す.<br>
-	 * 無ければ警告文を出し, ZENをデフォルトキャラクターとして返す.
+	 * 引数で指定されたキャラクター名が使用可能キャラクター内にあるかどうかを検索し, ある場合はその名前を返す．<br>
+	 * 無ければ警告文を出し, ZENをデフォルトキャラクターとして返す．
 	 *
-	 * @param 指定されたキャラクター名
+	 * @param characterName
+	 *            検索するキャラクター名
 	 *
 	 * @return 使用キャラクター名
 	 */
