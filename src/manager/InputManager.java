@@ -21,7 +21,6 @@ import struct.FrameData;
 import struct.GameData;
 import struct.Key;
 import struct.ScreenData;
-import util.Transform;
 
 /** AIやキーボード等の入力関連のタスクを管理するマネージャー */
 public class InputManager<Data> {
@@ -96,8 +95,6 @@ public class InputManager<Data> {
 
 	/** 毎フレーム実行され，キーボード入力及びAIの入力を受け付けるメソッド． */
 	public void update() {
-		int aiCount = 0;
-
 		Key[] keys = new Key[this.deviceTypes.length];
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			switch (this.deviceTypes[i]) {
@@ -105,8 +102,7 @@ public class InputManager<Data> {
 				keys[i] = getKeyFromKeyboard(i == 0);
 				break;
 			case DEVICE_TYPE_AI:
-				keys[i] = getKeyFromAI(ais[aiCount]);
-				aiCount++;
+				keys[i] = getKeyFromAI(ais[i]);
 				break;
 			default:
 				break;
@@ -167,16 +163,17 @@ public class InputManager<Data> {
 			}
 		}
 
-		this.ais = new AIController[count];
-		count = 0;
+		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
+		// count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (this.deviceTypes[i] == DEVICE_TYPE_AI) {
 				if (this.predifinedAIs.containsKey(aiNames[i])) {
-					this.ais[count] = new AIController(this.predifinedAIs.get(aiNames[i]));
+					this.ais[i] = new AIController(this.predifinedAIs.get(aiNames[i]));
 				} else {
-					this.ais[count] = ResourceLoader.getInstance().loadAI(aiNames[i]);
+					this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
 				}
-				count++;
+			} else {
+				this.ais[i] = null;
 			}
 		}
 	}
@@ -189,14 +186,17 @@ public class InputManager<Data> {
 	 *            GameDataクラスのインスタンス
 	 */
 	public void startAI(GameData gameData) {
-		for (int i = 0; i < this.ais.length; i++) {
-			ais[i].initialize(ThreadController.getInstance().getAIsObject(Transform.convertPlayerNumberfromItoB(i)),
-					gameData, Transform.convertPlayerNumberfromItoB(i));
-			ais[i].start();// start the thread
+		for (int i = 0; i < this.deviceTypes.length; i++) {
+			if (ais[i] != null) {
+				ais[i].initialize(ThreadController.getInstance().getAIsObject(i == 0), gameData, i == 0);
+				ais[i].start();// start the thread
+			}
 		}
 	}
 
 	public void closeAI() {
+		this.buffer = new KeyData();
+
 		for (AIController ai : this.ais) {
 			if (ai != null)
 				ai.gameEnd();
@@ -220,12 +220,14 @@ public class InputManager<Data> {
 	 */
 	public void setFrameData(FrameData frameData, ScreenData screenData) {
 		for (int i = 0; i < this.ais.length; i++) {
-			if (!frameData.getEmptyFlag()) {
-				this.ais[i].setFrameData(new FrameData(frameData));
-			} else {
-				this.ais[i].setFrameData(new FrameData());
+			if (ais[i] != null) {
+				if (!frameData.getEmptyFlag()) {
+					this.ais[i].setFrameData(new FrameData(frameData));
+				} else {
+					this.ais[i].setFrameData(new FrameData());
+				}
+				ais[i].setScreenData(new ScreenData(screenData));
 			}
-			ais[i].setScreenData(new ScreenData(screenData));
 		}
 
 		synchronized (this.endFrame) {
