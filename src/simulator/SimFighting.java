@@ -12,7 +12,6 @@ import fighting.Character;
 import fighting.Fighting;
 import fighting.LoopEffect;
 import fighting.Motion;
-import input.KeyData;
 import setting.GameSetting;
 import struct.AttackData;
 import struct.CharacterData;
@@ -207,7 +206,7 @@ public class SimFighting extends Fighting {
 	}
 
 	@Override
-	public FrameData createFrameData(int nowFrame, int round, KeyData keyData) {
+	public FrameData createFrameData(int nowFrame, int round) {
 		CharacterData[] characterData = new CharacterData[2];
 		for (int i = 0; i < 2; i++) {
 			characterData[i] = new CharacterData(this.playerCharacters[i]);
@@ -219,7 +218,7 @@ public class SimFighting extends Fighting {
 			newAttackDeque.addLast(new AttackData(loopEffect.getAttack()));
 		}
 
-		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData);
+		return new FrameData(characterData, nowFrame, round, newAttackDeque);
 	}
 
 }

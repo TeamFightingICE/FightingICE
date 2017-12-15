@@ -195,7 +195,7 @@ public class Play extends GameScene {
 	private void processingGame() {
 		this.keyData = new KeyData(InputManager.getInstance().getKeyData());
 		this.fighting.processingFight(this.nowFrame, this.keyData);
-		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, this.keyData);
+		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {

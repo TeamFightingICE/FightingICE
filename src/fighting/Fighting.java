@@ -447,7 +447,7 @@ public class Fighting {
 	 * @see KeyData
 	 * @see FrameData
 	 */
-	public FrameData createFrameData(int nowFrame, int round, KeyData keyData) {
+	public FrameData createFrameData(int nowFrame, int round) {
 		CharacterData[] characterData = new CharacterData[] { new CharacterData(playerCharacters[0]),
 				new CharacterData(playerCharacters[1]) };
 
@@ -456,7 +456,7 @@ public class Fighting {
 			newAttackDeque.addLast(new AttackData(loopEffect.getAttack()));
 		}
 
-		return new FrameData(characterData, nowFrame, round, newAttackDeque, keyData);
+		return new FrameData(characterData, nowFrame, round, newAttackDeque);
 	}
 
 	/** ラウンド開始時にキャラクター情報を初期化し, リストの中身をクリアーする */

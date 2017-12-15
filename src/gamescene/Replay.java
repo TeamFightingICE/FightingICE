@@ -193,7 +193,7 @@ public class Replay extends GameScene {
 		this.keyData = createKeyData();
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
-		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, this.keyData);
+		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 	}
 
 	/** 各ラウンド終了時の処理を行う. */
