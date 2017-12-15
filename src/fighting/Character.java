@@ -19,36 +19,48 @@ import struct.HitArea;
 import struct.Key;
 
 /**
- * キャラクターのHPやエネルギー、座標などのキャラクターに関するデータを扱うクラス
+ * ゲームの進行に応じてキャラクターが持つ情報を更新する役割を持つクラス．
  */
 public class Character {
 
 	/**
-	 * The character's side.<br>
-	 * True: the character is P1; false: the character is P2.
+	 * The character side's flag.<br>
+	 * {@code true} if the character is P1, or {@code false} if P2.
 	 */
 	private boolean playerNumber;
 
-	/** The character's HP. */
+	/**
+	 * The character's HP.
+	 */
 	private int hp;
 
-	/** The character's energy. */
+	/**
+	 * The character's energy.
+	 */
 	private int energy;
 
-	/** キャラクター画像の最も左端のx座標 */
+	/**
+	 * キャラクター画像の左上端のx座標．
+	 */
 	private int x;
 
-	/** キャラクター画像の最も上端のy座標 */
+	/**
+	 * キャラクター画像の左上端のy座標．
+	 */
 	private int y;
 
-	/** The character's horizontal speed. */
+	/**
+	 * The character's horizontal speed.
+	 */
 	private int speedX;
 
-	/** The character's vertical speed. */
+	/**
+	 * The character's vertical speed.
+	 */
 	private int speedY;
 
 	/**
-	 * The character's state: STAND / CROUCH/ AIR / DOWN.
+	 * The character's state: STAND / CROUCH / AIR / DOWN.
 	 *
 	 * @see State
 	 */
@@ -62,18 +74,21 @@ public class Character {
 	private Action action;
 
 	/**
-	 * The character's facing direction<br>
-	 * true: facing right; false: facing left).
+	 * The character's facing direction.<br>
+	 * {@code true} if the character is facing right, {@code false} otherwise.
 	 */
 	private boolean front;
 
 	/**
-	 * The flag whether this character is able to control (true) or not (false).
+	 * The flag whether this character can run a new motion with the motion's
+	 * command.<br>
+	 * {@code true} if the character can run a new motion, {@code false}
+	 * otherwise.
 	 */
 	private boolean control;
 
 	/**
-	 * The attack data that the character is using
+	 * The attack data that the character is using.
 	 */
 	private Attack attack;
 
@@ -84,20 +99,29 @@ public class Character {
 	private int remainingFrame;
 
 	/**
-	 * The boolean value whether the motion hits the opponent or not
+	 * The flag whether the motion hits the opponent or not.<br>
+	 * {@code true} if the motion hits the opponent, {@code false} otherwise.
 	 */
 	private boolean hitConfirm;
 
-	/** The character's graphic width. */
+	/**
+	 * The character's graphic width.
+	 */
 	private int graphicSizeX;
 
-	/** The character's graphic height. */
+	/**
+	 * The character's graphic height.
+	 */
 	private int graphicSizeY;
 
-	/** キャラクターの正面判定時に,x座標を調整するために用いる水平方向の移動量 */
+	/**
+	 * キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量．
+	 */
 	private int graphicAdjustX;
 
-	/** 最後の攻撃が当たった時のフレームナンバー */
+	/**
+	 * 攻撃が相手に当たった最後のフレーム．
+	 */
 	private int lastHitFrame;
 
 	/**
@@ -113,20 +137,26 @@ public class Character {
 	private Deque<Key> processedCommands;
 
 	/**
-	 * キャラクターの全モーションが格納されたリスト
+	 * キャラクターの全モーションを格納するリスト．
 	 *
 	 * @see Motion
 	 */
 	private ArrayList<Motion> motionList;
 
-	/** 攻撃の連続ヒット数 */
+	/**
+	 * 攻撃の連続ヒット回数．
+	 */
 	private int hitCount;
 
-	/** シミュレータ内での処理かどうか */
+	/**
+	 * シミュレータ内での処理かどうかのフラグ．<br>
+	 * {@code true} if the process is executed in the simulator, {@code false}
+	 * otherwise.
+	 */
 	private boolean isSimulateProcess;
 
 	/**
-	 * Characterを初期化するコンストラクタ
+	 * クラスコンストラクタ．
 	 */
 	public Character() {
 		initializeList();
@@ -154,10 +184,10 @@ public class Character {
 	}
 
 	/**
-	 * 指定されたデータでCharacterのインスタンスを作成するコンストラクタ
+	 * 引数として渡されたこのクラスのインスタンスの情報を用いて，新たなインスタンスを生成するクラスコンストラクタ．
 	 *
 	 * @param character
-	 *            キャラクターのデータ
+	 *            キャラクター情報を格納したCharacterクラスのインスタンス
 	 */
 	public Character(Character character) {
 		initializeList();
@@ -188,11 +218,11 @@ public class Character {
 	}
 
 	/**
-	 * 指定されたデータでCharacterのインスタンスを作成するコンストラクタ<br>
+	 * 引数として渡されたデータを用いてCharacterクラスのインスタンスを作成するコンストラクタ．<br>
 	 * このコンストラクタはシミュレータ内でのみ呼び出される.
 	 *
 	 * @param characterData
-	 *            キャラクターのデータ
+	 *            キャラクター情報を格納したCharacterDataクラスのインスタンス
 	 * @param motionList
 	 *            キャラクターの全モーションが格納されたリスト
 	 *
@@ -228,12 +258,13 @@ public class Character {
 	}
 
 	/**
-	 * テキストファイルの情報からキャラクターの大きさを初期化する
+	 * 設定ファイル(gSetting.txt)の情報を用いてキャラクターの画像サイズを初期化する．
 	 *
 	 * @param characterName
-	 *            キャラクターの名前
+	 *            キャラクター名
 	 * @param playerNumber
-	 *            プレイヤー番号 (0: P1, 1: P2)
+	 *            プレイヤー番号．{@code true} if the player is P1, or {@code false} if
+	 *            P2.
 	 */
 	public void initialize(String characterName, boolean playerNumber) {
 		try {
@@ -257,7 +288,7 @@ public class Character {
 	}
 
 	/**
-	 * リストのデータを初期化する
+	 * リストのデータを初期化する．
 	 */
 	public void initializeList() {
 		this.inputCommands = new LinkedList<Key>();
@@ -265,7 +296,9 @@ public class Character {
 		this.motionList = new ArrayList<Motion>();
 	}
 
-	/** 各ラウンドの開始時にキャラクター情報を初期化する */
+	/**
+	 * 各ラウンドの開始時にキャラクター情報を初期化する．
+	 */
 	public void roundInit() {
 		if (FlagSetting.limitHpFlag) {
 			this.hp = LaunchSetting.maxHp[this.playerNumber ? 0 : 1];
@@ -305,7 +338,9 @@ public class Character {
 		}
 	}
 
-	/** 引数のアクションの情報(アクションによって変化するキャラクターの座標やエネルギーなど)をキャラクターにセットする */
+	/**
+	 * 引数として渡されたアクションの情報を，実行中のアクションとしてCharacterインスタンスにセットする．
+	 */
 	public void runAction(Action executeAction, boolean resetFlag) {
 		Motion exeMotion = this.motionList.get(executeAction.ordinal());
 
@@ -330,9 +365,7 @@ public class Character {
 	}
 
 	/**
-	 *
 	 * Updates character's information.
-	 *
 	 */
 	public void update() {
 		moveX(this.speedX);
@@ -392,12 +425,12 @@ public class Character {
 	}
 
 	/**
-	 * 攻撃がヒットしたときに,自身のパラメータや状態を更新する
+	 * 攻撃がヒットしたときの処理を行う．
 	 *
 	 * @param opponent
-	 *            相手キャラクターのデータ
+	 *            相手キャラクターのインスタンス
 	 * @param attack
-	 *            自身の攻撃オブジェクトの情報
+	 *            自身のAttackインスタンス
 	 * @param currentFrame
 	 *            現在のラウンドのフレーム数
 	 */
@@ -477,11 +510,13 @@ public class Character {
 	}
 
 	/**
-	 * 攻撃が当たったときに自身がガードしていたかどうかを返す<br>
-	 * また, 自身をガードの種類に対応したリカバリー状態に変化させる
+	 * 相手に攻撃を当てられたときにガードが成功しているかどうかを返す．<br>
+	 * 成功していた場合は自身をガードの種類に対応したリカバリー状態に変化させる．
 	 *
 	 * @param attack
-	 *            当てられた攻撃オブジェクト
+	 *            相手のAttackインスタンス
+	 *
+	 * @return {@code true} if the guard is successful, {@code false} otherwise
 	 */
 	private boolean isGuard(Attack attack) {
 		boolean isGuard = false;
@@ -531,7 +566,10 @@ public class Character {
 		return isGuard;
 	}
 
-	/** アクションのアタックオブジェクト(当たり判定を伴ったヒットボックス)を作成する */
+	/**
+	 * Characterインスタンスが持つアクション情報を用いて，Attackクラスのインスタンスを生成する．<br>
+	 * このメソッドによって攻撃の当たり判定領域が生成される．
+	 */
 	private void createAttackInstance() {
 		Motion motion = this.motionList.get(this.action.ordinal());
 
@@ -548,13 +586,14 @@ public class Character {
 	}
 
 	/**
-	 * 攻撃がアクティブ状態になるフレーム数になったかどうかを返す.
+	 * 攻撃の経過フレームがアクティブ状態の開始フレーム数になっているかどうかを返す.
 	 *
 	 * @param motion
-	 *            攻撃の総フレーム数やダメージなどの情報を格納したmotionのデータ
+	 *            攻撃の総フレーム数やダメージなどの情報を格納したMotionクラスのインスタンス
 	 * @see Motion
 	 *
-	 * @return true: 攻撃がアクティブ状態になるフレーム数になった; false: otherwise
+	 * @return {@code true} 攻撃の経過フレームがアクティブ状態の開始フレーム数である場合，{@code false}
+	 *         otherwise
 	 */
 	public boolean startActive(Motion motion) {
 		int startActive = motion.getFrameNumber() - motion.getAttackStartUp();
@@ -562,11 +601,10 @@ public class Character {
 	}
 
 	/**
-	 *
 	 * Moves the character on the x-axis.
 	 *
 	 * @param relativePosition
-	 *            The amount of the movement on the x-axis.
+	 *            the amount of the movement on the x-axis
 	 */
 	public void moveX(int relativePosition) {
 		setX(getX() + relativePosition);
@@ -577,14 +615,14 @@ public class Character {
 	 * Moves the character on the y-axis.
 	 *
 	 * @param relativePosition
-	 *            The amount of the movement on the y-axis.
+	 *            the amount of the movement on the y-axis
 	 */
 	public void moveY(int relativePosition) {
 		setY(getY() + relativePosition);
 	}
 
 	/**
-	 * キャラクターが床に接しているときに,摩擦の影響を与える
+	 * キャラクターが床に接しているときに，摩擦の影響を与える．
 	 */
 	public void frictionEffect() {
 		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
@@ -597,7 +635,7 @@ public class Character {
 	}
 
 	/**
-	 * キャラクターが空中にいるときに, 重力の影響を与える
+	 * キャラクターが空中にいるときに, 重力の影響を与える．
 	 */
 	public void gravityEffect() {
 		if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
@@ -639,10 +677,9 @@ public class Character {
 	}
 
 	/**
-	 * Returns the character's side.<br>
-	 * True: the character is P1; false: the character is P2.
+	 * Returns the character side's flag.
 	 *
-	 * @return The character's side
+	 * @return {@code true} if the character is P1, or {@code false} if P2
 	 */
 	public boolean isPlayerNumber() {
 		return this.playerNumber;
@@ -651,8 +688,8 @@ public class Character {
 	/**
 	 * Returns the character's facing direction.
 	 *
-	 * @return The character's facing direction (true for facing right; false
-	 *         for facing left).
+	 * @return {@code true} if the character is facing right, {@code false}
+	 *         otherwise
 	 */
 	public boolean isFront() {
 		return this.front;
@@ -662,8 +699,8 @@ public class Character {
 	 * Returns the flag whether this character can run a new motion with the
 	 * motion's command.
 	 *
-	 * @return The flag whether this character is able to control (true) or not
-	 *         (false).
+	 * @return {@code true} if the character can run a new motion, {@code false}
+	 *         otherwise
 	 */
 	public boolean isControl() {
 		return this.control;
@@ -672,7 +709,7 @@ public class Character {
 	/**
 	 * Returns the character's HP.
 	 *
-	 * @return The character's HP
+	 * @return the character's HP
 	 */
 	public int getHp() {
 		return this.hp;
@@ -681,7 +718,7 @@ public class Character {
 	/**
 	 * Returns the character's energy.
 	 *
-	 * @return The character's energy
+	 * @return the character's energy
 	 */
 	public int getEnergy() {
 		return this.energy;
@@ -690,7 +727,7 @@ public class Character {
 	/**
 	 * Returns the character graphic's most top-left x-coordinate.
 	 *
-	 * @return The character graphic's most top-left x-coordinate.
+	 * @return the character graphic's most top-left x-coordinate
 	 */
 	public int getX() {
 		return this.x;
@@ -699,7 +736,7 @@ public class Character {
 	/**
 	 * Returns the character graphic's most top-left y-coordinate.
 	 *
-	 * @return The character graphic's most top-left y-coordinate.
+	 * @return the character graphic's most top-left y-coordinate
 	 */
 	public int getY() {
 		return this.y;
@@ -708,7 +745,7 @@ public class Character {
 	/**
 	 * Returns the character's horizontal speed.
 	 *
-	 * @return The character's horizontal speed
+	 * @return the character's horizontal speed
 	 */
 	public int getSpeedX() {
 		return this.speedX;
@@ -717,16 +754,16 @@ public class Character {
 	/**
 	 * Returns the character's vertical speed.
 	 *
-	 * @return The character's vertical speed
+	 * @return the character's vertical speed
 	 */
 	public int getSpeedY() {
 		return this.speedY;
 	}
 
 	/**
-	 * Returns the character's state: STAND / CROUCH/ AIR / DOWN.
+	 * Returns the character's state: STAND / CROUCH / AIR / DOWN.
 	 *
-	 * @return The character's state: STAND / CROUCH/ AIR / DOWN
+	 * @return the character's state: STAND / CROUCH / AIR / DOWN
 	 *
 	 * @see State
 	 */
@@ -737,7 +774,7 @@ public class Character {
 	/**
 	 * Returns the character's action.
 	 *
-	 * @return The character's action
+	 * @return the character's action
 	 *
 	 * @see Action
 	 */
@@ -748,7 +785,7 @@ public class Character {
 	/**
 	 * Returns the character's hit box's most-right x-coordinate.
 	 *
-	 * @return The character's hit box's most-right x-coordinate.
+	 * @return the character's hit box's most-right x-coordinate
 	 */
 	public int getHitAreaRight() {
 		HitArea area = this.motionList.get(this.action.ordinal()).getCharacterHitArea();
@@ -759,7 +796,7 @@ public class Character {
 	/**
 	 * Returns the character's hit box's most-left x-coordinate.
 	 *
-	 * @return The character's hit box's most-left x-coordinate.
+	 * @return the character's hit box's most-left x-coordinate
 	 */
 	public int getHitAreaLeft() {
 		HitArea area = this.motionList.get(this.action.ordinal()).getCharacterHitArea();
@@ -770,7 +807,7 @@ public class Character {
 	/**
 	 * Returns the character's hit box's most-top y-coordinate.
 	 *
-	 * @return The character's hit box's most-top y-coordinate.
+	 * @return the character's hit box's most-top y-coordinate
 	 */
 	public int getHitAreaTop() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getTop() + y;
@@ -779,7 +816,7 @@ public class Character {
 	/**
 	 * Returns the character's hit box's most-bottom y-coordinate.
 	 *
-	 * @return The character's hit box's most-bottom y-coordinate.
+	 * @return the character's hit box's most-bottom y-coordinate
 	 */
 	public int getHitAreaBottom() {
 		return this.motionList.get(this.action.ordinal()).getCharacterHitArea().getBottom() + y;
@@ -789,7 +826,7 @@ public class Character {
 	/**
 	 * Returns the character's hit box's center x-coordinate.
 	 *
-	 * @return The character's hit box's center x-coordinate.
+	 * @return the character's hit box's center x-coordinate
 	 */
 	public int getHitAreaCenterX() {
 		return (getHitAreaRight() + getHitAreaLeft()) / 2;
@@ -798,7 +835,7 @@ public class Character {
 	/**
 	 * Returns the character's hit box's center y-coordinate.
 	 *
-	 * @return The character's hit box's center y-coordinate.
+	 * @return the character's hit box's center y-coordinate
 	 */
 	public int getHitAreaCenterY() {
 		return (getHitAreaTop() + getHitAreaBottom()) / 2;
@@ -812,10 +849,10 @@ public class Character {
 	}
 
 	/**
-	 * Returns a boolean value whether the motion hits the opponent or not
+	 * Returns the flag whether the motion hits the opponent or not
 	 *
-	 * @return hitConfirm A boolean value whether the motion hits the opponent
-	 *         (true) or not (false)
+	 * @return {@code true} if the motion hits the opponent, {@code false}
+	 *         otherwise
 	 */
 	public boolean isHitConfirm() {
 		return this.hitConfirm;
@@ -825,7 +862,7 @@ public class Character {
 	 * Returns the number of frames that the character needs to resume to its
 	 * normal status.
 	 *
-	 * @return The number of frames that the character needs to resume to its
+	 * @return the number of frames that the character needs to resume to its
 	 *         normal status
 	 */
 	public int getRemainingFrame() {
@@ -835,7 +872,7 @@ public class Character {
 	/**
 	 * Returns the attack that the character is using.
 	 *
-	 * @return The attack that the character is using
+	 * @return the attack that the character is using
 	 *
 	 * @see Attack
 	 */
@@ -844,10 +881,9 @@ public class Character {
 	}
 
 	/**
-	 * x座標を調整するために用いる水平方向の移動量を返す.<br>
-	 * キャラクターの正面判定時に用いられる.
+	 * キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量を返す.
 	 *
-	 * @return x座標を調整するために用いる水平方向の移動量
+	 * @return キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量
 	 */
 	public int getGraphicAdjustX() {
 		return this.graphicAdjustX;
@@ -856,7 +892,7 @@ public class Character {
 	/**
 	 * Returns the character's graphic width.
 	 *
-	 * @return The character's graphic width.
+	 * @return the character's graphic width
 	 */
 	public int getGraphicSizeX() {
 		return this.graphicSizeX;
@@ -865,14 +901,14 @@ public class Character {
 	/**
 	 * Returns the character's graphic height.
 	 *
-	 * @return The character's graphic height.
+	 * @return the character's graphic height
 	 */
 	public int getGraphicSizeY() {
 		return this.graphicSizeY;
 	}
 
 	/**
-	 * キャラクターの全モーションを格納したリストを返す
+	 * キャラクターの全モーションを格納したリストを返す．
 	 *
 	 * @return キャラクターの全モーションを格納したリスト
 	 */
@@ -889,7 +925,7 @@ public class Character {
 	 * Returns a list storing keys of the action that the character will be
 	 * executing in the simulator
 	 *
-	 * @return A list storing keys of the action that the character will be
+	 * @return a list storing keys of the action that the character will be
 	 *         executing in the simulator
 	 */
 	public Deque<Key> getInputCommand() {
@@ -905,7 +941,7 @@ public class Character {
 	 * Returns a list storing up to 30 keys that the character executed in the
 	 * simulator
 	 *
-	 * @return A list storing up to 30 keys that the character executed in the
+	 * @return a list storing up to 30 keys that the character executed in the
 	 *         simulator
 	 */
 	public Deque<Key> getProcessedCommand() {
@@ -921,8 +957,8 @@ public class Character {
 	 * Returns the current image of the character according to the current
 	 * action and frame number.
 	 *
-	 * @return The current image of the character according to the current
-	 *         action and frame number.
+	 * @return the current image of the character according to the current
+	 *         action and frame number
 	 */
 	public Image getNowImage() {
 		Motion motion = motionList.get(this.action.ordinal());
@@ -930,24 +966,28 @@ public class Character {
 		return motion.getImage(Math.abs(this.remainingFrame) % motion.getFrameNumber());
 	}
 
-	/** 現時点での攻撃の連続ヒット回数を取得する */
+	/**
+	 * 攻撃の連続ヒット回数を返す．
+	 *
+	 * @return 攻撃の連続ヒット回数
+	 */
 	public int getHitCount() {
 		return this.hitCount;
 	}
 
 	/**
-	 * 最後の攻撃が当たった時のフレームナンバーを返す.
+	 * 攻撃が相手に当たった最後のフレームを返す.
 	 *
-	 * @return 最後の攻撃が当たった時のフレームナンバー
+	 * @return 攻撃が相手に当たった最後のフレーム
 	 */
 	public int getLastHitFrame() {
 		return this.lastHitFrame;
 	}
 
 	/**
-	 * 連続ヒット数に応じたエクストラダメージを返す<br>
+	 * 攻撃の連続ヒット数に応じたエクストラダメージを返す．<br>
 	 *
-	 * @return 連続ヒット数に応じたエクストラダメージ
+	 * @return 攻撃の連続ヒット数に応じたエクストラダメージ
 	 */
 	public int getExtraDamage() {
 		int requireHit = 4; // ボーナスダメージに必要な最小限のヒット数
@@ -960,7 +1000,7 @@ public class Character {
 	 * Sets the character's HP.
 	 *
 	 * @param hp
-	 *            The amount of HP.
+	 *            the amount of HP
 	 */
 	public void setHp(int hp) {
 		this.hp = hp;
@@ -970,7 +1010,7 @@ public class Character {
 	 * Sets the character's energy.
 	 *
 	 * @param energy
-	 *            The amount of energy.
+	 *            the amount of energy
 	 */
 	public void setEnergy(int energy) {
 		this.energy = energy;
@@ -980,7 +1020,7 @@ public class Character {
 	 * Sets the character's horizontal position.
 	 *
 	 * @param x
-	 *            The character's horizontal position.
+	 *            the character's horizontal position
 	 */
 	public void setX(int x) {
 		this.x = x;
@@ -990,7 +1030,7 @@ public class Character {
 	 * Sets the character's vertical position.
 	 *
 	 * @param y
-	 *            The character's vertical position.
+	 *            the character's vertical position
 	 */
 	public void setY(int y) {
 		this.y = y;
@@ -1000,7 +1040,7 @@ public class Character {
 	 * Sets the character's horizontal speed.
 	 *
 	 * @param speedX
-	 *            The character's horizontal speed.
+	 *            the character's horizontal speed
 	 */
 	public void setSpeedX(int speedX) {
 		this.speedX = speedX;
@@ -1010,7 +1050,7 @@ public class Character {
 	 * Sets the character's vertical speed.
 	 *
 	 * @param speedY
-	 *            The character's vertical speed.
+	 *            the character's vertical speed
 	 */
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
@@ -1020,7 +1060,7 @@ public class Character {
 	 * Sets the character's state.
 	 *
 	 * @param state
-	 *            A given state.
+	 *            a given state
 	 * @see State
 	 */
 	public void setState(State state) {
@@ -1031,7 +1071,7 @@ public class Character {
 	 * Sets the character's action.
 	 *
 	 * @param action
-	 *            A given action.
+	 *            a given action
 	 * @see Action
 	 */
 	public void setAction(Action action) {
@@ -1039,10 +1079,12 @@ public class Character {
 	}
 
 	/**
-	 * Sets the boolean value whether the motion hits the opponent or not
+	 * Sets the flag whether the motion hits the opponent or not.
 	 *
 	 * @param hitConfirm
-	 *            The boolean value whether the motion hits the opponent or not
+	 *            the flag whether the motion hits the opponent or not.
+	 *            {@code true} if the motion hits the opponent, {@code false}
+	 *            otherwise.
 	 */
 	public void setHitConfirm(boolean hitConfirm) {
 		this.hitConfirm = hitConfirm;
@@ -1052,8 +1094,8 @@ public class Character {
 	 * Sets the character's facing direction.
 	 *
 	 * @param front
-	 *            The character's facing direction (true for facing right; false
-	 *            for facing left).
+	 *            the character's facing direction. {@code true} if the
+	 *            character is facing right, {@code false} otherwise.
 	 */
 	public void setFront(boolean front) {
 		this.front = front;
@@ -1064,8 +1106,9 @@ public class Character {
 	 * motion's command.
 	 *
 	 * @param control
-	 *            The boolean value to set (true if the character can run a
-	 *            motion, false otherwise).
+	 *            the flag whether this character can run a new motion with the
+	 *            motion's command. {@code true} if the character can run,
+	 *            {@code false} otherwise.
 	 */
 	public void setControl(boolean control) {
 		this.control = control;
@@ -1076,8 +1119,8 @@ public class Character {
 	 * normal status.
 	 *
 	 * @param remainingFrame
-	 *            The number of frames that the character needs to resume to its
-	 *            normal status you want to set.
+	 *            the number of frames that the character needs to resume to its
+	 *            normal status you want to set
 	 */
 	public void setRemainingFrame(int remainingFrame) {
 		this.remainingFrame = remainingFrame;
@@ -1087,7 +1130,7 @@ public class Character {
 	 * Sets the character's attack.
 	 *
 	 * @param attack
-	 *            The attack you want to set.
+	 *            the attack you want to set
 	 *
 	 * @see Attack
 	 */
@@ -1099,7 +1142,7 @@ public class Character {
 	 * Sets the width of the character's graphic.
 	 *
 	 * @param graphicSizeX
-	 *            The width of the character's graphic.
+	 *            the width of the character's graphic
 	 */
 	public void setGraphicSizeX(int graphicSizeX) {
 		this.graphicSizeX = graphicSizeX;
@@ -1109,7 +1152,7 @@ public class Character {
 	 * Sets the height of the character's graphic.
 	 *
 	 * @param graphicSizeY
-	 *            The height of the character's graphic.
+	 *            the height of the character's graphic
 	 */
 	public void setGraphicSizeY(int graphicSizeY) {
 		this.graphicSizeY = graphicSizeY;
@@ -1119,7 +1162,7 @@ public class Character {
 	 * Sets all of possible motions of the given character.
 	 *
 	 * @param characterName
-	 *            The character's name.
+	 *            the character's name
 	 */
 	private void setMotionList(String characterName) {
 		try {
@@ -1143,18 +1186,20 @@ public class Character {
 	}
 
 	/**
-	 * 現時点での攻撃の連続ヒット回数をセットする
+	 * 攻撃の連続ヒット回数をセットする．
 	 *
-	 * @param 現時点での攻撃の連続ヒット回数
+	 * @param hitCount
+	 *            攻撃の連続ヒット回数
 	 */
 	public void setHitCount(int hitCount) {
 		this.hitCount = hitCount;
 	}
 
 	/**
-	 * 最後の攻撃が当たった時のフレームナンバーをセットする.
+	 * 現在のフレームを攻撃が相手に当たった最後のフレームとしてセットする.
 	 *
-	 * @return 最後の攻撃が当たった時のフレームナンバー
+	 * @param currentFrane
+	 *            現在のフレーム
 	 */
 	public void setLastHitFrame(int currentFrame) {
 		this.lastHitFrame = currentFrame;
@@ -1162,10 +1207,10 @@ public class Character {
 
 	/**
 	 * Sets a list storing keys of the action that the character will be
-	 * executing in the simulator
+	 * executing in the simulator.
 	 *
 	 * @param inputCommands
-	 *            A list storing keys of the action that the character will be
+	 *            a list storing keys of the action that the character will be
 	 *            executing in the simulator
 	 */
 	public void setInputCommand(Deque<Key> inputCommands) {
@@ -1174,10 +1219,10 @@ public class Character {
 
 	/**
 	 * Sets a list storing up to 30 keys that the character executed in the
-	 * simulator
+	 * simulator.
 	 *
 	 * @param inputCommands
-	 *            A list storing up to 30 keys that the character executed in
+	 *            a list storing up to 30 keys that the character executed in
 	 *            the simulator
 	 */
 	public void setProcessedCommand(Deque<Key> inputCommands) {
@@ -1188,9 +1233,9 @@ public class Character {
 	 * Gets a boolean value whether the combo is still valid or not.
 	 *
 	 * @param nowFrame
-	 *            The current frame.
+	 *            the current frame.
 	 *
-	 * @return <em>True</em> if the combo is still valid, <em>False</em>
+	 * @return {@code true} if the combo is still valid, {@code false}
 	 *         otherwise.
 	 */
 	public boolean isComboValid(int nowFrame) {
@@ -1198,9 +1243,10 @@ public class Character {
 	}
 
 	/**
-	 * シミュレータ内での処理かどうかを返す
+	 * シミュレータ内での処理かどうかを返す．
 	 *
-	 * @return シミュレータ内での処理かどうか
+	 * @return {@code true} if the process is executed in the simulator,
+	 *         {@code false} otherwise.
 	 */
 	public boolean isSimulateProcess() {
 		return this.isSimulateProcess;

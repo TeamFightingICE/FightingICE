@@ -9,7 +9,7 @@ import image.Image;
 public class LoopEffect extends Effect {
 
 	/**
-	 * 指定されたデータでLoopEffectのインスタンスを作成するコンストラクタ
+	 * 指定されたデータでLoopEffectのインスタンスを作成するクラスコンストラクタ．
 	 *
 	 * @param attack
 	 *            攻撃オブジェクト
@@ -24,7 +24,7 @@ public class LoopEffect extends Effect {
 	 * Updates the effect's state.<br>
 	 * If effect display time has elapsed, set the elapsed frame to 0;
 	 *
-	 * @return true: effect display time has not yet elapsed.
+	 * @return {@code true}
 	 */
 	public boolean update() {
 		if (!super.update()) {

@@ -281,8 +281,8 @@ public class Attack {
 	 *            the value of the attack type: 1 = high, 2 = middle, 3 = low, 4
 	 *            = throw
 	 * @param downProp
-	 *            the flag whether this skill can push down the opponent when hit.
-	 *            {@code true} if can push down, {@code false} otherwise.
+	 *            the flag whether this skill can push down the opponent when
+	 *            hit. {@code true} if can push down, {@code false} otherwise.
 	 */
 	public Attack(HitArea hitArea, int settingSpeedX, int settingSpeedY, int startUp, int active, int hitDamage,
 			int guardDamage, int startAddEnergy, int hitAddEnergy, int guardAddEnergy, int giveEnergy, int impactX,
@@ -315,7 +315,8 @@ public class Attack {
 	 * 引数として渡された値を用いて，インスタンス変数の初期化を行う．
 	 *
 	 * @param playerNumber
-	 *            the player side's flag. {@code true} if the player is P1, {@code false} otherwise.
+	 *            the player side's flag. {@code true} if the player is P1,
+	 *            {@code false} otherwise.
 	 * @param x
 	 *            キャラクター画像の左上端のx座標
 	 * @param y
@@ -323,7 +324,8 @@ public class Attack {
 	 * @param size
 	 *            the character's graphic width
 	 * @param direction
-	 *            the character's facing direction. {@code true} if the character is facing right, {@code false} if left.
+	 *            the character's facing direction. {@code true} if the
+	 *            character is facing right, {@code false} if left.
 	 */
 	public void initialize(boolean playerNumber, int x, int y, int size, boolean direction) {
 		setParameters(x, y, size, direction);
@@ -334,7 +336,8 @@ public class Attack {
 	/**
 	 * 波動拳の当たり判定領域の座標と波動拳が使われてからの経過フレームを更新し, まだ攻撃がアクティブかどうかを返す．
 	 *
-	 * @return {@code true} if the projectile attack is active, {@code false} otherwise
+	 * @return {@code true} if the projectile attack is active, {@code false}
+	 *         otherwise
 	 */
 	public boolean updateProjectileAttack() {
 		this.currentHitArea.move(speedX, speedY);
@@ -366,7 +369,8 @@ public class Attack {
 	 * @param size
 	 *            the character's graphic width
 	 * @param direction
-	 *            the character's facing direction. {@code true} if the character is facing right, {@code false} if left.
+	 *            the character's facing direction. {@code true} if the
+	 *            character is facing right, {@code false} if left.
 	 */
 	private void setParameters(int x, int y, int size, boolean direction) {
 		int left;
@@ -645,8 +649,8 @@ public class Attack {
 	 * Sets the player side's flag.
 	 *
 	 * @param playerNumber
-	 *            the player side's flag.
-	 *            {@code true} if the player is P1, or {@code false} if P2.
+	 *            the player side's flag. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
 	 */
 	public void setPlayerNumber(boolean playerNumber) {
 		this.playerNumber = playerNumber;
@@ -714,7 +718,7 @@ public class Attack {
 	 * Sets the damage value to the guarded opponent hit by this skill.
 	 *
 	 * @param guardDamage
-	 *           the damage value to the guarded opponent hit by this skill
+	 *            the damage value to the guarded opponent hit by this skill
 	 */
 	public void setGuardDamage(int guardDamage) {
 		this.guardDamage = guardDamage;
@@ -818,8 +822,9 @@ public class Attack {
 	 * Sets the flag whether this skill can push down the opponent when hit.
 	 *
 	 * @param downProperty
-	 *           the flag whether this skill can push down the opponent when hit.
-	 *           {@code true} if this skill can push down, {@code false} otherwise.
+	 *            the flag whether this skill can push down the opponent when
+	 *            hit. {@code true} if this skill can push down, {@code false}
+	 *            otherwise.
 	 */
 	public void setDownProperty(boolean downProperty) {
 		this.downProperty = downProperty;
