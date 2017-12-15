@@ -17,8 +17,7 @@ public interface AIInterface {
 
 	void close();
 
-	default void roundEnd(int p1Hp, int p2Hp, int frames) {
-	};
+	void roundEnd(int p1Hp, int p2Hp, int frames);
 
 	default void getScreenData(ScreenData sd) {
 	};
