@@ -4,6 +4,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import input.KeyData;
+import setting.FlagSetting;
 import setting.GameSetting;
 
 /**
@@ -117,8 +118,8 @@ public class FrameData {
 	 * 引数で指定したプレイヤーのCharacterDataクラスのインスタンスを返す．
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号．
-	 *            {@code true} if the player is P1, or {@code false} if P2.
+	 *            プレイヤー番号． {@code true} if the player is P1, or {@code false} if
+	 *            P2.
 	 * @return 指定したプレイヤーのCharacterDataクラスのインスタンス
 	 */
 	public CharacterData getCharacter(boolean playerNumber) {
@@ -129,31 +130,50 @@ public class FrameData {
 
 	/**
 	 * Returns the expected remaining time in milliseconds of the current round.
+	 * <br>
+	 * When FightingICE was launched with training mode, this method returns the
+	 * max value of integer.
 	 *
 	 * @return the expected remaining time in milliseconds of the current round
 	 */
 	public int getRemainingTimeMilliseconds() {
-		return GameSetting.ROUND_TIME - (int) (((float) this.currentFrameNumber / GameSetting.FPS) * 1000);
+		if (FlagSetting.trainingModeFlag) {
+			return Integer.MAX_VALUE;
+		} else {
+			return GameSetting.ROUND_TIME - (int) (((float) this.currentFrameNumber / GameSetting.FPS) * 1000);
+		}
 	}
 
 	/**
-	 * Returns the expected remaining time in seconds of the current round.
+	 * Returns the expected remaining time in seconds of the current round.<br>
+	 * When FightingICE was launched with training mode, this method returns the
+	 * max value of integer.
 	 *
 	 * @return the expected remaining time in seconds of the current round
 	 * @deprecated Use {@link #getRemainingTimeMilliseconds()} instead. This
 	 *             method has been renamed to more clearly reflect its purpose.
 	 */
 	public int getRemainingTime() {
-		return (int) Math.ceil((float) getRemainingTimeMilliseconds() / 1000);
+		if (FlagSetting.trainingModeFlag) {
+			return Integer.MAX_VALUE;
+		} else {
+			return (int) Math.ceil((float) getRemainingTimeMilliseconds() / 1000);
+		}
 	}
 
 	/**
-	 * Returns the number of remaining frames of the round.
+	 * Returns the number of remaining frames of the round. <br>
+	 * When FightingICE was launched with training mode, this method returns the
+	 * max value of integer.
 	 *
 	 * @return the number of remaining frames of the round
 	 */
 	public int getRemainingFramesNumber() {
-		return (GameSetting.ROUND_FRAME_NUMBER - currentFrameNumber);
+		if (FlagSetting.trainingModeFlag) {
+			return Integer.MAX_VALUE;
+		} else {
+			return (GameSetting.ROUND_FRAME_NUMBER - currentFrameNumber);
+		}
 	}
 
 	/**
@@ -233,8 +253,8 @@ public class FrameData {
 	 * Returns true if this instance is empty, false if it contains meaningful
 	 * data.
 	 *
-	 * @return {@code true} if this instance is empty, or {@code false} if it contains
-	 *         meaningful data
+	 * @return {@code true} if this instance is empty, or {@code false} if it
+	 *         contains meaningful data
 	 */
 	public boolean getEmptyFlag() {
 		return this.emptyFlag;
