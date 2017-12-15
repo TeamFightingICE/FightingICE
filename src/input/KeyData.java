@@ -10,23 +10,23 @@ public class KeyData {
 	private Key[] keys;
 
 	/**
-	 * 指定されたキー番号のキーを生成するコンストラクタ
+	 * 指定された数のKeyをまとめるKeyDataを生成するコンストラクタ
 	 *
-	 * @param keyNumber
-	 *            キー番号
+	 * @param keyDataLength 使用するDeviceの数
 	 */
-	public KeyData(int keyNumber) {
-		keys = new Key[keyNumber];
+	public KeyData(int keyDataLength) {
+		keys = new Key[keyDataLength];
 		for (int i = 0; i < keys.length; i++) {
 			keys[i] = new Key();
 		}
 	}
 
 	/**
-	 * 2つのKey入力から1つのKeyDataを作成するコンストラクタ
+	 * Key入力から1つのKeyDataを作成するコンストラクタ
 	 *
 	 * @param keys
 	 *            各プレイヤーからのキー入力
+	 *            基本的には、keys[]のlengthは2
 	 */
 	public KeyData(Key[] keys) {
 		this.keys = new Key[keys.length];
@@ -56,7 +56,10 @@ public class KeyData {
 
 	public KeyData() {
 		// TODO 自動生成されたコンストラクター・スタブ
-		keys = null;
+		keys = new Key[2];
+		for (int i = 0; i < keys.length; i++) {
+			keys[i] = new Key();
+		}
 	}
 
 	/**
