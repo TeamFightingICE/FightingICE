@@ -10,28 +10,42 @@ import java.util.HashMap;
 
 import loader.ResourceLoader;
 
+/**
+ * 文字の画像を扱うクラス．
+ */
 public class LetterImage {
 
+	/**
+	 * 文字フォント．
+	 */
 	private Font font;
 
+	/**
+	 * アンチエイリアシングを行うかどうかのboolean value．
+	 */
 	private boolean antiAliasing;
 
+	/**
+	 * 文字と文字画像をセットで格納したハッシュマップ．
+	 */
 	private HashMap<Character, Image> letterImageMap;
 
 	/**
-	 * LetterImageクラスのデフォルトコンストラクタ．
+	 * デフォルトコンストラクタ．
 	 */
 	public LetterImage() {
 
 	}
 
 	/**
-	 * 文字画像インスタンスを生成するためのコンストラクタ．
+	 * LetterImageクラスのインスタンスを生成するためのクラスコンストラクタ．<br>
 	 * 文字フォントと，アンチエイリアシング処理を行うかどうかを引数としてインスタンスの初期化を行う．
-	 * 引数に対応した処理が施された英数字及び記号の画像がハッシュマップに登録される．
+	 * 英数字及び記号の画像をハッシュマップに登録する．
 	 *
-	 * @param font 文字フォント
-	 * @param antiAliasing アンチエイリアシング処理を行うかどうか(true or false)
+	 * @param font
+	 *            文字フォント
+	 * @param antiAliasing
+	 *            アンチエイリアシング処理を行うかどうかのboolean value
 	 */
 	public LetterImage(Font font, boolean antiAliasing) {
 		this.font = font;
@@ -42,23 +56,23 @@ public class LetterImage {
 	}
 
 	/**
-	 * 文字を引数として，文字画像を取得するgetterメソッド．
+	 * 文字を引数として渡すと，文字画像を返す．
 	 *
-	 * @param letter 画像として表示させる文字
-	 * @return 検索された文字の画像
-	 *         文字画像が存在しない場合はnullを返す．
+	 * @param letter
+	 *            画像として表示させる文字
+	 * @return 検索された文字画像
 	 */
 	public Image getLetterImage(char letter) {
 		return letterImageMap.get(letter);
 	}
 
 	/**
-	 * Create a standard Java2D BufferedImage of the given character
+	 * Create a standard Java2D BufferedImage of the given character.
 	 *
 	 * @param letter
-	 *            The character to create a BufferedImage for
+	 *            the character to create a BufferedImage for
 	 *
-	 * @return A BufferedImage containing the character
+	 * @return a BufferedImage containing the character
 	 */
 	private BufferedImage getLetterBufferedImage(char letter) {
 		// Create a temporary image to extract the letter's size
@@ -99,7 +113,8 @@ public class LetterImage {
 	}
 
 	/**
-	 * 英数字及び記号文字のイメージを作成し，OpenGLにそのテクスチャを転送する． ASCIIコード表から必要な部分のみを抽出
+	 * 英数字及び記号文字のBufferedImageを作成し，OpenGLにそのテクスチャを転送する．<br>
+	 * ASCIIコード表から必要な文字のみを抽出する．
 	 */
 	private void createLetterImage() {
 

@@ -4,18 +4,27 @@ import setting.FlagSetting;
 import struct.FrameData;
 
 /**
- * ラウンドの結果を処理するクラス
+ * ラウンドの結果を処理するクラス．
  */
 public class RoundResult {
 
+	/**
+	 * 現在のラウンド数．
+	 */
 	private int currentRound;
 
+	/**
+	 * P1とP2の残りHPを格納する配列．
+	 */
 	private int[] remainingHPs;
 
+	/**
+	 * ラウンドの経過フレーム数．
+	 */
 	private int elapsedFrame;
 
 	/**
-	 * RoundResultの初期化を行うコンストラクタ
+	 * クラスコンストラクタ．
 	 */
 	public RoundResult() {
 		this.currentRound = -1;
@@ -24,7 +33,7 @@ public class RoundResult {
 	}
 
 	/**
-	 * 指定された値でRoundResultを更新するコンストラクタ
+	 * 指定された値でRoundResultを更新するクラスコンストラクタ．
 	 *
 	 * @param round
 	 *            ラウンド数
@@ -40,7 +49,7 @@ public class RoundResult {
 	}
 
 	/**
-	 * フレーム内のゲームデータからRoundResultを更新するコンストラクタ
+	 * 引数として渡されたフレームデータから結果に関する情報を取得し，RoundResultを更新するクラスコンストラクタ．
 	 *
 	 * @param frameData
 	 *            フレーム内のゲームデータ
@@ -57,7 +66,7 @@ public class RoundResult {
 	}
 
 	/**
-	 * 現在のラウンド数を返すメソッド
+	 * 現在のラウンド数を返す．
 	 *
 	 * @return 現在のラウンド数
 	 */
@@ -66,7 +75,7 @@ public class RoundResult {
 	}
 
 	/**
-	 * P1,P2の残りHPを返すメソッド
+	 * P1,P2の残りHPを返す．
 	 *
 	 * @return P1,P2の残りHP
 	 */
@@ -75,7 +84,7 @@ public class RoundResult {
 	}
 
 	/**
-	 * 経過フレーム数を返すメソッド
+	 * 経過フレーム数を返す．
 	 *
 	 * @return 経過フレーム数
 	 */
