@@ -1,7 +1,7 @@
 package enumerate;
 
 /**
- * ゲーム内のすべての行動を定義しているクラス
+ * ゲーム内で用いられる全てのアクションを定義するクラス．
  */
 public enum Action {
 	NEUTRAL,

@@ -1,7 +1,7 @@
 package enumerate;
 
 /**
- * シーンの名前を定義したクラス
+ * ゲームシーンの名前を定義するクラス．
  */
 public enum GameSceneName {
 	FIGHTING_MENU,
@@ -11,5 +11,4 @@ public enum GameSceneName {
 	RESULT,
 	REPLAY,
 	PYTHON,
-
 }

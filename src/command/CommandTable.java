@@ -10,26 +10,29 @@ import input.KeyData;
 import struct.Key;
 
 /**
- * キー入力とそれに対応するアクションを管理するクラス<br>
- * キー入力を基に,それに対応するアクションに変換する処理を行う
+ * キー入力データをそれに対応するアクションに変換する処理を行うクラス．
  */
 public class CommandTable {
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public CommandTable() {
 
 	}
 
 	/**
-	 * P1, P2の入力情報を基に, 指定されたプレイヤーキー入力から変換されたアクションを返す.
+	 * P1またはP2のキー入力データを対応するアクションに変換する処理を行い，そのアクションを返す．<br>
+	 * P1とP2の判別は，キャラクターデータが持つプレイヤー番号によって行う．
 	 *
 	 * @param character
-	 *            対象キャラクターのデータ
+	 *            キャラクターデータ
 	 * @param input
-	 *            P1, P2の入力情報が格納されたキュー
+	 *            P1とP2両方のキー入力が格納されたキュー
 	 *
-	 * @return キー入力を基に変換されたアクション
-	 * @see Action
+	 * @return キー入力データに対応するアクション
+	 *
+	 * @see KeyData
 	 */
 	public Action interpretationCommandFromKeyData(Character character, Deque<KeyData> input) {
 		Key nowKeyData;
@@ -77,16 +80,17 @@ public class CommandTable {
 	}
 
 	/**
-	 * P1またはP2の入力情報を基に, 指定されたプレイヤーキー入力から変換されたアクションを返す.<br>
+	 * P1またはP2のキー入力データを対応するアクションに変換する処理を行い，そのアクションを返す．<br>
 	 * このメソッドはシミュレータ内でのみ呼び出される.
 	 *
 	 * @param character
-	 *            対象キャラクターのデータ
+	 *            キャラクターデータ
 	 * @param input
-	 *            対象キャラクターの入力情報が格納されたキュー
+	 *            P1またはP2のキー入力が格納されたキュー
 	 *
-	 * @return キー入力を基に変換されたアクション
-	 * @see Action
+	 * @return キー入力データに対応するアクション
+	 *
+	 * @see Key
 	 */
 	public Action interpretationCommandFromKey(Character character, Deque<Key> input) {
 		boolean pushA = false;
@@ -127,24 +131,24 @@ public class CommandTable {
 	}
 
 	/**
-	 * キーの入力情報を基に, それに対応するアクションを返す.<br>
+	 * 引数として渡されたキー入力情報とキャラクター情報を基に, それに対応するアクションを返す.<br>
 	 *
 	 * @param pushA
-	 *            Aキー(P1: Z, P2: T)が押されたかどうか
+	 *            最新のキー入力でAキー(P1: Z, P2: T)が押されているかどうか
 	 * @param pushB
-	 *            Bキー(P1: X, P2: Y)が押されたかどうか
+	 *            最新のキー入力でBキー(P1: X, P2: Y)が押されているかどうか
 	 * @param pushC
-	 *            Cキー(P1: C, P2: U)が押されたかどうか
+	 *            最新のキー入力でCキー(P1: C, P2: U)が押されているかどうか
 	 * @param nowKeyData
-	 *            最新の入力キー情報
+	 *            最新のキー入力
 	 * @param commandList
-	 *            何も押されていないキー(=5)を除いた直近4つ分のキー入力を格納した配列
+	 *            直近4つの方向キー入力を格納した配列(新しい入力ほどindexが小さい)
 	 * @param state
-	 *            対象キャラクターの現在の状態
+	 *            キャラクターの現在の状態
 	 * @param isFront
-	 *            対象キャラクターが相手より左側にいるかどうか
+	 *            キャラクターが向いている方向(右向きはtrue;左向きはfalse)
 	 *
-	 * @return キー入力から変換されたアクション
+	 * @return キー入力情報とキャラクター情報に対応するアクション
 	 *
 	 * @see Key
 	 * @see State

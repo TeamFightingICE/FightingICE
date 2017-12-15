@@ -1,15 +1,17 @@
 import core.Game;
 import manager.DisplayManager;
 
-/** FightingICEのメインクラス */
+/**
+ * FightingICEのメインメソッドを持つクラス．
+ */
 public class Main {
 
 	/**
-	 * FightingICEのメインメソッド<br>
-	 * 起動時の引数に応じて起動情報を設定し, それを基にゲームを開始する.
+	 * 起動時に入力した引数に応じて起動情報を設定し, それを基にゲームを開始する．<br>
+	 * このメソッドはFightingICEのメインメソッドである．
 	 *
 	 * @param options
-	 *            起動時のすべての引数を格納した配列
+	 *            起動時に入力した全ての引数を格納した配列
 	 */
 	public static void main(String[] options) {
 		Game game = new Game();

@@ -1,7 +1,7 @@
 package enumerate;
 
 /**
- * キャラクターの状態を定義したクラス
+ * キャラクターの状態を定義するクラス．
  */
 public enum State {
 	STAND,

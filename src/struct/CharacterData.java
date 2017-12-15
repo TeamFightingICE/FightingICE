@@ -8,64 +8,92 @@ import enumerate.State;
 import fighting.Character;
 
 /**
- * キャラクターのHPやエネルギー、座標などのキャラクターに関するデータを扱うクラス
+ * キャラクターのHPやエネルギー，座標などのキャラクターに関するデータを扱うクラス．
  */
 public class CharacterData {
 
 	/**
-	 * The character's side.<br>
-	 * True: the character is P1; false: the character is P2.
+	 * The character's side flag.<br>
+	 * {@code true} if the character is P1, or {@code false} if P2.
 	 */
 	private boolean playerNumber;
 
-	/** The character's HP. */
+	/**
+	 * The character's HP.
+	 */
 	private int hp;
 
-	/** The character's energy. */
+	/**
+	 * The character's energy.
+	 */
 	private int energy;
 
-	/** The character graphic's most top-left x-coordinate. */
+	/**
+	 * The character graphic's most top-left x-coordinate.
+	 */
 	private int x;
 
-	/** The character graphic's most top-left y-coordinate. */
+	/**
+	 * The character graphic's most top-left y-coordinate.
+	 */
 	private int y;
 
-	/** The character's hit box's most-left x-coordinate. */
+	/**
+	 * The character's hit box's most-left x-coordinate.
+	 */
 	private int left;
 
-	/** The character's hit box's most-right x-coordinate. */
+	/**
+	 * The character's hit box's most-right x-coordinate.
+	 */
 	private int right;
 
-	/** The character's hit box's most-top y-coordinate. */
+	/**
+	 * The character's hit box's most-top y-coordinate.
+	 */
 	private int top;
 
-	/** The character's hit box's most-bottom y-coordinate. */
+	/**
+	 * The character's hit box's most-bottom y-coordinate.
+	 */
 	private int bottom;
 
-	/** The character's horizontal speed. */
+	/**
+	 * The character's horizontal speed.
+	 */
 	private int speedX;
 
-	/** The character's vertical speed. */
+	/**
+	 * The character's vertical speed.
+	 */
 	private int speedY;
 
-	/** The character's state: STAND / CROUCH/ AIR / DOWN. */
+	/**
+	 * The character's state: STAND / CROUCH / AIR / DOWN.
+	 */
 	private State state;
 
-	/** The character's action. */
+	/**
+	 * The character's action.
+	 */
 	private Action action;
 
 	/**
-	 * The character's facing direction<br>
-	 * true: facing right; false: facing left).
+	 * The character's facing direction.<br>
+	 * {@code true} if the character is facing right, {@code false} otherwise.
 	 */
 	private boolean front;
 
 	/**
-	 * The flag whether this character is able to control (true) or not (false).
+	 * The flag whether this character can run a new motion with the
+	 * motion's command.<br>
+	 * {@code true} if the character can run, {@code false} otherwise.
 	 */
 	private boolean control;
 
-	/** The attack data that the character is using. */
+	/**
+	 * The attack data that the character is using.
+	 */
 	private AttackData attackData;
 
 	/**
@@ -74,22 +102,35 @@ public class CharacterData {
 	 */
 	private int remainingFrame;
 
-	/** A boolean value whether the motion hits the opponent or not */
+	/**
+	 * The flag whether the motion hits the opponent or not.
+	 * {@code true} if the motion hits the opponent, {@code false} otherwise.
+	 */
 	private boolean hitConfirm;
 
-	/** The character's graphic width. */
+	/**
+	 * The character's graphic width.
+	 */
 	private int graphicSizeX;
 
-	/** The character's graphic height. */
+	/**
+	 * The character's graphic height.
+	 */
 	private int graphicSizeY;
 
-	/** キャラクターの正面判定時に,x座標を調整するために用いる水平方向の移動量 */
+	/**
+	 * キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量．
+	 */
 	private int graphicAdjustX;
 
-	/** 相手に攻撃が連続でhitしている回数 */
+	/**
+	 * 攻撃の連続ヒット回数．
+	 */
 	private int hitCount;
 
-	/** 最後の攻撃が当たった時のフレームナンバー */
+	/**
+	 * 攻撃が相手に当たった最後のフレーム．
+	 */
 	private int lastHitFrame;
 
 	/**
@@ -105,10 +146,11 @@ public class CharacterData {
 	private Deque<Key> processedCommands;
 
 	/**
-	 * 指定されたデータでキャラクターのデータのインスタンスを作成するコンストラクタ
+	 * 引数として渡されたCharacterクラスのインスタンスからキャラクターに関する情報を取得し，
+	 * CharacterDataクラスのインスタンスを新たに生成するクラスコンストラクタ．
 	 *
 	 * @param character
-	 *            キャラクターのデータ
+	 *            キャラクターに関する情報を持つCharacterクラスのインスタンス
 	 */
 	public CharacterData(Character character) {
 		this.playerNumber = character.isPlayerNumber();
@@ -139,10 +181,10 @@ public class CharacterData {
 	}
 
 	/**
-	 * 指定されたデータでキャラクターのデータのインスタンスを作成するコンストラクタ
+	 * 引数として渡されたCharacterDataクラスのインスタンスのコピーを生成するコピーコンストラクタ．
 	 *
 	 * @param characterData
-	 *            キャラクターのデータ
+	 *            CharacterDataクラスのインスタンス
 	 */
 	public CharacterData(CharacterData characterData) {
 		this.playerNumber = characterData.isPlayerNumber();
@@ -173,10 +215,9 @@ public class CharacterData {
 	}
 
 	/**
-	 * Returns the character's side.<br>
-	 * True: the character is P1; false: the character is P2.
+	 * Returns the character's side flag.
 	 *
-	 * @return The character's side
+	 * @return {@code true} if the character is P1, or {@code false} if P2.
 	 */
 	public boolean isPlayerNumber() {
 		return this.playerNumber;
@@ -185,8 +226,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's facing direction.
 	 *
-	 * @return The character's facing direction (true for facing right; false
-	 *         for facing left).
+	 * @return {@code true} if the character is facing right, {@code false} otherwise.
 	 */
 	public boolean isFront() {
 		return this.front;
@@ -196,8 +236,7 @@ public class CharacterData {
 	 * Returns the flag whether this character can run a new motion with the
 	 * motion's command.
 	 *
-	 * @return The flag whether this character is able to control (true) or not
-	 *         (false).
+	 * @return {@code true} if the character can run, {@code false} otherwise.
 	 */
 	public boolean isControl() {
 		return this.control;
@@ -206,7 +245,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's HP.
 	 *
-	 * @return The character's HP
+	 * @return the character's HP
 	 */
 	public int getHp() {
 		return this.hp;
@@ -215,7 +254,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's energy.
 	 *
-	 * @return The character's energy
+	 * @return the character's energy
 	 */
 	public int getEnergy() {
 		return this.energy;
@@ -224,7 +263,7 @@ public class CharacterData {
 	/**
 	 * Returns the character graphic's most top-left x-coordinate.
 	 *
-	 * @return The character graphic's most top-left x-coordinate.
+	 * @return the character graphic's most top-left x-coordinate.
 	 * @deprecated Use {@link #getLeft()} or {@link #getRight()} or
 	 *             {@link #getCenterX()} instead
 	 *
@@ -236,7 +275,7 @@ public class CharacterData {
 	/**
 	 * Returns the character graphic's most top-left y-coordinate.
 	 *
-	 * @return The character graphic's most top-left y-coordinate.
+	 * @return the character graphic's most top-left y-coordinate.
 	 * @deprecated Use {@link #getTop()} or {@link #getBottom()} or
 	 *             {@link #getCenterY()} instead
 	 *
@@ -248,7 +287,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's hit box's most-left x-coordinate.<br>
 	 *
-	 * @return The character's hit box's most-left x-coordinate
+	 * @return the character's hit box's most-left x-coordinate
 	 */
 	public int getLeft() {
 		return this.left;
@@ -257,7 +296,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's hit box's most-right x-coordinate.<br>
 	 *
-	 * @return The character's hit box's most-right x-coordinate
+	 * @return the character's hit box's most-right x-coordinate
 	 */
 	public int getRight() {
 		return this.right;
@@ -266,7 +305,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's hit box's most-top y-coordinate.<br>
 	 *
-	 * @return The character's hit box's most-top y-coordinate
+	 * @return the character's hit box's most-top y-coordinate
 	 */
 	public int getTop() {
 		return this.top;
@@ -275,7 +314,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's hit box's most-bottom y-coordinate.<br>
 	 *
-	 * @return The character's hit box's most-bottom y-coordinate
+	 * @return the character's hit box's most-bottom y-coordinate
 	 */
 	public int getBottom() {
 		return this.bottom;
@@ -284,7 +323,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's hit box's center x-coordinate.<br>
 	 *
-	 * @return The character's hit box's center x-coordinate
+	 * @return the character's hit box's center x-coordinate
 	 */
 	public int getCenterX() {
 		return (getLeft() + getRight()) / 2;
@@ -293,7 +332,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's hit box's center y-coordinate.<br>
 	 *
-	 * @return The character's hit box's center y-coordinate
+	 * @return the character's hit box's center y-coordinate
 	 */
 	public int getCenterY() {
 		return (getTop() + getBottom()) / 2;
@@ -302,7 +341,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's horizontal speed.
 	 *
-	 * @return The character's horizontal speed
+	 * @return the character's horizontal speed
 	 */
 	public int getSpeedX() {
 		return this.speedX;
@@ -311,7 +350,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's vertical speed.
 	 *
-	 * @return The character's vertical speed
+	 * @return the character's vertical speed
 	 */
 	public int getSpeedY() {
 		return this.speedY;
@@ -320,7 +359,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's state: STAND / CROUCH/ AIR / DOWN.
 	 *
-	 * @return The character's state: STAND / CROUCH/ AIR / DOWN
+	 * @return the character's state: STAND / CROUCH/ AIR / DOWN
 	 *
 	 * @see State
 	 */
@@ -331,7 +370,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's action.
 	 *
-	 * @return The character's action
+	 * @return the character's action
 	 *
 	 * @see Action
 	 */
@@ -343,7 +382,7 @@ public class CharacterData {
 	 * Returns the number of frames that the character needs to resume to its
 	 * normal status.
 	 *
-	 * @return The number of frames that the character needs to resume to its
+	 * @return the number of frames that the character needs to resume to its
 	 *         normal status
 	 */
 	public int getRemainingFrame() {
@@ -353,7 +392,7 @@ public class CharacterData {
 	/**
 	 * Returns the attack data that the character is using.
 	 *
-	 * @return The attack data that the character is using
+	 * @return the attack data that the character is using
 	 *
 	 * @see AttackData
 	 */
@@ -364,7 +403,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's graphic width.
 	 *
-	 * @return The character's graphic width.
+	 * @return the character's graphic width
 	 */
 	public int getGraphicSizeX() {
 		return this.graphicSizeX;
@@ -373,45 +412,43 @@ public class CharacterData {
 	/**
 	 * Returns the character's graphic height.
 	 *
-	 * @return The character's graphic height.
+	 * @return the character's graphic height
 	 */
 	public int getGraphicSizeY() {
 		return this.graphicSizeY;
 	}
 
 	/**
-	 * x座標を調整するために用いる水平方向の移動量を返す.<br>
-	 * キャラクターの正面判定時に用いられる.
+	 * キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量を返す.
 	 *
-	 * @return x座標を調整するために用いる水平方向の移動量
+	 * @return キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量
 	 */
 	public int getGraphicAdjustX() {
 		return this.graphicAdjustX;
 	}
 
 	/**
-	 * Returns a boolean value whether the motion hits the opponent or not
+	 * Returns the flag whether the motion hits the opponent or not.
 	 *
-	 * @return A boolean value whether the motion hits the opponent (true) or
-	 *         not (false)
+	 * @return {@code true} if the motion hits the opponent, {@code false} otherwise.
 	 */
 	public boolean isHitConfirm() {
 		return this.hitConfirm;
 	}
 
 	/**
-	 * 相手に攻撃が何回連続でhitしているかを返す.
+	 * 攻撃の連続ヒット回数を返す.
 	 *
-	 * @return 連続でヒットしている回数
+	 * @return 攻撃の連続ヒット回数
 	 */
 	public int getHitCount() {
 		return this.hitCount;
 	}
 
 	/**
-	 * 最後の攻撃が当たった時のフレームナンバーを返す.
+	 * 攻撃が相手に当たった最後のフレームを返す.
 	 *
-	 * @return 最後の攻撃が当たった時のフレームナンバー
+	 * @return 攻撃が相手に当たった最後のフレーム
 	 */
 	public int getLastHitFrame() {
 		return this.lastHitFrame;
@@ -419,12 +456,12 @@ public class CharacterData {
 
 	/**
 	 * Returns a list storing keys of the action that the character will be
-	 * executing in the simulator
+	 * executing in the simulator.
 	 *
 	 * @deprecated This method is used only for processing of the simulator. You
 	 *             should not use this method for AI development.
 	 *
-	 * @return A list storing keys of the action that the character will be
+	 * @return a list storing keys of the action that the character will be
 	 *         executing in the simulator
 	 */
 	public Deque<Key> getInputCommand() {
@@ -438,12 +475,12 @@ public class CharacterData {
 
 	/**
 	 * Returns a list storing up to 30 keys that the character executed in the
-	 * simulator
+	 * simulator.
 	 *
 	 * @deprecated This method is used only for processing of the simulator. You
 	 *             should not use this method for AI development.
 	 *
-	 * @return A list storing up to 30 keys that the character executed in the
+	 * @return a list storing up to 30 keys that the character executed in the
 	 *         simulator
 	 */
 	public Deque<Key> getProcessedCommand() {
@@ -459,7 +496,7 @@ public class CharacterData {
 	 * Sets the character's HP.
 	 *
 	 * @param hp
-	 *            Amount of HP.
+	 *            the amount of HP
 	 */
 	public void setHp(int hp) {
 		this.hp = hp;
@@ -469,7 +506,7 @@ public class CharacterData {
 	 * Sets the character's energy.
 	 *
 	 * @param energy
-	 *            Amount of energy.
+	 *            the amount of energy
 	 */
 	public void setEnergy(int energy) {
 		this.energy = energy;
@@ -479,7 +516,7 @@ public class CharacterData {
 	 * Sets the character's horizontal position.
 	 *
 	 * @param x
-	 *            Horizontal value.
+	 *            the character's horizontal position
 	 */
 	public void setX(int x) {
 		this.x = x;
@@ -489,7 +526,7 @@ public class CharacterData {
 	 * Sets the character's vertical position.
 	 *
 	 * @param y
-	 *            Vertical value.
+	 *            the character's vertical position
 	 */
 	public void setY(int y) {
 		this.y = y;
@@ -499,7 +536,7 @@ public class CharacterData {
 	 * Sets the character's horizontal speed.
 	 *
 	 * @param speedX
-	 *            Horizontal speed.
+	 *            the character's horizontal speed
 	 */
 	public void setSpeedX(int speedX) {
 		this.speedX = speedX;
@@ -509,7 +546,7 @@ public class CharacterData {
 	 * Sets the character's vertical speed.
 	 *
 	 * @param speedY
-	 *            Vertical speed.
+	 *            the character's vertical speed
 	 */
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
@@ -519,7 +556,7 @@ public class CharacterData {
 	 * Sets the character's state.
 	 *
 	 * @param state
-	 *            A given state.
+	 *            a given state
 	 * @see State
 	 */
 	public void setState(State state) {
@@ -530,7 +567,7 @@ public class CharacterData {
 	 * Sets the character's action.
 	 *
 	 * @param action
-	 *            A given action.
+	 *            a given action
 	 * @see Action
 	 */
 	public void setAction(Action action) {
@@ -541,8 +578,8 @@ public class CharacterData {
 	 * Sets the character's facing direction.
 	 *
 	 * @param front
-	 *            The character's facing direction (true for facing right; false
-	 *            for facing left).
+	 *            the character's facing direction.
+	 *            {@code true} if the character is facing right, {@code false} otherwise.
 	 */
 	public void setFront(boolean front) {
 		this.front = front;
@@ -553,8 +590,8 @@ public class CharacterData {
 	 * motion's command.
 	 *
 	 * @param control
-	 *            The boolean value to set (true if the character can run a
-	 *            motion, false otherwise).
+	 *            the flag whether this character can run a new motion with the motion's command.
+	 *            {@code true} if the character can run, {@code false} otherwise.
 	 */
 	public void setControl(boolean control) {
 		this.control = control;
@@ -565,8 +602,8 @@ public class CharacterData {
 	 * normal status.
 	 *
 	 * @param remainingFrame
-	 *            The number of frames that the character needs to resume to its
-	 *            normal status you want to set.
+	 *            the number of frames that the character needs to resume to its
+	 *            normal status you want to set
 	 */
 	public void setRemainingFrame(int remainingFrame) {
 		this.remainingFrame = remainingFrame;
@@ -576,7 +613,7 @@ public class CharacterData {
 	 * Sets the character's hit box's most-top y-coordinate
 	 *
 	 * @param top
-	 *            The integer value you want to set.
+	 *            the integer value you want to set
 	 */
 	public void setTop(int top) {
 		this.top = top;
@@ -586,7 +623,7 @@ public class CharacterData {
 	 * Sets the character's hit box's most-bottom y-coordinate
 	 *
 	 * @param bottom
-	 *            The integer value you want to set.
+	 *            the integer value you want to set
 	 */
 	public void setBottom(int bottom) {
 		this.bottom = bottom;
@@ -596,19 +633,19 @@ public class CharacterData {
 	 * Sets the character's hit box's most-left x-coordinate
 	 *
 	 * @param left
-	 *            The character's hit box's most-left x-coordinate you want to
-	 *            set.
+	 *            the character's hit box's most-left x-coordinate you want to
+	 *            set
 	 */
 	public void setLeft(int left) {
 		this.left = left;
 	}
 
 	/**
-	 * Sets the character's hit box's most-right x-coordinate
+	 * Sets the character's hit box's most-right x-coordinate.
 	 *
 	 * @param right
-	 *            The character's hit box's most-right x-coordinate you want to
-	 *            set.
+	 *            the character's hit box's most-right x-coordinate you want to
+	 *            set
 	 */
 	public void setRight(int right) {
 		this.right = right;
@@ -618,7 +655,7 @@ public class CharacterData {
 	 * Sets the character's attack.
 	 *
 	 * @param attack
-	 *            The attack you want to set.
+	 *            the attack you want to set
 	 *
 	 * @see AttackData
 	 */
@@ -627,29 +664,31 @@ public class CharacterData {
 	}
 
 	/**
-	 * 相手に攻撃が連続でhitしている回数をセットする.
+	 * 攻撃の連続ヒット回数をセットする．
 	 *
 	 * @param hitCount
-	 *            連続でヒットしている回数
+	 *            攻撃の連続ヒット回数
 	 */
 	public void setHitCount(int hitCount) {
 		this.hitCount = hitCount;
 	}
 
 	/**
-	 * 最後の攻撃が当たった時のフレームナンバーをセットする.
+	 * 攻撃が相手に当たった最後のフレームをセットする.
 	 *
-	 * @return 最後の攻撃が当たった時のフレームナンバー
+	 * @param lastHitFrame
+	 *            攻撃が相手に当たった最後のフレーム
 	 */
 	public void setLastHitFrame(int lastHitFrame) {
 		this.lastHitFrame = lastHitFrame;
 	}
 
 	/**
-	 * Sets a boolean value whether the motion hits the opponent or not
+	 * Sets a boolean value whether the motion hits the opponent or not.
 	 *
 	 * @param hitConfirm
-	 *            A boolean value whether the motion hits the opponent or not
+	 *            a boolean value whether the motion hits the opponent or not.
+	 *            {@code true} if the motion hits the opponent, {@code false} otherwise.
 	 */
 	public void setHitConfirm(boolean hitConfirm) {
 		this.hitConfirm = hitConfirm;
@@ -657,13 +696,13 @@ public class CharacterData {
 
 	/**
 	 * Sets a list storing keys of the action that the character will be
-	 * executing in the simulator
+	 * executing in the simulator.
 	 *
 	 * @deprecated This method is used only for processing of the simulator. You
 	 *             should not use this method for AI development.
 	 *
 	 * @param inputCommand
-	 *            A list storing keys of the action that the character will be
+	 *            a list storing keys of the action that the character will be
 	 *            executing in the simulator
 	 */
 	public void setInputCommand(Deque<Key> inputCommand) {
@@ -672,13 +711,13 @@ public class CharacterData {
 
 	/**
 	 * Sets a list storing up to 30 keys that the character executed in the
-	 * simulator
+	 * simulator.
 	 *
 	 * @deprecated This method is used only for processing of the simulator. You
 	 *             should not use this method for AI development.
 	 *
 	 * @param inputCommand
-	 *            A list storing up to 30 keys that the character executed in
+	 *            a list storing up to 30 keys that the character executed in
 	 *            the simulator
 	 */
 	public void setProcessedCommand(Deque<Key> inputCommand) {

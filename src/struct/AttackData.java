@@ -3,7 +3,7 @@ package struct;
 import fighting.Attack;
 
 /**
- * 攻撃のダメージ量などのキャラクターの攻撃に関するデータを扱うクラス
+ * ダメージ量や必要エナジー量など攻撃に関するデータを扱うクラス．
  */
 public class AttackData {
 
@@ -40,7 +40,8 @@ public class AttackData {
 	private int currentFrame;
 
 	/**
-	 * The player side`s flag
+	 * The player side's flag.<br>
+	 * {@code True} if the character is P1, or {@code false} if P2.
 	 */
 	private boolean playerNumber;
 
@@ -121,17 +122,19 @@ public class AttackData {
 	private int attackType;
 
 	/**
-	 * The flag whether this skill can push down the opponent when hit , 1 = can push down 0=normal hit
+	 * The flag whether this skill can push down the opponent when hit.<br>
+	 * {@code true} if this skill can push down, {@code false} otherwise.
 	 */
 	private boolean downProperty;
 
 	/**
-	 * The projectile flag whether this skill is projectile (true) or not (false)
+	 * The flag whether this skill is projectile or not.<br>
+	 * {@code true} if this skill is projectile, {@code false} otherwise.
 	 */
 	private boolean isProjectile;
 
 	/**
-	 * 攻撃データを初期化するコンストラクタ
+	 * クラスコンストラクタ．
 	 */
 	public AttackData() {
 		this.settingHitArea = new HitArea();
@@ -159,10 +162,11 @@ public class AttackData {
 	}
 
 	/**
-	 * 指定された値で攻撃データのインスタンスを作成するコンストラクタ
+	 * 引数として渡されたAttackクラスのインスタンスから変数の値をコピーし，
+	 * AttackDataクラスのインスタンスを新たに生成するクラスコンストラクタ．
 	 *
 	 * @param attack
-	 *            攻撃データ
+	 *            Attackクラスのインスタンス
 	 */
 	public AttackData(Attack attack) {
 		if (attack != null) {
@@ -192,10 +196,10 @@ public class AttackData {
 	}
 
 	/**
-	 * 指定された値で攻撃データのインスタンスを作成するコンストラクタ
+	 * AttackDataクラスのインスタンスのコピーを作成するコピーコンストラクタ．
 	 *
 	 * @param attackData
-	 *            攻撃データ
+	 *            AttackDataクラスのインスタンス
 	 */
 	public AttackData(AttackData attackData) {
 		if (attackData != null) {
@@ -227,7 +231,7 @@ public class AttackData {
 	/**
 	 * Returns the player side's flag.
 	 *
-	 * @return true: P1; false: P2
+	 * @return {@code true} if the player is P1, or {@code false} if P2
 	 */
 	public boolean isPlayerNumber() {
 		return this.playerNumber;
@@ -236,16 +240,16 @@ public class AttackData {
 	/**
 	 * Returns the flag whether this skill can push down the opponent when hit.
 	 *
-	 * @return The flag whether this skill can push down the opponent when hit
+	 * @return {@code true} if this skill can push down, {@code false} otherwise.
 	 */
 	public boolean isDownProperty() {
 		return this.downProperty;
 	}
 
 	/**
-	 * Returns the boolean value whether this skill is projectile or not.
+	 * Returns the flag whether this skill is projectile or not.
 	 *
-	 * @return true: this skill is projectile; false: otherwise
+	 * @return {@code true} if this skill is projectile, {@code false} otherwise
 	 */
 	public boolean isProjectile() {
 		return this.isProjectile;
@@ -254,17 +258,16 @@ public class AttackData {
 	/**
 	 * Returns the number of frames since this attack was used.
 	 *
-	 * @return The number of frames since this attack was used
+	 * @return the number of frames since this attack was used
 	 */
 	public int getCurrentFrame() {
 		return this.currentFrame;
 	}
 
 	/**
-	 * Returns the integer number indicating the player of the attack. (0: P1;
-	 * 1: P2)
+	 * Returns the integer number indicating the player of the attack.
 	 *
-	 * @return The integer number indicating the player of the attack.
+	 * @return {@code 0} if the player is P1, or {@code 1} if P2
 	 */
 	public int getPlayerNumber() {
 		return this.playerNumber ? 0 : 1;
@@ -274,7 +277,7 @@ public class AttackData {
 	 * Returns the horizontal speed of the attack hit box (minus when moving
 	 * left and plus when moving right).
 	 *
-	 * @return The horizontal speed of the attack hit box (minus when moving
+	 * @return the horizontal speed of the attack hit box (minus when moving
 	 *         left and plus when moving right)
 	 */
 	public int getSpeedX() {
@@ -285,7 +288,7 @@ public class AttackData {
 	 * Returns the vertical speed of the attack hit box (minus when moving up
 	 * and plus when moving down).
 	 *
-	 * @return The vertical speed of the attack hit box (minus when moving up
+	 * @return the vertical speed of the attack hit box (minus when moving up
 	 *         and plus when moving down)
 	 */
 	public int getSpeedY() {
@@ -297,7 +300,7 @@ public class AttackData {
 	 *
 	 * @see MotionData#attackStartUp
 	 *
-	 * @return The number of frames in Startup
+	 * @return the number of frames in Startup
 	 */
 	public int getStartUp() {
 		return this.startUp;
@@ -308,7 +311,7 @@ public class AttackData {
 	 *
 	 * @see MotionData#attackActive
 	 *
-	 * @return The number of frames in Active
+	 * @return the number of frames in Active
 	 */
 	public int getActive() {
 		return this.active;
@@ -317,7 +320,7 @@ public class AttackData {
 	/**
 	 * Returns the damage value to the unguarded opponent hit by this skill.
 	 *
-	 * @return The damage value to the unguarded opponent hit by this skill
+	 * @return the damage value to the unguarded opponent hit by this skill
 	 */
 	public int getHitDamage() {
 		return this.hitDamage;
@@ -326,7 +329,7 @@ public class AttackData {
 	/**
 	 * Returns the damage value to the guarded opponent hit by this skill.
 	 *
-	 * @return The damage value to the guarded opponent hit by this skill
+	 * @return the damage value to the guarded opponent hit by this skill
 	 */
 	public int getGuardDamage() {
 		return this.guardDamage;
@@ -336,7 +339,7 @@ public class AttackData {
 	 * Returns the value of the energy added to the character when it uses this
 	 * skill.
 	 *
-	 * @return The value of the energy added to the character when it uses this
+	 * @return the value of the energy added to the character when it uses this
 	 *         skill
 	 */
 	public int getStartAddEnergy() {
@@ -347,7 +350,7 @@ public class AttackData {
 	 * Returns the value of the energy added to the character when this skill
 	 * hits the opponent.
 	 *
-	 * @return The value of the energy added to the character when this skill
+	 * @return the value of the energy added to the character when this skill
 	 *         hits the opponent
 	 */
 	public int getHitAddEnergy() {
@@ -358,7 +361,7 @@ public class AttackData {
 	 * Returns the value of the energy added to the character when this skill is
 	 * blocked by the opponent.
 	 *
-	 * @return The value of the energy added to the character when this skill is
+	 * @return the value of the energy added to the character when this skill is
 	 *         blocked by the opponent
 	 */
 	public int getGuardAddEnergy() {
@@ -369,7 +372,7 @@ public class AttackData {
 	 * Returns the value of the energy added to the opponent when it is hit by
 	 * this skill.
 	 *
-	 * @return The value of the energy added to the opponent when it is hit by
+	 * @return the value of the energy added to the opponent when it is hit by
 	 *         this skill
 	 */
 	public int getGiveEnergy() {
@@ -380,7 +383,7 @@ public class AttackData {
 	 * Returns the change in the horizontal speed of the opponent when it is hit
 	 * by this skill.
 	 *
-	 * @return The change in the horizontal speed of the opponent when it is hit
+	 * @return the change in the horizontal speed of the opponent when it is hit
 	 *         by this skill
 	 */
 	public int getImpactX() {
@@ -391,7 +394,7 @@ public class AttackData {
 	 * Returns the change in the vertical speed of the opponent when it is hit
 	 * by this skill.
 	 *
-	 * @return The change in the vertical speed of the opponent when it is hit
+	 * @return the change in the vertical speed of the opponent when it is hit
 	 *         by this skill
 	 */
 	public int getImpactY() {
@@ -402,7 +405,7 @@ public class AttackData {
 	 * Returns the number of frames that the guarded opponent needs to resume to
 	 * its normal status after being hit by this skill.
 	 *
-	 * @return The number of frames that the guarded opponent needs to resume to
+	 * @return the number of frames that the guarded opponent needs to resume to
 	 *         its normal status after being hit by this skill
 	 */
 	public int getGiveGuardRecov() {
@@ -413,7 +416,7 @@ public class AttackData {
 	 * Returns the value of the attack type: 1 = high, 2 = middle, 3 = low, 4 =
 	 * throw.
 	 *
-	 * @return The value of the attack type
+	 * @return the value of the attack type
 	 */
 	public int getAttackType() {
 		return this.attackType;
@@ -435,7 +438,7 @@ public class AttackData {
 	 * Returns the absolute value of the horizontal speed of the attack hit box
 	 * (zero means the attack hit box will track the character).
 	 *
-	 * @return The absolute value of the horizontal speed of the attack hit box
+	 * @return the absolute value of the horizontal speed of the attack hit box
 	 *         (zero means the attack hit box will track the character)
 	 */
 	public int getSettingSpeedX() {
@@ -446,7 +449,7 @@ public class AttackData {
 	 * Returns the absolute value of the vertical speed of the attack hit box
 	 * (zero means the attack hit box will track the character).
 	 *
-	 * @return The absolute value of the vertical speed of the attack hit box
+	 * @return the absolute value of the vertical speed of the attack hit box
 	 *         (zero means the attack hit box will track the character)
 	 */
 	public int getSettingSpeedY() {
@@ -480,7 +483,7 @@ public class AttackData {
 	 * (zero means the attack hit box will track the character).
 	 *
 	 * @param settingSpeedX
-	 *            The absolute value of the horizontal speed of the attack hit
+	 *            the absolute value of the horizontal speed of the attack hit
 	 *            box (zero means the attack hit box will track the character)
 	 */
 	public void setSettingSpeedX(int settingSpeedX) {
@@ -492,7 +495,7 @@ public class AttackData {
 	 * means the attack hit box will track the character).
 	 *
 	 * @param settingSpeedY
-	 *            The absolute value of the vertical speed of the attack hit box
+	 *            the absolute value of the vertical speed of the attack hit box
 	 *            (zero means the attack hit box will track the character)
 	 */
 	public void setSettingSpeedY(int settingSpeedY) {
@@ -503,7 +506,7 @@ public class AttackData {
 	 * Sets the number of frames since this attack was used.
 	 *
 	 * @param nowFrame
-	 *            The number of frames since this attack was used
+	 *            the number of frames since this attack was used
 	 */
 	public void setCurrentFrame(int nowFrame) {
 		this.currentFrame = nowFrame;
@@ -513,7 +516,8 @@ public class AttackData {
 	 * Sets the player side's flag.
 	 *
 	 * @param playerNumber
-	 *            The player side's flag
+	 *            the player side's flag.
+	 *            {@code true} if the player is P1, or {@code false} if P2.
 	 */
 	public void setPlayerNumber(boolean playerNumber) {
 		this.playerNumber = playerNumber;
@@ -524,7 +528,7 @@ public class AttackData {
 	 * and plus when moving right).
 	 *
 	 * @param speedX
-	 *            The horizontal speed of the attack hit box (minus when moving
+	 *            the horizontal speed of the attack hit box (minus when moving
 	 *            left and plus when moving right)
 	 */
 	public void setSpeedX(int speedX) {
@@ -536,7 +540,7 @@ public class AttackData {
 	 * plus when moving down).
 	 *
 	 * @param speedY
-	 *            The vertical speed of the attack hit box (minus when moving up
+	 *            the vertical speed of the attack hit box (minus when moving up
 	 *            and plus when moving down)
 	 */
 	public void setSpeedY(int speedY) {
@@ -549,7 +553,7 @@ public class AttackData {
 	 * @see MotionData#attackStartUp
 	 *
 	 * @param startUp
-	 *            The number of frames in Startup
+	 *            the number of frames in Startup
 	 */
 	public void setStartUp(int startUp) {
 		this.startUp = startUp;
@@ -561,7 +565,7 @@ public class AttackData {
 	 * @see MotionData#attackActive
 	 *
 	 * @param active
-	 *            The number of frames in Active
+	 *            the number of frames in Active
 	 */
 	public void setActive(int active) {
 		this.active = active;
@@ -571,7 +575,7 @@ public class AttackData {
 	 * Sets the damage value to the unguarded opponent hit by this skill.
 	 *
 	 * @param hitDamage
-	 *            The damage value to the unguarded opponent hit by this skill
+	 *            the damage value to the unguarded opponent hit by this skill
 	 */
 	public void setHitDamage(int hitDamage) {
 		this.hitDamage = hitDamage;
@@ -581,7 +585,7 @@ public class AttackData {
 	 * Sets the damage value to the guarded opponent hit by this skill.
 	 *
 	 * @param guardDamage
-	 *            The damage value to the guarded opponent hit by this skill
+	 *            the damage value to the guarded opponent hit by this skill
 	 */
 	public void setGuardDamage(int guardDamage) {
 		this.guardDamage = guardDamage;
@@ -591,7 +595,7 @@ public class AttackData {
 	 * Sets the value of energy added to the character when it uses this skill.
 	 *
 	 * @param startAddEnergy
-	 *            The value of the energy added to the character when it uses
+	 *            the value of the energy added to the character when it uses
 	 *            this skill
 	 */
 	public void setStartAddEnergy(int startAddEnergy) {
@@ -603,7 +607,7 @@ public class AttackData {
 	 * the opponent.
 	 *
 	 * @param hitAddEnergy
-	 *            The value of the energy added to the character when this skill
+	 *            the value of the energy added to the character when this skill
 	 *            hits the opponent
 	 */
 	public void setHitAddEnergy(int hitAddEnergy) {
@@ -615,7 +619,7 @@ public class AttackData {
 	 * blocked by the opponent.
 	 *
 	 * @param guardAddEnergy
-	 *            The value of the energy added to the character when this skill
+	 *            the value of the energy added to the character when this skill
 	 *            is blocked by the opponent
 	 */
 	public void setGuardAddEnergy(int guardAddEnergy) {
@@ -627,7 +631,7 @@ public class AttackData {
 	 * skill.
 	 *
 	 * @param giveEnergy
-	 *            The value of the energy added to the opponent when it is hit
+	 *            the value of the energy added to the opponent when it is hit
 	 *            by this skill
 	 */
 	public void setGiveEnergy(int giveEnergy) {
@@ -639,7 +643,7 @@ public class AttackData {
 	 * this skill.
 	 *
 	 * @param impactX
-	 *            The change in the horizontal speed of the opponent when it is
+	 *            the change in the horizontal speed of the opponent when it is
 	 *            hit by this skill
 	 */
 	public void setImpactX(int impactX) {
@@ -651,7 +655,7 @@ public class AttackData {
 	 * this skill.
 	 *
 	 * @param impactY
-	 *            The change in the vertical speed of the opponent when it is
+	 *            the change in the vertical speed of the opponent when it is
 	 *            hit by this skill
 	 */
 	public void setImpactY(int impactY) {
@@ -663,7 +667,7 @@ public class AttackData {
 	 * his normal status after being hit by this skill.
 	 *
 	 * @param giveGuardRecov
-	 *            The number of frames that the guarded opponent needs to resume
+	 *            the number of frames that the guarded opponent needs to resume
 	 *            to his normal status after being hit by this skill
 	 */
 	public void setGiveGuardRecov(int giveGuardRecov) {
@@ -675,7 +679,7 @@ public class AttackData {
 	 * throw.
 	 *
 	 * @param attackType
-	 *            The value of the attack type
+	 *            the value of the attack type
 	 */
 	public void setAttackType(int attackType) {
 		this.attackType = attackType;
@@ -685,8 +689,9 @@ public class AttackData {
 	 * Sets the flag whether this skill can push down the opponent when hit.
 	 *
 	 * @param downProperty
-	 *            The flag whether this skill can push down the opponent when
-	 *            hit
+	 *            the flag whether this skill can push down the opponent when
+	 *            hit.
+	 *            {@code true} if this skill can push down, {@code false} otherwise.
 	 */
 	public void setDownProperty(boolean downProperty) {
 		this.downProperty = downProperty;
@@ -695,8 +700,9 @@ public class AttackData {
 	/**
 	 * Sets the boolean value whether this skill is projectile or not.
 	 *
-	 * @param boolean
-	 *            value whether this skill is projectile (true) or not (false)
+	 * @param isProjectile
+	 *            the flag whether this skill is projectile or not.
+	 *            {@code true} if this skill is projectile, {@code false} otherwise.
 	 */
 	public void setIsProjectile(boolean isProjectile) {
 		this.isProjectile = isProjectile;
