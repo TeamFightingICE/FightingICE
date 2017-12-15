@@ -20,7 +20,7 @@ public class AIController extends Thread {
 
 	private Key key;
 
-	private final static int DELAY = 14;
+	private final static int DELAY = 15;
 
 	private LinkedList<FrameData> framesData;
 
