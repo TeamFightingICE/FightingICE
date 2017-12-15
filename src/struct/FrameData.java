@@ -34,11 +34,6 @@ public class FrameData {
 	private Deque<AttackData> projectileData;
 
 	/**
-	 * The input information of both characters.
-	 */
-	private KeyData keyData;
-
-	/**
 	 * If this value is true, no data are available or they are dummy data.
 	 */
 	private boolean emptyFlag;
@@ -51,7 +46,6 @@ public class FrameData {
 		this.currentFrameNumber = -1;
 		this.currentRound = -1;
 		this.projectileData = new LinkedList<AttackData>();
-		this.keyData = null;
 		this.emptyFlag = true;
 
 	}
@@ -74,7 +68,7 @@ public class FrameData {
 	 * @see KeyData
 	 */
 	public FrameData(CharacterData[] characterData, int currentFrame, int currentRound,
-			Deque<AttackData> projectileData, KeyData keyData) {
+			Deque<AttackData> projectileData) {
 		this.characterData = new CharacterData[] { characterData[0], characterData[1] };
 		this.currentFrameNumber = currentFrame;
 		this.currentRound = currentRound;
@@ -85,7 +79,6 @@ public class FrameData {
 			this.projectileData.add(new AttackData(attack));
 		}
 
-		this.keyData = keyData;
 		this.emptyFlag = false;
 	}
 
@@ -109,7 +102,6 @@ public class FrameData {
 			this.projectileData.add(new AttackData(attack));
 		}
 
-		this.keyData = new KeyData(frameData.getKeyData());
 		this.emptyFlag = frameData.getEmptyFlag();
 
 	}
@@ -236,17 +228,6 @@ public class FrameData {
 			}
 		}
 		return attackList;
-	}
-
-	/**
-	 * Returns the input information of both characters.
-	 *
-	 * @return the input information of both characters
-	 *
-	 * @see KeyData
-	 */
-	public KeyData getKeyData() {
-		return new KeyData(this.keyData);
 	}
 
 	/**

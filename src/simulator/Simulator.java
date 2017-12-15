@@ -68,7 +68,7 @@ public class Simulator {
 			nowFrame++;
 		}
 
-		return simFighting.createFrameData(nowFrame, frameData.getRound(), null);
+		return simFighting.createFrameData(nowFrame, frameData.getRound());
 	}
 
 }
