@@ -1,0 +1,21 @@
+Export settings
+
+-----FightingICE.jar-----
+./src/*
+.classpath
+-------------------------
+
+-----AIToolKit.jar---------------------
+./src/aiinterface/AIInterface.java
+./src/aiinterface/CommandCenter.java
+./src/enumerate/Action.java
+./src/enumerate/State.java
+./src/simulator/Simulator.java
+./src/struct/*.java
+---------------------------------------
+
+-----Javadoc-----
+1. Export->Javadoc-> Next
+2. Select javadoc.exe in the bin folder in the folder where the JDK was installed -> Next
+3. Click Next
+4. Enter -J-Duser.language=en in the VM option space -> Finish
