@@ -14,12 +14,12 @@ import simulator.Simulator;
 public class GameData {
 
 	/**
-	 * The horizontal size of the game stage
+	 * The horizontal size of the game stage.
 	 */
 	private int stageWidth;
 
 	/**
-	 * The vertical size of the game stage
+	 * The vertical size of the game stage.
 	 */
 	private int stageHeight;
 
@@ -36,19 +36,19 @@ public class GameData {
 	private int[] maxEnergies;
 
 	/**
-	 * The list of MotionData of both characters<br>
+	 * The list of MotionData of both characters.<br>
 	 * Index 0 is P1, index 1 is P2.
 	 */
 	private ArrayList<ArrayList<MotionData>> characterMotions;
 
 	/**
-	 * The both characters' names<br>
+	 * The both characters' names.<br>
 	 * Index 0 is P1, index 1 is P2.
 	 */
 	private String[] characterNames;
 
 	/**
-	 * The both AIs' names<br>
+	 * The both AIs' names.<br>
 	 * Index 0 is P1, index 1 is P2.
 	 */
 	private String[] aiNames;
@@ -63,7 +63,7 @@ public class GameData {
 	private Simulator simulator;
 
 	/**
-	 * ゲームデータを初期化するコンストラクタ
+	 * クラスコンストラクタ．
 	 */
 	public GameData() {
 		this.maxHPs = new int[2];
@@ -74,10 +74,10 @@ public class GameData {
 	}
 
 	/**
-	 * キャラクターのデータを用いてゲームデータのインスタンスを作成するコンストラクタ
+	 * キャラクター情報を用いてGameDataクラスのインスタンスを作成するクラスコンストラクタ．
 	 *
 	 * @param players
-	 *            P1, P2のキャラクターのデータ
+	 *            P1, P2のキャラクター情報
 	 *
 	 * @see Character
 	 */
@@ -106,7 +106,7 @@ public class GameData {
 	}
 
 	/**
-	 * 指定されたプレイヤーのモーションデータを返すメソッド
+	 * 引数で指定されたプレイヤーのモーションデータを返す．
 	 *
 	 * @param playerNumber
 	 *            プレイヤー番号(true: P1; false: P2)
@@ -124,13 +124,13 @@ public class GameData {
 	}
 
 	/**
-	 * 指定されたプレイヤーのモーションを返すメソッド<br>
+	 * 引数で指定されたプレイヤーのモーションを返す．<br>
 	 *
-	 * @deprecated このメソッドはシミュレータの処理で呼び出される.<br>
-	 *             AI developerは使用することができない.
+	 * @deprecated このメソッドはシミュレータ内で呼び出される.<br>
+	 *             AI developerはこのメソッドを使用することができない.
 	 *
 	 * @param playerNumber
-	 *            playerNumber プレイヤー番号(true: P1; false: P2)
+	 *            プレイヤー番号(true: P1; false: P2)
 	 * @return 指定されたプレイヤーのモーション
 	 * @see Motion
 	 */
@@ -146,7 +146,7 @@ public class GameData {
 	}
 
 	/**
-	 * ゲームステージの横幅を返すメソッド
+	 * ゲームステージの横幅を返す．
 	 *
 	 * @return ゲームステージの横幅
 	 */
@@ -155,7 +155,7 @@ public class GameData {
 	}
 
 	/**
-	 * ゲームステージの縦幅を返すメソッド
+	 * ゲームステージの縦幅を返す．
 	 *
 	 * @return ゲームステージの縦幅
 	 */
@@ -164,7 +164,7 @@ public class GameData {
 	}
 
 	/**
-	 * 指定されたプレイヤーの最大HPを返すメソッド
+	 * 指定されたプレイヤーの最大HPを返す．
 	 *
 	 * @param playerNumber
 	 *            プレイヤー番号(true: P1; false: P2)
@@ -175,7 +175,7 @@ public class GameData {
 	}
 
 	/**
-	 * 指定されたプレイヤーの最大エネルギー量を返すメソッド
+	 * 指定されたプレイヤーの最大エネルギー量を返す．
 	 *
 	 * @param playerNumber
 	 *            プレイヤー番号(true: P1; false: P2)
@@ -186,10 +186,10 @@ public class GameData {
 	}
 
 	/**
-	 * 指定されたプレイヤーのキャラクターの名前を返すメソッド
+	 * 指定されたプレイヤーのキャラクターの名前を返す．
 	 *
 	 * @param playerNumber
-	 *            playerNumber プレイヤー番号(true: P1; false: P2)
+	 *            プレイヤー番号(true: P1; false: P2)
 	 * @return 指定されたプレイヤーのキャラクターの名前
 	 */
 	public String getCharacterName(boolean playerNumber) {
@@ -197,10 +197,10 @@ public class GameData {
 	}
 
 	/**
-	 * 指定されたプレイヤーのAIの名前を返すメソッド
+	 * 指定されたプレイヤーのAIの名前を返す．
 	 *
 	 * @param playerNumber
-	 *            playerNumber プレイヤー番号(true: P1; false: P2)
+	 *            プレイヤー番号(true: P1; false: P2)
 	 * @return 指定されたプレイヤーのAIの名前
 	 */
 	public String getAiName(boolean playerNumber) {
@@ -208,7 +208,7 @@ public class GameData {
 	}
 
 	/**
-	 * シミュレータを返すメソッド
+	 * シミュレータを返す．
 	 *
 	 * @return シミュレータ
 	 * @see Simulator

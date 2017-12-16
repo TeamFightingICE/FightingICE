@@ -20,19 +20,19 @@ import setting.GameSetting;
 public class ScreenData {
 
 	/**
-	 * Pixel data of the screen are saved in the form of ByteBuffer
+	 * Pixel data of the screen are saved in the form of ByteBuffer.
 	 */
 	private ByteBuffer displayByteBuffer;
 
 	/**
-	 * ゲーム画面のデータを初期化するコンストラクタ
+	 * クラスコンストラクタ．
 	 */
 	public ScreenData() {
 		this.displayByteBuffer = createDisplayByteBuffer();
 	}
 
 	/**
-	 * 指定されたデータでゲーム画面の画素情報を作成するコンストラクタ
+	 * 指定されたデータでゲーム画面の画素情報を作成するクラスコンストラクタ．
 	 *
 	 * @param screenData
 	 *            ゲーム画面のデータ
@@ -42,8 +42,8 @@ public class ScreenData {
 	}
 
 	/**
-	 * Obtains RGB data of the screen in the form of ByteBuffer<br>
-	 * Warning: If the window is disabled, will just return a black buffer
+	 * Obtains RGB data of the screen in the form of ByteBuffer.<br>
+	 * Warning: If the window is disabled, will just return a black buffer.
 	 *
 	 * @return The RGB data of the screen in the form of ByteBuffer
 	 */
@@ -52,8 +52,8 @@ public class ScreenData {
 	}
 
 	/**
-	 * Obtains RGB data of the screen in the form of byte[]<br>
-	 * Warning: If the window is disabled, will just return a black buffer
+	 * Obtains RGB data of the screen in the form of byte[].<br>
+	 * Warning: If the window is disabled, will just return a black buffer.
 	 *
 	 * @return The RGB data of the screen in the form of byte[]
 	 */
@@ -66,9 +66,9 @@ public class ScreenData {
 
 	/**
 	 * Obtains RGB data or the grayScale data of the screen in the form of
-	 * byte[]<br>
+	 * byte[].<br>
 	 * Warning: This method doesn't return exactly the same buffer as
-	 * getDisplayByteBufferAsBytes()
+	 * getDisplayByteBufferAsBytes().
 	 *
 	 * @param newWidth
 	 *            The width in pixel for the scaled image
@@ -137,7 +137,7 @@ public class ScreenData {
 
 	/**
 	 * Obtain RGB data of the screen in the form of ByteBuffer Warning: If the
-	 * window is disabled, will just returns a black buffer
+	 * window is disabled, will just returns a black buffer.
 	 *
 	 * @return RGB data of the screen in the form of ByteBuffer
 	 */

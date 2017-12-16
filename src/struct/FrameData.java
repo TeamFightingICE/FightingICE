@@ -117,8 +117,8 @@ public class FrameData {
 	 * 引数で指定したプレイヤーのCharacterDataクラスのインスタンスを返す．
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号．
-	 *            {@code true} if the player is P1, or {@code false} if P2.
+	 *            プレイヤー番号． {@code true} if the player is P1, or {@code false} if
+	 *            P2.
 	 * @return 指定したプレイヤーのCharacterDataクラスのインスタンス
 	 */
 	public CharacterData getCharacter(boolean playerNumber) {
@@ -233,8 +233,8 @@ public class FrameData {
 	 * Returns true if this instance is empty, false if it contains meaningful
 	 * data.
 	 *
-	 * @return {@code true} if this instance is empty, or {@code false} if it contains
-	 *         meaningful data
+	 * @return {@code true} if this instance is empty, or {@code false} if it
+	 *         contains meaningful data
 	 */
 	public boolean getEmptyFlag() {
 		return this.emptyFlag;
