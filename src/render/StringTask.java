@@ -7,14 +7,34 @@ import org.lwjgl.opengl.GL11;
 import image.Image;
 import image.LetterImage;
 
+/**
+ * 文字描画タスクを扱うクラス．
+ */
 public class StringTask extends RenderTask {
 
+	/**
+	 * 文字画像のフォント．
+	 */
 	private LetterImage imageFont;
+
+	/**
+	 * 文字．
+	 */
 	private String str;
+
+	/**
+	 * 文字画像を描画するx座標．
+	 */
 	private int posX;
+
+	/**
+	 * 文字画像を描画するy座標．
+	 */
 	private int posY;
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public StringTask() {
 		this.imageFont = null;
 		this.str = "";
@@ -23,12 +43,16 @@ public class StringTask extends RenderTask {
 	}
 
 	/**
-	 * インスタンスの初期値をセットする場合のコンストラクタ．
+	 * StringTaskインスタンスの初期値をセットする場合のクラスコンストラクタ．
 	 *
-	 * @param imageFont 文字フォント
-	 * @param str 文字
-	 * @param x 文字画像を描画するX座標
-	 * @param y 文字画像を描画するY座標
+	 * @param imageFont
+	 *            文字画像のフォント
+	 * @param str
+	 *            文字
+	 * @param x
+	 *            文字画像を描画するx座標
+	 * @param y
+	 *            文字画像を描画するy座標
 	 */
 	public StringTask(LetterImage imageFont, String str, int x, int y) {
 		this.imageFont = imageFont;
@@ -38,7 +62,7 @@ public class StringTask extends RenderTask {
 	}
 
 	/**
-	 * 文字画像をレンダリングするメソッド．
+	 * 文字画像をレンダリングする．<br>
 	 * 文字列の各文字を取り出していき，順番に描画する．
 	 */
 	@Override
@@ -55,6 +79,16 @@ public class StringTask extends RenderTask {
 		}
 	}
 
+	/**
+	 * OpenGLの機能を用いて文字画像を描画する．
+	 *
+	 * @param img
+	 *            文字画像
+	 * @param posX
+	 *            文字画像を描画するx座標
+	 * @param posY
+	 *            文字画像を描画するy座標
+	 */
 	private void draw(Image img, int posX, int posY) {
 		GL11.glEnable(GL_TEXTURE_2D);
 		glColor3f(1.0f, 1.0f, 1.0f);

@@ -18,27 +18,31 @@ import org.lwjgl.system.MemoryStack;
 import setting.FlagSetting;
 import setting.GameSetting;
 
-/** ゲームの進行管理を行うマネージャクラス */
+/**
+ * ゲームの進行管理を行うマネージャクラス．
+ */
 public class DisplayManager {
 
-	/** GLFWで使用されるwindow作成用の変数 */
+	/**
+	 * GLFWで使用されるwindow作成用の変数．
+	 */
 	private long window;
 
 	/**
-	 * コンストラクタ．<br>
+	 * クラスコンストラクタ．
 	 */
 	public DisplayManager() {
 
 	}
 
 	/**
-	 * ゲームをスタートさせるメソッド．<br>
+	 * ゲームをスタートさせる．<br>
 	 * 1. OpenGL及びウィンドウの初期化を行う．<br>
-	 * 2.ゲームの終了処理命令が来るまで，ゲーム状態の更新，描画処理などのメインループ処理を行う．<br>
+	 * 2. ゲームの終了処理命令が来るまで，ゲーム状態の更新，描画処理などのメインループ処理を行う．<br>
 	 * 3. ゲームの終了処理を行ってウィンドウを閉じる．<br>
 	 *
 	 * @param game
-	 *            ゲームマネージャのインスタンス
+	 *            GameManagerクラスのインスタンス
 	 * @see GameManager
 	 */
 	public void start(GameManager game) {
@@ -53,7 +57,9 @@ public class DisplayManager {
 
 	}
 
-	/** ウィンドウを作成する際の初期化及びOpenGLの初期化処理を行う */
+	/**
+	 * ウィンドウを作成する際の初期化及びOpenGLの初期化処理を行う．
+	 */
 	private void initialize() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
@@ -123,7 +129,7 @@ public class DisplayManager {
 	}
 
 	/**
-	 * ゲームのメインループの処理を行うメソッド．
+	 * ゲームのメインループの処理を行う．
 	 *
 	 * @param gm
 	 *            GameManagerクラスのインスタンス
@@ -171,7 +177,9 @@ public class DisplayManager {
 		}
 	}
 
-	/** ゲームの終了処理を行い，ウィンドウを閉じる. */
+	/**
+	 * ゲームの終了処理を行い，ウィンドウを閉じる.
+	 */
 	private void close() {
 		GraphicManager.getInstance().close();
 		SoundManager.getInstance().close();
@@ -188,7 +196,9 @@ public class DisplayManager {
 		System.exit(0);
 	}
 
-	/** OpenGLの初期化処理を行う */
+	/**
+	 * OpenGLの初期化処理を行う．
+	 */
 	private void initGL() {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();

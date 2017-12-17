@@ -2,7 +2,9 @@ package manager;
 
 import gamescene.GameScene;
 
-/** 各ゲームシーンの初期化, 更新, 終了処理を管理するマネージャクラス */
+/**
+ * 各ゲームシーンの初期化, 更新, 終了処理を管理するマネージャクラス．
+ */
 public abstract class GameManager {
 
 	/**
@@ -13,11 +15,13 @@ public abstract class GameManager {
 	 */
 	protected GameScene currentGameScene;
 
-	/** ゲームの終了要求があったかを表すフラグ */
+	/**
+	 * ゲームの終了要求があったかどうかを表すフラグ．
+	 */
 	protected boolean isExitFlag;
 
 	/**
-	 * GameManagerクラスの新たなインスタンスを生成するためのコンストラクタ．<br>
+	 * クラスコンストラクタ．<br>
 	 * 現在のゲームシーンをnull，ゲームの終了要求がない状態(false)としてインスタンスの初期化を行う．
 	 */
 	public GameManager() {
@@ -38,7 +42,7 @@ public abstract class GameManager {
 	public abstract void close();
 
 	/**
-	 * 現在のゲームシーンの更新を行うメソッド．<br>
+	 * 現在のゲームシーンの更新を行う．<br>
 	 * ゲーム終了判定が下されず，次のシーンへの遷移要求がない場合は，現在のゲームシーンの更新を行う．<br>
 	 * ゲーム終了判定が下されず，次のシーンへの遷移要求がある場合は，現在のシーンの終了処理と遷移処理を行う．<br>
 	 * ゲーム終了判定が下された場合は，ゲームの終了要求があったかどうかのフラグをtrueにする．
@@ -65,7 +69,7 @@ public abstract class GameManager {
 	}
 
 	/**
-	 * ゲームをスタートするメソッド．<br>
+	 * ゲームをスタートする．<br>
 	 * 引数に指定したゲームシーンを現在のゲームシーンとして設定し，ゲームの開始処理を行う．
 	 *
 	 * @param startGameScene
@@ -77,7 +81,7 @@ public abstract class GameManager {
 	}
 
 	/**
-	 * ゲームの終了要求があったかどうかのフラグを返すメソッド．<br>
+	 * ゲームの終了要求があったかどうかのフラグを返す．<br>
 	 * GameManagerの終了処理の判断に用いられる．
 	 *
 	 * @return ゲームの終了要求があったかどうかのフラグ
