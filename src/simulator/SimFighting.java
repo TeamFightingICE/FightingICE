@@ -19,14 +19,29 @@ import struct.CharacterData;
 import struct.FrameData;
 import struct.Key;
 
+/**
+ * シミュレーション中の対戦処理やキャラクター情報の更新を行うクラス．
+ */
 public class SimFighting extends Fighting {
 
+	/**
+	 * キー入力．
+	 */
 	private ArrayList<Deque<Key>> inputKeys;
 
+	/**
+	 * 入力されたアクション．
+	 */
 	private ArrayList<Deque<Action>> inputActions;
 
+	/**
+	 * CommandCenterクラスのインスタンスを格納する配列．
+	 */
 	private CommandCenter[] commandCenter;
 
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public SimFighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
@@ -37,6 +52,19 @@ public class SimFighting extends Fighting {
 		this.commandCenter = new CommandCenter[2];
 	}
 
+	/**
+	 * 初期化処理を行う．
+	 *
+	 * @param motionList
+	 *            P1とP2のモーションを格納したリスト
+	 * @param actionList
+	 *            P1とP2のアクションを格納したリスト
+	 * @param frameData
+	 *            frame data at the start of simulation
+	 * @param playerNumber
+	 *            boolean value which identifies P1/P2. {@code true} if the
+	 *            player is P1, or {@code false} if P2.
+	 */
 	public void initialize(ArrayList<ArrayList<Motion>> motionList, ArrayList<Deque<Action>> actionList,
 			FrameData frameData, boolean playerNumber) {
 
@@ -56,6 +84,19 @@ public class SimFighting extends Fighting {
 		}
 	}
 
+	/**
+	 * 1フレーム分の対戦処理を行う. <br>
+	 * 処理順序は以下の通りである．<br>
+	 * <ol>
+	 * <li>キー入力を基に, アクションを実行</li>
+	 * <li>攻撃の当たり判定の処理, 及びそれに伴うキャラクターのHPなどのパラメータの更新</li>
+	 * <li>攻撃のパラメータの更新</li>
+	 * <li>キャラクターの状態の更新</li>
+	 * </ol>
+	 *
+	 * @param currentFrame
+	 *            現在のフレーム
+	 */
 	public void processingFight(int currentFrame) {
 		// 1. コマンドの実行・対戦処理
 		processingCommands();
@@ -67,6 +108,9 @@ public class SimFighting extends Fighting {
 		updateCharacter();
 	}
 
+	/**
+	 * シミュレーション開始時に渡されたキー入力とアクションを基に，アクションを実行する．
+	 */
 	public void processingCommands() {
 
 		for (int i = 0; i < 2; i++) {

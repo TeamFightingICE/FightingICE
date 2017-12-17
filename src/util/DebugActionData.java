@@ -17,31 +17,31 @@ import setting.LaunchSetting;
 public class DebugActionData {
 
 	/**
-	 * P1, P2の行動回数をカウントする対象の行動名とその総フレーム数を管理するマップを格納したリスト<br>
+	 * P1, P2の行動回数をカウントする対象の行動名とその総フレーム数を管理するマップを格納したリスト．<br>
 	 * Index 0: P1; Index 1: P2
 	 */
 	private ArrayList<HashMap<String, Integer>> actionList;
 
 	/**
-	 * P1, P2の行動回数をカウントする対象の行動名と1ラウンド中のその行動回数を管理するマップを格納したリスト<br>
+	 * P1, P2の行動回数をカウントする対象の行動名と1ラウンド中のその行動回数を管理するマップを格納したリスト．<br>
 	 * Index 0: P1; Index 1: P2
 	 */
 	private ArrayList<HashMap<String, Integer>> countedActionContainer;
 
 	/**
-	 * ファイル読み込み用のReader<br>
+	 * ファイル読み込み用のBufferedReader．<br>
 	 * Index 0: P1; Index 1: P2
 	 */
 	private BufferedReader[] bReaders;
 
 	/**
-	 * ファイル書き込み用のWriter<br>
+	 * ファイル書き込み用のPrintWriter．<br>
 	 * Index 0: P1; Index 1: P2
 	 */
 	private PrintWriter[] pWriters;
 
 	/**
-	 * カウントする行動名を格納した配列
+	 * 全行動名を格納した配列．
 	 */
 	private final String[] motionName = { "FORWARD_WALK", "DASH", "BACK_STEP", "JUMP", "FOR_JUMP", "BACK_JUMP",
 			"STAND_GUARD", "CROUCH_GUARD", "AIR_GUARD", "THROW_A", "THROW_B", "STAND_A", "STAND_B", "CROUCH_A",
@@ -51,7 +51,7 @@ public class DebugActionData {
 			"AIR_D_DB_BB", "STAND_D_DF_FC" };
 
 	/**
-	 * DebugActionDataクラス唯一のインスタンスを取得するgetterメソッド
+	 * DebugActionDataクラス唯一のインスタンスを取得する．
 	 *
 	 * @return DebugActionDatクラスの唯一のインスタンス
 	 */
@@ -59,12 +59,16 @@ public class DebugActionData {
 		return DebugActionDataHolder.instance;
 	}
 
-	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	/**
+	 * getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス．
+	 */
 	private static class DebugActionDataHolder {
 		private static final DebugActionData instance = new DebugActionData();
 	}
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	private DebugActionData() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + DebugActionData.class.getName());
 		Logger.getAnonymousLogger().log(Level.INFO, "start debug action mode...");
@@ -109,7 +113,6 @@ public class DebugActionData {
 	 * @param characters
 	 *            P1, P2のキャラクターのデータを格納した配列<br>
 	 *            Index 0: P1; Index 1: P2
-	 *
 	 */
 	public void countPlayerAction(Character[] characters) {
 		String[] actionNames = new String[] { characters[0].getAction().name(), characters[1].getAction().name() };
@@ -123,7 +126,9 @@ public class DebugActionData {
 		}
 	}
 
-	/** P1とP2の各行動の実行回数をCSVに出力する */
+	/**
+	 * P1とP2の各行動の実行回数をCSVファイルに出力する．
+	 */
 	public void outputActionCount() {
 		for (int i = 0; i < 2; i++) {
 			for (String string : this.motionName) {
@@ -136,7 +141,9 @@ public class DebugActionData {
 		}
 	}
 
-	/** 出力ファイルのクローズ処理を行い, リストの中身をクリアーする. */
+	/**
+	 * 出力ファイルのクローズ処理を行い, リストの中身をクリアーする．
+	 */
 	public void closeAllWriters() {
 		for (int i = 0; i < 2; i++) {
 			this.pWriters[i].close();
@@ -199,7 +206,7 @@ public class DebugActionData {
 	}
 
 	/**
-	 * 行動回数をカウントするかどうかを返す
+	 * 行動回数をカウントするかどうかを返す．
 	 *
 	 * @param temp
 	 *            行動回数をカウントする対象の行動名とその総フレーム数を管理するマップ

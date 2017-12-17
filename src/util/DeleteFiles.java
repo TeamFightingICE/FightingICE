@@ -2,11 +2,15 @@ package util;
 
 import java.io.File;
 
-/** ログファイル削除用のシングルトンパターンクラス */
+/**
+ * ログファイル削除用のシングルトンパターンクラス．
+ */
 public class DeleteFiles {
 	private String[] foldersName;
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	private DeleteFiles() {
 		System.out.println("delete files...");
 		// 削除するフォルダ名
@@ -14,7 +18,7 @@ public class DeleteFiles {
 	}
 
 	/**
-	 * DeleteFilesクラスの唯一のインスタンスを取得するgetterメソッド．
+	 * DeleteFilesクラスの唯一のインスタンスを取得する．
 	 *
 	 * @return DeleteFilesクラスの唯一のインスタンス
 	 */
@@ -22,12 +26,16 @@ public class DeleteFiles {
 		return DeleteFilesHolder.instance;
 	}
 
-	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	/**
+	 * getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス．
+	 */
 	private static class DeleteFilesHolder {
 		private static final DeleteFiles instance = new DeleteFiles();
 	}
 
-	/** pointフォルダとreplayフォルダ内のファイルを削除する */
+	/**
+	 * pointフォルダとreplayフォルダ内のファイルを削除する．
+	 */
 	public void deleteFiles() {
 		for (String folderName : foldersName) {
 			File[] fileList = (new File(folderName)).listFiles();

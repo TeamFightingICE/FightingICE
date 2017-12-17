@@ -19,14 +19,20 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.HitArea;
 
+/**
+ * キャラクターや攻撃などの画像表示を扱うクラス．
+ */
 public class ResourceDrawer {
 
+	/**
+	 * クラスコンストラクタ．
+	 */
 	private ResourceDrawer() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceDrawer.class.getName());
 	}
 
 	/**
-	 * ResourceDrawerクラスの唯一のインスタンスを取得するgetterメソッド．
+	 * ResourceDrawerクラスの唯一のインスタンスを取得する．
 	 *
 	 * @return ResourceDrawerクラスの唯一のインスタンス
 	 */
@@ -34,13 +40,15 @@ public class ResourceDrawer {
 		return ResourceDrawerHolder.instance;
 	}
 
-	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	/**
+	 * getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス．
+	 */
 	private static class ResourceDrawerHolder {
 		private static final ResourceDrawer instance = new ResourceDrawer();
 	}
 
 	/**
-	 * 引数で渡された情報を用いて画面を描画するメソッド．<br>
+	 * 引数で渡された情報を用いて画面を描画する．<br>
 	 *
 	 * @param characters
 	 *            P1とP2のキャラクターデータを格納した配列
@@ -83,7 +91,7 @@ public class ResourceDrawer {
 	 * Draws the background image.
 	 *
 	 * @param screenGraphic
-	 *            The screen graphics
+	 *            the screen graphics
 	 */
 	public void drawBackGroundImage() {
 		Image bg = GraphicManager.getInstance().getBackgroundImage().get(0);
@@ -98,7 +106,7 @@ public class ResourceDrawer {
 	 * @param playerCharacters
 	 *            P1とP2のキャラクターデータを格納した配列
 	 * @param screenGraphic
-	 *            The screen graphics
+	 *            the screen graphics
 	 */
 	public void drawCharacterImage(Character[] playerCharacters) {
 
@@ -131,7 +139,7 @@ public class ResourceDrawer {
 	 * @param characters
 	 *            P1とP2のキャラクターデータを格納した配列
 	 * @param screenGraphic
-	 *            The screen graphics
+	 *            the screen graphics
 	 */
 	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters) {
 
@@ -229,7 +237,7 @@ public class ResourceDrawer {
 	 * Draws time.
 	 *
 	 * @param remainingTime
-	 *            The remaining time.
+	 *            the remaining time
 	 */
 	private void drawTimeImage(int remainingTime) {
 		if (FlagSetting.trainingModeFlag) {
@@ -245,7 +253,7 @@ public class ResourceDrawer {
 	 * Draws round number.
 	 *
 	 * @param round
-	 *            ラウンド
+	 *            現在のラウンド
 	 */
 	private void drawRoundNumber(int round) {
 		GraphicManager.getInstance().drawString("ROUND:" + round, 850, 10);
@@ -314,13 +322,13 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 * ヒットエフェクトを描画するメソッド．<br>
+	 * ヒットエフェクトを描画する．<br>
 	 * 攻撃がヒットしているかを確認し，ヒットしていればそのヒットエフェクトを描画する．
 	 *
 	 * @param hitEffects
 	 *            ヒットエフェクトのリストを格納したリスト
 	 * @param screenGraphic
-	 *            The screen graphics
+	 *            the screen graphics
 	 */
 	private void drawHitEffects(LinkedList<LinkedList<HitEffect>> hitEffects) {
 		for (int i = 0; i < 2; i++) {
@@ -350,13 +358,13 @@ public class ResourceDrawer {
 	}
 
 	/**
-	 * 画像を左右反転させるメソッド．<br>
+	 * 画像を左右反転させる．<br>
 	 * 画像データは右向きで用意されているため，引数の右向きかどうかを表す変数がfalseなら画像を左右反転させる．
 	 *
 	 * @param image
 	 *            画像
 	 * @param isFront
-	 *            右向きかどうかを表す変数
+	 *            キャラクターが右向きかどうかを表す変数
 	 *
 	 * @return 左右反転画像(isFrontがfalse)か，元の画像(isFrontがtrue)
 	 */

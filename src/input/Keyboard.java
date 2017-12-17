@@ -10,17 +10,23 @@ import enumerate.GameSceneName;
 import manager.InputManager;
 
 /**
- * キー入力を扱うクラス
+ * キー入力を扱うクラス．
  */
 public class Keyboard extends GLFWKeyCallback {
 
-	/** 各キーが押されたかを格納 */
+	/**
+	 * 各キーが押されたかどうかのboolean valueを格納する配列．
+	 */
 	public static boolean[] keys = new boolean[65536];
 
-	/** 前のステップで各キーが押されていたかを格納 */
+	/**
+	 * 前のステップで各キーが押されていたかどうかのboolean valueを格納する配列．
+	 */
 	private static boolean[] preKeys = new boolean[65536];
 
-
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public Keyboard() {
 		Arrays.fill(keys, false);
 		Arrays.fill(preKeys, false);
@@ -38,26 +44,31 @@ public class Keyboard extends GLFWKeyCallback {
 		}
 	}
 
-
-
 	/**
-	 * 指定されたキーが押されている間に使われるメソッド
-	 * @param keycode 指定されたキーコード
-	 * @return {@code true} 指定されたキーコードが入力されたとき
+	 * 指定されたキーが入力されているかどうかを返す．
+	 *
+	 * @param keycode
+	 *            指定するキー
+	 * @return {@code true} 指定されたキーが入力されたとき，{@code false} otherwise
 	 */
 	public static boolean getKey(int keycode) {
 		return keys[keycode];
 	}
 
 	/**
-	 * 指定されたキーが押されたときに使うメソッド
-	 * @param keycode 指定されたキーコード
-	 * @return ゲームシーン時<p>
-	 * 			{@code true} 指定されたキーが存在するとき<p>
-	 * 			{@code false} 指定されたキーが存在しないとき<p>
-	 * 			ゲームシーン以外<p>
-	 * 			{@code true} 指定されたキーが存在するとき<p>
-	 * 			{@code false} 指定されたキーが存在しない,または指定されたキーが押されているとき
+	 * 指定されたキーが押されているかどうかを返す．
+	 *
+	 * @param keycode
+	 *            指定するキー
+	 * @return ゲームシーン内
+	 *         <p>
+	 *         {@code true} 指定されたキーが入力されているとき，<br>
+	 *         {@code false} 指定されたキーが入力されていないとき．
+	 *         <p>
+	 *         ゲームシーン以外
+	 *         <p>
+	 *         {@code true} 指定されたキーが入力されているとき，<br>
+	 *         {@code false} 指定されたキーが入力されていない,または前ステップで入力されていたとき．
 	 */
 	public static boolean getKeyDown(int keycode) {
 		if (InputManager.getInstance().getSceneName() == GameSceneName.PLAY) {
@@ -78,6 +89,9 @@ public class Keyboard extends GLFWKeyCallback {
 
 	}
 
+	/**
+	 * クローズ処理．
+	 */
 	public void close() {
 
 	}
