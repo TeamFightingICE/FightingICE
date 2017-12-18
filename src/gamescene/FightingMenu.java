@@ -15,37 +15,49 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.Key;
 
-/** 使用AI, 使用キャラクター, 繰り返し回数をセットするメニュー画面を管理するクラス */
+/**
+ * 使用AI, 使用キャラクター, 繰り返し回数をセットするメニュー画面を扱うクラス．
+ */
 public class FightingMenu extends GameScene {
 
-	/** 画面に表示する項目数 */
+	/**
+	 * 画面に表示する項目数．
+	 */
 	private final int NUMBER_OF_ITEM = 7;
 
-	/** 表示する各項目のインデックス,名前,座標を格納している配列 */
+	/**
+	 * 表示する各項目のインデックス,名前,座標を格納している配列．
+	 */
 	private MenuItem[] menuItems;
 
-	/** aiフォルダ内にある全AIの名前を格納したリスト */
+	/**
+	 * aiフォルダ内にある全AIの名前を格納したリスト．
+	 */
 	private ArrayList<String> allAiNames;
 
-	/** 現在のカーソル位置 */
+	/**
+	 * 現在のカーソル位置．
+	 */
 	private int cursorPosition;
 
-	/** 繰り返し回数(Repeat Count)の項目における現在の選択位置 */
+	/**
+	 * 繰り返し回数(Repeat Count)の項目における現在の選択位置．
+	 */
 	private int numberIndex;
 
 	/**
-	 * PLAYERの項目における現在の選択位置<br>
+	 * PLAYERの項目における現在の選択位置．<br>
 	 * Index 0: P1; Index 1: P2
 	 */
 	private int[] playerIndexes;
 
 	/**
-	 * CHARACTERの項目における現在の選択位置<br>
+	 * CHARACTERの項目における現在の選択位置．<br>
 	 * Index 0: P1; Index 1: P2
 	 */
 	private int[] characterIndexes;
 
-	/** FightingMenuシーンを初期化するコンストラクタ */
+	/** クラスコンストラクタ． */
 	public FightingMenu() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.FIGHTING_MENU;
@@ -234,7 +246,9 @@ public class FightingMenu extends GameScene {
 		this.drawScreen();
 	}
 
-	/** 対戦の設定を行うメニュー画面を描画する */
+	/**
+	 * 対戦の設定を行うメニュー画面を描画する．
+	 */
 	private void drawScreen() {
 		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(),
 				this.menuItems[0].getCoordinateY());

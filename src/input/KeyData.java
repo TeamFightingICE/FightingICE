@@ -3,16 +3,17 @@ package input;
 import struct.Key;
 
 /**
- *　同一フレーム内で各プレイヤー(AI,Keyboard)が入力したKeyを一つにまとめるためのクラス
+ * 同一フレーム内で各プレイヤーが入力したKeyを一つにまとめるためのクラス．
  */
 public class KeyData {
 
 	private Key[] keys;
 
 	/**
-	 * 指定された数のKeyをまとめるKeyDataを生成するコンストラクタ
+	 * 引数で渡された使用するDeviceの数に対応する数のKeyをまとめるKeyDataを生成するクラスコンストラクタ．
 	 *
-	 * @param keyDataLength 使用するDeviceの数
+	 * @param keyDataLength
+	 *            使用するDeviceの数
 	 */
 	public KeyData(int keyDataLength) {
 		keys = new Key[keyDataLength];
@@ -22,11 +23,10 @@ public class KeyData {
 	}
 
 	/**
-	 * Key入力から1つのKeyDataを作成するコンストラクタ
+	 * 各プレイヤーのKey入力からKeyDataを作成するクラスコンストラクタ．
 	 *
 	 * @param keys
-	 *            各プレイヤーからのキー入力
-	 *            基本的には、keys[]のlengthは2
+	 *            各プレイヤーからのキー入力 基本的には、keys[]のlengthは2
 	 */
 	public KeyData(Key[] keys) {
 		this.keys = new Key[keys.length];
@@ -36,6 +36,8 @@ public class KeyData {
 	}
 
 	/**
+	 * 引数で渡されたKeyDataのインスタンスのコピーを生成するクラスコンストラクタ．<br>
+	 * 引数がnullならキー配列を初期化して新たなインスタンスを生成する．
 	 *
 	 * @param keyData
 	 *            Source data
@@ -54,6 +56,9 @@ public class KeyData {
 		}
 	}
 
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public KeyData() {
 		// TODO 自動生成されたコンストラクター・スタブ
 		keys = new Key[2];
@@ -63,9 +68,9 @@ public class KeyData {
 	}
 
 	/**
-	 * 2つのプレイヤーのキー配列を返すメソッド
+	 * 各プレイヤーのキー配列を返す．
 	 *
-	 * @return 2つのプレイヤーのキー配列
+	 * @return 各プレイヤーのキー配列
 	 */
 	public Key[] getKeys() {
 		return keys.clone();

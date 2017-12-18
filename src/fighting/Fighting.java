@@ -17,7 +17,9 @@ import struct.AttackData;
 import struct.CharacterData;
 import struct.FrameData;
 
-/** 対戦処理及びそれに伴う攻撃やキャラクターのパラメータの更新処理を管理するクラス */
+/**
+ * 対戦処理及びそれに伴う攻撃やキャラクターのパラメータの更新処理を扱うクラス．
+ */
 public class Fighting {
 
 	/**
@@ -29,21 +31,21 @@ public class Fighting {
 	protected Character[] playerCharacters;
 
 	/**
-	 * The list of projectile data of both characters
+	 * The list of projectile data of both characters.
 	 *
 	 * @see LoopEffect
 	 */
 	protected Deque<LoopEffect> projectileDeque;
 
 	/**
-	 * The list of the input information of both characters
+	 * The list of the input information of both characters.
 	 *
 	 * @see KeyData
 	 */
 	private Deque<KeyData> inputCommands;
 
 	/**
-	 * 攻撃が当たった時に表示するエフェクトや, アッパーのエフェクトの情報を格納するリスト<br>
+	 * 攻撃が当たった時に表示するエフェクトや, アッパーのエフェクトの情報を格納するリスト．<br>
 	 * Index 0 is P1, index 1 is P2.
 	 *
 	 * @see HitEffect
@@ -51,13 +53,15 @@ public class Fighting {
 	private LinkedList<LinkedList<HitEffect>> hitEffects;
 
 	/**
-	 * キー入力とそれに対応するアクションを管理するクラス変数
+	 * キー入力とそれに対応するアクションを管理するクラス変数．
 	 *
 	 * @see CommandTable
 	 */
 	protected CommandTable commandTable;
 
-	/** 初期化を行うコンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public Fighting() {
 		this.playerCharacters = new Character[2];
 		this.projectileDeque = new LinkedList<LoopEffect>();
@@ -67,7 +71,9 @@ public class Fighting {
 
 	}
 
-	/** P1, P2のキャラクター情報とエフェクトを格納するリストの初期化を行う */
+	/**
+	 * P1, P2のキャラクター情報とエフェクトを格納するリストの初期化を行う．
+	 */
 	public void initialize() {
 		for (int i = 0; i < 2; i++) {
 			this.playerCharacters[i] = new Character();
@@ -77,20 +83,19 @@ public class Fighting {
 	}
 
 	/**
-	 * 入力されたP1, P2のキーを基に, 1フレーム分の対戦処理を行う. <br>
-	 * 処理順序は以下の通りである.<br>
+	 * P1, P2のキー入力を基に, 1フレーム分の対戦処理を行う. <br>
+	 * 処理順序は以下の通りである．<br>
 	 * <ol>
-	 * <li>入力されたキーを基に, アクションを実行</li>
-	 * <li>攻撃の当たり判定の処理, 及びそれに伴うキャラクターの体力といったパラメータの更新</li>
+	 * <li>キー入力を基に, アクションを実行</li>
+	 * <li>攻撃の当たり判定の処理, 及びそれに伴うキャラクターのHPなどのパラメータの更新</li>
 	 * <li>攻撃のパラメータの更新</li>
 	 * <li>キャラクターの状態の更新</li>
 	 * </ol>
 	 *
 	 * @param currentFrame
-	 *            現在のフレーム番号
+	 *            現在のフレーム
 	 * @param keyData
-	 *            入力されたP1, P2のキー<br>
-	 *            Index 0 is P1, index 1 is P2.
+	 *            P1, P2のキー入力． Index 0 is P1, index 1 is P2.
 	 */
 	public void processingFight(int currentFrame, KeyData keyData) {
 
@@ -106,12 +111,12 @@ public class Fighting {
 	}
 
 	/**
-	 * 入力されたキーを基にアクションを実行する
+	 * キー入力を基にアクションを実行する．
 	 *
 	 * @param currentFrame
-	 *            現在のフレーム番号
+	 *            現在のフレーム
 	 * @param keyData
-	 *            入力されたP1, P2のキー<br>
+	 *            P1, P2のキー入力．<br>
 	 *            Index 0 is P1, index 1 is P2.
 	 */
 	protected void processingCommands(int currentFrame, KeyData keyData) {
@@ -135,10 +140,10 @@ public class Fighting {
 	}
 
 	/**
-	 * 攻撃の当たり判定の処理, 及びそれに伴うキャラクターの体力といったパラメータの更新 を行う.
+	 * 攻撃の当たり判定の処理, 及びそれに伴うキャラクターの体力などのパラメータの更新を行う．
 	 *
 	 * @param currentFrame
-	 *            現在のフレーム番号
+	 *            現在のフレーム
 	 */
 	protected void calculationHit(int currentFrame) {
 		boolean[] isHit = { false, false };
@@ -288,7 +293,7 @@ public class Fighting {
 	}
 
 	/**
-	 * 各キャラクターの現在の水平方向のスピード量に応じて, プッシュ処理を行う
+	 * P1とP2のキャラクターの水平方向のスピードに応じて, 相手を押す処理を行う．
 	 */
 	protected void detectionPush() {
 		// Whether the conflict of first and second player or not.
@@ -310,7 +315,7 @@ public class Fighting {
 	}
 
 	/**
-	 * 相手と位置が重なってしまった場合, 重ならないように各キャラクターの座標の更新処理を行う
+	 * P1とP2のキャラクター位置が重なってしまった場合, 重ならないように各キャラクターの座標の更新処理を行う．
 	 */
 	protected void detectionFusion() {
 		// Whether the conflict of first and second player or not.
@@ -336,9 +341,9 @@ public class Fighting {
 	}
 
 	/**
-	 * 相手キャラクターとぶつかっている状態かを判定する
+	 * P1とP2のキャラクターが衝突している状態かどうかを判定する．
 	 *
-	 * @return true: 相手キャラクターとぶつかっている状態である; false: otherwise
+	 * @return {@code true} 両者が衝突している， {@code false} otherwise
 	 */
 	private boolean isCollision() {
 		return this.playerCharacters[0].getHitAreaLeft() <= this.playerCharacters[1].getHitAreaRight()
@@ -348,7 +353,7 @@ public class Fighting {
 	}
 
 	/**
-	 * ステージ端からキャラクターがはみ出ないように, 各キャラクターの座標の更新処理を行う
+	 * ステージの端からキャラクターがはみ出ないように, 各キャラクターの座標の更新処理を行う．
 	 */
 	protected void decisionEndStage() {
 		for (int i = 0; i < 2; ++i) {
@@ -369,13 +374,14 @@ public class Fighting {
 	}
 
 	/**
-	 * 入力されたアクションが実行可能かどうかを返す
+	 * 次に実行予定のアクションが実行可能かどうかを返す．
 	 *
 	 * @param character
-	 *            アクションを実行するキャラクター
-	 * @param 実行予定のアクション
+	 *            アクションを実行するキャラクターのインスタンス
+	 * @param nextAction
+	 *            次に実行予定のアクション
 	 *
-	 * @return 入力されたアクションが実行可能かどうか
+	 * @return {@code true} 実行可能である，{@code false} otherwise
 	 *
 	 * @see Character
 	 * @see Action
@@ -398,13 +404,13 @@ public class Fighting {
 	}
 
 	/**
-	 * 攻撃が相手に当たったかどうかを判定する
+	 * 攻撃が相手に当たったかどうかを判定する．
 	 *
 	 * @param opponent
 	 *            相手キャラクター.
 	 * @param attack
 	 *            自身が出した攻撃.
-	 * @return <em>True</em> 攻撃が当たった <em>False</em> 攻撃が当たらなかった
+	 * @return {@code true} 攻撃が当たった場合，{@code false} otherwise
 	 *
 	 * @see Character
 	 * @see Attack
@@ -423,7 +429,7 @@ public class Fighting {
 	}
 
 	/**
-	 * P1, P2のキャラクター情報が格納された配列を返す
+	 * P1, P2のキャラクター情報が格納された配列を返す．
 	 *
 	 * @return P1, P2のキャラクター情報が格納された配列
 	 */
@@ -432,11 +438,11 @@ public class Fighting {
 	}
 
 	/**
-	 * 現在のフレームにおけるゲーム情報を格納したフレームデータを作成する<br>
-	 * 両キャラクターの情報, 現在のフレーム数, 現在のラウンド, 波動拳の情報を格納したリスト, 両キャラクターのキー情報
+	 * 現在のフレームにおけるゲーム情報を格納したフレームデータを作成する．<br>
+	 * 両キャラクターの情報, 現在のフレーム数, 現在のラウンド, 波動拳の情報を格納したリスト, 両キャラクターのキー情報を持つ．
 	 *
 	 * @param nowFrame
-	 *            現在のフレーム番号
+	 *            現在のフレーム
 	 * @param round
 	 *            現在のラウンド
 	 * @param keyData
@@ -459,7 +465,9 @@ public class Fighting {
 		return new FrameData(characterData, nowFrame, round, newAttackDeque);
 	}
 
-	/** ラウンド開始時にキャラクター情報を初期化し, リストの中身をクリアーする */
+	/**
+	 * ラウンド開始時にキャラクター情報を初期化し,リストやキューの中身を空にする．
+	 */
 	public void initRound() {
 		for (int i = 0; i < 2; i++) {
 			this.playerCharacters[i].roundInit();
@@ -471,7 +479,7 @@ public class Fighting {
 	}
 
 	/**
-	 * P1, P2のエフェクトのリストを返す
+	 * P1, P2のエフェクトのリストを返す．
 	 *
 	 * @return P1, P2のエフェクトのリスト
 	 */
@@ -480,9 +488,9 @@ public class Fighting {
 	}
 
 	/**
-	 * Returns the list of projectile data of both characters
+	 * Returns the list of projectile data of both characters.
 	 *
-	 * @return The list of projectile data of both characters
+	 * @return the list of projectile data of both characters
 	 */
 	public Deque<LoopEffect> getProjectileDeque() {
 		return new LinkedList<LoopEffect>(this.projectileDeque);

@@ -15,37 +15,64 @@ import render.QuadTask;
 import render.RenderTask;
 import render.StringTask;
 
+/**
+ * 画像の描画を管理するマネージャークラス．
+ */
 public class GraphicManager {
 
+	/**
+	 * 描画するタスクのリスト．
+	 */
 	private LinkedList<RenderTask> renderTaskList;
 
+	/**
+	 * 文字画像．
+	 */
 	private LetterImage letterImage;
 
-	/** 各キャラクターの画像を格納するリスト */
+	/**
+	 * 各キャラクターの画像を格納するリスト．
+	 */
 	private ArrayList<CharacterActionImage> characterImageContainer;
 
-	/** 波動拳の画像を格納するリスト */
+	/**
+	 * 波動拳の画像を格納するリスト．
+	 */
 	private ArrayList<Image> projectileImageContainer;
 
-	/** 必殺技の画像を格納するリスト */
+	/**
+	 * 必殺技の画像を格納するリスト
+	 */
 	private ArrayList<Image> ultimateAttackImageContainer;
 
-	/** "Hit"の画像を格納するリスト */
+	/**
+	 * "Hit"の画像を格納するリスト．
+	 */
 	private ArrayList<Image> hitTextImageContainer;
 
-	/** 1～9までの画像を格納するリスト */
+	/**
+	 * 1～9までの画像を格納するリスト．
+	 */
 	private ArrayList<Image> counterTextImageContainer;
 
-	/** アッパー画像を格納する2次元配列 */
+	/**
+	 * アッパー画像を格納する2次元配列．
+	 */
 	private Image[][] upperImageContainer;
 
-	/** 攻撃ヒット時に描画するエフェクトの画像を格納する2次元配列 */
+	/**
+	 * 攻撃ヒット時に描画するエフェクトの画像を格納する2次元配列．
+	 */
 	private Image[][] hitEffectImageContainer;
 
-	/** 背景画像を格納するリスト */
+	/**
+	 * 背景画像を格納するリスト．
+	 */
 	private ArrayList<Image> backGroundImage;
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	private GraphicManager() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + GraphicManager.class.getName());
 
@@ -67,7 +94,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * GraphicManagerクラスの唯一のインスタンスを取得するgetterメソッド．
+	 * GraphicManagerクラスの唯一のインスタンスを取得する．
 	 *
 	 * @return GameManagerクラスの唯一のインスタンス
 	 */
@@ -75,13 +102,15 @@ public class GraphicManager {
 		return GraphicManagerHolder.instance;
 	}
 
-	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	/**
+	 * getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス．
+	 */
 	private static class GraphicManagerHolder {
 		private static final GraphicManager instance = new GraphicManager();
 	}
 
 	/**
-	 * 各キャラクターの画像を格納するリストを取得するgetterメソッド．
+	 * 各キャラクターの画像を格納するリストを取得する．
 	 *
 	 * @return 各キャラクターの画像を格納するリスト
 	 */
@@ -90,7 +119,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 波動拳の画像を格納するリストを取得するgetterメソッド．
+	 * 波動拳の画像を格納するリストを取得する．
 	 *
 	 * @return 波動拳の画像を格納するリスト
 	 */
@@ -99,7 +128,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 1～9までの画像を格納するリストを取得するgetterメソッド．
+	 * 1～9までの画像を格納するリストを取得する．
 	 *
 	 * @return 1～9までの画像を格納するリスト
 	 */
@@ -108,7 +137,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 必殺技の画像を格納するリストを取得するgetterメソッド．
+	 * 必殺技の画像を格納するリストを取得する．
 	 *
 	 * @return 必殺技の画像を格納するリスト
 	 */
@@ -117,7 +146,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * "Hit"の画像を格納するリストを取得するgetterメソッド．
+	 * "Hit"の画像を格納するリストを取得する．
 	 *
 	 * @return "Hit"の画像を格納するリスト
 	 */
@@ -126,7 +155,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * アッパーの画像を格納する二次元配列を取得するgetterメソッド．
+	 * アッパーの画像を格納する二次元配列を取得する．
 	 *
 	 * @return アッパーの画像を格納する二次元配列
 	 */
@@ -135,7 +164,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 攻撃ヒット時に描画するエフェクトの画像を格納する二次元配列を取得するgetterメソッド．
+	 * 攻撃ヒット時に描画するエフェクトの画像を格納する二次元配列を取得する．
 	 *
 	 * @return 攻撃ヒット時に描画するエフェクトの画像を格納する二次元配列
 	 */
@@ -144,7 +173,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 背景画像を格納するリストを取得するgetterメソッド．
+	 * 背景画像を格納するリストを取得する．
 	 *
 	 * @return 背景画像を格納するリスト
 	 */
@@ -153,8 +182,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * レンダリングタスクリストに登録されているタスクを実行し，画像をレンダリングするメソッド．<br>
-	 * タスクリストが空の場合，画面を黒く塗りつぶす．
+	 * レンダリングタスクリストに登録されているタスクを実行し，画像をレンダリングする．<br>
 	 *
 	 * @see DisplayManager#gameLoop(GameManager)
 	 */
@@ -173,15 +201,14 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 画像をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．<br>
-	 * 画像，画像をレンダリングするX座標とY座標(この座標で画像の左上端からレンダリングされる)，画像の左右の向きを引数で指定する．
+	 * 画像をレンダリングするタスクを新たに生成し，タスクリストに追加する．
 	 *
 	 * @param img
 	 *            画像
 	 * @param x
-	 *            画像をレンダリングするX座標
+	 *            画像をレンダリングするx座標
 	 * @param y
-	 *            画像をレンダリングするY座標
+	 *            画像をレンダリングするy座標
 	 * @param direction
 	 *            画像の左右の向き(右がtrue)
 	 */
@@ -191,20 +218,18 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 画像をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．<br>
-	 * 画像，画像をレンダリングするX座標とY座標(この座標で画像の左上端からレンダリングされる)，
-	 * 画像のX軸サイズとY軸サイズ，画像の左右の向きを引数で指定する．
+	 * 画像をレンダリングするタスクを新たに生成し，タスクリストに追加する．
 	 *
 	 * @param img
 	 *            画像
 	 * @param x
-	 *            画像をレンダリングするX座標
+	 *            画像をレンダリングするx座標
 	 * @param y
-	 *            画像をレンダリングするY座標
+	 *            画像をレンダリングするy座標
 	 * @param sizeX
-	 *            画像のX軸サイズ
+	 *            画像のx軸サイズ
 	 * @param sizeY
-	 *            画像のY軸サイズ
+	 *            画像のy軸サイズ
 	 * @param direction
 	 *            画像の左右の向き(右がtrue)
 	 */
@@ -214,14 +239,14 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 文字画像をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．
+	 * 文字画像をレンダリングするタスクを新たに生成し，タスクリストに追加する．
 	 *
 	 * @param string
 	 *            文字
 	 * @param x
-	 *            文字画像をレンダリングするX座標
+	 *            文字画像をレンダリングするx座標
 	 * @param y
-	 *            文字画像をレンダリングするY座標
+	 *            文字画像をレンダリングするy座標
 	 */
 	public void drawString(String string, int x, int y) {
 		StringTask task = new StringTask(letterImage, string, x, y);
@@ -229,7 +254,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 指定色で塗りつぶされた四角形をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．<br>
+	 * 指定色で塗りつぶされた四角形をレンダリングするタスクを新たに生成し，タスクリストに追加する．<br>
 	 * 塗りつぶし色は引数で指定することができる．
 	 *
 	 * @param x
@@ -255,8 +280,8 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 線で四角形をレンダリングするタスクを新たに生成し，タスクリストに追加するメソッド．<br>
-	 * 線の色は引数で指定することができる．
+	 * 枠線で四角形をレンダリングするタスクを新たに生成し，タスクリストに追加する．<br>
+	 * 枠線の色は引数で指定することができる．
 	 *
 	 * @param x
 	 *            四角形をレンダリングするX座標
@@ -281,7 +306,7 @@ public class GraphicManager {
 	}
 
 	/**
-	 * 引数で指定された文字フォントを設定するsetterメソッド．
+	 * 引数で指定された文字フォントを設定する．
 	 *
 	 * @param lf
 	 *            文字フォント
@@ -290,7 +315,9 @@ public class GraphicManager {
 		this.letterImage = lf;
 	}
 
-	/** GraphicManagerのフィールド変数をクリアする */
+	/**
+	 * GraphicManagerのフィールド変数をクリアする．
+	 */
 	public void close() {
 		this.renderTaskList.clear();
 		this.letterImage = null;

@@ -9,38 +9,64 @@ import fighting.Motion;
 import struct.FrameData;
 import struct.GameData;
 
+/**
+ * シミュレータークラス．
+ */
 public class Simulator {
 
+	/**
+	 * ゲーム内で不変の情報を保持する変数．
+	 */
 	private GameData gameData;
 
+	/**
+	 * GameDataクラスのインスタンスを用いてインスタンスを生成するクラスコンストラクタ．
+	 *
+	 * @param gameData
+	 *            GameDataクラスのインスタンス
+	 */
 	public Simulator(GameData gameData) {
 		this.gameData = gameData;
 	}
 
 	/**
-	 * Simulates the progression of a fight starting from a given {@link FrameData} instance and executing specified
-	 * actions for both players.
-	 * The resulting {@link FrameData} is returned, and can be used to assess the outcome of the simulation.<br>
+	 * Simulates the progression of a fight starting from a given
+	 * {@link FrameData} instance and executing specified actions for both
+	 * players.<br>
+	 * The resulting {@link FrameData} is returned, and can be used to assess
+	 * the outcome of the simulation.<br>
 	 *
-	 * Note that when the character is on ground, all AIR actions will be considered invalid by the simulator and all
-	 * GROUND actions are considered invalid if the character is in air as well).<br>
-	 * To simulate AIR actions when the character is initially on ground, add Action.JUMP to the action list before the
-	 * AIR action.<br>
-	 * E.g., myAct.add(Action.JUMP); myAct.add(Action.AIR_A);
+	 * Note that when the character is on ground, all AIR actions will be
+	 * considered invalid by the simulator and all GROUND actions are considered
+	 * invalid if the character is in air as well).<br>
+	 * To simulate AIR actions when the character is initially on ground, add
+	 * Action.JUMP to the action list before the AIR action.<br>
+	 * For example, myAct.add(Action.JUMP); myAct.add(Action.AIR_A);
 	 *
-	 * @param frameData Frame data at the start of simulation
-	 * @param playerNumber Boolean value which identifies P1/P2. true: P1 false: P2
-	 * @param myAct Actions to be performed by the player identified by the parameter `player`.
-	 * @param oppAct Actions to be performed by the opponent of the player identified by the parameter `player`.
-	 * @param simulationLimit The number of frames to be simulated.<br>
-	 *        If `simulationLimit` is less than the total number of actions passed for the players,
-	 *        the simulator will simulate only `simulationLimit` frames, and will not simulate frames exceeding
-	 *        `simulationLimit`.<br>
-	 *        If `simulationLimit` is more than the total number of actions passed for the players, the simulator will
-	 *        simulate all the given actions and then continue the simulation up to `simulationLimit` frames assuming
-	 *        no actions are performed by the characters.
+	 * @param frameData
+	 *            frame data at the start of simulation
+	 * @param playerNumber
+	 *            boolean value which identifies P1/P2. {@code true} if the
+	 *            player is P1, or {@code false} if P2.
+	 * @param myAct
+	 *            actions to be performed by the player identified by the
+	 *            parameter `player`
+	 * @param oppAct
+	 *            actions to be performed by the opponent of the player
+	 *            identified by the parameter `player`
+	 * @param simulationLimit
+	 *            the number of frames to be simulated.<br>
+	 *            If `simulationLimit` is less than the total number of actions
+	 *            passed for the players, the simulator will simulate only
+	 *            `simulationLimit` frames, and will not simulate frames
+	 *            exceeding `simulationLimit`.<br>
+	 *            If `simulationLimit` is more than the total number of actions
+	 *            passed for the players, the simulator will simulate all the
+	 *            given actions and then continue the simulation up to
+	 *            `simulationLimit` frames assuming no actions are performed by
+	 *            the characters.
 	 *
-	 * @return The frame data after the simulation
+	 * @return the frame data after the simulation
 	 */
 	public FrameData simulate(FrameData frameData, boolean playerNumber, Deque<Action> myAct, Deque<Action> oppAct,
 			int simulationLimit) {

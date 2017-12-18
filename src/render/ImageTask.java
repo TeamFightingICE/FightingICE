@@ -6,13 +6,39 @@ import org.lwjgl.opengl.GL11;
 
 import image.Image;
 
+/**
+ * 画像を描画するタスクを扱うメソッド．
+ */
 public class ImageTask extends RenderTask {
 
+	/**
+	 * 画像テクスチャのID．
+	 */
 	private int textureId;
+
+	/**
+	 * 画像の幅．
+	 */
 	private int width;
+
+	/**
+	 * 画像の高さ．
+	 */
 	private int height;
+
+	/**
+	 * 画像を描画するx座標．
+	 */
 	private int posX;
+
+	/**
+	 * 画像を描画するy座標．
+	 */
 	private int posY;
+
+	/**
+	 * 画像の左右の向き(右がtrue，左がfalse)．
+	 */
 	private boolean direction;
 
 	/** コンストラクタ */
@@ -26,13 +52,17 @@ public class ImageTask extends RenderTask {
 	}
 
 	/**
-	 * インスタンスの初期値をセットする場合のコンストラクタ．<br>
+	 * ImageTaskインスタンスの初期値をセットする場合のクラスコンストラクタ．<br>
 	 * 画像を直接指定してテクスチャID，幅，高さを取得する．
 	 *
-	 * @param img 画像
-	 * @param x 画像を描画するX座標
-	 * @param y 画像を描画するY座標
-	 * @param dir 画像の左右の向き(右がtrue)
+	 * @param img
+	 *            画像
+	 * @param x
+	 *            画像を描画するx座標
+	 * @param y
+	 *            画像を描画するy座標
+	 * @param dir
+	 *            画像の左右の向き(右がtrue)
 	 */
 	public ImageTask(Image img, int x, int y, boolean dir) {
 		this.textureId = img.getTextureId();
@@ -44,14 +74,20 @@ public class ImageTask extends RenderTask {
 	}
 
 	/**
-	 * インスタンスの初期値をセットする場合のコンストラクタ．
+	 * ImageTaskインスタンスの初期値をセットする場合のクラスコンストラクタ．
 	 *
-	 * @param id 画像テクスチャのID
-	 * @param x 画像を描画するX座標
-	 * @param y 画像を描画するY座標
-	 * @param width 画像の幅
-	 * @param height 画像の高さ
-	 * @param dir 画像の左右の向き(右がtrue)
+	 * @param id
+	 *            画像テクスチャのID
+	 * @param x
+	 *            画像を描画するx座標
+	 * @param y
+	 *            画像を描画するy座標
+	 * @param width
+	 *            画像の幅
+	 * @param height
+	 *            画像の高さ
+	 * @param dir
+	 *            画像の左右の向き(右がtrue)
 	 */
 	public ImageTask(int id, int x, int y, int width, int height, boolean dir) {
 		this.textureId = id;
@@ -63,7 +99,7 @@ public class ImageTask extends RenderTask {
 	}
 
 	/**
-	 * 画像をレンダリングするメソッド．<br>
+	 * 画像をレンダリングする．<br>
 	 * テクスチャを貼り付けた四角形を用意して画像をレンダリングする．
 	 */
 	@Override

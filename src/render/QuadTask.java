@@ -2,25 +2,69 @@ package render;
 
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * 四角形を描画するタスクを扱うメソッド．
+ */
 public class QuadTask extends RenderTask {
 
-	/** 四角形を指定色で塗りつぶす場合を指定する定数 */
+	/**
+	 * 四角形を指定色で塗りつぶす場合を指定する定数．
+	 */
 	public static final byte FILLED_QUAD = 0;
 
-	/** 四角形を枠線で描画する場合を指定する定数 */
+	/**
+	 * 四角形を枠線で描画する場合を指定する定数．
+	 */
 	public static final byte LINE_QUAD = 1;
 
+	/**
+	 * 四角形の描画モード．
+	 */
 	private byte mode;
+
+	/**
+	 * 塗りつぶし色あるいは枠線の色の赤み．
+	 */
 	private float red;
+
+	/**
+	 * 塗りつぶし色あるいは枠線の色の緑み．
+	 */
 	private float green;
+
+	/**
+	 * 塗りつぶし色あるいは枠線の色の青み．
+	 */
 	private float blue;
+
+	/**
+	 * 不透明度．
+	 */
 	private float alpha;
+
+	/**
+	 * 四角形を描画するx座標．
+	 */
 	private int posX;
+
+	/**
+	 * 四角形を描画するy座標．
+	 */
 	private int posY;
+
+	/**
+	 * 四角形のx軸方向のサイズ．
+	 */
 	private int sizeX;
+
+	/**
+	 * 四角形のy軸方向のサイズ．
+	 */
 	private int sizeY;
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public QuadTask() {
 		this.mode = FILLED_QUAD;
 		this.posX = -1;
@@ -33,17 +77,27 @@ public class QuadTask extends RenderTask {
 		this.alpha = 0;
 	}
 
-	/** インスタンスの初期値を設定する場合のコンストラクタ．
+	/**
+	 * QuadTaskインスタンスの初期値を設定する場合のクラスコンストラクタ．
 	 *
-	 * @param mode 描画モード(FILLED_QUAD or LINE_QUAD)
-	 * @param posX 描画するX座標
-	 * @param posY 描画するY座標
-	 * @param sizeX 四角形のX軸サイズ
-	 * @param sizeY 四角形のY軸サイズ
-	 * @param r 赤み
-	 * @param g 緑み
-	 * @param b 青み
-	 * @param alpha 不透明度
+	 * @param mode
+	 *            描画モード(FILLED_QUAD or LINE_QUAD)
+	 * @param posX
+	 *            描画するx座標
+	 * @param posY
+	 *            描画するy座標
+	 * @param sizeX
+	 *            四角形のx軸サイズ
+	 * @param sizeY
+	 *            四角形のy軸サイズ
+	 * @param r
+	 *            赤み
+	 * @param g
+	 *            緑み
+	 * @param b
+	 *            青み
+	 * @param alpha
+	 *            不透明度
 	 */
 	public QuadTask(byte mode, int posX, int posY, int sizeX, int sizeY, float r, float g, float b, float alpha) {
 		this.mode = mode;
@@ -58,7 +112,7 @@ public class QuadTask extends RenderTask {
 	}
 
 	/**
-	 * 四角形をレンダリングするメソッド．<br>
+	 * 指定されたモードと色で四角形をレンダリングする．<br>
 	 */
 	@Override
 	public void render() {

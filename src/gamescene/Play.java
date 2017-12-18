@@ -29,42 +29,69 @@ import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
 
+/**
+ * 対戦中のシーンを扱うクラス．
+ */
 public class Play extends GameScene {
 
-	/** 対戦処理を行うクラスのインスタンス */
+	/**
+	 * 対戦処理を行うクラスのインスタンス．
+	 */
 	private Fighting fighting;
 
-	/** 現在のフレームナンバー */
+	/**
+	 * 現在のフレーム．
+	 */
 	private int nowFrame;
 
-	/** 各ラウンド前に行う初期化処理内における経過フレーム数 */
+	/**
+	 * 各ラウンド前に行う初期化処理内における経過フレーム数．
+	 */
 	private int elapsedBreakTime;
 
-	/** 現在のラウンド */
+	/**
+	 * 現在のラウンド．
+	 */
 	private int currentRound;
 
-	/** 各ラウンドの開始時かどうかを表すフラグ */
+	/**
+	 * 各ラウンドの開始時かどうかを表すフラグ．
+	 */
 	private boolean roundStartFlag;
 
-	/** 対戦処理後のキャラクターデータといったゲーム情報を格納したフレームデータ */
+	/**
+	 * 対戦処理後のキャラクターデータなどのゲーム情報を格納したフレームデータ．
+	 */
 	private FrameData frameData;
 
-	/** 対戦処理後のゲーム画面の情報 */
+	/**
+	 * 対戦処理後のゲーム画面の情報．
+	 */
 	private ScreenData screenData;
 
-	/** 対戦処理に用いるP1, P2の入力情報 */
+	/**
+	 * 対戦処理に用いるP1, P2の入力情報．
+	 */
 	private KeyData keyData;
 
-	/** 各ラウンド終了時のP1, P2の残り体力, 経過時間を格納するリスト */
+	/**
+	 * 各ラウンド終了時のP1, P2の残り体力, 経過時間を格納するリスト．
+	 */
 	private ArrayList<RoundResult> roundResults;
 
-	/** Replayファイルに出力するための出力ストリーム */
+	/**
+	 * Replayファイルに出力するための出力ストリーム．
+	 */
 	private DataOutputStream dos;
 
-	/** 現在の年月日, 時刻を表す文字列 */
+	/**
+	 * 現在の年月日, 時刻を表す文字列．
+	 */
 	private String timeInfo;
 
-	/** Playシーンを初期化するコンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public Play() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.PLAY;
@@ -159,7 +186,9 @@ public class Play extends GameScene {
 
 	}
 
-	/** 各ラウンド開始時に, 対戦情報や現在のフレームなどの初期化を行う */
+	/**
+	 * 各ラウンド開始時に, 対戦情報や現在のフレームなどの初期化を行う．
+	 */
 	private void initRound() {
 		this.fighting.initRound();
 		this.nowFrame = 0;
@@ -169,7 +198,9 @@ public class Play extends GameScene {
 		InputManager.getInstance().clear();
 	}
 
-	/** 各ラウンド開始時における, インターバル処理を行う */
+	/**
+	 * 各ラウンド開始時における, インターバル処理を行う．
+	 */
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
 		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
@@ -228,7 +259,9 @@ public class Play extends GameScene {
 		}
 	}
 
-	/** 各ラウンド終了時の処理を行う. */
+	/**
+	 * 各ラウンド終了時の処理を行う.
+	 */
 	private void processingRoundEnd() {
 		RoundResult roundResult = new RoundResult(this.frameData);
 		this.roundResults.add(roundResult);
@@ -269,7 +302,9 @@ public class Play extends GameScene {
 
 	}
 
-	/** リプレイファイルを作成し, 使用キャラクターを表すインデックスといったヘッダ情報を記述する. */
+	/**
+	 * リプレイファイルを作成し, 使用キャラクターを表すインデックスなどのヘッダ情報を記述する.
+	 */
 	private void openReplayFile() {
 		String fileName = LogWriter.getInstance().createOutputFileName("./log/replay/", this.timeInfo);
 		this.dos = ResourceLoader.getInstance().openDataOutputStream(fileName + ".dat");

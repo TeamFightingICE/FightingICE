@@ -2,19 +2,33 @@ package image;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * 画像に関するデータを扱うクラス．
+ */
 public class Image {
 
-	/** キャラクターの向きの右方向をtrueとする． */
+	/**
+	 * キャラクターの向きの右方向(true)．
+	 */
 	static final public boolean DIRECTION_RIGHT = true;
 
-	/** キャラクターの向きの左方向をfalseとする． */
+	/**
+	 * キャラクターの向きの左方向(false)．
+	 */
 	static final public boolean DIRECTION_LEFT = false;
 
+	/**
+	 * 画像テクスチャのID．
+	 */
 	private int textureId;
+
+	/**
+	 * バッファーに保存された画像．
+	 */
 	private BufferedImage bimg;
 
 	/**
-	 * 新たな画像クラスのインスタンスを生成するためのコンストラクタ．
+	 * Imageクラスのインスタンスを生成するためのクラスコンストラクタ．<br>
 	 * 引数が指定されていない場合，画像テクスチャのIDを-1，BufferedImageをnullとして初期化を行う．
 	 */
 	public Image() {
@@ -23,10 +37,11 @@ public class Image {
 	}
 
 	/**
-	 * 新たな画像クラスのインスタンスを生成するためのコンストラクタ．
-	 * 引数の画像インスタンスのテクスチャIDとBufferedImageを取得し，それを用いて新たなインスタンスの初期化を行う．
+	 * Imageクラスのインスタンスを生成するためのクラスコンストラクタ．<br>
+	 * 引数として渡されたImageインスタンスのテクスチャIDとBufferedImageを取得し，それを用いて新たなインスタンスの初期化を行う．
 	 *
-	 * @param image 画像インスタンス
+	 * @param image
+	 *            Imageインスタンス
 	 */
 	public Image(Image image) {
 		this.textureId = image.getTextureId();
@@ -34,11 +49,13 @@ public class Image {
 	}
 
 	/**
-	 * 新たな画像クラスのインスタンスを生成するためのコンストラクタ．
+	 * 新たな画像クラスのインスタンスを生成するためのコンストラクタ．<br>
 	 * 引数のテクスチャIDとBufferedImageを用いて，新たなインスタンスの初期化を行う．
 	 *
-	 * @param id テクスチャID
-	 * @param bimg BufferedImage
+	 * @param id
+	 *            画像のテクスチャID
+	 * @param bimg
+	 *            BufferedImage
 	 */
 	public Image(int id, BufferedImage bimg) {
 		this.textureId = id;
@@ -46,38 +63,47 @@ public class Image {
 	}
 
 	/**
-	 * 画像インスタンスのテクスチャIDを取得するgetterメソッド．
+	 * 画像のテクスチャIDを返す．
 	 *
-	 * @return 画像インスタンスのテクスチャID
+	 * @return 画像のテクスチャID
 	 */
 	public int getTextureId() {
 		return this.textureId;
 	}
 
 	/**
-	 * 画像インスタンスのBufferedImageを取得するgetterメソッド．
+	 * BufferedImageを返す．
 	 *
-	 * @return 画像インスタンスのBufferedImage
+	 * @return BufferedImage
 	 */
 	public BufferedImage getBufferedImage() {
 		return new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());
 	}
 
-	/** 画像インスタンスのテクスチャIDに引数のテクスチャIDを設定するsetterメソッド．*/
+	/**
+	 * 画像のテクスチャIDをセットする．
+	 *
+	 * @param textureId
+	 *            画像のテクスチャID
+	 */
 	public void setTextureId(int textureId) {
 		this.textureId = textureId;
 	}
 
-	/** 画像インスタンスのBufferedImageに引数のBufferedImageを設定するsetterメソッド．*/
+	/**
+	 * BufferedImageをセットする．
+	 *
+	 * @param bimg
+	 *            BufferedImage
+	 */
 	public void setBufferedImage(BufferedImage bimg) {
 		this.bimg = new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());
 	}
 
 	/**
-	 * 画像の幅を取得するgetterメソッド．
+	 * 画像の幅を返す．
 	 *
-	 * @return 画像インスタンスのBufferedImageがnullでなければ画像の幅を返す．
-	 *         nullであれば999を返す．
+	 * @return BufferedImageがnullでなければ画像の幅を返す． nullであれば999を返す．
 	 */
 	public int getWidth() {
 		if (this.bimg != null) {
@@ -88,10 +114,9 @@ public class Image {
 	}
 
 	/**
-	 * 画像の高さを取得するgetterメソッド．
+	 * 画像の高さを返す．
 	 *
-	 * @return 画像インスタンスのBufferedImageがnullでなければ画像の高さを返す．
-	 *         nullであれば999を返す．
+	 * @return BufferedImageがnullでなければ画像の高さを返す． nullであれば999を返す．
 	 */
 	public int getHeight() {
 		if (this.bimg != null) {

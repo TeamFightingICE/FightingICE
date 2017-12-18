@@ -21,36 +21,79 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.util.WaveData;
 
-/** シングルトンパターン サウンドマネージャークラス */
+/**
+ * サウンドを管理するマネージャークラス．
+ */
 public class SoundManager {
 
+	/**
+	 * 音声ファイルのクローズを行ったかどうかのフラグ．
+	 */
 	private boolean closeFlag;
 
+	/**
+	 * 音源の位置．
+	 */
 	private float[] sourcePos;
 
+	/**
+	 * 音源の速度．
+	 */
 	private float[] sourceVel;
 
+	/**
+	 * リスナーの位置．
+	 */
 	private float[] listenerPos;
 
+	/**
+	 * リスナーの速度．
+	 */
 	private float[] listenerVel;
 
+	/**
+	 * リスナーの向き．
+	 */
 	private float[] listenerOri;
 
+	/**
+	 * 読み込み済みの音声ファイル名を格納するリスト．
+	 */
 	private ArrayList<String> loadedFiles;
 
+	/**
+	 * 音声バッファを格納するリスト．
+	 */
 	private ArrayList<Integer> buffers;
 
+	/**
+	 * 音源を格納するリスト．
+	 */
 	private ArrayList<Integer> sources;
 
+	/**
+	 * OpenALに使われる音声デバイス．
+	 */
 	private long device;
 
+	/**
+	 * OpenALの音声処理コンテキスト．
+	 */
 	private long context;
 
+	/**
+	 * サウンドエフェクトを格納するマップ．
+	 */
 	private Map<String, Integer> soundEffect;
 
+	/**
+	 * BGM．
+	 */
 	private Integer backGroundMusic;
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	private SoundManager() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + SoundManager.class.getName());
 
@@ -75,7 +118,7 @@ public class SoundManager {
 	}
 
 	/**
-	 * SoundManagerクラスの唯一のインスタンスを取得するgetterメソッド．
+	 * SoundManagerクラスの唯一のインスタンスを取得する．
 	 *
 	 * @return SoundManagerクラスの唯一のインスタンス
 	 */
@@ -83,12 +126,16 @@ public class SoundManager {
 		return SoundManagerHolder.instance;
 	}
 
-	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス． */
+	/**
+	 * getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス．
+	 */
 	private static class SoundManagerHolder {
 		private static final SoundManager instance = new SoundManager();
 	}
 
-	/** OpenAL関連の準備を行うメソッド． */
+	/**
+	 * OpenALの準備を行う．
+	 */
 	private void initialize() {
 		// OpenALのデフォルトデバイスに接続する
 		String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
@@ -103,7 +150,9 @@ public class SoundManager {
 		this.setListenerValues();
 	}
 
-	/** リスナーのパラメータ(Position, Velocity, Orientation)を設定するメソッド． */
+	/**
+	 * リスナーのパラメータ(Position, Velocity, Orientation)を設定する．
+	 */
 	private void setListenerValues() {
 		alListenerfv(AL_POSITION, this.listenerPos);
 		alListenerfv(AL_VELOCITY, this.listenerVel);
@@ -111,7 +160,7 @@ public class SoundManager {
 	}
 
 	/**
-	 * 音声の読み込みとパラメータの設定を行い，再生準備済みの音源を返すメソッド．<br>
+	 * 音声の読み込みとパラメータの設定を行い，再生準備済みの音源を返す．<br>
 	 * 音声バッファを取得して，生成した音源にセットし，ピッチ・ゲインなどのパラメータを設定した後，設定済みの音源を返す．
 	 *
 	 * @param filePath
@@ -148,8 +197,9 @@ public class SoundManager {
 	}
 
 	/**
-	 * 音声バッファを取得するgetterメソッド．<br>
-	 * 新たに音声をバッファに取り込み、読み込み済みファイルのリストに登録した後に返す． 既に読み込んでいたファイルの場合新たに取り込まずに返す．
+	 * 音声バッファを取得する．<br>
+	 * 新たに音声をバッファに取り込み、読み込み済みファイルのリストに登録した後に音声バッファを返す．<br>
+	 * 既に読み込んでいたファイルの場合新たに取り込まずに返す．
 	 *
 	 * @param filePath
 	 *            音声のファイルパス
@@ -179,7 +229,7 @@ public class SoundManager {
 	}
 
 	/**
-	 * Wav音声ファイルを読み込んでバッファに取り込み，音声バッファを返すメソッド．
+	 * Wav音声ファイルを読み込んでバッファに取り込み，音声バッファを返す．
 	 *
 	 * @param filePath
 	 *            音声のファイルパス
@@ -207,17 +257,23 @@ public class SoundManager {
 		return buffer.get(0);
 	}
 
-	/** 引数で指定された音源を再生 */
+	/**
+	 * 引数で指定された音源を再生する．
+	 */
 	public void play(int source) {
 		alSourcePlay(source);
 	}
 
-	/** 引数で指定された音源を停止 */
+	/**
+	 * 引数で指定された音源を停止する．
+	 */
 	public void stop(int source) {
 		alSourceStop(source);
 	}
 
-	/** 音声ファイルクローズ 終了時は必ず行う */
+	/**
+	 * 音声ファイルをクローズする．
+	 */
 	public void close() {
 		if (!this.closeFlag) {
 			IntBuffer scratch = BufferUtils.createIntBuffer(1);
@@ -249,27 +305,28 @@ public class SoundManager {
 	}
 
 	/**
-	 * SEを格納したマップを取得するgetterメソッド．
+	 * サウンドエフェクトを格納したマップを取得する．
 	 *
-	 * @return SEを格納したマップ
+	 * @return サウンドエフェクトを格納したマップ
 	 */
 	public Map<String, Integer> getSoundEffect() {
 		return this.soundEffect;
 	}
 
 	/**
-	 * BGMを取得するgetterメソッド．
+	 * BGMを取得する．
 	 *
-	 * @return BackGroundMusic
+	 * @return back ground music
 	 */
 	public Integer getBackGroundMusic() {
 		return this.backGroundMusic;
 	}
 
 	/**
-	 * 引数の音源をBGMとしてセットするsetterメソッド．
+	 * 引数の音源をBGMとしてセットする．
 	 *
 	 * @param source
+	 *            音源
 	 */
 	public void setBackGroundMusic(int source) {
 		this.backGroundMusic = source;

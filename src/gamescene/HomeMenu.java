@@ -10,25 +10,39 @@ import manager.InputManager;
 import setting.LaunchSetting;
 import struct.Key;
 
-/** 対戦メニュー画面, リプレイ再生, ゲーム終了を選択するメニュー画面を管理するクラス */
+/**
+ * 対戦メニュー画面, リプレイ再生, ゲーム終了を選択するメニュー画面を扱うクラス．
+ */
 public class HomeMenu extends GameScene {
 
-	/** 画面に表示する項目数 */
+	/**
+	 * 画面に表示する項目数．
+	 */
 	private final int NUMBER_OF_ITEM = 3;
 
-	/** 表示する各項目のインデックス,名前,座標を格納している配列 */
+	/**
+	 * 表示する各項目のインデックス,名前,座標を格納している配列．
+	 */
 	private MenuItem[] menuItems;
 
-	/** replayフォルダ内にある全replayの名前を格納したリスト */
+	/**
+	 * replayフォルダ内にある全replayの名前を格納したリスト．
+	 */
 	private ArrayList<String> allReplayNames;
 
-	/** 現在のカーソル位置 */
+	/**
+	 * 現在のカーソル位置．
+	 */
 	private int cursorPosition;
 
-	/** REPLAYの項目における現在の選択位置 */
+	/**
+	 * REPLAYの項目における現在の選択位置．
+	 */
 	private int replayIndex;
 
-	/** HomeMenuシーンを初期化するコンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public HomeMenu() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.HOME_MENU;
@@ -46,7 +60,7 @@ public class HomeMenu extends GameScene {
 				new MenuItem("FIGHT ", 50, 50, 0),
 				new MenuItem("REPLAY : ", 50, 100, 1),
 				new MenuItem("EXIT ", 50, 310, 2)
-				};
+		};
 		this.cursorPosition = 0;
 		this.replayIndex = 0;
 
@@ -129,7 +143,9 @@ public class HomeMenu extends GameScene {
 
 	}
 
-	/** 対戦の設定を行うメニュー画面を描画する */
+	/**
+	 * 対戦の設定を行うメニュー画面を描画する．
+	 */
 	private void drawScreen() {
 		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(),
 				this.menuItems[0].getCoordinateY());

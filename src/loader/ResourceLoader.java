@@ -1,16 +1,6 @@
 package loader;
 
-import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_RGBA8;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
@@ -47,20 +37,26 @@ import setting.GameSetting;
 import setting.LaunchSetting;
 import setting.ResourceSetting;
 
-/** キャラクターの設定ファイルや画像等のリソースをロードするためのシングルトンなクラス */
+/**
+ * キャラクターの設定ファイルや画像等のリソースをロードするためのシングルトンパターンクラス．
+ */
 public class ResourceLoader {
 
-	/** 読み込み済み画像のリスト */
+	/**
+	 * 読み込み済み画像のリスト．
+	 */
 	private ArrayList<String> loadedGraphics;
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	private ResourceLoader() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceLoader.class.getName());
 		this.loadedGraphics = new ArrayList<String>();
 	}
 
 	/**
-	 * ResourceLoaderクラスの唯一のインスタンスを取得するgetterメソッド．
+	 * ResourceLoaderクラスの唯一のインスタンスを取得する．
 	 *
 	 * @return ResourceLoaderクラスの唯一のインスタンス
 	 */
@@ -68,12 +64,16 @@ public class ResourceLoader {
 		return ResourceLoaderHolder.instance;
 	}
 
-	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	/**
+	 * getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス．
+	 */
 	private static class ResourceLoaderHolder {
 		private static final ResourceLoader instance = new ResourceLoader();
 	}
 
-	/** ゲームに必要な画像と音声をまとめて読み込むメソッド． */
+	/**
+	 * ゲームに必要な画像と音声をまとめて読み込むメソッド．
+	 */
 	public void loadResource() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Loading the resources");
 		String graphicPath = "./data/graphics/";
@@ -159,7 +159,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * 読み込みたいファイルを開き，そのBufferedReaderを返す
+	 * 読み込みたいファイルを開き，そのBufferedReaderを返す．
 	 *
 	 * @param filePath
 	 *            読み込みたいファイルまでのパス
@@ -175,7 +175,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * 読み込みたいファイルを開き，その出力ストリームを返す
+	 * 読み込みたいファイルを開き，その出力ストリームを返す．
 	 *
 	 * @param filePath
 	 *            読み込みたいファイルまでのパス
@@ -191,7 +191,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * 読み込みたいファイルを開き，そのBufferedReaderを返す
+	 * 読み込みたいファイルを開き，そのBufferedReaderを返す．
 	 *
 	 * @param filePath
 	 *            読み込みたいファイルまでのパス
@@ -207,7 +207,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * AIが入っているディレクトリからすべてのAI名を読み込み，リストに登録して返すメソッド．
+	 * AIが入っているディレクトリからすべてのAI名を読み込み，AI名を登録したリストを返す．
 	 *
 	 * @return AI名を格納したリスト
 	 */
@@ -225,13 +225,13 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * 指定されたAI名のjarファイルを読み込み、その情報を格納したコントローラを返す．
+	 * 指定されたAI名のjarファイルを読み込み、AI情報を格納したコントローラを返す．
 	 *
 	 * @param aiName
 	 *            読み込みたいAIの名前
 	 *
 	 * @return 読み込んだAIの情報を格納したコントローラ<br>
-	 *         読み込んだAIが無ければnullを返す
+	 *         読み込んだAIが無ければnullを返す．
 	 */
 	public AIController loadAI(String aiName) {
 		File file = new File("./data/ai/" + aiName + ".jar");
@@ -258,8 +258,8 @@ public class ResourceLoader {
 	 * @param extension
 	 *            読み込みたいファイルの拡張子
 	 *
-	 * @return 読み込んだすべてのファイルの、拡張子を除いた名前が格納されている配列<br>
-	 *         読み込んだファイルが無ければnullを返す
+	 * @return 読み込んだすべてのファイルの，拡張子を除いた名前が格納されている配列<br>
+	 *         読み込んだファイルが無ければnullを返す．
 	 */
 	public ArrayList<String> loadFileNames(String directoryPath, String extension) {
 		File[] files = new File(directoryPath).listFiles();
@@ -277,7 +277,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * キャラクターの画像を読み込み、リストに格納するメソッド．
+	 * キャラクターの画像を読み込み、リストに格納する．
 	 *
 	 * @param path
 	 *            各キャラクターの画像が格納されているディレクトリまでのパス
@@ -337,7 +337,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * 背景画像を読み込むメソッド．
+	 * 背景画像を読み込む．
 	 *
 	 * @param container
 	 *            画像を格納するリスト
@@ -373,7 +373,7 @@ public class ResourceLoader {
 	 *            読み込みたい画像までのパス
 	 *
 	 * @return 読み込んだ画像の情報<br>
-	 *         画像を読み込めなかった場合はnull
+	 *         画像を読み込めなかった場合はnullを返す．
 	 */
 	public Image loadImage(String filePath) {
 		BufferedImage bimg = null;
@@ -389,7 +389,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * BufferedImageからテクスチャを読み込むメソッド．<br>
+	 * BufferedImageからテクスチャを読み込む．<br>
 	 * 読み込み結果をOpenGLに転送し，割り当てられたテクスチャIDとBufferedImageの情報を含んだ新たな画像クラスのインスタンスを返す．
 	 *
 	 * @param bimg
@@ -444,7 +444,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * 指定したディレクトリから画像を読み込み、リストに格納するメソッド．
+	 * 指定したディレクトリから画像を読み込み、リストに格納する．
 	 *
 	 * @param container
 	 *            画像を格納するリスト
@@ -512,7 +512,9 @@ public class ResourceLoader {
 		}
 	}
 
-	/** サウンドエフェクトを読み込んでマップに格納するメソッド． */
+	/**
+	 * サウンドエフェクトを読み込んでマップに格納する．
+	 */
 	private void loadSoundEffect() {
 		File[] files = new File(ResourceSetting.SOUND_DIRECTORY).listFiles();
 		sortByFileName(files);
@@ -525,27 +527,28 @@ public class ResourceLoader {
 		}
 	}
 
-	/** BGMを読み込むメソッド． */
+	/**
+	 * BGMを読み込む．
+	 */
 	private void loadBackGroundMusic() {
 		SoundManager.getInstance().setBackGroundMusic(SoundManager.getInstance()
 				.loadSoundResource(ResourceSetting.SOUND_DIRECTORY + ResourceSetting.BGM_FILE, true));
 	}
 
 	/**
-	 * 画像が読み込み済みかどうかを返すメソッド．
+	 * 画像が読み込み済みかどうかを返す．
 	 *
 	 * @param graphicName
 	 *            画像名
 	 *
-	 * @return 読み込み済みの場合: true<br>
-	 *         まだ読み込まれていない場合: false
+	 * @return {@code true} 読み込み済みの場合，{@code false} otherwise
 	 */
 	public boolean isLoaded(String graphicName) {
 		return this.loadedGraphics.contains(graphicName);
 	}
 
 	/**
-	 * 画像名を読み込み済み画像リストに追加するメソッド．
+	 * 画像名を読み込み済み画像リストに追加する．
 	 *
 	 * @param graphicName
 	 *            画像名
@@ -555,7 +558,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * 複数のファイルを辞書式順序でソートするメソッド．
+	 * 複数のファイルを辞書式順序でソートする．
 	 *
 	 * @param files
 	 *            ソートしたいファイルを格納した配列

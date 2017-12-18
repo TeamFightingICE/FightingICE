@@ -15,20 +15,19 @@ public class AttackData {
 	private HitArea settingHitArea;
 
 	/**
-	 * The absolute value of the horizontal speed of the attack hit box
-	 * (zero means the attack hit box will track the character)
+	 * The absolute value of the horizontal speed of the attack hit box (zero
+	 * means the attack hit box will track the character)
 	 */
 	private int settingSpeedX;
 
 	/**
-	 * The absolute value of the vertical speed of the attack hit box
-	 * (zero means the attack hit box will track the character)
+	 * The absolute value of the vertical speed of the attack hit box (zero
+	 * means the attack hit box will track the character)
 	 */
 	private int settingSpeedY;
 
 	/**
-	 * HitArea's information of this attack hit box in the current
-	 * frame
+	 * HitArea's information of this attack hit box in the current frame
 	 *
 	 * @see HitArea
 	 */
@@ -46,14 +45,14 @@ public class AttackData {
 	private boolean playerNumber;
 
 	/**
-	 * The horizontal speed of the attack hit box (minus when moving
-	 * left and plus when moving right)
+	 * The horizontal speed of the attack hit box (minus when moving left and
+	 * plus when moving right)
 	 */
 	private int speedX;
 
 	/**
-	 * The vertical speed of the attack hit box (minus when moving up
-	 * and plus when moving down)
+	 * The vertical speed of the attack hit box (minus when moving up and plus
+	 * when moving down)
 	 */
 	private int speedY;
 
@@ -82,37 +81,43 @@ public class AttackData {
 	private int guardDamage;
 
 	/**
-	 *  The value of the energy added to the character when it uses this skill
+	 * The value of the energy added to the character when it uses this skill
 	 */
 	private int startAddEnergy;
 
 	/**
-	 * The value of the energy added to the character when this skill hits the opponent
+	 * The value of the energy added to the character when this skill hits the
+	 * opponent
 	 */
 	private int hitAddEnergy;
 
 	/**
-	 * The value of the energy added to the character when this skill is blocked by the opponent
+	 * The value of the energy added to the character when this skill is blocked
+	 * by the opponent
 	 */
 	private int guardAddEnergy;
 
 	/**
-	 * The value of the energy added to the opponent when it is hit by this skill
+	 * The value of the energy added to the opponent when it is hit by this
+	 * skill
 	 */
 	private int giveEnergy;
 
 	/**
-	 * The change in the horizontal speed of the opponent when it is hit by this skill
+	 * The change in the horizontal speed of the opponent when it is hit by this
+	 * skill
 	 */
 	private int impactX;
 
 	/**
-	 * The change in the vertical speed of the opponent when it is hit by this skill
+	 * The change in the vertical speed of the opponent when it is hit by this
+	 * skill
 	 */
 	private int impactY;
 
 	/**
-	 * The number of frames that the guarded opponent needs to resume to his normal status after being hit by this skill
+	 * The number of frames that the guarded opponent needs to resume to his
+	 * normal status after being hit by this skill
 	 */
 	private int giveGuardRecov;
 
@@ -240,7 +245,8 @@ public class AttackData {
 	/**
 	 * Returns the flag whether this skill can push down the opponent when hit.
 	 *
-	 * @return {@code true} if this skill can push down, {@code false} otherwise.
+	 * @return {@code true} if this skill can push down, {@code false}
+	 *         otherwise.
 	 */
 	public boolean isDownProperty() {
 		return this.downProperty;
@@ -516,8 +522,8 @@ public class AttackData {
 	 * Sets the player side's flag.
 	 *
 	 * @param playerNumber
-	 *            the player side's flag.
-	 *            {@code true} if the player is P1, or {@code false} if P2.
+	 *            the player side's flag. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
 	 */
 	public void setPlayerNumber(boolean playerNumber) {
 		this.playerNumber = playerNumber;
@@ -690,8 +696,8 @@ public class AttackData {
 	 *
 	 * @param downProperty
 	 *            the flag whether this skill can push down the opponent when
-	 *            hit.
-	 *            {@code true} if this skill can push down, {@code false} otherwise.
+	 *            hit. {@code true} if this skill can push down, {@code false}
+	 *            otherwise.
 	 */
 	public void setDownProperty(boolean downProperty) {
 		this.downProperty = downProperty;
@@ -701,8 +707,8 @@ public class AttackData {
 	 * Sets the boolean value whether this skill is projectile or not.
 	 *
 	 * @param isProjectile
-	 *            the flag whether this skill is projectile or not.
-	 *            {@code true} if this skill is projectile, {@code false} otherwise.
+	 *            the flag whether this skill is projectile or not. {@code true}
+	 *            if this skill is projectile, {@code false} otherwise.
 	 */
 	public void setIsProjectile(boolean isProjectile) {
 		this.isProjectile = isProjectile;

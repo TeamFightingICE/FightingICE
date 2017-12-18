@@ -1,7 +1,7 @@
 package struct;
 
 /**
- * ゲーム内で使用されるキーを扱うクラス
+ * ゲーム内で使用されるキーを扱うクラス．
  */
 public class Key {
 	/**
@@ -41,10 +41,10 @@ public class Key {
 	}
 
 	/**
-	 * 指定されたデータでキーを初期化するコンストラクタ.
+	 * 指定されたデータでキーを初期化するクラスコンストラクタ.
 	 *
 	 * @param key
-	 *            An object key
+	 *            an object key
 	 */
 	public Key(Key key) {
 		if (key != null) {
@@ -78,8 +78,8 @@ public class Key {
 	 * the numeric keypad.
 	 *
 	 * @param isFront
-	 *            The boolean value representing the player's orientation
-	 * @return The correct direction value from the numeric keypad.
+	 *            the boolean value representing the player's orientation
+	 * @return the correct direction value from the numeric keypad
 	 */
 	public int getLever(boolean isFront) {
 		int lever = 5;

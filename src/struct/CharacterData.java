@@ -85,8 +85,8 @@ public class CharacterData {
 	private boolean front;
 
 	/**
-	 * The flag whether this character can run a new motion with the
-	 * motion's command.<br>
+	 * The flag whether this character can run a new motion with the motion's
+	 * command.<br>
 	 * {@code true} if the character can run, {@code false} otherwise.
 	 */
 	private boolean control;
@@ -103,8 +103,8 @@ public class CharacterData {
 	private int remainingFrame;
 
 	/**
-	 * The flag whether the motion hits the opponent or not.
-	 * {@code true} if the motion hits the opponent, {@code false} otherwise.
+	 * The flag whether the motion hits the opponent or not. {@code true} if the
+	 * motion hits the opponent, {@code false} otherwise.
 	 */
 	private boolean hitConfirm;
 
@@ -217,7 +217,7 @@ public class CharacterData {
 	/**
 	 * Returns the character's side flag.
 	 *
-	 * @return {@code true} if the character is P1, or {@code false} if P2.
+	 * @return {@code true} if the character is P1, or {@code false} if P2
 	 */
 	public boolean isPlayerNumber() {
 		return this.playerNumber;
@@ -226,7 +226,8 @@ public class CharacterData {
 	/**
 	 * Returns the character's facing direction.
 	 *
-	 * @return {@code true} if the character is facing right, {@code false} otherwise.
+	 * @return {@code true} if the character is facing right, {@code false}
+	 *         otherwise
 	 */
 	public boolean isFront() {
 		return this.front;
@@ -236,7 +237,7 @@ public class CharacterData {
 	 * Returns the flag whether this character can run a new motion with the
 	 * motion's command.
 	 *
-	 * @return {@code true} if the character can run, {@code false} otherwise.
+	 * @return {@code true} if the character can run, {@code false} otherwise
 	 */
 	public boolean isControl() {
 		return this.control;
@@ -263,7 +264,7 @@ public class CharacterData {
 	/**
 	 * Returns the character graphic's most top-left x-coordinate.
 	 *
-	 * @return the character graphic's most top-left x-coordinate.
+	 * @return the character graphic's most top-left x-coordinate
 	 * @deprecated Use {@link #getLeft()} or {@link #getRight()} or
 	 *             {@link #getCenterX()} instead
 	 *
@@ -275,7 +276,7 @@ public class CharacterData {
 	/**
 	 * Returns the character graphic's most top-left y-coordinate.
 	 *
-	 * @return the character graphic's most top-left y-coordinate.
+	 * @return the character graphic's most top-left y-coordinate
 	 * @deprecated Use {@link #getTop()} or {@link #getBottom()} or
 	 *             {@link #getCenterY()} instead
 	 *
@@ -430,7 +431,8 @@ public class CharacterData {
 	/**
 	 * Returns the flag whether the motion hits the opponent or not.
 	 *
-	 * @return {@code true} if the motion hits the opponent, {@code false} otherwise.
+	 * @return {@code true} if the motion hits the opponent, {@code false}
+	 *         otherwise
 	 */
 	public boolean isHitConfirm() {
 		return this.hitConfirm;
@@ -578,8 +580,8 @@ public class CharacterData {
 	 * Sets the character's facing direction.
 	 *
 	 * @param front
-	 *            the character's facing direction.
-	 *            {@code true} if the character is facing right, {@code false} otherwise.
+	 *            the character's facing direction. {@code true} if the
+	 *            character is facing right, {@code false} otherwise.
 	 */
 	public void setFront(boolean front) {
 		this.front = front;
@@ -590,8 +592,9 @@ public class CharacterData {
 	 * motion's command.
 	 *
 	 * @param control
-	 *            the flag whether this character can run a new motion with the motion's command.
-	 *            {@code true} if the character can run, {@code false} otherwise.
+	 *            the flag whether this character can run a new motion with the
+	 *            motion's command. {@code true} if the character can run,
+	 *            {@code false} otherwise.
 	 */
 	public void setControl(boolean control) {
 		this.control = control;
@@ -688,7 +691,8 @@ public class CharacterData {
 	 *
 	 * @param hitConfirm
 	 *            a boolean value whether the motion hits the opponent or not.
-	 *            {@code true} if the motion hits the opponent, {@code false} otherwise.
+	 *            {@code true} if the motion hits the opponent, {@code false}
+	 *            otherwise.
 	 */
 	public void setHitConfirm(boolean hitConfirm) {
 		this.hitConfirm = hitConfirm;

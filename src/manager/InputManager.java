@@ -22,37 +22,63 @@ import struct.GameData;
 import struct.Key;
 import struct.ScreenData;
 
-/** AIやキーボード等の入力関連のタスクを管理するマネージャー */
+/**
+ * AIやキーボード等の入力関連のタスクを管理するマネージャークラス．
+ */
 public class InputManager<Data> {
 
+	/**
+	 * キー入力を格納するバッファ．
+	 */
 	private KeyData buffer;
 
 	/* KeyCallBackクラス */
+	/**
+	 * Keyboardクラスのインスタンス．
+	 */
 	private Keyboard keyboard;
 
+	/**
+	 * AIコントローラを格納する配列．
+	 */
 	private AIController[] ais;
 
+	/**
+	 * ゲームのシーン名．
+	 */
 	private GameSceneName sceneName;
 
 	private HashMap<String, AIInterface> predifinedAIs;
 
 	// static field
-	/** Default number of devices **/
+	/**
+	 * Default number of devices.
+	 */
 	private final static int DEFAULT_DEVICE_NUMBER = 2;
 
-	/** デバイスタイプでキーボードを指定する場合の定数 */
+	/**
+	 * デバイスタイプとしてキーボードを指定する場合の定数．
+	 */
 	public final static char DEVICE_TYPE_KEYBOARD = 0;
 
-	/** デバイスタイプでAIを指定する場合の定数 */
+	/**
+	 * デバイスタイプとしてAIを指定する場合の定数．
+	 */
 	public final static char DEVICE_TYPE_AI = 1;
 
 	// to recognize the input devices
+	/**
+	 * 入力デバイスを指定する配列．
+	 */
 	private char[] deviceTypes;
 
+	/**
+	 * 1フレーム分のゲームの処理が終わったことを示すオブジェクト．
+	 */
 	private Object endFrame;
 
 	/**
-	 * InputManagerクラスのコンストラクタ．<br>
+	 * InputManagerクラスのクラスコンストラクタ．<br>
 	 * デバイスタイプはデフォルトでキーボードを指定する．
 	 */
 	private InputManager() {
@@ -71,7 +97,7 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * InputManagerクラスの唯一のインスタンスを取得するgetterメソッド．
+	 * InputManagerクラスの唯一のインスタンスを取得する．
 	 *
 	 * @return InputManagerクラスの唯一のインスタンス
 	 */
@@ -79,21 +105,35 @@ public class InputManager<Data> {
 		return InputManagerHolder.instance;
 	}
 
-	/** getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス */
+	/**
+	 * getInstance()が呼ばれたときに初めてインスタンスを生成するホルダークラス．
+	 */
 	private static class InputManagerHolder {
 		private static final InputManager instance = new InputManager();
 	}
 
-	/** Keyboardクラスのインスタンスを取得するgetterメソッド． */
+	/**
+	 * InputManagerが持つKeyboardクラスのインスタンスを取得する．
+	 */
 	public Keyboard getKeyboard() {
 		return this.keyboard;
 	}
 
+	/**
+	 * Pythonでの処理のために用意されたAI名とAIインタフェースをマップに追加する．
+	 *
+	 * @param name
+	 *            AI名
+	 * @param ai
+	 *            AIインタフェース
+	 */
 	public void registerAI(String name, AIInterface ai) {
 		this.predifinedAIs.put(name, ai);
 	}
 
-	/** 毎フレーム実行され，キーボード入力及びAIの入力を受け付けるメソッド． */
+	/**
+	 * 毎フレーム実行され，キーボード入力及びAIの入力を受け付ける．
+	 */
 	public void update() {
 		Key[] keys = new Key[this.deviceTypes.length];
 		for (int i = 0; i < this.deviceTypes.length; i++) {
@@ -113,10 +153,11 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * キーボードで押されたキーを取得するgetterメソッド． 引数でプレイヤーがP1(true)かP2(false)かを指定する．
+	 * キーボードで押されたキーを取得する．<br>
+	 * 引数でプレイヤーがP1(true)かP2(false)かを指定する．
 	 *
 	 * @param playerNumber
-	 *            trueはP1，falseはP2
+	 *            プレイヤー番号
 	 * @return 押されたキー
 	 */
 	private Key getKeyFromKeyboard(boolean playerNumber) {
@@ -143,7 +184,9 @@ public class InputManager<Data> {
 		return key;
 	}
 
-	/** AIの情報を格納したコントローラをInputManagerクラスに取り込むメソッド． */
+	/**
+	 * AIの情報を格納したコントローラをInputManagerクラスに取り込む．
+	 */
 	public void createAIcontroller() {
 		String[] aiNames = LaunchSetting.aiNames.clone();
 
@@ -179,8 +222,8 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * AIコントローラの動作を開始させるメソッド．<br>
-	 * 引数のGameDataクラスのインスタンスを用いてAIコントローラを初期化し，動作を開始する．
+	 * AIコントローラの動作を開始させる．<br>
+	 * 引数のGameDataクラスのインスタンスを用いてAIコントローラを初期化し，AIの動作を開始する．
 	 *
 	 * @param gameData
 	 *            GameDataクラスのインスタンス
@@ -194,6 +237,9 @@ public class InputManager<Data> {
 		}
 	}
 
+	/**
+	 * AIの動作を停止させる．
+	 */
 	public void closeAI() {
 		this.buffer = new KeyData();
 
@@ -206,6 +252,14 @@ public class InputManager<Data> {
 	}
 
 	// private synchronized Key getInputFromAI(AIController ai){
+	/**
+	 * AIのキー入力を取得する．
+	 *
+	 * @param ai
+	 *            AIの情報を格納したコントローラ
+	 *
+	 * @return AIのキー入力．
+	 */
 	private Key getKeyFromAI(AIController ai) {
 		if (ai == null)
 			return new Key();
@@ -213,7 +267,7 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * 引数のフレームデータをAIコントローラにセットするsetterメソッド．
+	 * 引数のフレームデータをAIコントローラにセットする．
 	 *
 	 * @param frameData
 	 *            フレームデータ
@@ -246,7 +300,7 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * AIコントローラにラウンド結果を送信するメソッド．
+	 * AIコントローラにラウンド結果を送信する．
 	 *
 	 * @param roundResult
 	 *            ラウンド結果
@@ -260,7 +314,9 @@ public class InputManager<Data> {
 		}
 	}
 
-	/** 各AIコントローラ内に保持されているフレームデータをクリアする. */
+	/**
+	 * 各AIコントローラ内に保持されているフレームデータをクリアする.
+	 */
 	public void clear() {
 		for (AIController ai : this.ais) {
 			if (ai != null) {
@@ -270,17 +326,16 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * 入力されたキーを格納しているキーバッファを取得するgetterメソッド．
+	 * 入力されたキーを格納しているキーバッファを取得する．
 	 *
 	 * @return キーバッファ
 	 */
-
 	public KeyData getKeyData() {
 		return this.buffer;
 	}
 
 	/**
-	 * 入力されたキーをバッファにセットするsetterメソッド．
+	 * 入力されたキーをバッファにセットする．
 	 *
 	 * @param data
 	 *            入力キーデータ
@@ -290,7 +345,7 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * シーン名を取得するgetterメソッド．
+	 * シーン名を取得する．
 	 *
 	 * @return 現在のシーン名
 	 */
@@ -298,7 +353,9 @@ public class InputManager<Data> {
 		return this.sceneName;
 	}
 
-	/** 引数のシーン名をフィールド変数にセットするsetterメソッド． */
+	/**
+	 * 引数のシーン名をフィールド変数にセットする．
+	 */
 	public void setSceneName(GameSceneName sceneName) {
 		this.sceneName = sceneName;
 	}

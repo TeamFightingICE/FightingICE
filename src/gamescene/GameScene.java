@@ -2,22 +2,34 @@ package gamescene;
 
 import enumerate.GameSceneName;
 
-/** LauncherやPlayといった,ゲームシーンの共通部分をまとめた親クラス */
+/**
+ * LauncherやPlayといった,ゲームシーンの共通部分をまとめた親クラス．
+ */
 public class GameScene {
 
-	/** 現在のゲームシーンの名前 */
+	/*
+	 * 現在のゲームシーンの名前．
+	 */
 	protected GameSceneName gameSceneName;
 
-	/** ゲームが終わったかどうかを表すフラグ */
+	/**
+	 * ゲームが終わったかどうかを表すフラグ．
+	 */
 	protected boolean isGameEndFlag;
 
-	/** 次のゲームシーンへの遷移要求があったかどうかを表すフラグ */
+	/**
+	 * 次のゲームシーンへの遷移要求があったかどうかを表すフラグ．
+	 */
 	protected boolean isTransitionFlag;
 
-	/** 次の遷移先のゲームシーン */
+	/**
+	 * 次の遷移先のゲームシーン．
+	 */
 	protected GameScene nextGameScene;
 
-	/** ゲームシーンを初期化するするコンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public GameScene() {
 		this.gameSceneName = GameSceneName.HOME_MENU;
 		this.isGameEndFlag = false;
@@ -26,7 +38,7 @@ public class GameScene {
 	}
 
 	/**
-	 * 指定されたデータでゲームシーンを作成するコンストラクタ
+	 * 引数で指定されたgameSceneインスタンスのコピーを生成するクラスコンストラクタ．
 	 *
 	 * @param gameScene
 	 *            指定されたゲームシーン
@@ -40,7 +52,7 @@ public class GameScene {
 	}
 
 	/**
-	 * 指定されたデータでゲームシーンを作成するコンストラクタ
+	 * 引数で指定されたデータでインスタンスを作成するクラスコンストラクタ．
 	 *
 	 * @param gameSceneName
 	 *            指定されたゲームシーン名
@@ -60,20 +72,26 @@ public class GameScene {
 		this.nextGameScene = nextGameScene;
 	}
 
-	/** 現在のゲームシーンの初期化を行う */
+	/**
+	 * 現在のゲームシーンの初期化を行う．
+	 */
 	public void initialize() {
 	}
 
-	/** 現在のゲームシーンの更新を行う */
+	/**
+	 * 現在のゲームシーンの更新を行う．
+	 */
 	public void update() {
 	}
 
-	/** 現在のゲームシーンの終了処理を行う */
+	/**
+	 * 現在のゲームシーンの終了処理を行う．
+	 */
 	public void close() {
 	}
 
 	/**
-	 * 次の遷移先のゲームシーンを取得する
+	 * 次の遷移先のゲームシーンを取得する．
 	 *
 	 * @return 次の遷移先のゲームシーン
 	 */
@@ -82,7 +100,7 @@ public class GameScene {
 	}
 
 	/**
-	 * 現在のゲームシーン名を取得する
+	 * 現在のゲームシーン名を取得する．
 	 *
 	 * @return 現在のゲームシーン名
 	 */
@@ -91,7 +109,7 @@ public class GameScene {
 	}
 
 	/**
-	 * 次の遷移先のゲームシーンをセットする
+	 * 次の遷移先のゲームシーンをセットする．
 	 *
 	 * @param next
 	 *            次の遷移先のゲームシーン
@@ -101,7 +119,7 @@ public class GameScene {
 	}
 
 	/**
-	 * 現在のゲームシーンのシーン名をセットする
+	 * 現在のゲームシーンのシーン名をセットする．
 	 *
 	 * @param gameSceneName
 	 *            現在のゲームシーン名
@@ -111,25 +129,25 @@ public class GameScene {
 	}
 
 	/**
-	 * ゲームの終了要求があったかどうかを返す
+	 * ゲームの終了要求があったかどうかを返す．
 	 *
-	 * @return true: ゲームの終了要求があった; false: otherwise
+	 * @return {@code true} ゲームの終了要求があった; {@code false} otherwise
 	 */
 	public boolean isGameEnd() {
 		return this.isGameEndFlag;
 	}
 
 	/**
-	 * 次のゲームシーンへの遷移要求があったかどうかを返す
+	 * 次のゲームシーンへの遷移要求があったかどうかを返す．
 	 *
-	 * @return true: 次のゲームシーンへの遷移要求があった; false: otherwise
+	 * @return {@code true} 次のゲームシーンへの遷移要求があった; {@code false} otherwise
 	 */
 	public boolean isTransition() {
 		return this.isTransitionFlag;
 	}
 
 	/**
-	 * ゲームの終了要求を表すフラグをセットする<br>
+	 * ゲームの終了要求を表すフラグをセットする．<br>
 	 * {@code true} 終了要求があった; {@code false} 終了要求が無かった
 	 *
 	 * @param isEnd
@@ -140,7 +158,7 @@ public class GameScene {
 	}
 
 	/**
-	 * 次のゲームシーンへの遷移要求を表すフラグをセットする<br>
+	 * 次のゲームシーンへの遷移要求を表すフラグをセットする．<br>
 	 * {@code true} 遷移要求があった; {@code false} 遷移要求が無かった
 	 *
 	 * @param isTransition

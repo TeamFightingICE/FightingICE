@@ -64,8 +64,9 @@ public class Effect {
 	/**
 	 * Updates the effect's state.
 	 *
-	 * @return {@code true} if the elapsed time since the effect was generated has not exceeded
-	 *         the time for displaying the effect, {@code false} otherwise
+	 * @return {@code true} if the elapsed time since the effect was generated
+	 *         has not exceeded the time for displaying the effect,
+	 *         {@code false} otherwise
 	 */
 	public boolean update() {
 		return ++this.currentFrame < (this.hitImages.length * this.framesPerImage);

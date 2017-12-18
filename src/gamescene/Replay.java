@@ -25,48 +25,74 @@ import struct.Key;
 import struct.ScreenData;
 import util.ResourceDrawer;
 
-/** リプレイの再生を行うクラス */
+/**
+ * リプレイの再生を行うクラス．
+ */
 public class Replay extends GameScene {
 
-	/** 対戦処理を行うクラスのインスタンス */
+	/**
+	 * 対戦処理を行うクラスのインスタンス．
+	 */
 	private Fighting fighting;
 
-	/** Replayファイルからログを読み込むための入力ストリーム */
+	/**
+	 * Replayファイルからログを読み込むための入力ストリーム．
+	 */
 	protected DataInputStream dis;
 
-	/** 現在のフレームナンバー */
+	/**
+	 * 現在のフレーム．
+	 */
 	private int nowFrame;
 
-	/** 各ラウンド前に行う初期化処理内における経過フレーム数 */
+	/**
+	 * 各ラウンド前に行う初期化処理内における経過フレーム数．
+	 */
 	private int elapsedBreakTime;
 
-	/** 現在のラウンド */
+	/**
+	 * 現在のラウンド．
+	 */
 	private int currentRound;
 
-	/** 各ラウンドの開始時かどうかを表すフラグ */
+	/**
+	 * 各ラウンドの開始時かどうかを表すフラグ．
+	 */
 	private boolean roundStartFlag;
 
-	/** 対戦処理後のキャラクターデータといったゲーム情報を格納したフレームデータ */
+	/**
+	 * 対戦処理後のキャラクターデータなどのゲーム情報を格納したフレームデータ．
+	 */
 	protected FrameData frameData;
 
-	/** 対戦処理後のゲーム画面の情報 */
+	/**
+	 * 対戦処理後のゲーム画面の情報．
+	 */
 	private ScreenData screenData;
 
-	/** 対戦処理に用いるP1, P2の入力情報 */
+	/**
+	 * 対戦処理に用いるP1, P2の入力情報．
+	 */
 	private KeyData keyData;
 
-	/** 再生速度を指定するインデックス */
+	/**
+	 * 再生速度を指定するインデックス．
+	 */
 	private int playSpeedIndex;
 
-	/** 再生速度を管理する配列 */
+	/**
+	 * 再生速度を管理する配列．
+	 */
 	private int[] playSpeedArray;
 
-	/** ラウンドが終わったかどうかを表すフラグ */
+	/**
+	 * ラウンドが終わったかどうかを表すフラグ．
+	 */
 	private boolean isFinished;
 
 	/**
-	 * Replayシーンを初期化するコンストラクタ<br>
-	 * このコンストラクタ内で読み込むReplayファイルをopenする.
+	 * クラスコンストラクタ．<br>
+	 * 読み込むReplayファイルをopenする.
 	 */
 	public Replay() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
@@ -175,7 +201,9 @@ public class Replay extends GameScene {
 
 	}
 
-	/** 各ラウンド開始時における, インターバル処理を行う */
+	/**
+	 * 各ラウンド開始時における, インターバル処理を行う．
+	 */
 	private void processingBreakTime() {
 		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
@@ -196,7 +224,9 @@ public class Replay extends GameScene {
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 	}
 
-	/** 各ラウンド終了時の処理を行う. */
+	/**
+	 * 各ラウンド終了時の処理を行う.
+	 */
 	private void processingRoundEnd() {
 		this.isFinished = true;
 		this.currentRound++;
@@ -206,7 +236,7 @@ public class Replay extends GameScene {
 	/**
 	 * キャラクターが倒されたかどうかを判定する.
 	 *
-	 * @return true: P1 or P2が倒された; false: otherwise
+	 * @return {@code true} P1 or P2が倒された, {@code false} otherwise
 	 */
 	private boolean isBeaten() {
 		return FlagSetting.limitHpFlag
@@ -216,13 +246,15 @@ public class Replay extends GameScene {
 	/**
 	 * 1ラウンドの制限時間が経過したかどうかを判定する.<br>
 	 *
-	 * @return true: 1ラウンドの制限時間が経過した; false: otherwise
+	 * @return {@code true} 1ラウンドの制限時間が経過した, {@code false} otherwise
 	 */
 	private boolean isTimeOver() {
 		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
 	}
 
-	/** 各ラウンド開始時に, 対戦情報や現在のフレームなどの初期化を行う */
+	/**
+	 * 各ラウンド開始時に, 対戦情報や現在のフレームなどの初期化を行う．
+	 */
 	private void initRound() {
 		this.fighting.initRound();
 		this.nowFrame = 0;
@@ -232,9 +264,9 @@ public class Replay extends GameScene {
 	}
 
 	/**
-	 * 対戦処理に用いるP1, P2の入力キーを作成する.<br>
+	 * 対戦処理に用いるP1, P2のキー入力データを作成する.<br>
 	 *
-	 * @return P1, P2の入力キー
+	 * @return P1, P2のキー入力データ
 	 */
 	private KeyData createKeyData() {
 		Key[] temp = new Key[2];
@@ -290,7 +322,7 @@ public class Replay extends GameScene {
 	}
 
 	/**
-	 * boolean型変数をint型に変換する
+	 * boolean型変数をint型に変換する．
 	 *
 	 * @param b
 	 *            変換したいboolean型の変数
@@ -301,7 +333,9 @@ public class Replay extends GameScene {
 		return i == 1 ? true : false;
 	}
 
-	/** 使用キャラクターや最大HPといったヘッダ情報を読み込む */
+	/**
+	 * 使用キャラクターや最大HPといったヘッダ情報を読み込む．
+	 */
 	protected void readHeader() {
 		for (int i = 0; i < 2; i++) {
 			try {
@@ -324,7 +358,9 @@ public class Replay extends GameScene {
 		}
 	}
 
-	/** Replayの再生速度を更新する. */
+	/**
+	 * Replayの再生速度を更新する．
+	 */
 	private void updatePlaySpeed() {
 		Key key = InputManager.getInstance().getKeyData().getKeys()[0];
 
@@ -336,16 +372,29 @@ public class Replay extends GameScene {
 		}
 	}
 
+	/**
+	 * HomeMenuシーンへの遷移処理を行う．
+	 */
 	private void transitionProcess() {
 		HomeMenu homeMenu = new HomeMenu();
 		this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
 		this.setNextGameScene(homeMenu); // 次のシーンをセットする
 	}
 
+	/**
+	 * フレームデータを取得する．
+	 *
+	 * @return フレームデータ
+	 */
 	public FrameData getFrameData() {
 		return new FrameData(this.frameData);
 	}
 
+	/**
+	 * ScreenDataを取得する．
+	 *
+	 * @return screen data
+	 */
 	public ScreenData getScreenData() {
 		return new ScreenData(this.screenData);
 	}
