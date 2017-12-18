@@ -10,16 +10,24 @@ import manager.InputManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 
-/** 起動情報を基に次のゲームシーンを初期化し, 必要なリソースを読み込むクラス */
+/**
+ * 起動情報を基に次のゲームシーンを初期化し, 必要なリソースを読み込むクラス．
+ */
 public class Launcher extends GameScene {
 
-	/** 次の遷移先のゲームシーン */
+	/**
+	 * 次の遷移先のゲームシーン．
+	 */
 	private GameSceneName nextGameSceneName;
 
-	/** 最初のアップデートかどうかを表すフラグ */
+	/**
+	 * 最初のアップデートかどうかを表すフラグ．
+	 */
 	private boolean isFirstUpdate;
 
-	/** Launcherシーンを初期化するコンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public Launcher() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.LAUNCH;
@@ -33,10 +41,10 @@ public class Launcher extends GameScene {
 	}
 
 	/**
-	 * Launcherシーンを初期化し, 次の遷移先のゲームシーンを設定するコンストラクタ
+	 * Launcherシーンを初期化し, 次の遷移先のゲームシーンを設定するクラスコンストラクタ．
 	 *
 	 * @param nextGameScene
-	 *            指定された次の遷移先のゲームシーン
+	 *            次の遷移先のゲームシーン
 	 */
 	public Launcher(GameSceneName nextGameSceneName) {
 		super();

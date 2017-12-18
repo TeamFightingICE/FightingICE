@@ -8,24 +8,30 @@ import python.StateInhibitor;
 import setting.LaunchSetting;
 
 /**
- * Python側で起動したゲームの実行処理を行うクラス
+ * Python側で起動したゲームの実行処理を行うクラス．
  */
 public class Python extends GameScene {
 
-	/** リプレイ再生時の処理を管理するインタフェース */
+	/**
+	 * リプレイ再生時の処理を管理するインタフェース．
+	 */
 	private StateInhibitor stateInhibitor;
 
-	/** 起動したゲームを実行するかどうかを表すフラグ */
+	/**
+	 * 起動したゲームを実行するかどうかを表すフラグ．
+	 */
 	private boolean needRun = false;
 
 	/**
-	 * 現在のゲーム情報
+	 * 現在のゲーム情報．
 	 *
 	 * @see PyGame
 	 */
 	private PyGame currentGame;
 
-	/** コンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public Python() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
 		this.gameSceneName = GameSceneName.PYTHON;
@@ -67,23 +73,25 @@ public class Python extends GameScene {
 		}
 	}
 
-	/** 作成したゲームをセットし, ゲームを実行させるフラグをtrueにする. */
+	/**
+	 * Pythonでの処理のために作成したゲーム情報をセットし, ゲームを実行させるフラグをtrueにする.
+	 */
 	public void runGame(PyGame game) {
 		this.currentGame = game;
 		this.needRun = true;
 	}
 
 	/**
-	 * 現在のゲームを取得する.
+	 * 現在のゲーム情報を取得する.
 	 *
-	 * @return 現在のゲーム
+	 * @return 現在のゲーム情報
 	 */
 	public PyGame getCurrentGame() {
 		return this.currentGame;
 	}
 
 	/**
-	 * リプレイ再生を管理するインタフェースをセットする
+	 * リプレイ再生を管理するインタフェースをセットする．
 	 *
 	 * @param stateInhibitor
 	 *            リプレイ再生を管理するインタフェース

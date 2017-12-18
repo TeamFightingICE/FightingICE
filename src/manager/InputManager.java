@@ -72,6 +72,9 @@ public class InputManager<Data> {
 	 */
 	private char[] deviceTypes;
 
+	/**
+	 * 1フレーム分のゲームの処理が終わったことを示すオブジェクト．
+	 */
 	private Object endFrame;
 
 	/**
@@ -116,6 +119,14 @@ public class InputManager<Data> {
 		return this.keyboard;
 	}
 
+	/**
+	 * Pythonでの処理のために用意されたAI名とAIインタフェースをマップに追加する．
+	 *
+	 * @param name
+	 *            AI名
+	 * @param ai
+	 *            AIインタフェース
+	 */
 	public void registerAI(String name, AIInterface ai) {
 		this.predifinedAIs.put(name, ai);
 	}
@@ -241,6 +252,14 @@ public class InputManager<Data> {
 	}
 
 	// private synchronized Key getInputFromAI(AIController ai){
+	/**
+	 * AIのキー入力を取得する．
+	 *
+	 * @param ai
+	 *            AIの情報を格納したコントローラ
+	 *
+	 * @return AIのキー入力．
+	 */
 	private Key getKeyFromAI(AIController ai) {
 		if (ai == null)
 			return new Key();
