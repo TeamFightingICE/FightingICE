@@ -5,6 +5,9 @@ import struct.GameData;
 import struct.Key;
 import struct.ScreenData;
 
+/**
+ * AIに実装すべきメソッドを定義するインタフェース．
+ */
 public interface AIInterface {
 
 	/**
@@ -18,7 +21,7 @@ public interface AIInterface {
 	 * It will return 0 when such initialization finishes correctly, otherwise
 	 * the error code.
 	 *
-	 * @param gameData
+	 * @param gd
 	 *            the data that will not be changed during a game
 	 * @param playerNumber
 	 *            the character's side flag.<br>
@@ -41,7 +44,7 @@ public interface AIInterface {
 	 * You must also check the same condition when you use the CommandCenter
 	 * class.
 	 *
-	 * @param frameData
+	 * @param fd
 	 *            the data that will be changed each frame
 	 * @see FrameData
 	 */
@@ -49,7 +52,7 @@ public interface AIInterface {
 
 	/**
 	 * This method processes the data from AI. <br>
-	 * It is executed in each frame
+	 * It is executed in each frame.
 	 */
 	void processing();
 
@@ -85,7 +88,7 @@ public interface AIInterface {
 	 * This method gets the screen information in each frame.
 	 *
 	 * @param sd
-	 *            the screen information such as the pixel data.
+	 *            the screen information such as the pixel data
 	 */
 	default void getScreenData(ScreenData sd) {
 	};

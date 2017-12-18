@@ -56,7 +56,7 @@ public class GameScene {
 	 *
 	 * @param gameSceneName
 	 *            指定されたゲームシーン名
-	 * @param isEndingFlag
+	 * @param isEndFlag
 	 *            現在のシーンが終わったかどうかを表すフラグ
 	 * @param isTransitionFlag
 	 *            遷移要求があったかどうかを表すフラグ

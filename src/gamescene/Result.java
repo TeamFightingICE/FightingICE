@@ -54,6 +54,11 @@ public class Result extends GameScene {
 
 	/**
 	 * 各ラウンドの結果を格納したリスト及び現在の時間情報をセットし, リプレイシーンを初期化するクラスコンストラクタ．
+	 *
+	 * @param roundResults
+	 *            各ラウンドの結果を格納したリスト
+	 * @param timeInfo
+	 *            現在の時間情報
 	 */
 	public Result(ArrayList<RoundResult> roundResults, String timeInfo) {
 		super();
@@ -112,6 +117,8 @@ public class Result extends GameScene {
 
 	/**
 	 * P1, P2のどちらがそのラウンドで勝ったかを返す．
+	 *
+	 * @param i ラウンド
 	 *
 	 * @return 0: 引き分け, 1: P1の勝ち, -1: P2の勝ち
 	 */

@@ -130,7 +130,7 @@ public class AttackData {
 	 * The flag whether this skill can push down the opponent when hit.<br>
 	 * {@code true} if this skill can push down, {@code false} otherwise.
 	 */
-	private boolean downProperty;
+	private boolean downProp;
 
 	/**
 	 * The flag whether this skill is projectile or not.<br>
@@ -162,7 +162,7 @@ public class AttackData {
 		this.impactY = 0;
 		this.giveGuardRecov = 0;
 		this.attackType = 0;
-		this.downProperty = false;
+		this.downProp = false;
 		this.isProjectile = false;
 	}
 
@@ -195,7 +195,7 @@ public class AttackData {
 			this.impactY = attack.getImpactY();
 			this.giveGuardRecov = attack.getGiveGuardRecov();
 			this.attackType = attack.getAttackType();
-			this.downProperty = attack.isDownProperty();
+			this.downProp = attack.isDownProp();
 			this.isProjectile = attack.isProjectile();
 		}
 	}
@@ -228,7 +228,7 @@ public class AttackData {
 			this.impactY = attackData.getImpactY();
 			this.giveGuardRecov = attackData.getGiveGuardRecov();
 			this.attackType = attackData.getAttackType();
-			this.downProperty = attackData.isDownProperty();
+			this.downProp = attackData.isDownProp();
 			this.isProjectile = attackData.isProjectile();
 		}
 	}
@@ -248,8 +248,8 @@ public class AttackData {
 	 * @return {@code true} if this skill can push down, {@code false}
 	 *         otherwise.
 	 */
-	public boolean isDownProperty() {
-		return this.downProperty;
+	public boolean isDownProp() {
+		return this.downProp;
 	}
 
 	/**
@@ -694,13 +694,13 @@ public class AttackData {
 	/**
 	 * Sets the flag whether this skill can push down the opponent when hit.
 	 *
-	 * @param downProperty
+	 * @param downProp
 	 *            the flag whether this skill can push down the opponent when
 	 *            hit. {@code true} if this skill can push down, {@code false}
 	 *            otherwise.
 	 */
-	public void setDownProperty(boolean downProperty) {
-		this.downProperty = downProperty;
+	public void setDownProp(boolean downProp) {
+		this.downProp = downProp;
 	}
 
 	/**

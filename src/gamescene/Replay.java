@@ -321,12 +321,12 @@ public class Replay extends GameScene {
 	}
 
 	/**
-	 * boolean型変数をint型に変換する．
+	 * int型変数をboolean型に変換する．
 	 *
-	 * @param b
-	 *            変換したいboolean型の変数
+	 * @param i
+	 *            変換したいint型の変数
 	 *
-	 * @return 1 : 引数がtrueのとき, 0: 引数がfalseのとき
+	 * @return {@code true} 引数が1のとき, {@code false} otherwise
 	 */
 	private boolean convertItoB(int i) {
 		return i == 1 ? true : false;

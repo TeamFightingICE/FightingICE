@@ -17,7 +17,7 @@ public class PyGatewayServer {
 	/**
 	 * 引数で渡されたゲームシーンを用いてゲートウェイを作成するクラスコンストラクタ．
 	 *
-	 * @param Python用のゲームシーン
+	 * @param python Python用のゲームシーン
 	 */
 	public PyGatewayServer(Python python) {
 		this.gatewayServer = new GatewayServer(new PyManager(python), LaunchSetting.py4jPort);

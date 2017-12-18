@@ -75,6 +75,8 @@ public class Python extends GameScene {
 
 	/**
 	 * Pythonでの処理のために作成したゲーム情報をセットし, ゲームを実行させるフラグをtrueにする.
+	 *
+	 * @param game ゲーム情報
 	 */
 	public void runGame(PyGame game) {
 		this.currentGame = game;

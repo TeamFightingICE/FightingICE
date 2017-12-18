@@ -133,7 +133,7 @@ public class Attack {
 	 * opponent.<br>
 	 * {@code true} if this skill can push down, {@code false} otherwise.
 	 */
-	private boolean downProperty;
+	private boolean downProp;
 
 	/**
 	 * Class constructor．
@@ -162,7 +162,7 @@ public class Attack {
 		this.impactY = 0;
 		this.giveGuardRecov = 0;
 		this.attackType = 0;
-		this.downProperty = false;
+		this.downProp = false;
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class Attack {
 			this.impactY = attack.getImpactY();
 			this.giveGuardRecov = attack.getGiveGuardRecov();
 			this.attackType = attack.getAttackType();
-			this.downProperty = attack.isDownProperty();
+			this.downProp = attack.isDownProp();
 		}
 	}
 
@@ -234,7 +234,7 @@ public class Attack {
 			this.impactY = attackData.getImpactY();
 			this.giveGuardRecov = attackData.getGiveGuardRecov();
 			this.attackType = attackData.getAttackType();
-			this.downProperty = attackData.isDownProperty();
+			this.downProp = attackData.isDownProp();
 		}
 	}
 
@@ -310,7 +310,7 @@ public class Attack {
 		this.impactY = impactY;
 		this.giveGuardRecov = giveGuardRecov;
 		this.attackType = attackType;
-		this.downProperty = downProp;
+		this.downProp = downProp;
 	}
 
 	/**
@@ -320,9 +320,9 @@ public class Attack {
 	 *            the player side's flag. {@code true} if the player is P1,
 	 *            {@code false} otherwise.
 	 * @param x
-	 *            the character graphic's most top-left x-coordinate.
+	 *            the character graphic's most top-left x-coordinate
 	 * @param y
-	 *            the character graphic's most top-left y-coordinate.
+	 *            the character graphic's most top-left y-coordinate
 	 * @param size
 	 *            the character's graphic width
 	 * @param direction
@@ -365,9 +365,9 @@ public class Attack {
 	 * 引数として渡された値を用いて，攻撃の当たり判定領域を設定する．
 	 *
 	 * @param x
-	 *            the character graphic's most top-left x-coordinate.
+	 *            the character graphic's most top-left x-coordinate
 	 * @param y
-	 *            the character graphic's most top-left y-coordinate.
+	 *            the character graphic's most top-left y-coordinate
 	 * @param size
 	 *            the character's graphic width
 	 * @param direction
@@ -414,8 +414,8 @@ public class Attack {
 	 *
 	 * @return {@code true} if this skill can push down, {@code false} otherwise
 	 */
-	public boolean isDownProperty() {
-		return this.downProperty;
+	public boolean isDownProp() {
+		return this.downProp;
 	}
 
 	/**
@@ -825,13 +825,13 @@ public class Attack {
 	 * Sets the flag whether this skill can push down the opponent when it hits
 	 * the opponent.
 	 *
-	 * @param downProperty
+	 * @param downProp
 	 *            the flag whether this skill can push down the opponent when it
 	 *            hits the opponent. {@code true} if this skill can push down,
 	 *            {@code false} otherwise.
 	 */
-	public void setDownProperty(boolean downProperty) {
-		this.downProperty = downProperty;
+	public void setDownProp(boolean downProp) {
+		this.downProp = downProp;
 	}
 
 	/**

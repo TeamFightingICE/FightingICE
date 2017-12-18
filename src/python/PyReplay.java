@@ -51,14 +51,14 @@ public class PyReplay implements StateInhibitor {
 	 * @throws InterruptedException
 	 *             If the thread is interrupted while waiting
 	 */
-	public void init() {
+	public void init() throws InterruptedException {
 		PyManager.python.setStateInhibitor(this);
 		this.state = State.INIT;
 		this.replay = new Replay();
 
-		synchronized (waiter) {
+		synchronized (this.waiter) {
 			try {
-				waiter.wait();
+				this.waiter.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -96,7 +96,7 @@ public class PyReplay implements StateInhibitor {
 	 * @throws InterruptedException
 	 *             If the thread is interrupted while waiting
 	 */
-	public void close() {
+	public void close() throws InterruptedException {
 		this.state = State.CLOSE;
 
 		synchronized (waiter) {
@@ -114,12 +114,12 @@ public class PyReplay implements StateInhibitor {
 	 * @throws InterruptedException
 	 *             If the thread is interrupted while waiting
 	 */
-	public void updateState() {
+	public void updateState() throws InterruptedException {
 		this.state = State.UPDATE;
 
-		synchronized (waiter) {
+		synchronized (this.waiter) {
 			try {
-				waiter.wait();
+				this.waiter.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

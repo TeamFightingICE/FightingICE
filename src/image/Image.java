@@ -84,7 +84,7 @@ public class Image {
 	 * 画像のテクスチャIDをセットする．
 	 *
 	 * @param textureId
-	 *            指定された画像のテクスチャID
+	 *            画像のテクスチャID
 	 */
 	public void setTextureId(int textureId) {
 		this.textureId = textureId;
@@ -94,7 +94,7 @@ public class Image {
 	 * 画像のBufferedImageをセットする．
 	 *
 	 * @param bimg
-	 *            指定された画像のBufferedImage
+	 *            画像のBufferedImage
 	 */
 	public void setBufferedImage(BufferedImage bimg) {
 		this.bimg = new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());

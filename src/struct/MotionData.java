@@ -126,7 +126,7 @@ public class MotionData {
 	 * The flag whether this skill can push down the opponent when it is hit by
 	 * this skill.
 	 */
-	public boolean attackDownProperty;
+	public boolean attackDownProp;
 
 	/**
 	 * The value of the first frame that the character can cancel this motion.
@@ -193,7 +193,7 @@ public class MotionData {
 		this.attackImpactY = motion.getAttackImpactY();
 		this.attackGiveGuardRecov = motion.getAttackGiveGuardRecov();
 		this.attackType = motion.getAttackType();
-		this.attackDownProperty = motion.isAttackDownProperty();
+		this.attackDownProp = motion.isAttackDownProp();
 		this.cancelAbleFrame = motion.getCancelAbleFrame();
 		this.cancelAbleMotionLevel = motion.getCancelAbleMotionLevel();
 		this.motionLevel = motion.getMotionLevel();
@@ -443,8 +443,8 @@ public class MotionData {
 	 *
 	 * @return the flag whether this skill can push down the opponent when hit
 	 */
-	public boolean isAttackDownProperty() {
-		return attackDownProperty;
+	public boolean isAttackDownProp() {
+		return attackDownProp;
 	}
 
 	/**
@@ -724,12 +724,12 @@ public class MotionData {
 	 * Sets the flag whether this skill can push down the opponent when it is
 	 * hit by this skill.
 	 *
-	 * @param attackDownProperty
+	 * @param attackDownProp
 	 *            the flag whether this skill can push down the opponent when it
 	 *            is hit by this skill
 	 */
-	public void setAttackDownProperty(boolean attackDownProperty) {
-		this.attackDownProperty = attackDownProperty;
+	public void setAttackDownProp(boolean attackDownProp) {
+		this.attackDownProp = attackDownProp;
 	}
 
 	/**
