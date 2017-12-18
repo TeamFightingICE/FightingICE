@@ -6,18 +6,20 @@ import manager.InputManager;
 import setting.LaunchSetting;
 
 /**
- * Python側からFightingICEを操作し, ゲームの作成やリプレイのロードといった処理を管理するマネージャクラス.
+ * PythonでFightingICEを操作し, ゲームの作成やリプレイのロードといった処理を管理するマネージャクラス.
  */
 public class PyManager {
 
-	/** Python側で起動したゲームの実行処理を行うゲームシーン. */
+	/**
+	 * Pythonで実行処理を行うゲームシーン.
+	 */
 	public static Python python;
 
 	/**
-	 * 指定されたゲームシーンでPyManagerの初期化を行うコンストラクタ.
+	 * 引数で渡されたゲームシーンでPyManagerの初期化を行うクラスコンストラクタ.
 	 *
 	 * @param python
-	 *            指定されたゲームシーン
+	 *            Python用のゲームシーン
 	 */
 	public PyManager(Python python) {
 		PyManager.python = python;
@@ -28,9 +30,9 @@ public class PyManager {
 	 * Should be called before createGame (and for each call to createGame)
 	 *
 	 * @param name
-	 *            The given name of the AI
+	 *            the given name of the AI
 	 * @param ai
-	 *            The instance of a class which inherits from the interface
+	 *            the instance of a class which inherits from the interface
 	 *            "gameInterface.AIInterface"
 	 */
 	public void registerAI(String name, AIInterface ai) {
@@ -41,18 +43,18 @@ public class PyManager {
 	 * Creates one game.
 	 *
 	 * @param c1
-	 *            The name of the character for the first AI (P1)
+	 *            the name of the character for the first AI (P1)
 	 * @param c2
-	 *            The name of the character for the second AI (P2)
+	 *            the name of the character for the second AI (P2)
 	 * @param name1
-	 *            The name of the first AI (could be the name of a previously
+	 *            the name of the first AI (could be the name of a previously
 	 *            registered AI with registerAI or the name of a Java AI)
 	 * @param name2
-	 *            The name of the second AI (could be the name of a previously
+	 *            the name of the second AI (could be the name of a previously
 	 *            registered AI with registerAI or the name of a Java AI)
 	 * @param num
-	 *            The number of repeat count of the game
-	 * @return The created game
+	 *            the number of repeat count of the game
+	 * @return the created game
 	 */
 	public PyGame createGame(String c1, String c2, String name1, String name2, int num) {
 		return new PyGame(this, c1, c2, name1, name2, num);
@@ -62,7 +64,7 @@ public class PyManager {
 	 * Runs the given game until the end of this one
 	 *
 	 * @param game
-	 *            The given game to run
+	 *            the given game to run
 	 */
 	public void runGame(PyGame game) {
 		PyManager.python.runGame(game);
@@ -84,7 +86,7 @@ public class PyManager {
 	}
 
 	/**
-	 * 指定されたリプレイファイル名をセットし, リプレイを再生するための処理を行うクラスのインスタンスを返す.
+	 * 引数で指定されたリプレイファイル名をセットし, リプレイを再生するための処理を行うクラスのインスタンスを返す.
 	 *
 	 * @param fileName
 	 *            読み込むファイル名

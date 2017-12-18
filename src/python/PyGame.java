@@ -4,32 +4,38 @@ import manager.InputManager;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 
-/** Python側で設定した使用キャラクターやAI名といった, ゲームの起動情報を管理するクラス. */
+/**
+ * Python側で設定した使用キャラクターやAI名といった, ゲームの起動情報を扱うクラス.
+ */
 public class PyGame {
 
 	/**
-	 * The character's data of both characters<br>
+	 * The character's data of both characters.<br>
 	 * Index 0 is P1, index 1 is P2.
 	 */
 	private String[] characterNames;
 
 	/**
-	 * The both AIs' names<br>
+	 * The both AIs' names.<br>
 	 * Index 0 is P1, index 1 is P2.
 	 */
 	private String[] aiNames;
 
-	/** The number of repeat count of this game */
+	/**
+	 * The number of repeat count of this game.
+	 */
 	private int num;
 
-	/** ゲームが終了したことをPython側に知らせるためのオブジェクト */
+	/**
+	 * ゲームが終了したことをPython側に知らせるためのオブジェクト.
+	 */
 	public Object end;
 
 	/**
-	 * 指定されたデータでPyGameの初期化を行うコンストラクタ
+	 * 引数で指定されたデータでPyGameの初期化を行うクラスコンストラクタ．
 	 *
 	 * @param manager
-	 *            ゲームの作成やリプレイのロードといった処理を管理するマネージャ
+	 *            ゲームの作成やリプレイのロードといった処理を管理するマネージャー
 	 * @param c1
 	 *            P1's character name
 	 * @param c2
@@ -39,7 +45,7 @@ public class PyGame {
 	 * @param name2
 	 *            P2's AI name
 	 * @param num
-	 *            The number of repeat count of this game
+	 *            the number of repeat count of this game
 	 */
 	public PyGame(PyManager manager, String c1, String c2, String name1, String name2, int num) {
 		this.characterNames = new String[2];
@@ -67,7 +73,7 @@ public class PyGame {
 	}
 
 	/**
-	 * 指定したプレイヤーのキャラクターのデータを返すメソッド
+	 * 引数で指定したプレイヤーのキャラクターのデータを返す．
 	 *
 	 * @param playerNumber
 	 *            プレイヤー番号(true: P1; false: P2)
@@ -78,7 +84,7 @@ public class PyGame {
 	}
 
 	/**
-	 * 指定したプレイヤーのAI名を返すメソッド
+	 * 引数で指定したプレイヤーのAI名を返す．
 	 *
 	 * @param playerNumber
 	 *            プレイヤー番号(true: P1; false: P2)
@@ -89,9 +95,9 @@ public class PyGame {
 	}
 
 	/**
-	 * このゲームの繰り返し回数を取得する
+	 * ゲームの繰り返し回数を取得する．
 	 *
-	 * @return このゲームの繰り返し回数
+	 * @return ゲームの繰り返し回数
 	 */
 	public int getRepeatCount() {
 		return this.num;

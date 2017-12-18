@@ -4,11 +4,13 @@ import gamescene.Replay;
 import loader.ResourceLoader;
 import struct.FrameData;
 
-/** Python側からリプレイの再生を行えるように処理するクラス */
+/**
+ * Pythonでリプレイの再生を行えるようにするクラス．
+ */
 public class PyReplay implements StateInhibitor {
 
 	/**
-	 * リプレイの状態の種類を管理する列挙型<br>
+	 * リプレイの状態の種類を管理する列挙型．<br>
 	 * NONE: 何もしていない<br>
 	 * INIT: 初期化<br>
 	 * UPDATE: リプレイファイルを再生<br>
@@ -22,7 +24,7 @@ public class PyReplay implements StateInhibitor {
 	private Replay replay;
 
 	/**
-	 * 現在のリプレイの状態<br>
+	 * 現在のリプレイの状態．<br>
 	 * NONE: 何もしていない<br>
 	 * INIT: 初期化<br>
 	 * UPDATE: リプレイファイルを再生<br>
@@ -30,10 +32,14 @@ public class PyReplay implements StateInhibitor {
 	 */
 	private State state;
 
-	/** Python側と同期を取るためのオブジェクト */
+	/**
+	 * Python側と同期を取るためのオブジェクト．
+	 */
 	private Object waiter;
 
-	/** PyReplayを初期化するコンストラクタ */
+	/**
+	 * クラスコンストラクタ．
+	 */
 	public PyReplay() {
 		this.state = State.NONE;
 		this.waiter = new Object();
@@ -43,7 +49,7 @@ public class PyReplay implements StateInhibitor {
 	 * Initializes the replay.
 	 *
 	 * @throws InterruptedException
-	 *             If the thread is interrupted while waiting.
+	 *             If the thread is interrupted while waiting
 	 */
 	public void init() {
 		PyManager.python.setStateInhibitor(this);
@@ -88,7 +94,7 @@ public class PyReplay implements StateInhibitor {
 	 * Should be called at the end when you don't need the replay anymore.
 	 *
 	 * @throws InterruptedException
-	 *             If the thread is interrupted while waiting.
+	 *             If the thread is interrupted while waiting
 	 */
 	public void close() {
 		this.state = State.CLOSE;
@@ -106,7 +112,7 @@ public class PyReplay implements StateInhibitor {
 	 * Simulates one frame of the replay.
 	 *
 	 * @throws InterruptedException
-	 *             If the thread is interrupted while waiting.
+	 *             If the thread is interrupted while waiting
 	 */
 	public void updateState() {
 		this.state = State.UPDATE;
@@ -123,8 +129,7 @@ public class PyReplay implements StateInhibitor {
 	/**
 	 * Gets the frame data of the current frame.
 	 *
-	 *
-	 * @return The frame data of the current frame.
+	 * @return the frame data of the current frame
 	 */
 	public FrameData getFrameData() {
 		return this.replay.getFrameData();
@@ -134,7 +139,7 @@ public class PyReplay implements StateInhibitor {
 	 * Gets the state of the replay.<br>
 	 * NONE/INIT/UPDATE/CLOSE
 	 *
-	 * @return The the state of the replay.
+	 * @return the the state of the replay
 	 */
 	public State getState() {
 		return this.state;
