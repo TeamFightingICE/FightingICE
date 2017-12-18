@@ -259,6 +259,9 @@ public class SoundManager {
 
 	/**
 	 * 引数で指定された音源を再生する．
+	 *
+	 * @param source
+	 *            音源
 	 */
 	public void play(int source) {
 		alSourcePlay(source);
@@ -266,6 +269,9 @@ public class SoundManager {
 
 	/**
 	 * 引数で指定された音源を停止する．
+	 *
+	 * @param source
+	 *            音源
 	 */
 	public void stop(int source) {
 		alSourceStop(source);

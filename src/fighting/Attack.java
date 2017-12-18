@@ -320,9 +320,9 @@ public class Attack {
 	 *            the player side's flag. {@code true} if the player is P1,
 	 *            {@code false} otherwise.
 	 * @param x
-	 *            the character graphic's most top-left x-coordinate.
+	 *            the character graphic's most top-left x-coordinate
 	 * @param y
-	 *            the character graphic's most top-left y-coordinate.
+	 *            the character graphic's most top-left y-coordinate
 	 * @param size
 	 *            the character's graphic width
 	 * @param direction
@@ -365,9 +365,9 @@ public class Attack {
 	 * 引数として渡された値を用いて，攻撃の当たり判定領域を設定する．
 	 *
 	 * @param x
-	 *            the character graphic's most top-left x-coordinate.
+	 *            the character graphic's most top-left x-coordinate
 	 * @param y
-	 *            the character graphic's most top-left y-coordinate.
+	 *            the character graphic's most top-left y-coordinate
 	 * @param size
 	 *            the character's graphic width
 	 * @param direction

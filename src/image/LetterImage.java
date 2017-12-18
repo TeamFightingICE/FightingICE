@@ -70,7 +70,7 @@ public class LetterImage {
 	 * Creates a standard Java2D BufferedImage of the given letter.
 	 *
 	 * @param letter
-	 *            the letter to create the BufferedImage
+	 *            the letter to create the BufferedImage for
 	 *
 	 * @return the BufferedImage containing the letter
 	 */

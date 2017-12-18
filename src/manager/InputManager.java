@@ -114,6 +114,8 @@ public class InputManager<Data> {
 
 	/**
 	 * InputManagerが持つKeyboardクラスのインスタンスを取得する．
+	 *
+	 * @return Keyboardクラスのインスタンス
 	 */
 	public Keyboard getKeyboard() {
 		return this.keyboard;
@@ -355,6 +357,9 @@ public class InputManager<Data> {
 
 	/**
 	 * 引数のシーン名をフィールド変数にセットする．
+	 *
+	 * @param sceneName
+	 *            シーン名
 	 */
 	public void setSceneName(GameSceneName sceneName) {
 		this.sceneName = sceneName;

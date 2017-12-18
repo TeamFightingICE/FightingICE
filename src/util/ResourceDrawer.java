@@ -56,8 +56,6 @@ public class ResourceDrawer {
 	 *            波動拳のループエフェクトを格納した両端キュー
 	 * @param hitEffects
 	 *            ヒットエフェクトのリストを格納したリスト
-	 * @param screen
-	 *            背景として描画する画像
 	 * @param remainingTime
 	 *            ラウンドの残り時間
 	 * @param round
@@ -89,9 +87,6 @@ public class ResourceDrawer {
 
 	/**
 	 * Draws the background image.
-	 *
-	 * @param screenGraphic
-	 *            the screen graphics
 	 */
 	public void drawBackGroundImage() {
 		Image bg = GraphicManager.getInstance().getBackgroundImage().get(0);
@@ -105,8 +100,6 @@ public class ResourceDrawer {
 	 *
 	 * @param playerCharacters
 	 *            P1とP2のキャラクターデータを格納した配列
-	 * @param screenGraphic
-	 *            the screen graphics
 	 */
 	public void drawCharacterImage(Character[] playerCharacters) {
 
@@ -138,8 +131,6 @@ public class ResourceDrawer {
 	 *            波動拳のループエフェクトを格納した両端キュー
 	 * @param characters
 	 *            P1とP2のキャラクターデータを格納した配列
-	 * @param screenGraphic
-	 *            the screen graphics
 	 */
 	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters) {
 
@@ -327,8 +318,6 @@ public class ResourceDrawer {
 	 *
 	 * @param hitEffects
 	 *            ヒットエフェクトのリストを格納したリスト
-	 * @param screenGraphic
-	 *            the screen graphics
 	 */
 	private void drawHitEffects(LinkedList<LinkedList<HitEffect>> hitEffects) {
 		for (int i = 0; i < 2; i++) {

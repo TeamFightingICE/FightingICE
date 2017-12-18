@@ -24,21 +24,6 @@ public class KeyData {
 	}
 
 	/**
-	 * ゲーム中に使用するプレイヤー数分のKeyを管理するKeyDataを生成するクラスコンストラクタ．
-	 *
-	 * @param keyDataLength
-	 *            ゲーム中に使用するプレイヤーの数．<br>
-	 *            基本的にプレイヤー数は2である．(P1 and P2).
-	 * @see Key
-	 */
-	public KeyData(int keyDataLength) {
-		this.keys = new Key[keyDataLength];
-		for (int i = 0; i < this.keys.length; i++) {
-			this.keys[i] = new Key();
-		}
-	}
-
-	/**
 	 * 各プレイヤーのKey入力からKeyDataを作成するクラスコンストラクタ．
 	 *
 	 * @param keys

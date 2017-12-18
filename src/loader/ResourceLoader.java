@@ -163,6 +163,9 @@ public class ResourceLoader {
 	 *
 	 * @param filePath
 	 *            読み込みたいファイルまでのパス
+	 *
+	 *
+	 * @return BufferedReader
 	 */
 	public BufferedReader openReadFile(String filePath) {
 		try {
@@ -179,6 +182,8 @@ public class ResourceLoader {
 	 *
 	 * @param filePath
 	 *            読み込みたいファイルまでのパス
+	 *
+	 * @return 出力ストリーム
 	 */
 	public DataOutputStream openDataOutputStream(String filePath) {
 		try {
@@ -195,6 +200,10 @@ public class ResourceLoader {
 	 *
 	 * @param filePath
 	 *            読み込みたいファイルまでのパス
+	 * @param mode
+	 *            バイトをファイルの最後に書き込むかどうか
+	 *
+	 * @return BufferedReader
 	 */
 	public PrintWriter openWriteFile(String filePath, boolean mode) {
 		try {
@@ -280,8 +289,6 @@ public class ResourceLoader {
 	 *
 	 * @param path
 	 *            各キャラクターの画像が格納されているディレクトリまでのパス
-	 * @param characterNames
-	 *            P1, P2の使用キャラクターの名前が格納されている配列
 	 */
 	public void loadCharacterImages(String path) {
 		for (int i = 0; i < 2; i++) {
@@ -464,8 +471,6 @@ public class ResourceLoader {
 	 *
 	 * @param path
 	 *            読み込む画像までのパス
-	 * @param characterName
-	 *            P1, P2の使用キャラクタ名が格納された配列
 	 */
 	private void loadUpperImages(String path) {
 		for (int i = 0; i < 2; i++) {

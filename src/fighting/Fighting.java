@@ -443,8 +443,6 @@ public class Fighting {
 	 *            現在のフレーム
 	 * @param round
 	 *            現在のラウンド
-	 * @param keyData
-	 *            両キャラクターのキー情報
 	 *
 	 * @return 現在のフレームにおけるゲーム情報を格納したフレームデータ
 	 *

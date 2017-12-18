@@ -15,11 +15,11 @@ public class CommandCenter {
 
 	//実行待ちコマンドリスト
 	private LinkedList<Key> skillKey;
-	
+
 	private FrameData frameData;
 
 	private boolean playerNumber;
-	
+
 	public CommandCenter(){
 		this.skillKey = new LinkedList<Key>();
 		this.frameData = new FrameData();
@@ -27,8 +27,10 @@ public class CommandCenter {
 	}
 
 	/**
-	 * AIからコマンドを受け取って、実行待ちコマンドリストに保持しておく
-	 * @param command
+	 * AIからコマンドを受け取って、実行待ちコマンドリストに保持しておく．
+	 *
+	 * @param str
+	 *            command
 	 */
 	public void commandCall(String str){
 		//実行待ちのコマンドが存在しない場合
@@ -178,7 +180,7 @@ public class CommandCenter {
 		if(!this.frameData.getCharacter(playerNumber).isFront()){
 			commands = reverseKey(commands);
 		}
-		
+
 		int index = 0;
 		while(index < commands.length){
 			buf = new Key();
@@ -224,7 +226,7 @@ public class CommandCenter {
 		this.frameData = frameData;
 		this.playerNumber = playerNumber;
 	}
-	
+
 	/**
 	 * @return　実行待ちのコマンドが存在しているかどうか
 	 */
@@ -244,17 +246,17 @@ public class CommandCenter {
 			return new Key();
 		}
 	}
-	
+
 	//実行待ちのコマンドリストを全て返す
 	public Deque<Key> getSkillKeys(){
 		return new LinkedList<Key>(this.skillKey);
 	}
-	
+
 	//実行待ちのコマンドをキャンセルする
 	public void skillCancel(){
 		this.skillKey.clear();
 	}
-	
+
 	//KeyDataの反転
 	private String[] reverseKey(String[] commands){
 		String[] buffer = new String[commands.length];

@@ -43,8 +43,8 @@ public class Launcher extends GameScene {
 	/**
 	 * Launcherシーンを初期化し, 次の遷移先のゲームシーンを設定するクラスコンストラクタ．
 	 *
-	 * @param nextGameScene
-	 *            次の遷移先のゲームシーン
+	 * @param nextGameSceneName
+	 *            次の遷移先のゲームシーン名
 	 */
 	public Launcher(GameSceneName nextGameSceneName) {
 		super();

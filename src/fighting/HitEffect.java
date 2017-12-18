@@ -32,8 +32,8 @@ public class HitEffect extends Effect {
 	 * @param hitImages
 	 *            攻撃オブジェクトに対応する全てのエフェクト画像
 	 * @param isHit
-	 *            The boolean value whether the attack conducted by the
-	 *            character hits the opponent or not.
+	 *            the boolean value whether the attack conducted by the
+	 *            character hits the opponent or not
 	 *
 	 * @param variation
 	 *            エフェクト画像の表示位置をvariationX, variationYに従って変動させるかどうか

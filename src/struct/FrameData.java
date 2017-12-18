@@ -61,8 +61,6 @@ public class FrameData {
 	 *            現在のラウンド数
 	 * @param projectileData
 	 *            P1とP2の波動拳の情報を格納するキュー
-	 * @param keyData
-	 *            P1とP2のキー入力
 	 *
 	 * @see CharacterData
 	 * @see KeyData

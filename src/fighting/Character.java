@@ -338,6 +338,11 @@ public class Character {
 
 	/**
 	 * 引数として渡されたアクションの情報を，実行中のアクションとしてCharacterインスタンスにセットする．
+	 *
+	 * @param executeAction
+	 *            次に実行するアクション
+	 * @param resetFlag
+	 *            現在実行中のアクションを中断させるかどうかのフラグ
 	 */
 	public void runAction(Action executeAction, boolean resetFlag) {
 		Motion exeMotion = this.motionList.get(executeAction.ordinal());
@@ -647,6 +652,9 @@ public class Character {
 
 	/**
 	 * Defines character's orientation.
+	 *
+	 * @param opponentCenterX
+	 *            the opponent character's hit box's center x-coordinate
 	 */
 	public void frontDecision(int opponentCenterX) {
 		if (this.front) {
@@ -1196,7 +1204,7 @@ public class Character {
 	/**
 	 * 現在のフレームを攻撃が相手に当たった最後のフレームとしてセットする.
 	 *
-	 * @param currentFrane
+	 * @param currentFrame
 	 *            現在のフレーム
 	 */
 	public void setLastHitFrame(int currentFrame) {

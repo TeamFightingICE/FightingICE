@@ -16,7 +16,9 @@ import setting.LaunchSetting;
 import struct.HitArea;
 import struct.MotionData;
 
-/** キャラクターが使用できる全モーションのパラメータ及び，それに対応する画像を管理するクラス */
+/**
+ * キャラクターが使用できる全モーションのパラメータ及び，それに対応する画像を管理するクラス．
+ */
 public class Motion {
 
 	/**
@@ -184,7 +186,7 @@ public class Motion {
 	private ArrayList<Image> imageList;
 
 	/**
-	 * 指定されたデータでMotionのインスタンスを作成するクラスコンストラクタ．
+	 * 指定されたデータでMotionクラスのインスタンスを生成するクラスコンストラクタ．
 	 *
 	 * @param data
 	 *            Motion.csvから読み込んだキャラクターのパラメータ
