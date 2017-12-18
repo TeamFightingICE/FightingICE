@@ -16,6 +16,7 @@ import setting.LaunchSetting;
 import struct.HitArea;
 import struct.MotionData;
 
+/** キャラクターが使用できる全モーションのパラメータ及び，それに対応する画像を管理するクラス */
 public class Motion {
 
 	/**
@@ -183,7 +184,7 @@ public class Motion {
 	private ArrayList<Image> imageList;
 
 	/**
-	 * 指定されたデータでMotionを更新するクラスコンストラクタ．
+	 * 指定されたデータでMotionのインスタンスを作成するクラスコンストラクタ．
 	 *
 	 * @param data
 	 *            Motion.csvから読み込んだキャラクターのパラメータ
@@ -270,7 +271,7 @@ public class Motion {
 	}
 
 	/**
-	 * キャラクターのモーション画像を設定する．
+	 * キャラクターの各モーションに対応するキャラクター画像を設定する．
 	 *
 	 * @param characterName
 	 *            キャラクターの名前
@@ -293,6 +294,8 @@ public class Motion {
 				if (LaunchSetting.characterNames[0].equals(LaunchSetting.characterNames[1])) {
 					// 画素の反転
 					if (LaunchSetting.invertedPlayer == playerIndex + 1) {
+						Logger.getAnonymousLogger().log(Level.INFO,
+								"Inverting all character images of P" + playerIndex + 1);
 						img = invert(img);
 					}
 				}

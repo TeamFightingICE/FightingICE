@@ -3,22 +3,38 @@ package input;
 import struct.Key;
 
 /**
- * 同一フレーム内で各プレイヤーが入力したKeyを一つにまとめるためのクラス．
+ * 同一フレーム内で各プレイヤーが入力したKeyを管理するクラス．
  */
 public class KeyData {
 
+	/**
+	 * P1, P2の入力キーを格納した配列<br>
+	 * Index 0 is P1, index 1 is P2.
+	 */
 	private Key[] keys;
 
 	/**
-	 * 引数で渡された使用するDeviceの数に対応する数のKeyをまとめるKeyDataを生成するクラスコンストラクタ．
+	 * クラスコンストラクタ．
+	 */
+	public KeyData() {
+		this.keys = new Key[2];
+		for (int i = 0; i < this.keys.length; i++) {
+			this.keys[i] = new Key();
+		}
+	}
+
+	/**
+	 * ゲーム中に使用するプレイヤー数分のKeyを管理するKeyDataを生成するクラスコンストラクタ．
 	 *
 	 * @param keyDataLength
-	 *            使用するDeviceの数
+	 *            ゲーム中に使用するプレイヤーの数．<br>
+	 *            基本的にプレイヤー数は2である．(P1 and P2).
+	 * @see Key
 	 */
 	public KeyData(int keyDataLength) {
-		keys = new Key[keyDataLength];
-		for (int i = 0; i < keys.length; i++) {
-			keys[i] = new Key();
+		this.keys = new Key[keyDataLength];
+		for (int i = 0; i < this.keys.length; i++) {
+			this.keys[i] = new Key();
 		}
 	}
 
@@ -26,7 +42,8 @@ public class KeyData {
 	 * 各プレイヤーのKey入力からKeyDataを作成するクラスコンストラクタ．
 	 *
 	 * @param keys
-	 *            各プレイヤーからのキー入力 基本的には、keys[]のlengthは2
+	 *            P1, P2の入力キーを格納した配列.<br>
+	 *            Index 0 is P1, index 1 is P2.
 	 */
 	public KeyData(Key[] keys) {
 		this.keys = new Key[keys.length];
@@ -40,39 +57,30 @@ public class KeyData {
 	 * 引数がnullならキー配列を初期化して新たなインスタンスを生成する．
 	 *
 	 * @param keyData
-	 *            Source data
+	 *            P1, P2の入力キー情報.<br>
+	 *            Index 0 is P1, index 1 is P2.
 	 */
 	public KeyData(KeyData keyData) {
 		if (keyData != null) {
 			this.keys = new Key[keyData.getKeys().length];
 			for (int i = 0; i < keyData.getKeys().length; i++) {
-				keys[i] = new Key(keyData.getKeys()[i]);
+				this.keys[i] = new Key(keyData.getKeys()[i]);
 			}
 		} else {
-			keys = new Key[2];
-			for (int i = 0; i < keys.length; i++) {
-				keys[i] = new Key();
+			this.keys = new Key[2];
+			for (int i = 0; i < this.keys.length; i++) {
+				this.keys[i] = new Key();
 			}
 		}
 	}
 
 	/**
-	 * クラスコンストラクタ．
-	 */
-	public KeyData() {
-		// TODO 自動生成されたコンストラクター・スタブ
-		keys = new Key[2];
-		for (int i = 0; i < keys.length; i++) {
-			keys[i] = new Key();
-		}
-	}
-
-	/**
-	 * 各プレイヤーのキー配列を返す．
+	 * P1, P2の入力キーを格納した配列を返す．
 	 *
-	 * @return 各プレイヤーのキー配列
+	 * @return P1, P2の入力キーを格納した配列.<br>
+	 *         Index 0 is P1, index 1 is P2.
 	 */
 	public Key[] getKeys() {
-		return keys.clone();
+		return this.keys.clone();
 	}
 }

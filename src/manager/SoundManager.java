@@ -142,9 +142,9 @@ public class SoundManager {
 		this.device = alcOpenDevice(defaultDeviceName);
 
 		// 必要な制御情報を作成
-		this.context = alcCreateContext(device, (IntBuffer) null);
-		alcMakeContextCurrent(context);
-		ALCCapabilities deviceCaps = ALC.createCapabilities(device);
+		this.context = alcCreateContext(this.device, (IntBuffer) null);
+		alcMakeContextCurrent(this.context);
+		ALCCapabilities deviceCaps = ALC.createCapabilities(this.device);
 		AL.createCapabilities(deviceCaps);
 
 		this.setListenerValues();
@@ -297,8 +297,8 @@ public class SoundManager {
 			this.sources.clear();
 
 			// コンテキスト削除とデバイスのクローズ
-			alcDestroyContext(context);
-			alcCloseDevice(device);
+			alcDestroyContext(this.context);
+			alcCloseDevice(this.device);
 
 			this.closeFlag = true;
 		}

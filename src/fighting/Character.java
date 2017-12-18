@@ -40,12 +40,12 @@ public class Character {
 	private int energy;
 
 	/**
-	 * キャラクター画像の左上端のx座標．
+	 * The character graphic's most top-left x-coordinate.
 	 */
 	private int x;
 
 	/**
-	 * キャラクター画像の左上端のy座標．
+	 * The character graphic's most top-left y-coordinate.
 	 */
 	private int y;
 
@@ -156,7 +156,7 @@ public class Character {
 	private boolean isSimulateProcess;
 
 	/**
-	 * クラスコンストラクタ．
+	 * Class constructor．
 	 */
 	public Character() {
 		initializeList();
@@ -261,15 +261,13 @@ public class Character {
 	 * 設定ファイル(gSetting.txt)の情報を用いてキャラクターの画像サイズを初期化する．
 	 *
 	 * @param characterName
-	 *            キャラクター名
+	 *            the character name
 	 * @param playerNumber
-	 *            プレイヤー番号．{@code true} if the player is P1, or {@code false} if
-	 *            P2.
+	 *            the character's side flag．{@code true} if the player is P1, or
+	 *            {@code false} if P2.
 	 */
 	public void initialize(String characterName, boolean playerNumber) {
 		try {
-			// gSetting.txtは名前や内容変える可能性大
-			// graphicの情報も入れるか要検討
 			BufferedReader br = ResourceLoader.getInstance()
 					.openReadFile("./data/characters/" + characterName + "/gSetting.txt");
 			String[] size = br.readLine().split(",", 0);

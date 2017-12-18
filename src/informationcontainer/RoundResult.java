@@ -75,9 +75,9 @@ public class RoundResult {
 	}
 
 	/**
-	 * P1,P2の残りHPを返す．
+	 * P1,P2の残りHPを格納した配列を返す．
 	 *
-	 * @return P1,P2の残りHP
+	 * @return P1,P2の残りHPを格納した配列
 	 */
 	public int[] getRemainingHPs() {
 		return this.remainingHPs.clone();

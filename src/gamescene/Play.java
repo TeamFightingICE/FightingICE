@@ -180,8 +180,8 @@ public class Play extends GameScene {
 			}
 
 			HomeMenu homeMenu = new HomeMenu();
-			this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-			this.setNextGameScene(homeMenu); // 次のシーンをセットする
+			this.setTransitionFlag(true);
+			this.setNextGameScene(homeMenu);
 		}
 
 	}
@@ -217,11 +217,12 @@ public class Play extends GameScene {
 	 *
 	 * 1. P1, P2の入力を受け取る.<br>
 	 * 2. 対戦処理を行う.<br>
-	 * 3. 対戦後のFrameData, 及びScreenDataを取得する.<br>
-	 * 4. AIにFrameDataとScreenDataを渡す.<br>
-	 * 5. ラウンドが終了しているか判定する.<br>
-	 * 6. リプレイファイルにログを出力する.<br>
-	 * 7. ゲーム画面を描画する.
+	 * 3. 対戦後のFrameDataを取得する.<br>
+	 * 4. リプレイファイルにログを出力する.<br>
+	 * 5. ゲーム画面を描画する.<br>
+	 * 6. 対戦後の画面情報(ScreenData)を取得する．<br>
+	 * 7. AIにFrameData及びScreenDataを渡す．<br>
+	 * 8. ラウンドが終了しているか判定する.<br>
 	 */
 	private void processingGame() {
 		this.keyData = new KeyData(InputManager.getInstance().getKeyData());
@@ -260,13 +261,13 @@ public class Play extends GameScene {
 	}
 
 	/**
-	 * 各ラウンド終了時の処理を行う.
+	 * ラウンド終了時の処理を行う.
 	 */
 	private void processingRoundEnd() {
 		RoundResult roundResult = new RoundResult(this.frameData);
 		this.roundResults.add(roundResult);
 
-		// AIに結果を渡す sendRoundResult(p1Hp, p2Hp, frames);
+		// AIに結果を渡す
 		InputManager.getInstance().sendRoundResult(roundResult);
 		this.currentRound++;
 		this.roundStartFlag = true;
@@ -280,7 +281,7 @@ public class Play extends GameScene {
 	/**
 	 * キャラクターが倒されたかどうかを判定する.
 	 *
-	 * @return true: P1 or P2が倒された; false: otherwise
+	 * @return {@code true}: P1 or P2が倒された，{@code false}: otherwise
 	 */
 	private boolean isBeaten() {
 		return FlagSetting.limitHpFlag
@@ -291,7 +292,7 @@ public class Play extends GameScene {
 	 * 1ラウンドの制限時間が経過したかどうかを判定する.<br>
 	 * Training modeのときは, Integerの最大との比較を行う.
 	 *
-	 * @return true: 1ラウンドの制限時間が経過した; false: otherwise
+	 * @return {@code true}: 1ラウンドの制限時間が経過した， {@code false}: otherwise
 	 */
 	private boolean isTimeOver() {
 		if (FlagSetting.trainingModeFlag) {

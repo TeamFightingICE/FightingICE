@@ -95,7 +95,6 @@ public class FightingMenu extends GameScene {
 			} else {
 				this.cursorPosition = this.menuItems[this.cursorPosition - 1].getCursorPosition();
 			}
-
 		}
 
 		if (key.D) {

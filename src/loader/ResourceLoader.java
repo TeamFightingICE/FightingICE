@@ -43,16 +43,16 @@ import setting.ResourceSetting;
 public class ResourceLoader {
 
 	/**
-	 * 読み込み済み画像のリスト．
+	 * 読み込み済みのリソースのリスト．
 	 */
-	private ArrayList<String> loadedGraphics;
+	private ArrayList<String> loadedResources;
 
 	/**
 	 * クラスコンストラクタ．
 	 */
 	private ResourceLoader() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceLoader.class.getName());
-		this.loadedGraphics = new ArrayList<String>();
+		this.loadedResources = new ArrayList<String>();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class ResourceLoader {
 			loadImages(GraphicManager.getInstance().getProjectileImageContainer(),
 					graphicPath + ResourceSetting.PROJECTILE_DIRECTORY);
 
-			addLoadedGraphic("hadouken");
+			addLoadedResource("hadouken");
 			Logger.getAnonymousLogger().log(Level.INFO, "Hadouken images have been loaded.");
 		}
 
@@ -93,7 +93,7 @@ public class ResourceLoader {
 			loadImages(GraphicManager.getInstance().getUltimateAttackImageContainer(),
 					graphicPath + ResourceSetting.SUPER_DIRECTORY);
 
-			addLoadedGraphic("super");
+			addLoadedResource("super");
 			Logger.getAnonymousLogger().log(Level.INFO, "Ultimate attack images have been loaded.");
 		}
 
@@ -102,7 +102,7 @@ public class ResourceLoader {
 			loadImages(GraphicManager.getInstance().getCounterTextImageContainer(),
 					graphicPath + ResourceSetting.COUNTER_DIRECTORY);
 
-			addLoadedGraphic("hitCounter");
+			addLoadedResource("hitCounter");
 			Logger.getAnonymousLogger().log(Level.INFO, "Hit counter text images have been loaded.");
 		}
 
@@ -111,7 +111,7 @@ public class ResourceLoader {
 			loadImages(GraphicManager.getInstance().getHitTextImageContainer(),
 					graphicPath + ResourceSetting.HIT_TEXT_DIRECTORY);
 
-			addLoadedGraphic("hitText");
+			addLoadedResource("hitText");
 			Logger.getAnonymousLogger().log(Level.INFO, "Hit text image has been loaded.");
 		}
 
@@ -119,7 +119,7 @@ public class ResourceLoader {
 		if (!isLoaded("hitEffect")) {
 			loadHitEffectImage(graphicPath + ResourceSetting.HIT_DIRECTORY);
 
-			addLoadedGraphic("hitEffect");
+			addLoadedResource("hitEffect");
 			Logger.getAnonymousLogger().log(Level.INFO, "Hit effect images have been loaded.");
 		}
 
@@ -128,7 +128,7 @@ public class ResourceLoader {
 			loadBackgroundImage(GraphicManager.getInstance().getBackgroundImage(),
 					graphicPath + ResourceSetting.BACKGROUND_DIRECTORY);
 
-			addLoadedGraphic("background");
+			addLoadedResource("background");
 			Logger.getAnonymousLogger().log(Level.INFO, "Background image has been loaded.");
 		}
 
@@ -144,7 +144,7 @@ public class ResourceLoader {
 		if (!isLoaded("soundEffect")) {
 			loadSoundEffect();
 
-			addLoadedGraphic("soundEffect");
+			addLoadedResource("soundEffect");
 			Logger.getAnonymousLogger().log(Level.INFO, "Sound effects have been loaded.");
 		}
 
@@ -152,7 +152,7 @@ public class ResourceLoader {
 		if (!isLoaded("BGM")) {
 			loadBackGroundMusic();
 
-			addLoadedGraphic("BGM");
+			addLoadedResource("BGM");
 			Logger.getAnonymousLogger().log(Level.INFO, "BGM has been loaded.");
 		}
 
@@ -243,7 +243,6 @@ public class ResourceLoader {
 
 			return new AIController(ai);
 		} catch (MalformedURLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -272,8 +271,8 @@ public class ResourceLoader {
 				fileNames.add(fileName.substring(0, fileName.lastIndexOf(".")));
 			}
 		}
-		return fileNames;
 
+		return fileNames;
 	}
 
 	/**
@@ -332,7 +331,7 @@ public class ResourceLoader {
 					e.printStackTrace();
 				}
 			}
-			addLoadedGraphic(LaunchSetting.characterNames[i] + "_Graphic");
+			addLoadedResource(LaunchSetting.characterNames[i] + "_Graphic");
 		}
 	}
 
@@ -536,25 +535,25 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * 画像が読み込み済みかどうかを返す．
+	 * リソースが読み込み済みかどうかを返す．
 	 *
-	 * @param graphicName
-	 *            画像名
+	 * @param resourceName
+	 *            リソース名
 	 *
 	 * @return {@code true} 読み込み済みの場合，{@code false} otherwise
 	 */
-	public boolean isLoaded(String graphicName) {
-		return this.loadedGraphics.contains(graphicName);
+	public boolean isLoaded(String resourceName) {
+		return this.loadedResources.contains(resourceName);
 	}
 
 	/**
-	 * 画像名を読み込み済み画像リストに追加する．
+	 * 読み込んだリソース名をを読み込み済みリソースリストに追加する．
 	 *
-	 * @param graphicName
-	 *            画像名
+	 * @param resourceName
+	 *            読み込んだリソース名
 	 */
-	public void addLoadedGraphic(String graphicName) {
-		this.loadedGraphics.add(graphicName);
+	public void addLoadedResource(String resourceName) {
+		this.loadedResources.add(resourceName);
 	}
 
 	/**

@@ -32,7 +32,6 @@ public class InputManager<Data> {
 	 */
 	private KeyData buffer;
 
-	/* KeyCallBackクラス */
 	/**
 	 * Keyboardクラスのインスタンス．
 	 */
@@ -48,9 +47,11 @@ public class InputManager<Data> {
 	 */
 	private GameSceneName sceneName;
 
+	/**
+	 * Python側で定義されたAI名とAIInterfaceをセットで管理するマップ.
+	 */
 	private HashMap<String, AIInterface> predifinedAIs;
 
-	// static field
 	/**
 	 * Default number of devices.
 	 */
@@ -66,7 +67,6 @@ public class InputManager<Data> {
 	 */
 	public final static char DEVICE_TYPE_AI = 1;
 
-	// to recognize the input devices
 	/**
 	 * 入力デバイスを指定する配列．
 	 */
@@ -132,7 +132,7 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * 毎フレーム実行され，キーボード入力及びAIの入力を受け付ける．
+	 * 毎フレーム実行され，キーボード入力及びAIの入力情報を取得する．
 	 */
 	public void update() {
 		Key[] keys = new Key[this.deviceTypes.length];
@@ -142,7 +142,7 @@ public class InputManager<Data> {
 				keys[i] = getKeyFromKeyboard(i == 0);
 				break;
 			case DEVICE_TYPE_AI:
-				keys[i] = getKeyFromAI(ais[i]);
+				keys[i] = getKeyFromAI(this.ais[i]);
 				break;
 			default:
 				break;
@@ -158,7 +158,8 @@ public class InputManager<Data> {
 	 *
 	 * @param playerNumber
 	 *            プレイヤー番号
-	 * @return 押されたキー
+	 * @return 押されたキーの情報
+	 * @see Key
 	 */
 	private Key getKeyFromKeyboard(boolean playerNumber) {
 		Key key = new Key();
@@ -199,15 +200,7 @@ public class InputManager<Data> {
 		}
 
 		this.deviceTypes = LaunchSetting.deviceTypes.clone();
-		int count = 0;
-		for (char c : this.deviceTypes) {
-			if (c == DEVICE_TYPE_AI) {
-				count++;
-			}
-		}
-
 		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
-		// count = 0;
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (this.deviceTypes[i] == DEVICE_TYPE_AI) {
 				if (this.predifinedAIs.containsKey(aiNames[i])) {
@@ -227,12 +220,13 @@ public class InputManager<Data> {
 	 *
 	 * @param gameData
 	 *            GameDataクラスのインスタンス
+	 * @see GameData
 	 */
 	public void startAI(GameData gameData) {
 		for (int i = 0; i < this.deviceTypes.length; i++) {
-			if (ais[i] != null) {
-				ais[i].initialize(ThreadController.getInstance().getAIsObject(i == 0), gameData, i == 0);
-				ais[i].start();// start the thread
+			if (this.ais[i] != null) {
+				this.ais[i].initialize(ThreadController.getInstance().getAIsObject(i == 0), gameData, i == 0);
+				this.ais[i].start();// start the thread
 			}
 		}
 	}
@@ -247,11 +241,10 @@ public class InputManager<Data> {
 			if (ai != null)
 				ai.gameEnd();
 		}
-		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
+		this.deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		this.ais = null;
 	}
 
-	// private synchronized Key getInputFromAI(AIController ai){
 	/**
 	 * AIのキー入力を取得する．
 	 *
@@ -259,6 +252,8 @@ public class InputManager<Data> {
 	 *            AIの情報を格納したコントローラ
 	 *
 	 * @return AIのキー入力．
+	 * @see AIController
+	 * @see Key
 	 */
 	private Key getKeyFromAI(AIController ai) {
 		if (ai == null)
@@ -267,20 +262,25 @@ public class InputManager<Data> {
 	}
 
 	/**
-	 * 引数のフレームデータをAIコントローラにセットする．
+	 * 引数のフレームデータ及びScreenDataを各AIコントローラにセットする．
 	 *
 	 * @param frameData
 	 *            フレームデータ
+	 * @param screenData
+	 *            スクリーンデータ
+	 *
+	 * @see FrameData
+	 * @see ScreenData
 	 */
 	public void setFrameData(FrameData frameData, ScreenData screenData) {
 		for (int i = 0; i < this.ais.length; i++) {
-			if (ais[i] != null) {
+			if (this.ais[i] != null) {
 				if (!frameData.getEmptyFlag()) {
 					this.ais[i].setFrameData(new FrameData(frameData));
 				} else {
 					this.ais[i].setFrameData(new FrameData());
 				}
-				ais[i].setScreenData(new ScreenData(screenData));
+				this.ais[i].setScreenData(new ScreenData(screenData));
 			}
 		}
 
@@ -293,17 +293,17 @@ public class InputManager<Data> {
 
 				}
 			} catch (InterruptedException e) {
-				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
 		}
 	}
 
 	/**
-	 * AIコントローラにラウンド結果を送信する．
+	 * AIコントローラに現在のラウンドの結果を送信する．
 	 *
 	 * @param roundResult
-	 *            ラウンド結果
+	 *            現在のラウンドの結果
+	 * @see RoundResult
 	 */
 	public void sendRoundResult(RoundResult roundResult) {
 		for (AIController ai : this.ais) {

@@ -72,29 +72,29 @@ public class Image {
 	}
 
 	/**
-	 * BufferedImageを返す．
+	 * 画像のBufferedImageを返す．
 	 *
-	 * @return BufferedImage
+	 * @return 画像のBufferedImage
 	 */
 	public BufferedImage getBufferedImage() {
-		return new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());
+		return new BufferedImage(this.bimg.getWidth(), this.bimg.getHeight(), this.bimg.getType());
 	}
 
 	/**
 	 * 画像のテクスチャIDをセットする．
 	 *
 	 * @param textureId
-	 *            画像のテクスチャID
+	 *            指定された画像のテクスチャID
 	 */
 	public void setTextureId(int textureId) {
 		this.textureId = textureId;
 	}
 
 	/**
-	 * BufferedImageをセットする．
+	 * 画像のBufferedImageをセットする．
 	 *
 	 * @param bimg
-	 *            BufferedImage
+	 *            指定された画像のBufferedImage
 	 */
 	public void setBufferedImage(BufferedImage bimg) {
 		this.bimg = new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());
@@ -103,26 +103,26 @@ public class Image {
 	/**
 	 * 画像の幅を返す．
 	 *
-	 * @return BufferedImageがnullでなければ画像の幅を返す． nullであれば999を返す．
+	 * @return BufferedImageがnullでなければ画像の幅を返す． nullであれば0を返す．
 	 */
 	public int getWidth() {
 		if (this.bimg != null) {
 			return this.bimg.getWidth();
 		} else {
-			return 999;
+			return 0;
 		}
 	}
 
 	/**
 	 * 画像の高さを返す．
 	 *
-	 * @return BufferedImageがnullでなければ画像の高さを返す． nullであれば999を返す．
+	 * @return 画像のBufferedImageがnullでなければ画像の高さを返す． nullであれば0を返す．
 	 */
 	public int getHeight() {
 		if (this.bimg != null) {
 			return this.bimg.getHeight();
 		} else {
-			return 999;
+			return 0;
 		}
 
 	}

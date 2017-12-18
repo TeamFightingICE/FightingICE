@@ -137,6 +137,9 @@ public class Result extends GameScene {
 				&& (AIContainer.p2Index + 1) == AIContainer.allAINameList.size();
 	}
 
+	/**
+	 * Resultシーンから次のシーンに遷移する際の処理を行う.
+	 */
 	private void endProcess() {
 		// -aや-nを引数にして起動 or Repeat Countを2以上にして起動した場合の処理
 		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag || FlagSetting.py4j) {
@@ -188,8 +191,8 @@ public class Result extends GameScene {
 
 			if (Keyboard.getKeyDown(GLFW_KEY_ENTER)) {
 				HomeMenu homeMenu = new HomeMenu();
-				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-				this.setNextGameScene(homeMenu); // 次のシーンをセットする
+				this.setTransitionFlag(true);
+				this.setNextGameScene(homeMenu);
 			}
 		}
 	}

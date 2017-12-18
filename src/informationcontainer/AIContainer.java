@@ -3,7 +3,8 @@ package informationcontainer;
 import java.util.ArrayList;
 
 /**
- * AIフォルダに格納されているAIに関するデータを扱うクラス．
+ * AIフォルダに格納されているAIに関するデータを扱うクラス．<br>
+ * 総当り対戦のオプション(-a)が指定されたときに用いられる.
  */
 public class AIContainer {
 
