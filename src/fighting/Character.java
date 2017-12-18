@@ -477,7 +477,7 @@ public class Character {
 				opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
 
 				// ダウン技の処理
-				if (attack.isDownProperty()) {
+				if (attack.isDownProp()) {
 					runAction(Action.CHANGE_DOWN, false);
 					setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
 
@@ -582,7 +582,7 @@ public class Character {
 					motion.getAttackGuardDamage(), motion.getAttackStartAddEnergy(), motion.getAttackHitAddEnergy(),
 					motion.getAttackGuardAddEnergy(), motion.getAttackGiveEnergy(), motion.getAttackImpactX(),
 					motion.getAttackImpactY(), motion.getAttackGiveGuardRecov(), motion.getAttackType(),
-					motion.isAttackDownProperty());
+					motion.isAttackDownProp());
 
 			this.attack.initialize(this.playerNumber, this.x, this.y, this.graphicSizeX, this.front);
 		}

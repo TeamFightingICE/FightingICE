@@ -143,7 +143,7 @@ public class Motion {
 	 * The flag whether this motion can push down the opponent when it is hit by
 	 * this motion.
 	 */
-	private boolean attackDownProperty;
+	private boolean attackDownProp;
 
 	/**
 	 * The value of the first frame that the character can cancel this motion.
@@ -219,7 +219,7 @@ public class Motion {
 		this.attackImpactY = Integer.valueOf(data[24]);
 		this.attackGiveGuardRecov = Integer.valueOf(data[25]);
 		this.attackType = Integer.valueOf(data[26]);
-		this.attackDownProperty = Boolean.valueOf(data[27]);
+		this.attackDownProp = Boolean.valueOf(data[27]);
 		this.cancelAbleFrame = Integer.valueOf(data[28]);
 		this.cancelAbleMotionLevel = Integer.valueOf(data[29]);
 		this.motionLevel = Integer.valueOf(data[30]);
@@ -262,7 +262,7 @@ public class Motion {
 		this.attackImpactY = motionData.getAttackImpactY();
 		this.attackGiveGuardRecov = motionData.getAttackGiveGuardRecov();
 		this.attackType = motionData.getAttackType();
-		this.attackDownProperty = motionData.isAttackDownProperty();
+		this.attackDownProp = motionData.isAttackDownProp();
 		this.cancelAbleFrame = motionData.getCancelAbleFrame();
 		this.cancelAbleMotionLevel = motionData.getCancelAbleMotionLevel();
 		this.motionLevel = motionData.getMotionLevel();
@@ -573,8 +573,8 @@ public class Motion {
 	 *
 	 * @return the flag whether this motion can push down the opponent when hit
 	 */
-	public boolean isAttackDownProperty() {
-		return attackDownProperty;
+	public boolean isAttackDownProp() {
+		return attackDownProp;
 	}
 
 	/**
@@ -863,12 +863,12 @@ public class Motion {
 	 * Sets the flag whether this motion can push down the opponent when it is
 	 * hit by this motion.
 	 *
-	 * @param attackDownProperty
+	 * @param attackDownProp
 	 *            the flag whether this motion can push down the opponent when
 	 *            it is hit by this motion
 	 */
-	public void setAttackDownProperty(boolean attackDownProperty) {
-		this.attackDownProperty = attackDownProperty;
+	public void setAttackDownProp(boolean attackDownProp) {
+		this.attackDownProp = attackDownProp;
 	}
 
 	/**
