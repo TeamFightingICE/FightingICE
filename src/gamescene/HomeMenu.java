@@ -66,7 +66,7 @@ public class HomeMenu extends GameScene {
 
 		this.allReplayNames = ResourceLoader.getInstance().loadFileNames("./log/replay/", ".dat");
 		if (this.allReplayNames.size() == 0) {
-			allReplayNames.add("None");
+			this.allReplayNames.add("None");
 		}
 
 	}
@@ -94,9 +94,9 @@ public class HomeMenu extends GameScene {
 		// FIGHTの位置のとき
 		case 0:
 			if (key.A) {
-				FightingMenu fightingMenu = new FightingMenu(); // 次のシーンのコンストラクタ作成
-				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-				this.setNextGameScene(fightingMenu); // 次のシーンをセットする
+				FightingMenu fightingMenu = new FightingMenu();
+				this.setTransitionFlag(true);
+				this.setNextGameScene(fightingMenu);
 			}
 			break;
 

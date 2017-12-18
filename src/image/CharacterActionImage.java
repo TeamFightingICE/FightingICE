@@ -108,7 +108,7 @@ public class CharacterActionImage {
 	 * @return アクションに対応する全画像
 	 */
 	public Image[] getActionImage() {
-		return this.actionImage;
+		return this.actionImage.clone();
 	}
 
 }

@@ -129,13 +129,14 @@ public class Attack {
 	private int attackType;
 
 	/**
-	 * The flag whether this skill can push down the opponent when hit.<br>
+	 * The flag whether this skill can push down the opponent when it hits the
+	 * opponent.<br>
 	 * {@code true} if this skill can push down, {@code false} otherwise.
 	 */
 	private boolean downProperty;
 
 	/**
-	 * クラスコンストラクタ．
+	 * Class constructor．
 	 */
 	public Attack() {
 		this.settingHitArea = new HitArea();
@@ -281,8 +282,9 @@ public class Attack {
 	 *            the value of the attack type: 1 = high, 2 = middle, 3 = low, 4
 	 *            = throw
 	 * @param downProp
-	 *            the flag whether this skill can push down the opponent when
-	 *            hit. {@code true} if can push down, {@code false} otherwise.
+	 *            the flag whether this skill can push down the opponent when it
+	 *            hits the opponent. {@code true} if can push down,
+	 *            {@code false} otherwise.
 	 */
 	public Attack(HitArea hitArea, int settingSpeedX, int settingSpeedY, int startUp, int active, int hitDamage,
 			int guardDamage, int startAddEnergy, int hitAddEnergy, int guardAddEnergy, int giveEnergy, int impactX,
@@ -318,9 +320,9 @@ public class Attack {
 	 *            the player side's flag. {@code true} if the player is P1,
 	 *            {@code false} otherwise.
 	 * @param x
-	 *            キャラクター画像の左上端のx座標
+	 *            the character graphic's most top-left x-coordinate.
 	 * @param y
-	 *            キャラクター画像の左上端のy座標
+	 *            the character graphic's most top-left y-coordinate.
 	 * @param size
 	 *            the character's graphic width
 	 * @param direction
@@ -363,9 +365,9 @@ public class Attack {
 	 * 引数として渡された値を用いて，攻撃の当たり判定領域を設定する．
 	 *
 	 * @param x
-	 *            キャラクター画像の左上端のx座標
+	 *            the character graphic's most top-left x-coordinate.
 	 * @param y
-	 *            キャラクター画像の左上端のy座標
+	 *            the character graphic's most top-left y-coordinate.
 	 * @param size
 	 *            the character's graphic width
 	 * @param direction
@@ -407,7 +409,8 @@ public class Attack {
 	}
 
 	/**
-	 * Returns the flag whether this skill can push down the opponent when hit.
+	 * Returns the flag whether this skill can push down the opponent when it
+	 * hits the opponent.
 	 *
 	 * @return {@code true} if this skill can push down, {@code false} otherwise
 	 */
@@ -819,12 +822,13 @@ public class Attack {
 	}
 
 	/**
-	 * Sets the flag whether this skill can push down the opponent when hit.
+	 * Sets the flag whether this skill can push down the opponent when it hits
+	 * the opponent.
 	 *
 	 * @param downProperty
-	 *            the flag whether this skill can push down the opponent when
-	 *            hit. {@code true} if this skill can push down, {@code false}
-	 *            otherwise.
+	 *            the flag whether this skill can push down the opponent when it
+	 *            hits the opponent. {@code true} if this skill can push down,
+	 *            {@code false} otherwise.
 	 */
 	public void setDownProperty(boolean downProperty) {
 		this.downProperty = downProperty;

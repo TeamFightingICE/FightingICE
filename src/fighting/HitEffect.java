@@ -9,8 +9,8 @@ import image.Image;
 public class HitEffect extends Effect {
 
 	/**
-	 * The boolean value whether the attack conducted by the character is hit to
-	 * the opponent or not.
+	 * The boolean value whether the attack conducted by the character hits the
+	 * opponent or not.
 	 */
 	private boolean isHit;
 
@@ -33,7 +33,7 @@ public class HitEffect extends Effect {
 	 *            攻撃オブジェクトに対応する全てのエフェクト画像
 	 * @param isHit
 	 *            The boolean value whether the attack conducted by the
-	 *            character is hit to the opponent or not.
+	 *            character hits the opponent or not.
 	 *
 	 * @param variation
 	 *            エフェクト画像の表示位置をvariationX, variationYに従って変動させるかどうか
@@ -54,7 +54,7 @@ public class HitEffect extends Effect {
 	 *            攻撃オブジェクトに対応する全てのエフェクト画像
 	 * @param isHit
 	 *            the boolean value whether the attack conducted by the
-	 *            character is hit to the opponent or not
+	 *            character hits the opponent or not
 	 *
 	 * @param variation
 	 *            エフェクト画像の表示位置をvariationX, variationYに従って変動させるかどうか
@@ -73,7 +73,7 @@ public class HitEffect extends Effect {
 	 *            攻撃オブジェクトに対応する全てのエフェクト画像
 	 * @param isHit
 	 *            the boolean value whether the attack conducted by the
-	 *            character is hit to the opponent or not
+	 *            character hits the opponent or not
 	 */
 	public HitEffect(Attack attack, Image[] hitImages, boolean isHit) {
 		this(attack, hitImages, isHit, true);
@@ -84,7 +84,7 @@ public class HitEffect extends Effect {
 	 *
 	 * @param isHit
 	 *            the boolean value whether the attack conducted by the
-	 *            character is hit to the opponent or not
+	 *            character hits the opponent or not
 	 * @param variation
 	 *            エフェクト画像の表示位置をvariationX, variationYに従って変動させるかどうか
 	 */
@@ -96,10 +96,10 @@ public class HitEffect extends Effect {
 
 	/**
 	 * Returns the boolean value whether the attack conducted by the character
-	 * is hit to the opponent or not.
+	 * hits the opponent or not.
 	 *
 	 * @return the boolean value whether the attack conducted by the character
-	 *         is hit to the opponent or not
+	 *         hits the opponent or not
 	 */
 	public boolean isHit() {
 		return this.isHit;

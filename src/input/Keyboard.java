@@ -60,12 +60,12 @@ public class Keyboard extends GLFWKeyCallback {
 	 *
 	 * @param keycode
 	 *            指定するキー
-	 * @return ゲームシーン内
+	 * @return ゲームシーンがPLAYであるとき
 	 *         <p>
 	 *         {@code true} 指定されたキーが入力されているとき，<br>
 	 *         {@code false} 指定されたキーが入力されていないとき．
 	 *         <p>
-	 *         ゲームシーン以外
+	 *         それ以外のゲームシーンのとき
 	 *         <p>
 	 *         {@code true} 指定されたキーが入力されているとき，<br>
 	 *         {@code false} 指定されたキーが入力されていない,または前ステップで入力されていたとき．
@@ -90,7 +90,7 @@ public class Keyboard extends GLFWKeyCallback {
 	}
 
 	/**
-	 * クローズ処理．
+	 * 終了処理．
 	 */
 	public void close() {
 

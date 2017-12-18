@@ -88,15 +88,15 @@ public class DisplayManager {
 		// repeated or released.
 		glfwSetKeyCallback(this.window, InputManager.getInstance().getKeyboard());
 
-		// Get the thread stack and push a new frame
+		// Gets the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
 			IntBuffer pHeight = stack.mallocInt(1); // int*
 
-			// Get the window size passed to glfwCreateWindow
+			// Gets the window size passed to glfwCreateWindow
 			glfwGetWindowSize(this.window, pWidth, pHeight);
 
-			// Get the resolution of the primary monitor
+			// Gets the resolution of the primary monitor
 			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 			// Center the window
@@ -104,7 +104,7 @@ public class DisplayManager {
 					(vidmode.height() - pHeight.get(0)) / 2);
 		} // the stack frame is popped automatically
 
-		// Make the OpenGL context current
+		// Makes the OpenGL context current
 		glfwMakeContextCurrent(this.window);
 
 		int sync;
@@ -118,11 +118,11 @@ public class DisplayManager {
 		glfwSwapInterval(sync);
 
 		if (FlagSetting.enableWindow) {
-			// Make the window visible
+			// Makes the window visible
 			glfwShowWindow(this.window);
 			Logger.getAnonymousLogger().log(Level.INFO, "Create Window " + width + "x" + height);
 		} else {
-			// Make the window invisible
+			// Makes the window invisible
 			glfwHideWindow(this.window);
 			Logger.getAnonymousLogger().log(Level.INFO, "Disable window mode");
 		}
@@ -144,14 +144,14 @@ public class DisplayManager {
 		// bindings available for use.
 		GL.createCapabilities();
 
-		// Set the clear color
+		// Sets the clear color
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		initGL();
 
 		// ゲームマネージャ初期化
 		gm.initialize();
 
-		// Run the rendering loop until the user has attempted to close the
+		// Runs the rendering loop until the user has attempted to close the
 		// window.
 		while (!glfwWindowShouldClose(this.window)) {
 			// ゲーム終了の場合,リソースを解放してループを抜ける
@@ -183,7 +183,6 @@ public class DisplayManager {
 	private void close() {
 		GraphicManager.getInstance().close();
 		SoundManager.getInstance().close();
-		// InputManager.getInstance().close();
 
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(this.window);

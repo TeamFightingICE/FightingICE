@@ -193,8 +193,8 @@ public class GraphicManager {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// レンダリングタスクリストに残っているタスクを実行し，画像をバッファにセット
-		while (!renderTaskList.isEmpty()) {
-			renderTaskList.removeFirst().render();
+		while (!this.renderTaskList.isEmpty()) {
+			this.renderTaskList.removeFirst().render();
 		}
 		// バッファの中身を画面にレンダリング
 		glFlush();
@@ -221,7 +221,7 @@ public class GraphicManager {
 	 * 画像をレンダリングするタスクを新たに生成し，タスクリストに追加する．
 	 *
 	 * @param img
-	 *            画像
+	 *            描画する画像
 	 * @param x
 	 *            画像をレンダリングするx座標
 	 * @param y
@@ -242,7 +242,7 @@ public class GraphicManager {
 	 * 文字画像をレンダリングするタスクを新たに生成し，タスクリストに追加する．
 	 *
 	 * @param string
-	 *            文字
+	 *            描画する文字
 	 * @param x
 	 *            文字画像をレンダリングするx座標
 	 * @param y

@@ -60,7 +60,7 @@ public class Fighting {
 	protected CommandTable commandTable;
 
 	/**
-	 * クラスコンストラクタ．
+	 * Class constructor．
 	 */
 	public Fighting() {
 		this.playerCharacters = new Character[2];
@@ -271,7 +271,7 @@ public class Fighting {
 				}
 			}
 
-			// Change player's direction
+			// Changes player's direction
 			if (playerCharacters[i].isControl()) {
 				playerCharacters[i].frontDecision(playerCharacters[i == 0 ? 1 : 0].getHitAreaCenterX());
 			}
@@ -296,7 +296,6 @@ public class Fighting {
 	 * P1とP2のキャラクターの水平方向のスピードに応じて, 相手を押す処理を行う．
 	 */
 	protected void detectionPush() {
-		// Whether the conflict of first and second player or not.
 		if (isCollision()) {
 			int p1SpeedX = Math.abs(this.playerCharacters[0].getSpeedX());
 			int p2SpeedX = Math.abs(this.playerCharacters[1].getSpeedX());
@@ -318,7 +317,6 @@ public class Fighting {
 	 * P1とP2のキャラクター位置が重なってしまった場合, 重ならないように各キャラクターの座標の更新処理を行う．
 	 */
 	protected void detectionFusion() {
-		// Whether the conflict of first and second player or not.
 		if (isCollision()) {
 			int direction = 0;
 

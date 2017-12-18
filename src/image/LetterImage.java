@@ -39,7 +39,7 @@ public class LetterImage {
 
 	/**
 	 * LetterImageクラスのインスタンスを生成するためのクラスコンストラクタ．<br>
-	 * 文字フォントと，アンチエイリアシング処理を行うかどうかを引数としてインスタンスの初期化を行う．
+	 * 文字フォントと，アンチエイリアシング処理を行うかどうかを引数としてインスタンスの初期化を行う．<br>
 	 * 英数字及び記号の画像をハッシュマップに登録する．
 	 *
 	 * @param font
@@ -56,7 +56,7 @@ public class LetterImage {
 	}
 
 	/**
-	 * 文字を引数として渡すと，文字画像を返す．
+	 * 引数で指定された文字の画像を返す．
 	 *
 	 * @param letter
 	 *            画像として表示させる文字
@@ -67,12 +67,12 @@ public class LetterImage {
 	}
 
 	/**
-	 * Create a standard Java2D BufferedImage of the given character.
+	 * Creates a standard Java2D BufferedImage of the given letter.
 	 *
 	 * @param letter
-	 *            the character to create a BufferedImage for
+	 *            the letter to create the BufferedImage
 	 *
-	 * @return a BufferedImage containing the character
+	 * @return the BufferedImage containing the letter
 	 */
 	private BufferedImage getLetterBufferedImage(char letter) {
 		// Create a temporary image to extract the letter's size
@@ -95,7 +95,7 @@ public class LetterImage {
 		}
 		tempLetterImage = null;
 
-		// Create another image holding the character we are creating
+		// Creates another image holding the character we are creating
 		BufferedImage letterImage = new BufferedImage(letterWidth, letterHeight, BufferedImage.TYPE_INT_ARGB);
 		g = (Graphics2D) letterImage.createGraphics();
 
@@ -117,14 +117,11 @@ public class LetterImage {
 	 * ASCIIコード表から必要な文字のみを抽出する．
 	 */
 	private void createLetterImage() {
-
 		for (int i = 32; i <= 126; i++) {
 			// get 32-126 characters and then custom letters
 			BufferedImage bi = getLetterBufferedImage((char) i);
 
 			this.letterImageMap.put((char) i, ResourceLoader.getInstance().loadTextureFromBufferedImage(bi));
 		}
-
 	}
-
 }

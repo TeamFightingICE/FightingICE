@@ -214,8 +214,7 @@ public class Replay extends GameScene {
 	 *
 	 * 1. P1, P2の入力を受け取る.<br>
 	 * 2. 対戦処理を行う.<br>
-	 * 3. 対戦後のFrameData, 及びScreenDataを取得する.<br>
-	 * 4. ラウンドが終了しているか判定する.<br>
+	 * 3. 対戦後のFrameDataを取得する.<br>
 	 */
 	private void processingGame() {
 		this.keyData = createKeyData();
@@ -341,7 +340,7 @@ public class Replay extends GameScene {
 			try {
 				int checkMode = dis.readInt();
 
-				// Check whether fighting mode is limited HP mode or not
+				// Checks whether fighting mode is limited HP mode or not
 				// If it is HP mode, checkMode is less than 0 (e.g. -1)
 				if (checkMode < 0) {
 					LaunchSetting.maxHp[i] = dis.readInt();
@@ -373,18 +372,19 @@ public class Replay extends GameScene {
 	}
 
 	/**
-	 * HomeMenuシーンへの遷移処理を行う．
+	 * 遷移先のシーンへの遷移処理を行う．
 	 */
 	private void transitionProcess() {
 		HomeMenu homeMenu = new HomeMenu();
-		this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-		this.setNextGameScene(homeMenu); // 次のシーンをセットする
+		this.setTransitionFlag(true);
+		this.setNextGameScene(homeMenu);
 	}
 
 	/**
 	 * フレームデータを取得する．
 	 *
 	 * @return フレームデータ
+	 * @see FrameData
 	 */
 	public FrameData getFrameData() {
 		return new FrameData(this.frameData);
@@ -394,6 +394,7 @@ public class Replay extends GameScene {
 	 * ScreenDataを取得する．
 	 *
 	 * @return screen data
+	 * @see ScreenData
 	 */
 	public ScreenData getScreenData() {
 		return new ScreenData(this.screenData);
