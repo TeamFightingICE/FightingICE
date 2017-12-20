@@ -311,7 +311,6 @@ public class InputManager<Data> {
 		for (AIController ai : this.ais) {
 			if (ai != null) {
 				ai.informRoundResult(roundResult);
-				ai.clear();
 			}
 		}
 	}
