@@ -101,8 +101,8 @@ public class AIController extends Thread {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
 			}
+
 			this.ai.getInformation(!this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData());
 			this.ai.getScreenData(this.screenData);
 			this.ai.processing();
@@ -146,7 +146,12 @@ public class AIController extends Thread {
 	 * @see FrameData
 	 */
 	public synchronized void setFrameData(FrameData fd) {
-		this.framesData.addLast(fd);
+		if(fd != null){
+			this.framesData.addLast(fd);
+		}else{
+			this.framesData.addLast(new FrameData());
+		}
+
 		while (this.framesData.size() > DELAY) {
 			this.framesData.removeFirst();
 		}
