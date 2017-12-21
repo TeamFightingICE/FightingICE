@@ -296,6 +296,15 @@ public class CommandCenter {
 	}
 
 	/**
+	 * Returns the character's side flag.
+	 *
+	 * @return {@code true} if the character is P1, or {@code false} if P2.
+	 */
+	public boolean isPlayerNumber() {
+		return this.playerNumber;
+	}
+
+	/**
 	 * キャラクターの向いている方向に従って，コマンドの左右反転処理を行う．
 	 *
 	 * @param commands
