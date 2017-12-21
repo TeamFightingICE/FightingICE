@@ -163,6 +163,10 @@ public class MotionData {
 	 */
 	public boolean landingFlag;
 
+	/** クラスコンストラクタ */
+	public MotionData() {
+	}
+
 	/**
 	 * 引数として渡されたMotionインスタンスを用いてMotionDataインスタンスを生成するクラスコンストラクタ．
 	 *
