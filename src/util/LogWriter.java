@@ -49,7 +49,7 @@ public class LogWriter {
 	 * It is updated every time updateJson() is called.<br>
 	 * It is used to realise when the round changes.
 	 */
-	private int currentRound = 0;
+	private int currentRound = 1;
 
 	/** Stream generator for JSON. */
 	private JsonGenerator generator;
