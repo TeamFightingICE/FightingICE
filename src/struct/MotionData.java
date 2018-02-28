@@ -4,7 +4,8 @@ import enumerate.State;
 import fighting.Motion;
 
 /**
- * モーション名やモーションのエネルギー量などの、ゲーム内で不変の情報を扱うクラス
+ * The class dealing with invariable information in the game concerning motions,
+ * such as the motion name and energy amount.
  */
 public class MotionData {
 
@@ -129,18 +130,19 @@ public class MotionData {
 	public boolean attackDownProp;
 
 	/**
-	 * The value of the first frame that the character can cancel this motion.
-	 * <br>
+	 * The frame number of the first frame that the character can cancel this
+	 * motion.<br>
 	 * If this motion has reached this timing, it can be canceled with a motion
-	 * having a lower value of motionLevel; if this motion has no cancelable
-	 * period, the returned value will be -1.
+	 * having a {@link #motionLevel} less than or equal to the
+	 * {@link #cancelAbleMotionLevel} of this motion. If this motion has no
+	 * cancelable period, the returned value will be -1.
 	 */
 	public int cancelAbleFrame;
 
 	/**
-	 * The value of the level that can cancel this motion; during cancelable
-	 * frames, any motion whose level is below this value can cancel this
-	 * motion.
+	 * The value of the level that can cancel this motion.<br>
+	 * During cancelable frames, any motion whose level is less than or equal to
+	 * this value can cancel this motion.
 	 */
 	public int cancelAbleMotionLevel;
 
@@ -163,15 +165,18 @@ public class MotionData {
 	 */
 	public boolean landingFlag;
 
-	/** クラスコンストラクタ */
+	/**
+	 * The class constructor.
+	 */
 	public MotionData() {
 	}
 
 	/**
-	 * 引数として渡されたMotionインスタンスを用いてMotionDataインスタンスを生成するクラスコンストラクタ．
+	 * The class constructor that generates an instance of the MotionData class
+	 * by using an instance of the class passed as the argument.
 	 *
 	 * @param motion
-	 *            指定されたモーション
+	 *            an instance of the Motion class
 	 *
 	 * @see Motion
 	 */
@@ -203,7 +208,6 @@ public class MotionData {
 		this.motionLevel = motion.getMotionLevel();
 		this.control = motion.isControl();
 		this.landingFlag = motion.isLandingFlag();
-
 	}
 
 	/**
@@ -330,9 +334,9 @@ public class MotionData {
 	}
 
 	/**
-	 * Returns the controllable state associated to this motion. If the flag is
-	 * false, a character using this motion cannot be controlled until this
-	 * motion finishes.
+	 * Returns the controllable state associated to this motion.<br>
+	 * If the flag is false, a character using this motion cannot be controlled
+	 * until this motion finishes.
 	 *
 	 * @return {@code true} if a character using this motion is controllable,
 	 *         {@code false} otherwise
@@ -353,11 +357,14 @@ public class MotionData {
 	}
 
 	/**
-	 * Returns the first frame in which this motion can be canceled. Notice that
-	 * only a motion whose {@link #motionLevel} is lower than the
-	 * {@link #cancelAbleMotionLevel} of this one can cancel this motion.
+	 * Returns the frame number of the first frame that this motion can be
+	 * canceled.<br>
+	 * Notice that only a motion whose {@link #motionLevel} is less than or
+	 * equal to the {@link #cancelAbleMotionLevel} of this one can cancel this
+	 * motion.
 	 *
-	 * @return the first frame in which this motion can be canceled
+	 * @return the frame number of the first frame that this motion can be
+	 *         canceled
 	 */
 	public int getCancelAbleFrame() {
 		return this.cancelAbleFrame;
@@ -465,7 +472,8 @@ public class MotionData {
 	/**
 	 * Returns the level of this motion. Notice that this motion can cancel
 	 * other motions (after their {@link #cancelAbleFrame}) if such motions have
-	 * a {@link #cancelAbleMotionLevel} higher than the level of this motion.
+	 * a {@link #cancelAbleMotionLevel} higher than or equal to the level of
+	 * this motion.
 	 *
 	 * @return the level of this motion
 	 */
@@ -617,7 +625,7 @@ public class MotionData {
 
 	/**
 	 * Sets the value of the energy added to the character when it uses this
-	 * skill
+	 * skill.
 	 *
 	 * @param attackStartAddEnergy
 	 *            the value of the energy added to the character when it uses
@@ -677,7 +685,7 @@ public class MotionData {
 
 	/**
 	 * Sets the change in the vertical speed of the opponent when it is hit by
-	 * this skill
+	 * this skill.
 	 *
 	 * @param attackImpactY
 	 *            the change in the vertical speed of the opponent when it is
@@ -714,8 +722,9 @@ public class MotionData {
 	}
 
 	/**
-	 * Sets the {@link #control} flag. If the flag is false, a character using
-	 * this motion cannot be controlled until this motion finishes.
+	 * Sets the {@link #control} flag.<br>
+	 * If the flag is false, a character using this motion cannot be controlled
+	 * until this motion finishes.
 	 *
 	 * @param control
 	 *            the value to give to the flag
@@ -737,8 +746,9 @@ public class MotionData {
 	}
 
 	/**
-	 * Sets the {@link #cancelAbleFrame} setting. This indicates the first frame
-	 * when this motion can be cancelled.
+	 * Sets the {@link #cancelAbleFrame} setting.<br>
+	 * This indicates the frame number of the first frame that this motion can
+	 * be canceled.
 	 *
 	 * @param cancelAbleFrame
 	 *            the value to assign to the {@link #cancelAbleFrame} setting
@@ -748,10 +758,10 @@ public class MotionData {
 	}
 
 	/**
-	 * Sets the {@link #cancelAbleMotionLevel} setting. This indicates the
-	 * maximum level that a motion can have to be able to cancel this motion.
-	 * During cancelable frames, a motion whose level is below this value can
-	 * cancel the current motion.
+	 * Sets the {@link #cancelAbleMotionLevel} setting.<br>
+	 * This indicates the maximum level that a motion can have to be able to
+	 * cancel this motion. During cancelable frames, a motion whose level is
+	 * less than or equal to this value can cancel the current motion.
 	 *
 	 * @param cancelAbleMotionLevel
 	 *            the value to assign to the {@link #cancelAbleMotionLevel}

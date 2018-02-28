@@ -1,7 +1,7 @@
 package enumerate;
 
 /**
- * キャラクターの状態を定義するクラス．
+ * The class that defines the states of the character in the game.
  */
 public enum State {
 	STAND,

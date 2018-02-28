@@ -15,27 +15,29 @@ import org.lwjgl.BufferUtils;
 import setting.GameSetting;
 
 /**
- * ゲーム画面の画像や背景色などの画面情報を扱うクラス
+ * The class dealing with the screen information such as the game screen's image
+ * and the background color.
  */
 public class ScreenData {
 
 	/**
-	 * Pixel data of the screen are saved in the form of ByteBuffer.
+	 * The pixel data of the screen are saved in the form of ByteBuffer.
 	 */
 	private ByteBuffer displayByteBuffer;
 
 	/**
-	 * クラスコンストラクタ．
+	 * The class constructor.
 	 */
 	public ScreenData() {
 		this.displayByteBuffer = createDisplayByteBuffer();
 	}
 
 	/**
-	 * 指定されたデータでゲーム画面の画素情報を作成するクラスコンストラクタ．
+	 * The class constructor that creates pixel information of the game screen
+	 * by using the specified data.
 	 *
 	 * @param screenData
-	 *            ゲーム画面のデータ
+	 *            an instance of ScreenData class
 	 */
 	public ScreenData(ScreenData screenData) {
 		this.displayByteBuffer = screenData.getDisplayByteBuffer();
@@ -45,7 +47,7 @@ public class ScreenData {
 	 * Obtains RGB data of the screen in the form of ByteBuffer.<br>
 	 * Warning: If the window is disabled, will just return a black buffer.
 	 *
-	 * @return The RGB data of the screen in the form of ByteBuffer
+	 * @return the RGB data of the screen in the form of ByteBuffer
 	 */
 	public ByteBuffer getDisplayByteBuffer() {
 		return this.displayByteBuffer;
@@ -55,7 +57,7 @@ public class ScreenData {
 	 * Obtains RGB data of the screen in the form of byte[].<br>
 	 * Warning: If the window is disabled, will just return a black buffer.
 	 *
-	 * @return The RGB data of the screen in the form of byte[]
+	 * @return the RGB data of the screen in the form of byte[]
 	 */
 	public byte[] getDisplayByteBufferAsBytes() {
 		byte[] buffer = new byte[this.displayByteBuffer.remaining()];
@@ -71,13 +73,13 @@ public class ScreenData {
 	 * getDisplayByteBufferAsBytes().
 	 *
 	 * @param newWidth
-	 *            The width in pixel for the scaled image
+	 *            the width in pixel for the scaled image
 	 * @param newHeight
-	 *            The height in pixel for the scaled image
+	 *            the height in pixel for the scaled image
 	 * @param grayScale
-	 *            True to use grayScale for the scaled image (1 byte per pixel
+	 *            true to use grayScale for the scaled image (1 byte per pixel
 	 *            instead of 3 bytes per pixel with RGB)
-	 * @return The RGB data or the grayScale data of the screen in the form of
+	 * @return the RGB data or the grayScale data of the screen in the form of
 	 *         byte[]
 	 */
 	public byte[] getDisplayByteBufferAsBytes(int newWidth, int newHeight, boolean grayScale) {
@@ -97,7 +99,7 @@ public class ScreenData {
 				}
 			}
 
-			// 画像のリサイズ
+			// Resizes the image
 			AffineTransformOp xform = new AffineTransformOp(AffineTransform
 					.getScaleInstance((double) newWidth / src.getWidth(), (double) newHeight / src.getHeight()),
 					AffineTransformOp.TYPE_BILINEAR);
@@ -136,8 +138,8 @@ public class ScreenData {
 	}
 
 	/**
-	 * Obtain RGB data of the screen in the form of ByteBuffer Warning: If the
-	 * window is disabled, will just returns a black buffer.
+	 * Obtains RGB data of the screen in the form of ByteBuffer<br>
+	 * Warning: If the window is disabled, will just returns a black buffer.
 	 *
 	 * @return RGB data of the screen in the form of ByteBuffer
 	 */

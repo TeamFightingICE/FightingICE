@@ -8,7 +8,8 @@ import enumerate.State;
 import fighting.Character;
 
 /**
- * キャラクターのHPやエネルギー，座標などのキャラクターに関するデータを扱うクラス．
+ * The class dealing with data on the character such as the character's HP,
+ * energy, coordinates.
  */
 public class CharacterData {
 
@@ -119,17 +120,19 @@ public class CharacterData {
 	private int graphicSizeY;
 
 	/**
-	 * キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量．
+	 * The amount of movement in the horizontal direction used to adjust the x
+	 * coordinate when determining the direction of the character.
 	 */
 	private int graphicAdjustX;
 
 	/**
-	 * 攻撃の連続ヒット回数．
+	 * The continuous hit count of attacks used by this character.
 	 */
 	private int hitCount;
 
 	/**
-	 * 攻撃が相手に当たった最後のフレーム．
+	 * The frame number of the last frame that an attack used by this character
+	 * hit the opponent.
 	 */
 	private int lastHitFrame;
 
@@ -146,11 +149,12 @@ public class CharacterData {
 	private Deque<Key> processedCommands;
 
 	/**
-	 * 引数として渡されたCharacterクラスのインスタンスからキャラクターに関する情報を取得し，
-	 * CharacterDataクラスのインスタンスを新たに生成するクラスコンストラクタ．
+	 * The class constructor that acquires information on the character from an
+	 * instance of the Character class passed as the argument and newly creates
+	 * an instance of the CharacterData class.
 	 *
 	 * @param character
-	 *            キャラクターに関する情報を持つCharacterクラスのインスタンス
+	 *            an instance of Character class
 	 */
 	public CharacterData(Character character) {
 		this.playerNumber = character.isPlayerNumber();
@@ -181,10 +185,11 @@ public class CharacterData {
 	}
 
 	/**
-	 * 引数として渡されたCharacterDataクラスのインスタンスのコピーを生成するコピーコンストラクタ．
+	 * The copy constructor that creates a copy of an instance of the
+	 * CharacterData class passed as the argument.
 	 *
 	 * @param characterData
-	 *            CharacterDataクラスのインスタンス
+	 *            an instance of CharacterData class
 	 */
 	public CharacterData(CharacterData characterData) {
 		this.playerNumber = characterData.isPlayerNumber();
@@ -420,9 +425,11 @@ public class CharacterData {
 	}
 
 	/**
-	 * キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量を返す.
+	 * Returns the amount of movement in the horizontal direction used to adjust
+	 * the x coordinate when determining the direction of the character.
 	 *
-	 * @return キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量
+	 * @return the amount of movement in the horizontal direction used to adjust
+	 *         the x coordinate
 	 */
 	public int getGraphicAdjustX() {
 		return this.graphicAdjustX;
@@ -439,18 +446,21 @@ public class CharacterData {
 	}
 
 	/**
-	 * 攻撃の連続ヒット回数を返す.
+	 * Returns the continuous hit count of attacks used by this character.
 	 *
-	 * @return 攻撃の連続ヒット回数
+	 * @return the continuous hit count of attacks used by this character
+	 *
 	 */
 	public int getHitCount() {
 		return this.hitCount;
 	}
 
 	/**
-	 * 攻撃が相手に当たった最後のフレームを返す.
+	 * Returns the frame number of the last frame that an attack used by this
+	 * character hit the opponent.
 	 *
-	 * @return 攻撃が相手に当たった最後のフレーム
+	 * @return the frame number of the last frame that an attack used by this
+	 *         character hit the opponent
 	 */
 	public int getLastHitFrame() {
 		return this.lastHitFrame;
@@ -667,20 +677,22 @@ public class CharacterData {
 	}
 
 	/**
-	 * 攻撃の連続ヒット回数をセットする．
+	 * Sets the continuous hit count of attacks used by this character.
 	 *
 	 * @param hitCount
-	 *            攻撃の連続ヒット回数
+	 *            the continuous hit count of attacks used by this character
 	 */
 	public void setHitCount(int hitCount) {
 		this.hitCount = hitCount;
 	}
 
 	/**
-	 * 攻撃が相手に当たった最後のフレームをセットする.
+	 * Sets the frame number of the last frame that an attack used by this
+	 * character hit the opponent.
 	 *
 	 * @param lastHitFrame
-	 *            攻撃が相手に当たった最後のフレーム
+	 *            the frame number of the last frame that an attack used by this
+	 *            character hit the opponent
 	 */
 	public void setLastHitFrame(int lastHitFrame) {
 		this.lastHitFrame = lastHitFrame;

@@ -6,7 +6,7 @@ import struct.Key;
 import struct.ScreenData;
 
 /**
- * AIに実装すべきメソッドを定義するインタフェース．
+ * The interface that defines the methods to implement in AI.
  */
 public interface AIInterface {
 
@@ -14,7 +14,7 @@ public interface AIInterface {
 	 * This method initializes AI, and it will be executed only once in the
 	 * beginning of each game. <br>
 	 * Its execution will load the data that cannot be changed and load the flag
-	 * of player's side ("Boolean player", <em>true</em> for P1 or
+	 * of the player's side ("Boolean player", <em>true</em> for P1 or
 	 * <em>false</em> for P2). <br>
 	 * If there is anything that needs to be initialized, you had better do it
 	 * in this method. <br>
@@ -33,7 +33,7 @@ public interface AIInterface {
 	int initialize(GameData gd, boolean playerNumber);
 
 	/**
-	 * This method gets information from the game status in each frame. <br>
+	 * Gets information from the game status in each frame. <br>
 	 * Such information is stored in the parameter frameData. <br>
 	 * If {@code frameData.getRemainingTime()} returns a negative value, the
 	 * current round has not started yet. <br>
@@ -51,28 +51,28 @@ public interface AIInterface {
 	void getInformation(FrameData fd);
 
 	/**
-	 * This method processes the data from AI. <br>
+	 * Processes the data from AI. <br>
 	 * It is executed in each frame.
 	 */
 	void processing();
 
 	/**
-	 * This method receives key input from AI.<br>
+	 * Receives a key input from AI.<br>
 	 * It is executed in each frame and returns a value in the Key type.
 	 *
-	 * @return key the value in the Key type
+	 * @return the value in the Key type
 	 * @see Key
 	 */
 	Key input();
 
 	/**
-	 * This method finalizes AI.<br>
+	 * Finalizes AI.<br>
 	 * It runs only once at the end of each game.
 	 */
 	void close();
 
 	/**
-	 * This method informs the result of each round.<br>
+	 * Informs the result of each round.<br>
 	 * It is called when each round ends.<br>
 	 *
 	 * @param p1Hp
@@ -85,7 +85,7 @@ public interface AIInterface {
 	void roundEnd(int p1Hp, int p2Hp, int frames);
 
 	/**
-	 * This method gets the screen information in each frame.
+	 * Gets the screen information in each frame.
 	 *
 	 * @param sd
 	 *            the screen information such as the pixel data

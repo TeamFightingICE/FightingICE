@@ -3,12 +3,13 @@ package struct;
 import fighting.Attack;
 
 /**
- * ダメージ量や必要エナジー量など攻撃に関するデータを扱うクラス．
+ * The class dealing with data on the attack such as damage amount and required
+ * energy amount.
  */
 public class AttackData {
 
 	/**
-	 * HitArea's information of this attack hit box set in Motion.csv
+	 * TheHitArea's information of this attack hit box set in Motion.csv.
 	 *
 	 * @see HitArea
 	 */
@@ -16,25 +17,25 @@ public class AttackData {
 
 	/**
 	 * The absolute value of the horizontal speed of the attack hit box (zero
-	 * means the attack hit box will track the character)
+	 * means the attack hit box will track the character).
 	 */
 	private int settingSpeedX;
 
 	/**
 	 * The absolute value of the vertical speed of the attack hit box (zero
-	 * means the attack hit box will track the character)
+	 * means the attack hit box will track the character).
 	 */
 	private int settingSpeedY;
 
 	/**
-	 * HitArea's information of this attack hit box in the current frame
+	 * The HitArea's information of this attack hit box in the current frame.
 	 *
 	 * @see HitArea
 	 */
 	private HitArea currentHitArea;
 
 	/**
-	 * The number of frames since this attack was used
+	 * The number of frames since this attack was used.
 	 */
 	private int currentFrame;
 
@@ -46,78 +47,78 @@ public class AttackData {
 
 	/**
 	 * The horizontal speed of the attack hit box (minus when moving left and
-	 * plus when moving right)
+	 * plus when moving right).
 	 */
 	private int speedX;
 
 	/**
 	 * The vertical speed of the attack hit box (minus when moving up and plus
-	 * when moving down)
+	 * when moving down).
 	 */
 	private int speedY;
 
 	/**
-	 * The number of frames in Startup
+	 * The number of frames in Startup.
 	 *
 	 * @see MotionData#attackStartUp
 	 */
 	private int startUp;
 
 	/**
-	 * The number of frames in Active
+	 * The number of frames in Active.
 	 *
 	 * @see MotionData#attackActive
 	 */
 	private int active;
 
 	/**
-	 * The damage value to the unguarded opponent hit by this skill
+	 * The damage value to the unguarded opponent hit by this skill.
 	 */
 	private int hitDamage;
 
 	/**
-	 * The damage value to the guarded opponent hit by this skill
+	 * The damage value to the guarded opponent hit by this skill.
 	 */
 	private int guardDamage;
 
 	/**
-	 * The value of the energy added to the character when it uses this skill
+	 * The value of the energy added to the character when it uses this skill.
 	 */
 	private int startAddEnergy;
 
 	/**
 	 * The value of the energy added to the character when this skill hits the
-	 * opponent
+	 * opponent.
 	 */
 	private int hitAddEnergy;
 
 	/**
 	 * The value of the energy added to the character when this skill is blocked
-	 * by the opponent
+	 * by the opponent.
 	 */
 	private int guardAddEnergy;
 
 	/**
 	 * The value of the energy added to the opponent when it is hit by this
-	 * skill
+	 * skill.
 	 */
 	private int giveEnergy;
 
 	/**
 	 * The change in the horizontal speed of the opponent when it is hit by this
-	 * skill
+	 * skill.
 	 */
 	private int impactX;
 
 	/**
 	 * The change in the vertical speed of the opponent when it is hit by this
-	 * skill
+	 * skill.
 	 */
 	private int impactY;
 
 	/**
 	 * The number of frames that the guarded opponent needs to resume to his
-	 * normal status after being hit by this skill
+	 * normal status after being hit by this skill.
 	 */
 	private int giveGuardRecov;
 
@@ -139,7 +140,7 @@ public class AttackData {
 	private boolean isProjectile;
 
 	/**
-	 * クラスコンストラクタ．
+	 * The class constructor.
 	 */
 	public AttackData() {
 		this.settingHitArea = new HitArea();
@@ -167,11 +168,12 @@ public class AttackData {
 	}
 
 	/**
-	 * 引数として渡されたAttackクラスのインスタンスから変数の値をコピーし，
-	 * AttackDataクラスのインスタンスを新たに生成するクラスコンストラクタ．
+	 * The class constructor that creates an instance of the AttackData class by
+	 * copying the values of the variables from an instance of the Attack class
+	 * passed as the argument.
 	 *
 	 * @param attack
-	 *            Attackクラスのインスタンス
+	 *            an instance of the Attack class
 	 */
 	public AttackData(Attack attack) {
 		if (attack != null) {
@@ -201,10 +203,11 @@ public class AttackData {
 	}
 
 	/**
-	 * AttackDataクラスのインスタンスのコピーを作成するコピーコンストラクタ．
+	 * The copy constructor that creates a copy of an instance of the AttackData
+	 * class.
 	 *
 	 * @param attackData
-	 *            AttackDataクラスのインスタンス
+	 *            an instance of the AttackData class
 	 */
 	public AttackData(AttackData attackData) {
 		if (attackData != null) {

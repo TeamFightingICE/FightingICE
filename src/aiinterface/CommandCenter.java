@@ -7,17 +7,18 @@ import struct.FrameData;
 import struct.Key;
 
 /**
- * AIから受け取ったアクションをKeyに変換し，変換後のキーを管理するクラス．
+ * The class that converts actions received from AI to keys and manages the keys
+ * after conversion.
  */
 public class CommandCenter {
 
 	/**
-	 * 変換されたキーを格納するリスト．
+	 * The list storing the converted keys.
 	 */
 	private LinkedList<Key> skillKey;
 
 	/**
-	 * 現在のフレームデータ．
+	 * The frame data storing the information from the game status.
 	 */
 	private FrameData frameData;
 
@@ -28,7 +29,7 @@ public class CommandCenter {
 	private boolean playerNumber;
 
 	/**
-	 * フィールド変数を初期化するクラスコンストラクタ．
+	 * Class constructor.
 	 */
 	public CommandCenter() {
 		this.skillKey = new LinkedList<Key>();
@@ -37,24 +38,24 @@ public class CommandCenter {
 	}
 
 	/**
-	 * AIが入力した実行アクション名をKeyに変換し，リストに格納する．<br>
-	 * リストにまだ処理されてないキーがある場合は，無視する．
+	 * Converts the action name entered by AI into Key and stores it in the list of keys waiting to be executed.<br>
+	 * If there are unexecuted keys in the list, this method does nothing.
 	 *
 	 * @param str
-	 *            アクション名
+	 *            an action name
 	 */
 	public void commandCall(String str) {
-		// 実行待ちのキーが存在しない場合
+		// If there is no unexecuted key in the list
 		if (this.skillKey.isEmpty()) {
 			actionToCommand(str);
 		}
 	}
 
 	/**
-	 * アクション名をコマンド名に変換し，そのコマンド名に対応したキーを作成する．
+	 * Converts the action name to a command and creates a key corresponding to the command.
 	 *
 	 * @param str
-	 *            アクション名
+	 *            an action name
 	 */
 	private void actionToCommand(String str) {
 		switch (str) {
@@ -189,10 +190,10 @@ public class CommandCenter {
 	}
 
 	/**
-	 * コマンド名に対応したキーを作成する．
+	 * Creates a key corresponding to a command name.
 	 *
 	 * @param str
-	 *            コマンド名
+	 *            a command name
 	 */
 	private void createKeys(String str) {
 		Key buf;
@@ -225,8 +226,7 @@ public class CommandCenter {
 				buf.R = true;
 				buf.U = true;
 			}
-			// 2 4 1 _ Bなどの"_"直後の部分を直前のKeyに含めるための処理
-			// "_"直後は"A","B","C"のみ対応
+
 			if (index + 2 < commands.length && commands[index + 1].equals("_")) {
 				index += 2;
 			}
@@ -243,10 +243,10 @@ public class CommandCenter {
 	}
 
 	/**
-	 * 現在のフレームデータとP1,P2を表すboolean変数をセットする．
+	 * Sets the current frame data and the boolean variable representing P1 and P2.
 	 *
 	 * @param frameData
-	 *            現在のフレームデータ
+	 *            the current frame data
 	 * @param playerNumber
 	 *            The character's side flag.<br>
 	 *            {@code true} if the character is P1, or {@code false} if P2.
@@ -257,19 +257,19 @@ public class CommandCenter {
 	}
 
 	/**
-	 * リストにまだ処理されてないキーがあるかどうかを返す．
+	 * Returns whether there are unexecuted keys in the list of keys waiting to be executed.
 	 *
-	 * @return {@code true} リストにまだ処理されてないキーがある，{@code false} otherwise.
+	 * @return {@code true} if there are keys not yet executed in the list，{@code false} otherwise.
 	 */
 	public boolean getSkillFlag() {
 		return !this.skillKey.isEmpty();
 	}
 
 	/**
-	 * まだ処理されてないキーを格納しているリストから先頭の要素を渡す．<br>
-	 * 渡した先頭要素はCommandCenter上から削除される．
+	 * Returns the first element from the list of keys waiting to be executed. <br>
+	 * The returned element is deleted from the CommandCenter.
 	 *
-	 * @return 次に処理するキー
+	 * @return the next key to be executed
 	 */
 	public Key getSkillKey() {
 		if (!this.skillKey.isEmpty()) {
@@ -280,16 +280,16 @@ public class CommandCenter {
 	}
 
 	/**
-	 * まだ処理されてないキーを格納しているリストを返す．
+	 * Returns the list of keys waiting to be executed.
 	 *
-	 * @return まだ処理されてないキーを格納しているリスト
+	 * @return the list of keys waiting to be executed
 	 */
 	public Deque<Key> getSkillKeys() {
 		return new LinkedList<Key>(this.skillKey);
 	}
 
 	/**
-	 * まだ処理されてないキーを全て削除する．
+	 * Deletes all the keys from the list of keys waiting to be executed.
 	 */
 	public void skillCancel() {
 		this.skillKey.clear();
@@ -305,12 +305,12 @@ public class CommandCenter {
 	}
 
 	/**
-	 * キャラクターの向いている方向に従って，コマンドの左右反転処理を行う．
+	 * Reverses the command horizontally according to the direction the character is facing.
 	 *
 	 * @param commands
-	 *            アクション名から変換されたコマンドを格納している配列
+	 *            an array containing the command converted from an action name
 	 *
-	 * @return 左右反転処理を行ったコマンドを格納している配列
+	 * @return an array that contains the command after processing
 	 */
 	private String[] reverseKey(String[] commands) {
 		String[] buffer = new String[commands.length];

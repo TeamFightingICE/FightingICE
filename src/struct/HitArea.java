@@ -1,32 +1,33 @@
 package struct;
 
 /**
- * キャラクターや攻撃の当たり判定の領域に関する情報を扱うクラス．
+ * The class dealing with information on the area of the character and the
+ * attack hit box.
  */
 public class HitArea {
 
 	/**
-	 * ヒットボックスの一番左のx座標．
+	 * The most left x coordinate of the hit box.
 	 */
 	private int left;
 
 	/**
-	 * ヒットボックスの一番右のx座標．
+	 * The most right x coordinate of the hit box.
 	 */
 	private int right;
 
 	/**
-	 * ヒットボックスの一番上のy座標．
+	 * The most top y coordinate of the hit box.
 	 */
 	private int top;
 
 	/**
-	 * ヒットボックスの一番下のy座標．
+	 * The most bottom y coordinate of the hit box.
 	 */
 	private int bottom;
 
 	/**
-	 * クラスコンストラクタ．
+	 * The class constructor.
 	 */
 	public HitArea() {
 		this.left = 0;
@@ -36,10 +37,11 @@ public class HitArea {
 	}
 
 	/**
-	 * 指定されたデータで当たり判定の領域を初期化するクラストコンストラクタ．
+	 * The class constructor that initializes the hit determination area using
+	 * the specified data.
 	 *
 	 * @param hitArea
-	 *            当たり判定領域のデータ
+	 *            an instance of the HitArea class
 	 */
 	public HitArea(HitArea hitArea) {
 		if (!(hitArea == null)) {
@@ -56,16 +58,17 @@ public class HitArea {
 	}
 
 	/**
-	 * 指定された値で当たり判定の領域を初期化するクラスコンストラクタ．
+	 * The class constructor that initializes the hit determination area using
+	 * the specified values.
 	 *
 	 * @param left
-	 *            ヒットボックスの一番左のx座標
+	 *            the most left x coordinate of the hit box
 	 * @param right
-	 *            ヒットボックスの一番右のx座標
+	 *            the most right x coordinate of the hit box
 	 * @param top
-	 *            ヒットボックスの一番上のy座標
+	 *            the most top y coordinate of the hit box
 	 * @param bottom
-	 *            ヒットボックスの一番下のy座標
+	 *            the most bottom y coordinate of the hit box
 	 */
 	public HitArea(int left, int right, int top, int bottom) {
 		this.left = left;
@@ -75,12 +78,13 @@ public class HitArea {
 	}
 
 	/**
-	 * 指定された値で当たり判定の座標を更新する．
+	 * Updates the hit determination area's coordinates using the specified
+	 * speed.
 	 *
 	 * @param speedX
-	 *            水平方向のスピード
+	 *            the horizontal speed
 	 * @param speedY
-	 *            鉛直方向のスピード
+	 *            the vertical speed
 	 */
 	public void move(int speedX, int speedY) {
 		this.left += speedX;
@@ -90,36 +94,36 @@ public class HitArea {
 	}
 
 	/**
-	 * ヒットボックスの一番左のx座標を返す．
+	 * Returns the most left x coordinate of the hit box.
 	 *
-	 * @return ヒットボックスの一番左のx座標
+	 * @return the most left x coordinate of the hit box
 	 */
 	public int getLeft() {
 		return this.left;
 	}
 
 	/**
-	 * ヒットボックスの一番右のx座標を返す．
+	 * Returns the most right x coordinate of the hit box.
 	 *
-	 * @return ヒットボックスの一番右のx座標
+	 * @return the most right x coordinate of the hit box
 	 */
 	public int getRight() {
 		return this.right;
 	}
 
 	/**
-	 * ヒットボックスの一番上のy座標を返す．
+	 * Returns the most top y coordinate of the hit box.
 	 *
-	 * @return ヒットボックスの一番上のy座標
+	 * @return the most top y coordinate of the hit box
 	 */
 	public int getTop() {
 		return this.top;
 	}
 
 	/**
-	 * ヒットボックスの一番下のy座標を返す．
+	 * Returns the most bottom y coordinate of the hit box.
 	 *
-	 * @return ヒットボックスの一番下のy座標
+	 * @return the most bottom y coordinate of the hit box
 	 */
 	public int getBottom() {
 		return this.bottom;

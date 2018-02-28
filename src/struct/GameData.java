@@ -9,7 +9,8 @@ import setting.LaunchSetting;
 import simulator.Simulator;
 
 /**
- * ステージの画面幅や最大HPなどの、ゲーム内で不変の情報を扱うクラス．
+ * The class dealing with invariable information in the game such as the screen
+ * width of the stage and the chatacter's maximum HP.
  */
 public class GameData {
 
@@ -63,7 +64,7 @@ public class GameData {
 	private Simulator simulator;
 
 	/**
-	 * クラスコンストラクタ．
+	 * The class constructor.
 	 */
 	public GameData() {
 		this.maxHPs = new int[2];
@@ -74,10 +75,11 @@ public class GameData {
 	}
 
 	/**
-	 * キャラクター情報を用いてGameDataクラスのインスタンスを作成するクラスコンストラクタ．
+	 * The class constructor that creates an instance of the GameData class by
+	 * using character information.
 	 *
 	 * @param players
-	 *            P1, P2のキャラクター情報
+	 *            character information of P1 and P2
 	 *
 	 * @see Character
 	 */
@@ -85,7 +87,6 @@ public class GameData {
 		this();
 
 		for (int i = 0; i < 2; i++) {
-			// 各アクションのMotionDataを格納
 			ArrayList<MotionData> motionDataList = new ArrayList<MotionData>();
 			ArrayList<Motion> temp = players[i].getMotionList();
 			for (Motion motion : temp) {
@@ -106,11 +107,12 @@ public class GameData {
 	}
 
 	/**
-	 * 引数で指定されたプレイヤーのモーションデータを返す．
+	 * Returns the motion data of the player specified by the argument.
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(true: P1; false: P2)
-	 * @return 指定されたプレイヤーのモーションデータ
+	 *            the player side's flag. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
+	 * @return the motion data of the player specified by the argument
 	 * @see MotionData
 	 */
 	public ArrayList<MotionData> getMotionData(boolean playerNumber) {
@@ -124,14 +126,15 @@ public class GameData {
 	}
 
 	/**
-	 * 引数で指定されたプレイヤーのモーションを返す．<br>
+	 * Returns the motion of the player specified by the argument.<br>
 	 *
-	 * @deprecated このメソッドはシミュレータ内で呼び出される.<br>
-	 *             AI developerはこのメソッドを使用することができない.
+	 * @deprecated This method is called in the simulator.<br>
+	 *             AI developers can not use this method.
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(true: P1; false: P2)
-	 * @return 指定されたプレイヤーのモーション
+	 *            the player side's flag. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
+	 * @return the motion of the player specified by the argument.
 	 * @see Motion
 	 */
 	public ArrayList<Motion> getMotion(boolean playerNumber) {
@@ -146,71 +149,75 @@ public class GameData {
 	}
 
 	/**
-	 * ゲームステージの横幅を返す．
+	 * Returns the width of the game stage.
 	 *
-	 * @return ゲームステージの横幅
+	 * @return the width of the game stage
 	 */
 	public int getStageWidth() {
 		return this.stageWidth;
 	}
 
 	/**
-	 * ゲームステージの縦幅を返す．
+	 * Returns the height of the game stage.
 	 *
-	 * @return ゲームステージの縦幅
+	 * @return the height of the game stage
 	 */
 	public int getStageHeight() {
 		return this.stageHeight;
 	}
 
 	/**
-	 * 指定されたプレイヤーの最大HPを返す．
+	 * Returns the maximum HP of the specified player.
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(true: P1; false: P2)
-	 * @return 指定されたプレイヤーの最大HP
+	 *            the player side's flag. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
+	 * @return the maximum HP of the specified player
 	 */
 	public int getMaxHP(boolean playerNumber) {
 		return playerNumber ? this.maxHPs[0] : this.maxHPs[1];
 	}
 
 	/**
-	 * 指定されたプレイヤーの最大エネルギー量を返す．
+	 * Returns the maximum energy of the specified player.
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(true: P1; false: P2)
-	 * @return 指定されたプレイヤーの最大エネルギー量
+	 *            the player side's flag. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
+	 * @return the maximum energy of the specified player
 	 */
 	public int getMaxEnergy(boolean playerNumber) {
 		return playerNumber ? this.maxEnergies[0] : this.maxEnergies[1];
 	}
 
 	/**
-	 * 指定されたプレイヤーのキャラクターの名前を返す．
+	 * Returns the character name of the specified player.
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(true: P1; false: P2)
-	 * @return 指定されたプレイヤーのキャラクターの名前
+	 *            the player side's flag. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
+	 * @return the character name of the specified player
 	 */
 	public String getCharacterName(boolean playerNumber) {
 		return playerNumber ? this.characterNames[0] : this.characterNames[1];
 	}
 
 	/**
-	 * 指定されたプレイヤーのAIの名前を返す．
+	 * Returns the AI name of the specified player.
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号(true: P1; false: P2)
-	 * @return 指定されたプレイヤーのAIの名前
+	 *            the player side's flag. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
+	 * @return the AI name of the specified player
 	 */
 	public String getAiName(boolean playerNumber) {
 		return playerNumber ? this.aiNames[0] : this.aiNames[1];
 	}
 
 	/**
-	 * シミュレータを返す．
+	 * Returns the simulator.
 	 *
-	 * @return シミュレータ
+	 * @return the simulator
 	 * @see Simulator
 	 */
 	public Simulator getSimulator() {

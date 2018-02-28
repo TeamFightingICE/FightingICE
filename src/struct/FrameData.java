@@ -8,7 +8,8 @@ import setting.FlagSetting;
 import setting.GameSetting;
 
 /**
- * 現在のフレーム番号やラウンド数, キャラクター情報など, ゲーム内の可変情報を扱うクラス．
+ * The class dealing with the information in the game such as the current frame
+ * number, number of rounds and character information.
  */
 public class FrameData {
 
@@ -39,7 +40,7 @@ public class FrameData {
 	private boolean emptyFlag;
 
 	/**
-	 * クラスコンストラクタ．
+	 * The class constructor.
 	 */
 	public FrameData() {
 		this.characterData = new CharacterData[] { null, null };
@@ -51,16 +52,17 @@ public class FrameData {
 	}
 
 	/**
-	 * 引数として渡されたデータを用いてFrameDataクラスの新たなインスタンスを生成するクラスコンストラクタ．
+	 * The class constructor that creates a new instance of the FrameData class
+	 * by copying the data passed as the arguments.
 	 *
 	 * @param characterData
-	 *            現在のキャラクター情報を持つCharacterDataクラスのインスタンス
+	 *            an instance of the CharacterData class
 	 * @param currentFrame
-	 *            現在のフレーム数
+	 *            the frame number of the current frame
 	 * @param currentRound
-	 *            現在のラウンド数
+	 *            the round number of the current round
 	 * @param projectileData
-	 *            P1とP2の波動拳の情報を格納するキュー
+	 *            the queue that stores information on projectiles of P1 and P2
 	 *
 	 * @see CharacterData
 	 * @see KeyData
@@ -81,10 +83,12 @@ public class FrameData {
 	}
 
 	/**
-	 * 引数で渡されたFrameDataクラスのインスタンスのコピーを生成するコピーコンストラクタ．
+	 * A copy constructor that creates a copy of an instance of the FrameData
+	 * class by copying the values of the variables from an instance of the
+	 * FrameData class passed as the argument.
 	 *
 	 * @param frameData
-	 *            指定されたFrameDataクラスのインスタンス
+	 *            an instance of the FrameData class
 	 */
 	public FrameData(FrameData frameData) {
 		this.characterData = new CharacterData[2];
@@ -105,12 +109,13 @@ public class FrameData {
 	}
 
 	/**
-	 * 引数で指定したプレイヤーのCharacterDataクラスのインスタンスを返す．
+	 * Returns an instance of the CharacterData class of the player specified by
+	 * an argument.
 	 *
 	 * @param playerNumber
-	 *            プレイヤー番号． {@code true} if the player is P1, or {@code false} if
-	 *            P2.
-	 * @return 指定したプレイヤーのCharacterDataクラスのインスタンス
+	 *            the number of the player. {@code true} if the player is P1, or
+	 *            {@code false} if P2.
+	 * @return an instance of the CharacterData class of the player
 	 */
 	public CharacterData getCharacter(boolean playerNumber) {
 		CharacterData temp = this.characterData[playerNumber ? 0 : 1];
@@ -121,8 +126,8 @@ public class FrameData {
 	/**
 	 * Returns the expected remaining time in milliseconds of the current round.
 	 * <br>
-	 * When FightingICE was launched with training mode, this method returns the
-	 * max value of integer.
+	 * When FightingICE was launched with the training mode, this method returns
+	 * the max value of integer.
 	 *
 	 * @return the expected remaining time in milliseconds of the current round
 	 */
@@ -136,8 +141,8 @@ public class FrameData {
 
 	/**
 	 * Returns the expected remaining time in seconds of the current round.<br>
-	 * When FightingICE was launched with training mode, this method returns the
-	 * max value of integer.
+	 * When FightingICE was launched with the training mode, this method returns
+	 * the max value of integer.
 	 *
 	 * @return the expected remaining time in seconds of the current round
 	 * @deprecated Use {@link #getRemainingTimeMilliseconds()} instead. This
@@ -153,8 +158,8 @@ public class FrameData {
 
 	/**
 	 * Returns the number of remaining frames of the round. <br>
-	 * When FightingICE was launched with training mode, this method returns the
-	 * max value of integer.
+	 * When FightingICE was launched with the training mode, this method returns
+	 * the max value of integer.
 	 *
 	 * @return the number of remaining frames of the round
 	 */
@@ -240,18 +245,18 @@ public class FrameData {
 	}
 
 	/**
-	 * P1,P2間の水平方向の距離を返す．
+	 * Returns the horizontal distance between P1 and P2.
 	 *
-	 * @return P1,P2間の水平方向の距離
+	 * @return the horizontal distance between P1 and P2
 	 */
 	public int getDistanceX() {
 		return Math.abs((this.characterData[0].getCenterX() - this.characterData[1].getCenterX()));
 	}
 
 	/**
-	 * P1,P2間の鉛直方向の距離を返す．
+	 * Returns the vertical distance between P1 and P2.
 	 *
-	 * @return P1,P2間の鉛直方向の距離
+	 * @return the vertical distance between P1 and P2
 	 */
 	public int getDistanceY() {
 		return Math.abs((this.characterData[0].getCenterY() - this.characterData[1].getCenterY()));
