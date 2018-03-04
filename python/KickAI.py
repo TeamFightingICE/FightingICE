@@ -10,7 +10,7 @@ class KickAI(object):
     def getInformation(self, frameData):
         # Getting the frame data of the current frame
         self.frameData = frameData
-        
+        self.cc.setFrameData(self.frameData, self.player)
     # please define this method when you use FightingICE version 3.20 or later
     def roundEnd(self, x, y, z):
     	print(x)
@@ -39,16 +39,17 @@ class KickAI(object):
         
     def processing(self):
         # Just compute the input for the current frame
-        if self.frameData.getEmptyFlag() or self.frameData.getRemainingTime() <= 0:
+        if self.frameData.getEmptyFlag() or self.frameData.getRemainingFramesNumber() <= 0:
                 self.isGameJustStarted = True
                 return
-                
-        self.cc.setFrameData(self.frameData, self.player)
                 
         if self.cc.getSkillFlag():
                 self.inputKey = self.cc.getSkillKey()
                 return
-                
+            
+        self.inputKey.empty()
+        self.cc.skillCancel()     
+
         # Just spam kick
         self.cc.commandCall("B")
                         

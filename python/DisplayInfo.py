@@ -39,11 +39,12 @@ class DisplayInfo(object):
         return self.inputKey
         
     def processing(self):
-        if self.frameData.getEmptyFlag() or self.frameData.getRemainingTime() <= 0:
+
+        if self.frameData.getEmptyFlag() or self.frameData.getRemainingFramesNumber() <= 0:
             self.isGameJustStarted = True
             return
-                
-        if self.cc.getskillFlag():
+  
+        if self.cc.getSkillFlag():
             self.inputKey = self.cc.getSkillKey()
             return
 
@@ -51,7 +52,7 @@ class DisplayInfo(object):
         self.cc.skillCancel()
 
         # get display pixel data
-        displayBuffer = self.frameData.getDisplayByteBufferAsBytes(self.width, self.height, self.grayscale)
+        displayBuffer = self.screenData.getDisplayByteBufferAsBytes(self.width, self.height, self.grayscale)
 
         # calcultate the distance
         distance = self.calculateDistance(displayBuffer)
