@@ -115,7 +115,8 @@ public class DisplayManager {
 		}
 
 		// Enable v-sync
-		glfwSwapInterval(sync);
+		glfwSwapInterval(0);
+
 
 		if (FlagSetting.enableWindow) {
 			// Makes the window visible
@@ -151,6 +152,7 @@ public class DisplayManager {
 		// ゲームマネージャ初期化
 		gm.initialize();
 
+		long lastNanos = System.nanoTime();
 		// Runs the rendering loop until the user has attempted to close the
 		// window.
 		while (!glfwWindowShouldClose(this.window)) {
@@ -162,6 +164,9 @@ public class DisplayManager {
 
 			// ゲーム状態の更新
 			gm.update();
+
+            syncFrameRate(60, lastNanos);
+            lastNanos = System.nanoTime();
 
 			if (FlagSetting.enableWindow) {
 				// バックバッファに描画する
@@ -209,4 +214,14 @@ public class DisplayManager {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
+
+    private void syncFrameRate(float fps, long lastNanos) {
+        long targetNanos = lastNanos + (long) (1_000_000_000.0f / fps) - 1_000_000L;  // subtract 1 ms to skip the last sleep call
+        try {
+            while (System.nanoTime() < targetNanos) {
+                Thread.sleep(1);
+            }
+        }
+        catch (InterruptedException ignore) {}
+    }
 }
