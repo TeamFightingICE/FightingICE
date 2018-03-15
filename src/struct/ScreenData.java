@@ -38,6 +38,15 @@ public class ScreenData {
 		this.displayByteBuffer = createDisplayByteBuffer();
 		this.displayBufferedImage =  GraphicManager.getInstance().getScreenImage();
 
+		//You can check the displayBufferedImage.
+//		boolean result = false;
+//		try {
+//		  result = ImageIO.write(this.displayBufferedImage, "jpeg", new File("sample.jpeg"));
+//		} catch (Exception e) {
+//		  e.printStackTrace();
+//		  result = false;
+//		}
+
 	}
 
 	/**

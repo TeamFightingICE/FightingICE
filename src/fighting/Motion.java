@@ -316,18 +316,19 @@ public class Motion {
 	 */
 	private Image invert(Image image) {
 		BufferedImage temp = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		BufferedImage invertedImage = image.getBufferedImage();
+		//temp.setData(image.getBufferedImage().getData());
+		//BufferedImage invertedImage = image.getBufferedImage();
 
-		float[][] matrix = new float[][] { new float[] { -1.0f, 0.0f, 0.0f, 0.0f, 255.0f },
-				new float[] { 0.0f, -1.0f, 0.0f, 0.0f, 255.0f }, new float[] { 0.0f, 0.0f, -1.0f, 0.0f, 255.0f },
-				new float[] { 0.0f, 0.0f, 0.0f, 1.0f, 0.0f } };
+		float[][] matrix = new float[][] {
+			new float[] { -1.0f, 0.0f, 0.0f, 0.0f, 255.0f },
+			new float[] { 0.0f, -1.0f, 0.0f, 0.0f, 255.0f },
+			new float[] { 0.0f, 0.0f, -1.0f, 0.0f, 255.0f },
+			new float[] { 0.0f, 0.0f, 0.0f, 1.0f, 0.0f } };
 
 		BandCombineOp invert = new BandCombineOp(matrix, new RenderingHints(null));
-		invert.filter(invertedImage.getRaster(), temp.getRaster());
+		invert.filter(image.getBufferedImage().getRaster(), temp.getRaster());
 
-		image.setBufferedImage(invertedImage);
-
-		return image;
+		return new Image(image.getTextureId(),temp);
 	}
 
 	/**

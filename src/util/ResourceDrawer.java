@@ -64,7 +64,7 @@ public class ResourceDrawer {
 	public void drawResource(Character[] characters, Deque<LoopEffect> projectiles,
 			LinkedList<LinkedList<HitEffect>> hitEffects, int remainingTime, int round) {
 
-		 GraphicManager.getInstance().resetScreen();
+		GraphicManager.getInstance().resetScreen();
 
 		drawBackGroundImage();
 
