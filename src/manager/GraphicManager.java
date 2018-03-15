@@ -2,6 +2,11 @@ package manager;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -14,6 +19,7 @@ import render.ImageTask;
 import render.QuadTask;
 import render.RenderTask;
 import render.StringTask;
+import setting.GameSetting;
 
 /**
  * 画像の描画を管理するマネージャークラス．
@@ -71,6 +77,14 @@ public class GraphicManager {
 	private ArrayList<Image> backGroundImage;
 
 	/**
+	 * 描画情報
+	 */
+	private BufferedImage screen;
+
+	private Graphics2D screenGraphic;
+
+
+	/**
 	 * クラスコンストラクタ．
 	 */
 	private GraphicManager() {
@@ -90,6 +104,9 @@ public class GraphicManager {
 		this.upperImageContainer = new Image[2][3];
 		this.hitEffectImageContainer = new Image[4][4];
 		this.backGroundImage = new ArrayList<Image>();
+
+		screen = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		screenGraphic = screen.createGraphics();
 
 	}
 
@@ -187,6 +204,7 @@ public class GraphicManager {
 	 * @see DisplayManager#gameLoop(GameManager)
 	 */
 	public void render() {
+
 		// 黒で塗りつぶすように指定
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		// 指定した色でバッファを塗りつぶすことでバッファクリアを行う
@@ -215,6 +233,7 @@ public class GraphicManager {
 	public void drawImage(Image img, int x, int y, boolean direction) {
 		ImageTask task = new ImageTask(img, x, y, direction);
 		this.renderTaskList.add(task);
+		screenGraphic.drawImage(img.getBufferedImage(), x, y, null);
 	}
 
 	/**
@@ -236,6 +255,22 @@ public class GraphicManager {
 	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction) {
 		ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
 		this.renderTaskList.add(task);
+	}
+
+	public void drawImageinScreenData(Image img, int x, int y, int sizeX, int sizeY, boolean direction){
+		if(direction){
+			screenGraphic.drawImage(img.getBufferedImage(), x, y, sizeX, sizeY, null);
+		}else{
+			AffineTransform tx = AffineTransform.getScaleInstance(-1d, 1d);
+			tx.translate(-sizeX/2, 0);
+			AffineTransformOp flip = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			screenGraphic.drawImage(flip.filter(img.getBufferedImage(),null), x, y, sizeX, sizeY, null);
+		}
+	}
+
+	public void drawLineQuadinScreenData(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha){
+		screenGraphic.setColor(new Color(red,green,blue));
+		screenGraphic.drawRect(x, y, sizeX, sizeY);
 	}
 
 	/**
@@ -313,6 +348,20 @@ public class GraphicManager {
 	 */
 	public void setLetterFont(LetterImage lf) {
 		this.letterImage = lf;
+	}
+
+	public void resetScreen(){
+		screen = new BufferedImage(screen.getWidth(), screen.getHeight(), BufferedImage.TYPE_INT_RGB);
+		screenGraphic = screen.createGraphics();
+		screenGraphic.setColor(new Color (128,128,128));
+	}
+
+	public void disposeScreenGraphic(){
+		screenGraphic.dispose();
+	}
+
+	public BufferedImage getScreenImage(){
+		return screen;
 	}
 
 	/**

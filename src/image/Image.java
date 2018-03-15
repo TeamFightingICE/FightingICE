@@ -60,6 +60,7 @@ public class Image {
 	public Image(int id, BufferedImage bimg) {
 		this.textureId = id;
 		this.bimg = new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());
+		this.bimg.setData(bimg.getData());
 	}
 
 	/**
@@ -77,7 +78,9 @@ public class Image {
 	 * @return 画像のBufferedImage
 	 */
 	public BufferedImage getBufferedImage() {
-		return new BufferedImage(this.bimg.getWidth(), this.bimg.getHeight(), this.bimg.getType());
+		BufferedImage res = new BufferedImage(this.bimg.getWidth(), this.bimg.getHeight(), this.bimg.getType());
+		res.setData(bimg.getData());
+		return res;
 	}
 
 	/**
@@ -98,6 +101,7 @@ public class Image {
 	 */
 	public void setBufferedImage(BufferedImage bimg) {
 		this.bimg = new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());
+		this.bimg.setData(bimg.getData());
 	}
 
 	/**
