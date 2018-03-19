@@ -59,6 +59,7 @@ public class Fighting {
 	 */
 	protected CommandTable commandTable;
 
+
 	/**
 	 * Class constructor．
 	 */

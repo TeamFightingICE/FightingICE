@@ -292,7 +292,7 @@ public class ResourceLoader {
 	 */
 	public void loadCharacterImages(String path) {
 		for (int i = 0; i < 2; i++) {
-			if (!isLoaded(LaunchSetting.characterNames[i] + "_Graphic")) {
+			if (!isLoaded(LaunchSetting.characterNames[i] + "_Graphic") ) {
 				try {
 					BufferedReader br = openReadFile(path + LaunchSetting.characterNames[i] + "/Motion.csv");
 
