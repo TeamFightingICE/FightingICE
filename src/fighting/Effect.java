@@ -69,7 +69,7 @@ public class Effect {
 	 *         {@code false} otherwise
 	 */
 	public boolean update() {
-		return ++this.currentFrame < (this.hitImages.length * this.framesPerImage);
+		return ++this.currentFrame < (this.hitImages!=null ? this.hitImages.length : 6 * this.framesPerImage);
 	}
 
 	/**
