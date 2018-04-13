@@ -115,7 +115,7 @@ public class DisplayManager {
 		}
 
 		// Enable v-sync
-		glfwSwapInterval(0);
+		glfwSwapInterval(sync);
 
 
 		if (FlagSetting.enableWindow) {
@@ -216,12 +216,14 @@ public class DisplayManager {
 	}
 
     private void syncFrameRate(float fps, long lastNanos) {
-        long targetNanos = lastNanos + (long) (1_000_000_000.0f / fps) - 1_000_000L;  // subtract 1 ms to skip the last sleep call
-        try {
-            while (System.nanoTime() < targetNanos) {
-                Thread.sleep(1);
-            }
-        }
-        catch (InterruptedException ignore) {}
+    	if(!FlagSetting.fastModeFlag){
+    		long targetNanos = lastNanos + (long) (1_000_000_000.0f / fps) - 1_000_000L;  // subtract 1 ms to skip the last sleep call
+    		try {
+    			while (System.nanoTime() < targetNanos) {
+    				Thread.sleep(1);
+    			}
+    		}
+    		catch (InterruptedException ignore) {}
+    	}
     }
 }

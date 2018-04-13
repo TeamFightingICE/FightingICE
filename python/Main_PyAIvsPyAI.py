@@ -3,7 +3,6 @@ from time import sleep
 from py4j.java_gateway import JavaGateway, GatewayParameters, CallbackServerParameters, get_field
 from KickAI import KickAI
 from DisplayInfo import DisplayInfo
-from Machete import Machete	
 def check_args(args):
 	for i in range(argc):
 		if args[i] == "-n" or args[i] == "--n" or args[i] == "--number":
@@ -12,19 +11,19 @@ def check_args(args):
 
 def start_game():
         p1 = KickAI(gateway)
-        p2 = Machete(gateway)
+        p2 = KickAI(gateway)
         manager.registerAI(p1.__class__.__name__, p1)
         manager.registerAI(p2.__class__.__name__, p2)
-	print("Start game")
+        print("Start game")
 	
-	game = manager.createGame("ZEN", "ZEN",
+        game = manager.createGame("ZEN", "ZEN",
                                   p1.__class__.__name__,
                                   p2.__class__.__name__,
                                   GAME_NUM)
-	manager.runGame(game)
+        manager.runGame(game)
 	
-	print("After game")
-	sys.stdout.flush()
+        print("After game")
+        sys.stdout.flush()
 
 def close_gateway():
 	gateway.close_callback_server()

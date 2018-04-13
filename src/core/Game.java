@@ -98,9 +98,11 @@ public class Game extends GameManager {
 				FlagSetting.muteFlag = true;
 				break;
 			case "--disable-window":
-			case "--fastmode":
 				FlagSetting.enableWindow = false;
 				FlagSetting.muteFlag = true;
+				FlagSetting.automationFlag = true;
+				break;
+			case "--fastmode":
 				FlagSetting.fastModeFlag = true;
 				FlagSetting.automationFlag = true;
 				break;
@@ -133,7 +135,7 @@ public class Game extends GameManager {
 		createLogDirectories();
 
 		// -nまたは-aが指定されたときは, メニュー画面に行かず直接ゲームをLaunchする
-		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag) {
+		if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag) && !FlagSetting.py4j) {
 			if (FlagSetting.allCombinationFlag) {
 				AIContainer.allAINameList = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
 
@@ -148,6 +150,7 @@ public class Game extends GameManager {
 
 			// -Python側で起動するときは, Pythonシーンからゲームを開始する
 		} else if (FlagSetting.py4j) {
+			System.out.println("Python");
 			Python python = new Python();
 			this.startGame(python);
 
