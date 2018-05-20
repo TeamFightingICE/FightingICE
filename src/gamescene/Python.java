@@ -5,6 +5,7 @@ import manager.GraphicManager;
 import python.PyGame;
 import python.PyGatewayServer;
 import python.StateInhibitor;
+import setting.FlagSetting;
 import setting.LaunchSetting;
 
 /**
@@ -56,9 +57,9 @@ public class Python extends GameScene {
 			this.stateInhibitor.replayUpdate();
 			return;
 		}
-
-		GraphicManager.getInstance().drawString("Waiting python to launch a game", 300, 200);
-
+		if(FlagSetting.enableWindow){
+			GraphicManager.getInstance().drawString("Waiting python to launch a game", 300, 200);
+		}
 		if (this.needRun) {
 			this.needRun = false;
 
