@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import informationcontainer.RoundResult;
+import py4j.Py4JException;
 import struct.FrameData;
 import struct.GameData;
 import struct.Key;
@@ -80,15 +81,22 @@ public class AIController extends Thread {
 	 *
 	 * @see GameData
 	 */
-	public void initialize(Object waitFrame, GameData gameData, boolean playerNumber) {
+	public void initialize(Object waitFrame, GameData gameData, boolean playerNumber) throws Py4JException{
 		this.playerNumber = playerNumber;
 		this.waitObj = waitFrame;
 		this.key = new Key();
 		this.framesData = new LinkedList<FrameData>();
 		this.clear();
 		this.isFighting = true;
-
-		this.ai.initialize(gameData, playerNumber);
+//		boolean isInit = false;
+//		while(!isInit)
+//		try{
+			this.ai.initialize(gameData, playerNumber);
+//			isInit = true;
+//		} catch (Py4JException e) {
+//			Logger.getAnonymousLogger().log(Level.SEVERE, "Cannot Initialize AI");
+//			InputManager.getInstance().createAIcontroller();
+//		}
 	}
 
 	@Override
@@ -173,10 +181,12 @@ public class AIController extends Thread {
 	 * その後，DELAY-1個の空のフレームデータをリストに格納する．
 	 */
 	public synchronized void clear() {
-		this.framesData.clear();
+		if (this.framesData != null) {
+			this.framesData.clear();
 
-		while (this.framesData.size() < DELAY) {
-			this.framesData.add(new FrameData());
+			while (this.framesData.size() < DELAY) {
+				this.framesData.add(new FrameData());
+			}
 		}
 	}
 

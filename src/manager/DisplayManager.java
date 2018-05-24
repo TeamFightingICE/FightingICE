@@ -165,20 +165,18 @@ public class DisplayManager {
 			// ゲーム状態の更新
 			gm.update();
 
-            syncFrameRate(60, lastNanos);
-            lastNanos = System.nanoTime();
+		   	if(!FlagSetting.fastModeFlag){
+		   		syncFrameRate(60, lastNanos);
+		   		lastNanos = System.nanoTime();
+		   	}
+			// バックバッファに描画する
+			GraphicManager.getInstance().render();
 
-			if (FlagSetting.enableWindow) {
-				// バックバッファに描画する
-				GraphicManager.getInstance().render();
-
-				// バックバッファとフレームバッファを入れ替える
-				glfwSwapBuffers(this.window);
-
-				// Poll for window events. The key callback above will only be
-				// invoked during this call.
-				glfwPollEvents();
-			}
+			// バックバッファとフレームバッファを入れ替える
+			glfwSwapBuffers(this.window);
+			// Poll for window events. The key callback above will only be
+			// invoked during this call.
+			glfwPollEvents();
 		}
 	}
 
@@ -216,14 +214,13 @@ public class DisplayManager {
 	}
 
     private void syncFrameRate(float fps, long lastNanos) {
-    	if(!FlagSetting.fastModeFlag){
-    		long targetNanos = lastNanos + (long) (1_000_000_000.0f / fps) - 1_000_000L;  // subtract 1 ms to skip the last sleep call
-    		try {
-    			while (System.nanoTime() < targetNanos) {
-    				Thread.sleep(1);
-    			}
+
+    	long targetNanos = lastNanos + (long) (1_000_000_000.0f / fps) - 1_000_000L;  // subtract 1 ms to skip the last sleep call
+    	try {
+    		while (System.nanoTime() < targetNanos) {
+    			Thread.sleep(1);
     		}
-    		catch (InterruptedException ignore) {}
     	}
+    	catch (InterruptedException ignore) {}
     }
 }

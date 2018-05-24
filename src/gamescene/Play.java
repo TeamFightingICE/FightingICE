@@ -20,6 +20,7 @@ import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
+import py4j.Py4JException;
 import setting.FlagSetting;
 import setting.GameSetting;
 import struct.FrameData;
@@ -135,12 +136,19 @@ public class Play extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 
-		InputManager.getInstance().createAIcontroller();
-		InputManager.getInstance().startAI(gameData);
-
+		try {
+			InputManager.getInstance().createAIcontroller();
+			InputManager.getInstance().startAI(gameData);
+		}catch (Py4JException e){
+			Logger.getAnonymousLogger().log(Level.SEVERE, "Fail to Initialize AI");
+			Launcher lunch = new Launcher(GameSceneName.PLAY);
+			this.setTransitionFlag(true);
+			this.setNextGameScene(lunch);
+		}
 		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
 			SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
 		}
+
 	}
 
 	@Override

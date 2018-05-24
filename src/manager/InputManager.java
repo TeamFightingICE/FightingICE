@@ -15,6 +15,7 @@ import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
+import py4j.Py4JException;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.FrameData;
@@ -224,7 +225,7 @@ public class InputManager<Data> {
 	 *            GameDataクラスのインスタンス
 	 * @see GameData
 	 */
-	public void startAI(GameData gameData) {
+	public void startAI(GameData gameData) throws Py4JException{
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (this.ais[i] != null) {
 				this.ais[i].initialize(ThreadController.getInstance().getAIsObject(i == 0), gameData, i == 0);
