@@ -148,7 +148,6 @@ public class Play extends GameScene {
 		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
 			SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
 		}
-
 	}
 
 	@Override
@@ -202,7 +201,8 @@ public class Play extends GameScene {
 		this.nowFrame = 0;
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
-
+		this.keyData = new KeyData();
+		
 		InputManager.getInstance().clear();
 	}
 
@@ -212,7 +212,7 @@ public class Play extends GameScene {
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
 		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
-
+		
 		if (FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
@@ -272,6 +272,7 @@ public class Play extends GameScene {
 	 * ラウンド終了時の処理を行う.
 	 */
 	private void processingRoundEnd() {
+		this.fighting.processingRoundEnd();
 		RoundResult roundResult = new RoundResult(this.frameData);
 		this.roundResults.add(roundResult);
 

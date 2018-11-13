@@ -118,6 +118,11 @@ public class Character {
 	 * キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量．
 	 */
 	private int graphicAdjustX;
+	
+	/**
+	 * キャラクターの初期位置決定する時にx座標を調整するために用いる水平方向の移動量．
+	 */
+	private int graphicAdjustInitialX[];
 
 	/**
 	 * 攻撃が相手に当たった最後のフレーム．
@@ -200,6 +205,7 @@ public class Character {
 		this.graphicSizeX = character.getGraphicSizeX();
 		this.graphicSizeY = character.getGraphicSizeY();
 		this.graphicAdjustX = character.getGraphicAdjustX();
+		this.graphicAdjustInitialX = character.getGraphicAdjustInitialX();
 		this.speedX = character.getSpeedX();
 		this.speedY = character.getSpeedY();
 		this.state = character.getState();
@@ -276,6 +282,8 @@ public class Character {
 			this.graphicSizeX = Integer.valueOf(size[0]);
 			this.graphicSizeY = Integer.valueOf(size[1]);
 			this.graphicAdjustX = Integer.valueOf(center[0]);
+			this.graphicAdjustInitialX[0] = Integer.valueOf(center[2]);
+			this.graphicAdjustInitialX[1] = Integer.valueOf(center[3]);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -292,6 +300,7 @@ public class Character {
 		this.inputCommands = new LinkedList<Key>();
 		this.processedCommands = new LinkedList<Key>();
 		this.motionList = new ArrayList<Motion>();
+		this.graphicAdjustInitialX = new int[2];
 	}
 
 	/**
@@ -325,13 +334,12 @@ public class Character {
 		if (this.playerNumber) {
 			this.front = true;
 			// 初期の立ち位置
-			this.x = 100;
+			this.x = 100 + this.graphicAdjustInitialX[0];
 			this.y = 335;
-
 		} else {
 			this.front = false;
 			// 初期の立ち位置
-			this.x = 460;
+			this.x = 460+ this.graphicAdjustInitialX[1];;
 			this.y = 335;
 		}
 	}
@@ -893,6 +901,15 @@ public class Character {
 	 */
 	public int getGraphicAdjustX() {
 		return this.graphicAdjustX;
+	}
+	
+	/**
+	 * キャラクターの初期位置を決定する時にx座標を調整するために用いる水平方向の移動量を返す.
+	 *
+	 * @return キャラクターの向きを決定する時にx座標を調整するために用いる水平方向の移動量
+	 */
+	public int[] getGraphicAdjustInitialX() {
+		return this.graphicAdjustInitialX;
 	}
 
 	/**

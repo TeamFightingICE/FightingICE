@@ -16,6 +16,7 @@ import setting.LaunchSetting;
 import struct.AttackData;
 import struct.CharacterData;
 import struct.FrameData;
+import struct.Key;
 
 /**
  * 対戦処理及びそれに伴う攻撃やキャラクターのパラメータの更新処理を扱うクラス．
@@ -71,7 +72,15 @@ public class Fighting {
 		this.hitEffects = new LinkedList<LinkedList<HitEffect>>();
 
 	}
-
+	
+	public void processingRoundEnd(){
+		this.inputCommands.clear();
+		this.playerCharacters[0].setProcessedCommand(new LinkedList<Key>());
+		this.playerCharacters[1].setProcessedCommand(new LinkedList<Key>());
+		this.playerCharacters[0].setInputCommand(new LinkedList<Key>());
+		this.playerCharacters[1].setInputCommand(new LinkedList<Key>());
+	}
+	
 	/**
 	 * P1, P2のキャラクター情報とエフェクトを格納するリストの初期化を行う．
 	 */
@@ -124,7 +133,7 @@ public class Fighting {
 		this.inputCommands.addLast(keyData);
 
 		// リストのサイズが上限(INPUT_LIMIT)を超えていたら, 最も古いデータを削除する
-		if (this.inputCommands.size() > GameSetting.INPUT_LIMIT) {
+		while (this.inputCommands.size() > GameSetting.INPUT_LIMIT) {
 			this.inputCommands.removeFirst();
 		}
 

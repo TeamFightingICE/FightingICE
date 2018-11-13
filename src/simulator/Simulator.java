@@ -80,8 +80,10 @@ public class Simulator {
 		tempActionList.add(tempP2Act);
 
 		ArrayList<ArrayList<Motion>> tempMotionList = new ArrayList<ArrayList<Motion>>(2);
-		ArrayList<Motion> p1MotionData = this.gameData.getMotion(playerNumber ? true : false);
-		ArrayList<Motion> p2MotionData = this.gameData.getMotion(!playerNumber ? true : false);
+//		ArrayList<Motion> p1MotionData = this.gameData.getMotion(playerNumber ? true : false);
+//		ArrayList<Motion> p2MotionData = this.gameData.getMotion(!playerNumber ? true : false);
+		ArrayList<Motion> p1MotionData = this.gameData.getMotion(true);
+		ArrayList<Motion> p2MotionData = this.gameData.getMotion(false);
 		tempMotionList.add(p1MotionData);
 		tempMotionList.add(p2MotionData);
 
