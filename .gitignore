@@ -48,3 +48,7 @@ debugData
 #intellJ
 /.idea/*
 *.iml
+
+__pycache__/
+*.py[cod]
+*$py.class
