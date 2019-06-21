@@ -111,7 +111,16 @@ public class AIController extends Thread {
 				}
 			}
 
-			this.ai.getInformation(!this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData());
+			boolean isControl;
+
+			try{
+				isControl =  this.framesData.getLast().getCharacter(this.playerNumber).isControl();
+			} catch (NullPointerException e) {
+				// while game is not started
+				isControl = false;
+			}
+
+			this.ai.getInformation(!this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData(), isControl);
 			this.ai.getScreenData(this.screenData);
 			this.ai.processing();
 			setInput(this.ai.input());

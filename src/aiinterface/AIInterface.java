@@ -48,7 +48,7 @@ public interface AIInterface {
 	 *            the data that will be changed each frame
 	 * @see FrameData
 	 */
-	void getInformation(FrameData fd);
+	void getInformation(FrameData fd, boolean isControl);
 
 	/**
 	 * Processes the data from AI. <br>

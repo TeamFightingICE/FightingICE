@@ -8,11 +8,11 @@
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-openal.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengl.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl.jar"/>
-	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-glfw-natives-windows.jar"/>
-	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-natives-windows.jar"/>
-	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-openal-natives-windows.jar"/>
-	<classpathentry kind="lib" path="lib/natives/windows/lwjgl-opengl-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/javax.json-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/py4j0.10.4.jar"/>
+	<classpathentry kind="lib" path="lib/natives/macos/lwjgl-glfw-natives-macos.jar"/>
+	<classpathentry kind="lib" path="lib/natives/macos/lwjgl-natives-macos.jar"/>
+	<classpathentry kind="lib" path="lib/natives/macos/lwjgl-openal-natives-macos.jar"/>
+	<classpathentry kind="lib" path="lib/natives/macos/lwjgl-opengl-natives-macos.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
