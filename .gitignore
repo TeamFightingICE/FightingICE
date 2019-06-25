@@ -29,7 +29,6 @@ hs_err_pid*
 .project
 .settings
 bin
-data/ai/*
 !.gitkeep
 data/aiData/*
 !.gitkeep
