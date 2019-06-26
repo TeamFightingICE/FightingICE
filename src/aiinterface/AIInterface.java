@@ -46,6 +46,8 @@ public interface AIInterface {
 	 *
 	 * @param fd
 	 *            the data that will be changed each frame
+	 * @param isControl
+	 *            whether the character can act
 	 * @see FrameData
 	 */
 	void getInformation(FrameData fd, boolean isControl);
