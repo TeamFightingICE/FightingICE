@@ -31,7 +31,7 @@ class DisplayInfo(object):
     def getScreenData(self, sd):
         self.screenData = sd
         
-    def getInformation(self, frameData):
+    def getInformation(self, frameData, isControl):
         self.frameData = frameData
         self.cc.setFrameData(self.frameData, self.player)
         

@@ -1,4 +1,4 @@
-﻿
+
 Here is how to get started quickly. If you need more infomation, please read below contents.
 
 1. Update FightingICE.jar
@@ -48,7 +48,7 @@ class KickAI(object):
 	def getScreenData(self, screenData):
     	pass
 
-	def getInformation(self, frameData):
+	def getInformation(self, frameData, isControl):
 		# Getting the frame data of the current frame
 		self.frameData = frameData
 

@@ -7,7 +7,7 @@ class KickAI(object):
     def close(self):
         pass
         
-    def getInformation(self, frameData):
+    def getInformation(self, frameData, isControl):
         # Getting the frame data of the current frame
         self.frameData = frameData
         self.cc.setFrameData(self.frameData, self.player)
