@@ -30,6 +30,8 @@ hs_err_pid*
 .settings
 bin
 !.gitkeep
+data/ai/*
+!.gitkeep
 data/aiData/*
 !.gitkeep
 log/point/*
