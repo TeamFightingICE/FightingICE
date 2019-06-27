@@ -47,10 +47,31 @@ public interface AIInterface {
 	 * @param fd
 	 *            the data that will be changed each frame
 	 * @param isControl
-	 *            whether the character can act. the data is not delay.
+	 *            whether the character can act. this parameter is not delayed
+	 *            unlike {@link struct.CharacterData#isControl()}
 	 * @see FrameData
 	 */
-	void getInformation(FrameData fd, boolean isControl);
+	default void getInformation(FrameData fd, boolean isControl) {
+		getInformation(fd);
+	}
+
+	/**
+	 * Gets information from the game status in each frame. <br>
+	 * Such information is stored in the parameter frameData. <br>
+	 * If {@code frameData.getRemainingTime()} returns a negative value, the
+	 * current round has not started yet. <br>
+	 * When you use frameData received from getInformation(), <br>
+	 * you must always check if the condition
+	 * {@code !frameData.getEmptyFlag() && frameData.getRemainingTime() > 0}
+	 * holds; otherwise, NullPointerException will occur. <br>
+	 * You must also check the same condition when you use the CommandCenter
+	 * class.
+	 *
+	 * @param fd
+	 *            the data that will be changed each frame
+	 * @see FrameData
+	 */
+	void getInformation(FrameData fd);
 
 	/**
 	 * Processes the data from AI. <br>
