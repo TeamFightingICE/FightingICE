@@ -115,6 +115,9 @@ public class Game extends GameManager {
 				LaunchSetting.maxHp[0] = Integer.parseInt(options[++i]);
 				LaunchSetting.maxHp[1] = Integer.parseInt(options[++i]);
 				break;
+			case "--slow":
+				FlagSetting.slowmotion = true;
+				break;
 			case "--err-log":
 				FlagSetting.outputErrorAndLogFlag = true;
 				break;

@@ -70,4 +70,9 @@ public class FlagSetting {
 	 */
 	public static boolean enableWindow = true;
 
+	/**
+	 * ラウンド終了時にスローモーションを発生させるかどうかのフラグ
+	 */
+	public static boolean slowmotion = false;
+
 }
