@@ -117,7 +117,7 @@ public class SimFighting extends Fighting {
 			Deque<Action> actList = this.inputActions.get(i);
 
 			if (keyList.size() > GameSetting.INPUT_LIMIT) {
-				keyList.removeLast();
+				keyList.removeFirst();
 			}
 
 			if (!this.playerCharacters[i].getInputCommand().isEmpty() && !this.commandCenter[i].getSkillFlag()) {
