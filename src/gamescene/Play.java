@@ -90,6 +90,8 @@ public class Play extends GameScene {
 	 */
 	private String timeInfo;
 
+	private int endFrame;
+
 	/**
 	 * クラスコンストラクタ．
 	 */
@@ -114,6 +116,7 @@ public class Play extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
+		this.endFrame = -1;
 
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
@@ -129,6 +132,7 @@ public class Play extends GameScene {
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().initialize();
 		}
+
 		if (FlagSetting.jsonFlag) {
 			String jsonName = LogWriter.getInstance().createOutputFileName("./log/replay/", this.timeInfo);
 			LogWriter.getInstance().initJson(jsonName + ".json");
@@ -139,7 +143,7 @@ public class Play extends GameScene {
 		try {
 			InputManager.getInstance().createAIcontroller();
 			InputManager.getInstance().startAI(gameData);
-		}catch (Py4JException e){
+		} catch (Py4JException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, "Fail to Initialize AI");
 			Launcher lunch = new Launcher(GameSceneName.PLAY);
 			this.setTransitionFlag(true);
@@ -148,6 +152,7 @@ public class Play extends GameScene {
 		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
 			SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
 		}
+
 	}
 
 	@Override
@@ -165,7 +170,11 @@ public class Play extends GameScene {
 			} else {
 				// processing
 				processingGame();
-				this.nowFrame++;
+				if (this.endFrame == -1) {
+					this.nowFrame++;
+				} else if (this.endFrame % 30 == 0) {
+					this.nowFrame++;
+				}
 			}
 
 		} else {
@@ -178,6 +187,15 @@ public class Play extends GameScene {
 			Result result = new Result(this.roundResults, this.timeInfo);
 			this.setTransitionFlag(true);
 			this.setNextGameScene(result);
+		}
+
+		if (Keyboard.getKeyDown(GLFW_KEY_SPACE)) {
+			System.out.println("P1 x:" + this.frameData.getCharacter(true).getX() + "\n" + "P2 x:"
+					+ this.frameData.getCharacter(false).getX() + "\n" + "P1 Left:"
+					+ this.frameData.getCharacter(true).getLeft() + "\n" + "P1 Right:"
+					+ this.frameData.getCharacter(true).getRight() + "\n" + "P2 Left:"
+					+ this.frameData.getCharacter(false).getLeft() + "\n" + "P2 Right:"
+					+ this.frameData.getCharacter(false).getRight() + "\n");
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
@@ -202,7 +220,7 @@ public class Play extends GameScene {
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 		this.keyData = new KeyData();
-		
+
 		InputManager.getInstance().clear();
 	}
 
@@ -212,7 +230,7 @@ public class Play extends GameScene {
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
 		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
-		
+
 		if (FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
@@ -233,8 +251,16 @@ public class Play extends GameScene {
 	 * 8. ラウンドが終了しているか判定する.<br>
 	 */
 	private void processingGame() {
-		this.keyData = new KeyData(InputManager.getInstance().getKeyData());
-		this.fighting.processingFight(this.nowFrame, this.keyData);
+		if (this.endFrame != -1) {
+			this.keyData = new KeyData();
+			if (this.endFrame % 30 == 0) {
+				this.fighting.processingFight(this.nowFrame, this.keyData);
+			}
+		} else {
+			this.keyData = new KeyData(InputManager.getInstance().getKeyData());
+			this.fighting.processingFight(this.nowFrame, this.keyData);
+		}
+
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 
 		// リプレイログ吐き出し
@@ -272,19 +298,45 @@ public class Play extends GameScene {
 	 * ラウンド終了時の処理を行う.
 	 */
 	private void processingRoundEnd() {
-		this.fighting.processingRoundEnd();
-		RoundResult roundResult = new RoundResult(this.frameData);
-		this.roundResults.add(roundResult);
+		if (FlagSetting.slowmotion) {
+			if (this.endFrame > GameSetting.ROUND_EXTRAFRAME_NUMBER) {
+				this.fighting.processingRoundEnd();
+				RoundResult roundResult = new RoundResult(this.frameData);
+				this.roundResults.add(roundResult);
 
-		// AIに結果を渡す
-		InputManager.getInstance().sendRoundResult(roundResult);
-		this.currentRound++;
-		this.roundStartFlag = true;
+				// AIに結果を渡す
+				InputManager.getInstance().sendRoundResult(roundResult);
+				this.currentRound++;
+				this.roundStartFlag = true;
+				this.endFrame = -1;
 
-		// P1とP2の行った各アクションの数のデータをCSVに出力する
-		if (FlagSetting.debugActionFlag) {
-			DebugActionData.getInstance().outputActionCount();
+				// P1とP2の行った各アクションの数のデータをCSVに出力する
+				if (FlagSetting.debugActionFlag) {
+					DebugActionData.getInstance().outputActionCount();
+				}
+
+			} else {
+				this.endFrame++;
+			}
+
+		} else {
+			this.endFrame = 0;
+			this.fighting.processingRoundEnd();
+			RoundResult roundResult = new RoundResult(this.frameData);
+			this.roundResults.add(roundResult);
+
+			// AIに結果を渡す
+			InputManager.getInstance().sendRoundResult(roundResult);
+			this.currentRound++;
+			this.roundStartFlag = true;
+			this.endFrame = -1;
+
+			// P1とP2の行った各アクションの数のデータをCSVに出力する
+			if (FlagSetting.debugActionFlag) {
+				DebugActionData.getInstance().outputActionCount();
+			}
 		}
+
 	}
 
 	/**
@@ -307,7 +359,7 @@ public class Play extends GameScene {
 		if (FlagSetting.trainingModeFlag) {
 			return this.nowFrame == Integer.MAX_VALUE;
 		} else {
-			return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
+			return this.nowFrame >= GameSetting.ROUND_FRAME_NUMBER - 1;
 		}
 
 	}

@@ -71,4 +71,9 @@ public class GameSetting {
 	 */
 	public static final int COMBO_LIMIT = 30;
 
+	/**
+	 * 追加フレーム(スローモーション用)
+	 */
+	public static final int ROUND_EXTRAFRAME_NUMBER = 180;
+
 }
