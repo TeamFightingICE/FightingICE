@@ -85,6 +85,9 @@ public class Game extends GameManager {
 			case "--port":
 				LaunchSetting.py4jPort = Integer.parseInt(options[++i]);
 				break;
+			case "-r":
+				GameSetting.ROUND_MAX = Integer.parseInt(options[++i]);
+				break;
 			case "--black-bg":
 				LaunchSetting.backgroundType = BackgroundType.BLACK;
 				break;
