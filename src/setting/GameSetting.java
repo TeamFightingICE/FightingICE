@@ -33,7 +33,8 @@ public class GameSetting {
 	/**
 	 * 1ラウンドの総フレーム数．
 	 */
-	public static final int ROUND_FRAME_NUMBER = 3600;
+//	public static final int ROUND_FRAME_NUMBER = 3600;
+	public static int ROUND_FRAME_NUMBER = 3600;
 
 	/**
 	 * ラウンド間の休憩時間．

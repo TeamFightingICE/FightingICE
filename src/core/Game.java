@@ -86,7 +86,12 @@ public class Game extends GameManager {
 				LaunchSetting.py4jPort = Integer.parseInt(options[++i]);
 				break;
 			case "-r":
+				// -r 100 -> 1 game has 100 rounds
 				GameSetting.ROUND_MAX = Integer.parseInt(options[++i]);
+				break;
+			case "-f":
+				// -f 360 -> 1 round has 6 second
+				GameSetting.ROUND_FRAME_NUMBER = Integer.parseInt(options[++i]);
 				break;
 			case "--black-bg":
 				LaunchSetting.backgroundType = BackgroundType.BLACK;
