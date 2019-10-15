@@ -18,6 +18,7 @@ FightingICEはComputational Intelligence and Games (CIG)公認の格闘ゲーム
 - doc: Javadocを格納したディレクトリ  
 - python: pythonでFightingICEを起動する際に用いられるファイルやAI等を格納したディレクトリ  
 - jar: FightingICEの及びAI作成用のライブラリのjarファイルを格納したディレクトリ  
+- multi_start_up_for_Deep: FightingICEをpython経由で複数起動する方法を記述したディレクトリ
 
 ### How to use ###
 FightingICE公式サイトを参照してください。  
