@@ -49,8 +49,14 @@ public interface AIInterface {
 	 * @param isControl
 	 *            whether the character can act. this parameter is not delayed
 	 *            unlike {@link struct.CharacterData#isControl()}
+	 * @param nonDelay
+	 *            frameData that has no delay.
 	 * @see FrameData
 	 */
+	
+	default void getInformation(FrameData fd, boolean isControl, FrameData nonDelay) {
+		getInformation(fd, isControl);
+	}
 
 	default void getInformation(FrameData fd, boolean isControl) {
 		getInformation(fd);

@@ -121,9 +121,9 @@ public class AIController extends Thread {
 			}
 
 //			for no delay
-//			this.ai.getInformation(!this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData(), isControl, this.framesData.getLast());
+			this.ai.getInformation(!this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData(), isControl, this.framesData.getLast());
 //          for delay
-			this.ai.getInformation(!this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData(), isControl);
+//			this.ai.getInformation(!this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData(), isControl);
 			
 			this.ai.getScreenData(this.screenData);
 			this.ai.processing();
