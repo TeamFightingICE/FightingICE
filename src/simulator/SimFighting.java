@@ -116,17 +116,17 @@ public class SimFighting extends Fighting {
 			Deque<Key> keyList = this.inputKeys.get(i);
 			Deque<Action> actList = this.inputActions.get(i);
 
-			if (keyList.size() > GameSetting.INPUT_LIMIT) {
+			if (keyList.size() > GameSetting.INPUT_LIMIT-1) {
 				keyList.removeFirst();
 			}
 
-			if (!this.playerCharacters[i].getInputCommand().isEmpty() && !this.commandCenter[i].getSkillFlag()) {
+			if (!this.playerCharacters[i].getInputCommand().isEmpty()) {
 				Deque<Key> temp = this.playerCharacters[i].getProcessedCommand();
-				temp.addLast(this.playerCharacters[i].getInputCommand().getFirst());
-
+				keyList.addLast(temp.removeFirst());
+				this.playerCharacters[i].setInputCommand(temp);
 				keyList.add(new Key(this.playerCharacters[i].getInputCommand().getFirst()));
 
-				Action act = this.commandTable.interpretationCommandFromKey(this.playerCharacters[i], temp);
+				Action act = this.commandTable.interpretationCommandFromKey(this.playerCharacters[i], keyList);
 				if (ableAction(this.playerCharacters[i], act)) {
 					this.playerCharacters[i].runAction(act, true);
 				}
@@ -136,7 +136,6 @@ public class SimFighting extends Fighting {
 
 					if (ableAction(this.playerCharacters[i], actList.getFirst()) && !commandCenter[i].getSkillFlag()) {
 						this.commandCenter[i].commandCall(actList.removeFirst().name());
-						this.playerCharacters[i].setInputCommand(this.commandCenter[i].getSkillKeys());
 
 					} else if (this.playerCharacters[i].isControl() && !this.commandCenter[i].getSkillFlag()) {
 						actList.removeFirst();
@@ -145,6 +144,8 @@ public class SimFighting extends Fighting {
 
 				this.inputKeys.get(i).add(this.commandCenter[i].getSkillKey());
 				Action act = this.commandTable.interpretationCommandFromKey(this.playerCharacters[i], keyList);
+				this.playerCharacters[i].setInputCommand(this.commandCenter[i].getSkillKeys());
+
 				if (ableAction(this.playerCharacters[i], act)) {
 					this.playerCharacters[i].runAction(act, true);
 				}
