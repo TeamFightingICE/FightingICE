@@ -1,6 +1,6 @@
 これはディレイ無しのFightingICEの起動方法を記述したスクリプトです．
 
-・eclipsからの起動方法.
+・eclipseからの起動方法.
 1, FightingICE/for_nonDelay/AIController.javaとAIInterface.javaをFightingICE/src/aiinterfaceにコピー&ペーストして置き換えます．
 2, いつも通りの方法でFightingICEを起動します．
 
