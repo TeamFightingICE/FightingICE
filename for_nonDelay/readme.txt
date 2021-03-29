@@ -5,7 +5,7 @@
 2, いつも通りの方法でFightingICEを起動します．
 
 ・ターミナルからの起動方法
-1, FightingICE/for_nonDelau/FightingICE_nonDelay.jarとftg.shをFightingICE/にコピー&ペーストします．
+1, FightingICE/for_nonDelay/FightingICE_nonDelay.jarとftg.shをFightingICE/にコピー&ペーストします．
 2, 以下のコマンドターミナルで実行します．(デフォルトはmacos用になっています.)
 $ bash FightingICE/ftg.sh
 
