@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
@@ -21,6 +22,7 @@ import loader.ResourceLoader;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import setting.LogSetting;
 import struct.AttackData;
 import struct.CharacterData;
 import struct.FrameData;
@@ -53,6 +55,8 @@ public class LogWriter {
 
 	/** Stream generator for JSON. */
 	private JsonGenerator generator;
+
+	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	/**
 	 * A flag marking whether to include display information in instances of
@@ -95,7 +99,7 @@ public class LogWriter {
 	 *            現在の時間情報
 	 */
 	public void outputResult(ArrayList<RoundResult> roundResults, int extension, String timeInfo) {
-		String path = "./log/point/";
+		String path = LogSetting.POINT_LOG_DIRECTORY;
 		String fileName = createOutputFileName(path, timeInfo);
 
 		PrintWriter pw;
@@ -334,7 +338,7 @@ public class LogWriter {
 	 * @param keyDataInput
 	 *            data about keys input in this frame
 	 */
-	public void updateJson(FrameData frameData, KeyData keyDataInput) {
+	public void updateJson(FrameData frameData, KeyData keyDataInput, long roundStartTime) {
 		// Check if this is a new round
 		if (frameData.getRound() != this.currentRound) {
 			this.generator.writeEnd();
@@ -345,6 +349,8 @@ public class LogWriter {
 		// Open frame object
 		this.generator.writeStartObject();
 
+		this.generator.write("start_time", this.dateFormatter.format(roundStartTime));
+		this.generator.write("elapsed_milli_time", System.currentTimeMillis() - roundStartTime);
 		this.generator.write("current_frame", frameData.getFramesNumber());
 		this.generator.write("remaining_frames", frameData.getRemainingFramesNumber());
 

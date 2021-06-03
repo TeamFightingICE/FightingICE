@@ -8,6 +8,7 @@ import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import setting.LaunchSetting;
+import setting.LogSetting;
 import struct.Key;
 
 /**
@@ -64,7 +65,7 @@ public class HomeMenu extends GameScene {
 		this.cursorPosition = 0;
 		this.replayIndex = 0;
 
-		this.allReplayNames = ResourceLoader.getInstance().loadFileNames("./log/replay/", ".dat");
+		this.allReplayNames = ResourceLoader.getInstance().loadFileNames(LogSetting.REPLAY_LOG_DIRECTORY, ".dat");
 		if (this.allReplayNames.size() == 0) {
 			this.allReplayNames.add("None");
 		}

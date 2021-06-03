@@ -23,6 +23,7 @@ import manager.SoundManager;
 import py4j.Py4JException;
 import setting.FlagSetting;
 import setting.GameSetting;
+import setting.LogSetting;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
@@ -90,6 +91,8 @@ public class Play extends GameScene {
 	 */
 	private String timeInfo;
 
+	private	long roundStartTime;
+
 	private int endFrame;
 
 	/**
@@ -134,7 +137,7 @@ public class Play extends GameScene {
 		}
 
 		if (FlagSetting.jsonFlag) {
-			String jsonName = LogWriter.getInstance().createOutputFileName("./log/replay/", this.timeInfo);
+			String jsonName = LogWriter.getInstance().createOutputFileName(LogSetting.REPLAY_LOG_DIRECTORY, this.timeInfo);
 			LogWriter.getInstance().initJson(jsonName + ".json");
 		}
 
@@ -220,6 +223,7 @@ public class Play extends GameScene {
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 		this.keyData = new KeyData();
+		this.roundStartTime = System.currentTimeMillis();
 
 		InputManager.getInstance().clear();
 	}
@@ -269,7 +273,7 @@ public class Play extends GameScene {
 		}
 
 		if (FlagSetting.jsonFlag) {
-			LogWriter.getInstance().updateJson(this.frameData, this.keyData);
+			LogWriter.getInstance().updateJson(this.frameData, this.keyData, this.roundStartTime);
 		}
 
 		if (FlagSetting.enableWindow) {
@@ -368,7 +372,7 @@ public class Play extends GameScene {
 	 * リプレイファイルを作成し, 使用キャラクターを表すインデックスなどのヘッダ情報を記述する.
 	 */
 	private void openReplayFile() {
-		String fileName = LogWriter.getInstance().createOutputFileName("./log/replay/", this.timeInfo);
+		String fileName = LogWriter.getInstance().createOutputFileName(LogSetting.REPLAY_LOG_DIRECTORY, this.timeInfo);
 		this.dos = ResourceLoader.getInstance().openDataOutputStream(fileName + ".dat");
 
 		LogWriter.getInstance().writeHeader(this.dos);

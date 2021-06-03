@@ -19,6 +19,7 @@ import manager.InputManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import setting.LogSetting;
 import util.DeleteFiles;
 
 /**
@@ -197,9 +198,9 @@ public class Game extends GameManager {
 	 * Creates log directories if they do not exist.
 	 */
 	private void createLogDirectories() {
-		new File("log").mkdir();
-		new File("log/replay").mkdir();
-		new File("log/point").mkdir();
+		new File(LogSetting.LOG_DIRECTORY).mkdir();
+		new File(LogSetting.REPLAY_LOG_DIRECTORY).mkdir();
+		new File(LogSetting.POINT_LOG_DIRECTORY).mkdir();
 	}
 
 	@Override

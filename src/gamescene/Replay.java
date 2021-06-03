@@ -20,6 +20,7 @@ import manager.SoundManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import setting.LogSetting;
 import struct.FrameData;
 import struct.Key;
 import struct.ScreenData;
@@ -103,7 +104,7 @@ public class Replay extends GameScene {
 		//////////////////////////////////////
 
 		try {
-			String path = "./log/replay/" + LaunchSetting.replayName + ".dat";
+			String path = LogSetting.REPLAY_LOG_DIRECTORY + LaunchSetting.replayName + ".dat";
 			this.dis = new DataInputStream(new FileInputStream(new File(path)));
 			readHeader();
 		} catch (IOException e) {
