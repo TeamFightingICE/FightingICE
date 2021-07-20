@@ -168,7 +168,8 @@ public class OurMctsAi implements AIInterface {
    * Perform the process for obtaining FrameData with 14 frames ahead
    */
   public void mctsPrepare() {
-    simulatorAheadFrameData = simulator.simulate(frameData, playerNumber, null, null, FRAME_AHEAD);
+    ArrayList<FrameData> FrameData_arr = simulator.simulate(frameData, playerNumber, null, null, FRAME_AHEAD,false);
+    simulatorAheadFrameData = FrameData_arr.get(FrameData_arr.size() - 1);
 
     myCharacter = playerNumber ? simulatorAheadFrameData.getCharacter(true) : simulatorAheadFrameData.getCharacter(false);
     oppCharacter = playerNumber ? simulatorAheadFrameData.getCharacter(false) : simulatorAheadFrameData.getCharacter(true);

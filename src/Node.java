@@ -1,6 +1,7 @@
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.ArrayList;
 
 import simulator.Simulator;
 import struct.CharacterData;
@@ -141,6 +142,7 @@ public class Node {
    * @return the evaluation value of the playout
    */
   public double playout() {
+    long beforeTime = System.currentTimeMillis();
 
     mAction.clear();
     oppAction.clear();
@@ -157,9 +159,14 @@ public class Node {
       oppAction.add(oppActions.get(rnd.nextInt(oppActions.size())));
     }
 
-    FrameData nFrameData =
-        simulator.simulate(frameData, playerNumber, mAction, oppAction, SIMULATION_TIME); // Perform simulation
-
+    ArrayList<FrameData> FrameData_arr =
+        simulator.simulate(frameData, playerNumber, mAction, oppAction, SIMULATION_TIME, true); // Perform simulation
+    
+    FrameData nFrameData = FrameData_arr.get(FrameData_arr.size() - 1);
+    
+    long afterTime = System.currentTimeMillis();
+    // long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+    // System.out.println("시간차이(m) : "+secDiffTime);
     return getScore(nFrameData);
   }
 

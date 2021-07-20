@@ -67,10 +67,11 @@ public class Simulator {
 	 *
 	 * @return the frame data after the simulation
 	 */
-	public FrameData simulate(FrameData frameData, boolean playerNumber, Deque<Action> myAct, Deque<Action> oppAct,
-			int simulationLimit) {
+	public ArrayList<FrameData> simulate(FrameData frameData, boolean playerNumber, Deque<Action> myAct, Deque<Action> oppAct,
+			int simulationLimit, boolean logging) {
 
 		// Creates deep copy of each action's list
+		ArrayList<FrameData> LoggedFrameDatas = new ArrayList<FrameData>(simulationLimit);
 		ArrayList<Deque<Action>> tempActionList = new ArrayList<Deque<Action>>(2);
 		Deque<Action> tempP1Act = ((playerNumber ? myAct : oppAct) == null) ? null
 				: new LinkedList<Action>(playerNumber ? myAct : oppAct);
@@ -94,10 +95,16 @@ public class Simulator {
 
 		for (int i = 0; i < simulationLimit; i++) {
 			simFighting.processingFight(nowFrame);
+			if(logging){
+				LoggedFrameDatas.add(simFighting.createFrameData(nowFrame, frameData.getRound()));
+			}
 			nowFrame++;
 		}
+		if(!logging){
+			LoggedFrameDatas.add(simFighting.createFrameData(nowFrame, frameData.getRound()));
+		}
 
-		return simFighting.createFrameData(nowFrame, frameData.getRound());
+		return LoggedFrameDatas;
 	}
 
 }
