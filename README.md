@@ -4,7 +4,7 @@
 
 
 ### About FightingICE ###
-FightingICEはComputational Intelligence and Games (CIG)公認の格闘ゲームAIの性能を競う国際大会 FighTing Game AI Competition (FTGAIC)に使用されている2D格闘ゲームです。  
+FightingICEはComputational Intelligence and Games (CIG)公認の格闘ゲームAIの性能を競う国際大会 Fighting Game AI Competition (FTGAIC)に使用されている2D格闘ゲームです。  
 
 ### Important contents ###
 - src: ソースコードを格納したディレクトリ  
