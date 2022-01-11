@@ -75,4 +75,7 @@ public class FlagSetting {
 	 */
 	public static boolean slowmotion = false;
 
+	// sound-only mod setting
+	public static boolean soundOnly = false;
+
 }

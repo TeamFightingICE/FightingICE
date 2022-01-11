@@ -91,21 +91,29 @@ public class FrameData {
 	 *            an instance of the FrameData class
 	 */
 	public FrameData(FrameData frameData) {
-		this.characterData = new CharacterData[2];
-		this.characterData[0] = frameData.getCharacter(true);
-		this.characterData[1] = frameData.getCharacter(false);
-		this.currentFrameNumber = frameData.getFramesNumber();
-		this.currentRound = frameData.getRound();
-
-		// make deep copy of the attacks list
-		this.projectileData = new LinkedList<AttackData>();
-		Deque<AttackData> temp = frameData.getProjectiles();
-		for (AttackData attack : temp) {
-			this.projectileData.add(new AttackData(attack));
+		// True if start with "--sound-only" seeting
+		if (FlagSetting.soundOnly){
+			this.characterData = new CharacterData[] { null, null };
+			this.currentFrameNumber = -1;
+			this.currentRound = -1;
+			this.projectileData = new LinkedList<AttackData>();
+			this.emptyFlag = true;
+		}else{
+			this.characterData = new CharacterData[2];
+			this.characterData[0] = frameData.getCharacter(true);
+			this.characterData[1] = frameData.getCharacter(false);
+			this.currentFrameNumber = frameData.getFramesNumber();
+			this.currentRound = frameData.getRound();
+	
+			// make deep copy of the attacks list
+			this.projectileData = new LinkedList<AttackData>();
+			Deque<AttackData> temp = frameData.getProjectiles();
+			for (AttackData attack : temp) {
+				this.projectileData.add(new AttackData(attack));
+			}
+	
+			this.emptyFlag = frameData.getEmptyFlag();
 		}
-
-		this.emptyFlag = frameData.getEmptyFlag();
-
 	}
 
 	/**
