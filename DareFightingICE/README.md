@@ -35,6 +35,5 @@ The installation guide will be provided as soon as the new platform is finished.
 ### <b>Submission Date:</b>
 To be decided.
 ### <b>Contact Us:</b>
-https://youtu.be/40ABh5yKJVE
 
 [![Watch the video](https://img.youtube.com/vi/40ABh5yKJVE/0.jpg)](https://www.youtube.com/watch?v=40ABh5yKJVE)
