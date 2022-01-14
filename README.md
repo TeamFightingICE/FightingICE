@@ -1,3 +1,5 @@
+<font color="red">For the information on the competition from 2022, please see [this page](https://github.com/TeamFightingICE/FightingICE/tree/master/DareFightingICE).</font>
+
 # FightingICE #
 
 このリポジトリは、格闘ゲームAIの性能を競う国際大会に使用されている2D格闘ゲームFightingICEの開発用リポジトリです。<br>
