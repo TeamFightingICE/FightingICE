@@ -1,4 +1,4 @@
-# <div align="center" ><b>Fighting Blind</b></div>
+# <div align="center" ><b>DareFightingICE </b></div>
 ## <div align="center"><b>A fighting game sound design competition for visually impaired</b></div>
 <div align="justify">
 Welcome to fighting game sound design competition for the visually impaired people. This competition is our way of including the mostly ignored group of people when it comes to video game. You are invited to develop and design a sound design for the java base fighting game “FightingICE”, which will help visually impaired people play the game. Hence the name Fighting Blind. 
