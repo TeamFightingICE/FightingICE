@@ -1,8 +1,10 @@
 # <div align="center" ><b>DareFightingICE </b></div>
-## <div align="center"><b>A fighting game sound design competition for visually impaired</b></div>
+## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games targeting visually impaired players</b></div>
+<div align="left">
+Welcome to the DareFightingICE Competition. This competition is our way of including the mostly ignored group of people when it comes to video game. You are invited to develop an AI and/or design a sound design for Java-based DareFightingICE, FightingICE with an enhanced sound design. To know more about FightingICE, visit the website of [FightingICE](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index.htm).</div>
+  
+  
 <div align="justify">
-Welcome to fighting game sound design competition for the visually impaired people. This competition is our way of including the mostly ignored group of people when it comes to video game. You are invited to develop and design a sound design for the java base fighting game “FightingICE”, which will help visually impaired people play the game. Hence the name Fighting Blind. 
-
 As to why we the FightingICE team at the Intelligent Computer Entertainment Lab (ICE Lab) of Ritsumeikan University are conducting this competition. The reason for that is there is not fighting game which was developed with visually impaired people in mind and there is no sound design competition that does the same. So, our goal is to give some spotlight to a group of people which are overlooked in the gaming community. This competition in many ways is (as of right now) one of its kind. Our hope is that with the help of this competition we can come up with a great sound design that works for fighting games and some of the aspects can also be used in other genres of games.</div>
 
 ### <b>What To Submit:</b>
