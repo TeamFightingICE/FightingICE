@@ -36,6 +36,7 @@ The installation guide will be provided as soon as the new platform is finished.
 To be decided.
 ### <b>Contact Us:</b>
 https://youtu.be/40ABh5yKJVE
+[![Watch the video](https://img.youtube.com/vi/zuhCG6V5Q5A/0.jpg)](https://www.youtube.com/watch?v=zuhCG6V5Q5A)
 
 [![Introduction to FightingICE](https://user-images.githubusercontent.com/34646669/149604154-711a2d5b-4326-4cb1-958c-91bf12c744f5.jpg )](https://youtu.be/40ABh5yKJVE "Introduction to FightingICE")
 
