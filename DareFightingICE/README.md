@@ -1,7 +1,7 @@
 # <div align="center" ><b>DareFightingICE </b></div>
 ## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games, targeting visually impaired players</b></div>
 
-Welcome to the <b>DareFightingICE Competition</b>. This competition is our way of including the mostly ignored group of players when it comes to video games. You are invited to develop an AI and/or design a sound design for Java-based DareFightingICE, FightingICE with an enhanced sound design. FightingICE itself had been successfully used in a fighting game AI competition launched in 2013 and from 2014 to 2021 as an official competition at IEEE CIG/CoG. From 2022, there are two tracks. The first track is an AI competition, and the second track is a sound-design competition.
+Welcome to the <b>DareFightingICE Competition</b>. This competition is our way of including the mostly ignored group of players when it comes to video games. You are invited to develop an AI and/or design a sound design for Java-based DareFightingICE, FightingICE with an enhanced sound design. FightingICE itself had been successfully used in a fighting game AI competition launched in 2013 and from 2014 to 2021 as an official competition at IEEE CIG/CoG. From 2022, there are two tracks. The first track is an AI competition, and the second track is a sound-design competition. You are invited to submit an AI capable of operating with only sound input information or/and a sound design for visually impaired players. 
 <div align="center">
 
 [![Watch the video](https://img.youtube.com/vi/IojUrlXibvk/0.jpg)](https://www.youtube.com/watch?v=IojUrlXibvk)
