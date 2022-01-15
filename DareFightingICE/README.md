@@ -1,44 +1,22 @@
 # <div align="center" ><b>DareFightingICE </b></div>
-## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games targeting visually impaired players</b></div>
-<div align="left">
-Welcome to the DareFightingICE Competition. This competition is our way of including the mostly ignored group of people when it comes to video game. You are invited to develop an AI and/or design a sound design for Java-based DareFightingICE, FightingICE with an enhanced sound design. To know more about FightingICE, visit the website of [FightingICE](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index.htm).</div>
-  
-  
-<div align="justify">
-As to why we the FightingICE team at the Intelligent Computer Entertainment Lab (ICE Lab) of Ritsumeikan University are conducting this competition. The reason for that is there is not fighting game which was developed with visually impaired people in mind and there is no sound design competition that does the same. So, our goal is to give some spotlight to a group of people which are overlooked in the gaming community. This competition in many ways is (as of right now) one of its kind. Our hope is that with the help of this competition we can come up with a great sound design that works for fighting games and some of the aspects can also be used in other genres of games.</div>
+## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games, targeting visually impaired players</b></div>
 
-### <b>What To Submit:</b>
-<div align="justify">
-You will be provided with a version of FightingICE that already has a sample sound design in it, <b>which is currently in development</b>. You will be allowed to edit a part of source code in the game as well as add your own sounds. Doing this gives you the full ability to design your own sound design. You will submit the sounds, the file/files you are allowed to edit, and a slideshow explaining the changes and the reasoning behind them.
+Welcome to the DareFightingICE Competition. This competition is our way of including the mostly ignored group of players when it comes to video games. You are invited to develop an AI and/or design a sound design for Java-based DareFightingICE, FightingICE with an enhanced sound design. FightingICE itself had been successfully used in a fighting game AI competition conducted in 2013, from 2014 to 2021 as an official competition at IEEE CIG/CoG. There are two tracks. The first track is an AI competition using the sound-input-only version of FightingICE. The second track is a sound-design competition.
+<br>
+[![Watch the video](https://img.youtube.com/vi/zuhCG6V5Q5A/0.jpg)](https://www.youtube.com/watch?v=zuhCG6V5Q5A)
+<br>
 
-For this competition you will only need to come up with the sound effects for a single character(Zen).
-</div>
+To know more about FightingICE, visit the website of <a href="https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index.htm" target="_blank">FightingICE.</a><br>
 
-### <b>Rules:</b>
-- The sounds you submit must be copyright free.
-- Intelligent Computer Entertainment Lab (ICE Lab) of Ritsumeikan University will have the right over the sounds you submit.
-- One team can only submit one sound design.
-- If you add any new sound which is not in the sample sound design. You are asked to give a reason for the addition.
 
-### <b>Sample Sound Design:</b>
-Details about the sample sound design will be released soon.
+### <b>AI Track:</b>
+See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</a> for the details of this track.<br>
 
-### <b>Evaluation:</b>
-Evaluation of your sound designs will be done as following:
-<div align="justify">
-Normal people (people with vision) will test your sound design while wearing a blind fold. The total number of people testing you sound design is not static, but rest assure it will not be a very small number, like 3,4 etc. The blind folded people will play against a weak AI, the reason for the AI being weak is that these people are not visually impaired and are not used to playing a game blind folded. Each person will play against the AI 3 times for a sound design and the score will be calculated by how many people were able to defeat the AI and how much health they have left. If they were not able to defeat the AI, the remaining health of the AI will be counted. A more detailed and concrete description of the evaluation process and the calculation of the score will be available soon.</div>
+### <b>Sound Track:</b>
+See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this page</a> for the details of this track.<br>
 
 ### <b>Prizes:</b>
-The prizes for the winners will be announced soon.
-### <b>How to submit:</b>
-The details will be announced soon.
-### <b>Installation Guide:</b>
-The installation guide will be provided as soon as the new platform is finished.
-### <b>Submission Date:</b>
-To be decided.
-### <b>Contact Us:</b>
-https://youtu.be/40ABh5yKJVE
-[![Watch the video](https://img.youtube.com/vi/zuhCG6V5Q5A/0.jpg)](https://www.youtube.com/watch?v=zuhCG6V5Q5A)
 
-[![Introduction to FightingICE](https://user-images.githubusercontent.com/34646669/149604154-711a2d5b-4326-4cb1-958c-91bf12c744f5.jpg )](https://youtu.be/40ABh5yKJVE "Introduction to FightingICE")
+### <b>Contact Us:</b>
+ftg dot aic at gmail dot com 
 
