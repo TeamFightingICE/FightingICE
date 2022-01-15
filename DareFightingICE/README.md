@@ -12,7 +12,7 @@ To know more about FightingICE, visit the website of <a href="https://www.ice.ci
 <br>
 
 ### <b>AI Track:</b>
-See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page(</a> (under construction; expected to be completed by the middle of February 2022) for the details of this track.<br>
+See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</a> (under construction; expected to be completed by the middle of February 2022) for the details of this track.<br>
 
 ### <b>Sound Track:</b>
 See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this page</a> (under construction; expected to be completed by the middle of February 2022) for the details of this track.<br>
