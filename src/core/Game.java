@@ -134,6 +134,9 @@ public class Game extends GameManager {
                 case "--sound-train":
                     FlagSetting.soundTrain = true;
                     break;
+                case "--blind-player":
+                    LaunchSetting.noVisual[Integer.parseInt(options[++i]) - 1] = true;
+                    break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING,
                             "Arguments error: unknown format is exist. -> " + options[i] + " ?");

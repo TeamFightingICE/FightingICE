@@ -48,15 +48,18 @@ public class FrameData {
     private AudioData audioData;
 
     /**
-     * time (for testing)
+     * imported from @{@link CharacterData 's hp}
      */
-    private long time;
+    private int[] hp;
+
+    /**
+     * imported from {@link CharacterData's front}
+     */
+    private boolean[] front;
+
     /**
      * The class constructor.
      */
-    public long getTime(){
-        return this.time;
-    }
     public FrameData() {
         this.characterData = new CharacterData[]{null, null};
         this.currentFrameNumber = -1;
@@ -64,7 +67,6 @@ public class FrameData {
         this.projectileData = new LinkedList<AttackData>();
         this.emptyFlag = true;
         this.audioData = new AudioData();
-        this.time = System.currentTimeMillis();
     }
 
     /**
@@ -90,12 +92,17 @@ public class FrameData {
             this.projectileData.add(new AttackData(attack));
         }
         // sample raw audio data
-        if (renderAudio)
+        if (renderAudio && (FlagSetting.soundPlay || FlagSetting.soundTrain))
             this.audioData = new AudioData(SoundManager.getInstance().getSoundRenderer().sampleAudio());
         else
             this.audioData = new AudioData();
         this.emptyFlag = false;
-        this.time = System.currentTimeMillis();
+        this.hp = new int[2];
+        this.hp[0] = characterData[0].getHp();
+        this.hp[1] = characterData[1].getHp();
+        this.front = new boolean[2];
+        this.front[0] = characterData[0].isFront();
+        this.front[1] = characterData[1].isFront();
     }
 
     /**
@@ -122,7 +129,36 @@ public class FrameData {
         this.emptyFlag = frameData.getEmptyFlag();
         // copy audio data
         this.audioData = new AudioData(frameData.getAudioData());
-        this.time = System.currentTimeMillis();
+        try {
+            this.hp = new int[2];
+            this.hp[0] = this.characterData[0].getHp();
+            this.hp[1] = this.characterData[1].getHp();
+            this.front = new boolean[2];
+            this.front[0] = this.characterData[0].isFront();
+            this.front[1] = this.characterData[1].isFront();
+        } catch (NullPointerException ex) {
+            // there is no character data
+        }
+    }
+
+    /**
+     * Create FrameData for AI
+     * it removes visual-data in sound mode, otherwise does nothing
+     */
+
+    public void removeVisualData() {
+        if (!FlagSetting.soundTrain && !FlagSetting.soundPlay) {
+            return;
+        } else {
+            this.characterData = new CharacterData[2];
+            this.currentFrameNumber = -1;
+            this.currentRound = -1;
+            this.projectileData = new LinkedList<AttackData>();
+            if (FlagSetting.soundPlay) {
+                this.hp[0] = 0;
+                this.hp[1] = 0;
+            }
+        }
     }
 
     /**
@@ -134,21 +170,13 @@ public class FrameData {
      * @return an instance of the CharacterData class of the player
      */
     public CharacterData getCharacter(boolean playerNumber) {
-        if(FlagSetting.soundPlay)
-            return null;
         CharacterData temp = this.characterData[playerNumber ? 0 : 1];
 
         return temp == null ? null : new CharacterData(temp);
     }
 
-    public int getPlayerHp(boolean playerNumber){
-        if (FlagSetting.soundPlay)
-            return 0;
-        if (FlagSetting.soundTrain) {
-            CharacterData characterData = this.characterData[playerNumber ? 0 : 1];
-            return characterData.getHp();
-        }
-        return 0;
+    public int getHp(boolean playerNumber) {
+        return playerNumber ? this.hp[0] : this.hp[1];
     }
 
     /**
@@ -224,7 +252,7 @@ public class FrameData {
      */
     public Deque<AttackData> getProjectiles() {
         // create a deep copy of the attacks list
-        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
+        if (FlagSetting.soundPlay || FlagSetting.soundTrain)
             return new LinkedList<>();
         LinkedList<AttackData> attackList = new LinkedList<AttackData>();
         for (AttackData attack : this.projectileData) {
@@ -239,7 +267,7 @@ public class FrameData {
      * @return the projectile data of player 1
      */
     public Deque<AttackData> getProjectilesByP1() {
-        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
+        if (FlagSetting.soundPlay || FlagSetting.soundTrain)
             return new LinkedList<>();
         LinkedList<AttackData> attackList = new LinkedList<AttackData>();
         for (AttackData attack : this.projectileData) {
@@ -256,7 +284,7 @@ public class FrameData {
      * @return the projectile data of player 2
      */
     public Deque<AttackData> getProjectilesByP2() {
-        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
+        if (FlagSetting.soundPlay || FlagSetting.soundTrain)
             return new LinkedList<>();
         LinkedList<AttackData> attackList = new LinkedList<AttackData>();
         for (AttackData attack : this.projectileData) {
@@ -284,7 +312,7 @@ public class FrameData {
      * @return the horizontal distance between P1 and P2
      */
     public int getDistanceX() {
-        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
+        if (FlagSetting.soundPlay || FlagSetting.soundTrain)
             return 0;
         return Math.abs((this.characterData[0].getCenterX() - this.characterData[1].getCenterX()));
     }
@@ -295,12 +323,16 @@ public class FrameData {
      * @return the vertical distance between P1 and P2
      */
     public int getDistanceY() {
-        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
+        if (FlagSetting.soundPlay || FlagSetting.soundTrain)
             return 0;
         return Math.abs((this.characterData[0].getCenterY() - this.characterData[1].getCenterY()));
     }
 
     public AudioData getAudioData() {
         return audioData;
+    }
+
+    public boolean isFront(boolean player) {
+        return this.front[player ? 0 : 1];
     }
 }
