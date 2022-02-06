@@ -459,7 +459,7 @@ public class Fighting {
 	 * @see KeyData
 	 * @see FrameData
 	 */
-	public FrameData createFrameData(int nowFrame, int round) {
+	public FrameData createFrameData(int nowFrame, int round, boolean renderAudio) {
 		CharacterData[] characterData = new CharacterData[] { new CharacterData(playerCharacters[0]),
 				new CharacterData(playerCharacters[1]) };
 
@@ -468,7 +468,7 @@ public class Fighting {
 			newAttackDeque.addLast(new AttackData(loopEffect.getAttack()));
 		}
 
-		return new FrameData(characterData, nowFrame, round, newAttackDeque);
+		return new FrameData(characterData, nowFrame, round, newAttackDeque, renderAudio);
 	}
 
 	/**

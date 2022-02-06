@@ -3,6 +3,7 @@ package fighting;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -28,6 +29,14 @@ public class Character {
 	 * {@code true} if the character is P1, or {@code false} if P2.
 	 */
 	private boolean playerNumber;
+	
+	private int sourceid ;
+	private int sourceid2 ;
+	private int sourceid3 ;
+	private int sourceid4 ;
+	private int sourceid5 ;
+	private int sourceid6 ;
+	private int sourceid7 ;
 
 	/**
 	 * The character's HP.
@@ -159,9 +168,16 @@ public class Character {
 	 * otherwise.
 	 */
 	private boolean isSimulateProcess;
+	private volatile boolean isProjectileLive = false ;
+	private volatile boolean ProjectileHit = false ;
+
+	private String TempName = " ";
+	private String TempName2 = " ";
+	private int Sx,Sy,PreEnergy = 0;
+	private Attack ProjectileAttack = null;
 
 	/**
-	 * Class constructor．
+	 * Class constructorï¼Ž
 	 */
 	public Character() {
 		initializeList();
@@ -186,6 +202,8 @@ public class Character {
 		this.lastHitFrame = 0;
 		this.hitCount = 0;
 		this.isSimulateProcess = false;
+
+
 	}
 
 	/**
@@ -221,6 +239,8 @@ public class Character {
 		this.lastHitFrame = character.getLastHitFrame();
 		this.hitCount = character.getHitCount();
 		this.isSimulateProcess = character.isSimulateProcess();
+		
+		
 	}
 
 	/**
@@ -301,6 +321,14 @@ public class Character {
 		this.processedCommands = new LinkedList<Key>();
 		this.motionList = new ArrayList<Motion>();
 		this.graphicAdjustInitialX = new int[2];
+		this.sourceid = SoundManager.getInstance().CreateSource();
+		this.sourceid2 = SoundManager.getInstance().CreateSource();
+		this.sourceid3 = SoundManager.getInstance().CreateSource();
+		this.sourceid4 = SoundManager.getInstance().CreateSource();
+		this.sourceid5 = SoundManager.getInstance().CreateSource();
+		this.sourceid6 = SoundManager.getInstance().CreateSource();
+		this.sourceid7 = SoundManager.getInstance().CreateSource();
+
 	}
 
 	/**
@@ -354,6 +382,8 @@ public class Character {
 	 */
 	public void runAction(Action executeAction, boolean resetFlag) {
 		Motion exeMotion = this.motionList.get(executeAction.ordinal());
+		String Name;
+		
 
 		if (this.action != executeAction) {
 			if (resetFlag) {
@@ -373,6 +403,40 @@ public class Character {
 		}
 		this.speedY += exeMotion.getSpeedY();
 		this.control = exeMotion.isControl();
+		Name =  executeAction.toString();
+		if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
+			if(Arrays.asList("JUMP","FOR_JUMP","BACK_JUMP","THROW_A","THROW_B","THROW_HIT","THROW_SUFFER","STAND_A","STAND_B","CROUCH_A","CROUCH_B","AIR_A","AIR_B","AIR_DA","AIR_DB","STAND_FA","STAND_FB","CROUCH_FA","CROUCH_FB","AIR_FA","AIR_FB","AIR_UA","AIR_UB","STAND_F_D_DFA","STAND_F_D_DFB","STAND_D_DB_BA","STAND_D_DB_BB","AIR_F_D_DFA","AIR_F_D_DFB","AIR_D_DB_BA","AIR_D_DB_BB").contains(Name) ) {
+				Name = Name + ".wav";
+				
+				SoundManager.getInstance().play2(sourceid,SoundManager.getInstance().getSoundEffect().get(Name),this.x,this.y,false);
+						
+			}
+			else if(Arrays.asList("CROUCH").contains(Name)) {
+				Name = Name + ".wav";
+				if(!TempName.equals(Name)) {
+					SoundManager.getInstance().play2(sourceid,SoundManager.getInstance().getSoundEffect().get(Name),this.x,this.y,false);
+					TempName = Name;
+				}
+			}
+			else if (Arrays.asList("FORWARD_WALK","DASH","BACK_STEP").contains(Name)) {
+				Name = Name + ".wav";
+				if(!TempName2.equals(Name)) {
+					SoundManager.getInstance().play2(sourceid3,SoundManager.getInstance().getSoundEffect().get(Name),this.x,this.y,true);
+					TempName2 = Name;
+				}
+			}
+			else if (Arrays.asList("STAND_D_DF_FA","STAND_D_DF_FB","AIR_D_DF_FA","AIR_D_DF_FB","STAND_D_DF_FC").contains(Name)) {
+				
+				if(!this.isProjectileLive) {
+					this.isProjectileLive = true;
+					
+					Sx = this.x;
+					Sy = this.y;
+				}
+				Name = Name + ".wav";
+				SoundManager.getInstance().play2(sourceid4,SoundManager.getInstance().getSoundEffect().get(Name),this.x,this.y,true);
+			}
+		}
 	}
 
 	/**
@@ -381,7 +445,7 @@ public class Character {
 	public void update() {
 		moveX(this.speedX);
 		moveY(this.speedY);
-
+		
 		frictionEffect();
 		gravityEffect();
 
@@ -400,7 +464,8 @@ public class Character {
 				setSpeedY(0);
 
 				if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
-					SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("Landing.wav"));
+					//SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("Landing.wav"),this.x,this.y);
+					SoundManager.getInstance().play2(sourceid2,SoundManager.getInstance().getSoundEffect().get("LANDING.wav"),this.x,this.y,false);
 				}
 			}
 
@@ -424,6 +489,12 @@ public class Character {
 		}
 
 		createAttackInstance();
+		if(this.attack != null) {
+			if(this.attack.isProjectile()) {
+				this.ProjectileAttack = new Attack(this.attack) ;
+				
+			}
+		}
 
 		if (!this.inputCommands.isEmpty()) {
 			this.processedCommands.addLast(new Key(this.inputCommands.pop()));
@@ -433,8 +504,65 @@ public class Character {
 
 		if (this.processedCommands.size() > GameSetting.INPUT_LIMIT)
 			this.processedCommands.removeFirst();
-	}
+	
+		// Sound Design Stuff
+		
+		if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
+			if(this.energy > this.PreEnergy + 50) {
+				this.PreEnergy = this.energy;
+				if(this.playerNumber)SoundManager.getInstance().play2(sourceid5,SoundManager.getInstance().getSoundEffect().get("EnergyCharge.wav"),0,0,false);
+				else SoundManager.getInstance().play2(sourceid5,SoundManager.getInstance().getSoundEffect().get("EnergyCharge.wav"),GameSetting.STAGE_WIDTH,0,false);
+				
+			}
+			if(this.getHitAreaLeft() < 0 || this.getHitAreaRight() > GameSetting.STAGE_WIDTH) {
+				if(!SoundManager.getInstance().isPlaying(sourceid6)) {
+					if(this.getHitAreaLeft() < 0)SoundManager.getInstance().play2(sourceid6,SoundManager.getInstance().getSoundEffect().get("BorderAlert.wav"),0,0,false);
+					else SoundManager.getInstance().play2(sourceid6,SoundManager.getInstance().getSoundEffect().get("BorderAlert.wav"),GameSetting.STAGE_WIDTH,0,false);
+					
+				}
+			}
+		/*	if(this.hp < 50) {
+				if(!SoundManager.getInstance().isPlaying(sourceid7)) {
+					if(this.playerNumber)SoundManager.getInstance().play2(sourceid7,SoundManager.getInstance().getSoundEffect().get("Heartbeat.wav"),0,0,false);
+					else SoundManager.getInstance().play2(sourceid7,SoundManager.getInstance().getSoundEffect().get("Heartbeat.wav"),GameSetting.STAGE_WIDTH,0,false);	
+				}
+			}  */
+			if(!this.state.toString().equals("CROUCH")) {
+				TempName = " ";
+			}
+			if(this.speedX == 0 || this.state.toString().equals("AIR")) {
+				TempName2 = " ";
+				SoundManager.getInstance().stop(sourceid3);
+			}
+			else {
+				SoundManager.getInstance().SourcePos(sourceid3, this.x, this.y);
+			}
+			
+			if(this.ProjectileAttack != null) {
+				
+				if(this.isProjectileLive) {
 
+
+					if(this.ProjectileAttack.updateProjectileAttack() && !this.ProjectileHit) {
+			
+						this.Sx = this.Sx + (this.ProjectileAttack.getSpeedX());
+						this.Sy = this.Sx + (this.ProjectileAttack.getSpeedY());
+						SoundManager.getInstance().SourcePos(sourceid4, this.Sx, this.Sy);			
+					}
+					else {
+						SoundManager.getInstance().stop(sourceid4);
+						this.isProjectileLive = false;
+						this.ProjectileAttack = null;
+						this.ProjectileHit = false;
+
+					}
+				}
+			}
+		}
+	}
+	public void ChangePHit() {
+		this.ProjectileHit = !this.ProjectileHit;
+	}
 	/**
 	 * 攻撃がヒットしたときの処理を行う．
 	 *
@@ -446,6 +574,10 @@ public class Character {
 	 *            現在のラウンドのフレーム数
 	 */
 	public void hitAttack(Character opponent, Attack attack, int currentFrame) {
+		
+		if(attack.isProjectile()) {
+			opponent.ProjectileHit = true;
+		}
 
 		int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
 		opponent.setHitCount(opponent.getHitCount() + 1);
@@ -454,12 +586,13 @@ public class Character {
 		if (isGuard(attack)) {
 			setHp(this.hp - attack.getGuardDamage() - opponent.getExtraDamage());
 			setEnergy(this.energy + attack.getGiveEnergy());
-			setSpeedX(direction * attack.getImpactX() / 2); // 通常の半分のノックバック
+			setSpeedX(direction * attack.getImpactX() / 2); // é€šå¸¸ã�®å�Šåˆ†ã�®ãƒŽãƒƒã‚¯ãƒ�ãƒƒã‚¯
 			setRemainingFrame(attack.getGiveGuardRecov());
 			opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
 			if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
-				SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakGuard.wav"));
+				//SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakGuard.wav"),this.x,this.y);
+				SoundManager.getInstance().play2(sourceid2,SoundManager.getInstance().getSoundEffect().get("WeakGuard.wav"),this.x,this.y,false);
 			}
 		} else {
 			// 投げ技のときの処理
@@ -490,8 +623,9 @@ public class Character {
 					setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
 
 					if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
-						SoundManager.getInstance()
-								.play(SoundManager.getInstance().getSoundEffect().get("StrongHit.wav"));
+						//SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("HitB.wav"),this.x,this.y);
+						SoundManager.getInstance().play2(sourceid2,SoundManager.getInstance().getSoundEffect().get("HitB.wav"),this.x,this.y,false);
+						
 					}
 
 				} else {
@@ -513,7 +647,8 @@ public class Character {
 					}
 
 					if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
-						SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("WeakHit.wav"));
+						//SoundManager.getInstance().play(SoundManager.getInstance().getSoundEffect().get("HitA.wav"),this.x,this.y);
+						SoundManager.getInstance().play2(sourceid2,SoundManager.getInstance().getSoundEffect().get("HitA.wav"),this.x,this.y,false);
 					}
 				}
 			}
@@ -902,7 +1037,7 @@ public class Character {
 	public int getGraphicAdjustX() {
 		return this.graphicAdjustX;
 	}
-	
+
 	/**
 	 * キャラクターの初期位置を決定する時にx座標を調整するために用いる水平方向の移動量を返す.
 	 *

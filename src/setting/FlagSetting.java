@@ -5,74 +5,78 @@ package setting;
  */
 public class FlagSetting {
 
-	/**
-	 * 繰り返し対戦を行うかどうかのフラグ．
-	 */
-	public static boolean automationFlag = false;
+    /**
+     * 繰り返し対戦を行うかどうかのフラグ．
+     */
+    public static boolean automationFlag = false;
 
-	/**
-	 * AIの全組み合わせの対戦を行うかどうかのフラグ．
-	 */
-	public static boolean allCombinationFlag = false;
+    /**
+     * AIの全組み合わせの対戦を行うかどうかのフラグ．
+     */
+    public static boolean allCombinationFlag = false;
 
-	/**
-	 * 背景画像を使用するかどうかのフラグ．
-	 */
-	public static boolean enableBackground = true;
+    /**
+     * 背景画像を使用するかどうかのフラグ．
+     */
+    public static boolean enableBackground = true;
 
-	/**
-	 * Pythonを使用するかどうかのフラグ．
-	 */
-	public static boolean py4j = false;
+    /**
+     * Pythonを使用するかどうかのフラグ．
+     */
+    public static boolean py4j = false;
 
-	/**
-	 * アクションを行った回数をログに出力するかどうかのフラグ．
-	 */
-	public static boolean debugActionFlag = false;
+    /**
+     * アクションを行った回数をログに出力するかどうかのフラグ．
+     */
+    public static boolean debugActionFlag = false;
 
-	/**
-	 * 未使用．
-	 */
-	public static boolean debugFrameDataFlag = false;
+    /**
+     * 未使用．
+     */
+    public static boolean debugFrameDataFlag = false;
 
-	/**
-	 * トレーニングモードを使用するかどうかのフラグ．
-	 */
-	public static boolean trainingModeFlag = false;
+    /**
+     * トレーニングモードを使用するかどうかのフラグ．
+     */
+    public static boolean trainingModeFlag = false;
 
-	/**
-	 * P1,P2に最大HPを設定するかどうかのフラグ．
-	 */
-	public static boolean limitHpFlag = false;
+    /**
+     * P1,P2に最大HPを設定するかどうかのフラグ．
+     */
+    public static boolean limitHpFlag = false;
 
-	/**
-	 * 音をミュートにするかどうかのフラグ．
-	 */
-	public static boolean muteFlag = false;
+    /**
+     * 音をミュートにするかどうかのフラグ．
+     */
+    public static boolean muteFlag = false;
 
-	/**
-	 * jsonファイルに試合データを出力するかどうかのフラグ．
-	 */
-	public static boolean jsonFlag = false;
+    /**
+     * jsonファイルに試合データを出力するかどうかのフラグ．
+     */
+    public static boolean jsonFlag = false;
 
-	/**
-	 * エラーログを出力するかどうかのフラグ．
-	 */
-	public static boolean outputErrorAndLogFlag = false;
+    /**
+     * エラーログを出力するかどうかのフラグ．
+     */
+    public static boolean outputErrorAndLogFlag = false;
 
-	/**
-	 * FastModeで起動するかどうかのフラグ．
-	 */
-	public static boolean fastModeFlag = false;
+    /**
+     * FastModeで起動するかどうかのフラグ．
+     */
+    public static boolean fastModeFlag = false;
 
-	/**
-	 * ゲームウィンドウを生成するかどうかのフラグ．
-	 */
-	public static boolean enableWindow = true;
+    /**
+     * ゲームウィンドウを生成するかどうかのフラグ．
+     */
+    public static boolean enableWindow = true;
 
-	/**
-	 * ラウンド終了時にスローモーションを発生させるかどうかのフラグ
-	 */
-	public static boolean slowmotion = false;
+    /**
+     * ラウンド終了時にスローモーションを発生させるかどうかのフラグ
+     */
+    public static boolean slowmotion = false;
 
+    /**
+     * Use sound to train AI
+     */
+    public static boolean soundOnly = true;
 }

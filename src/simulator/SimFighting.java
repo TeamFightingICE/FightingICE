@@ -251,7 +251,7 @@ public class SimFighting extends Fighting {
 	}
 
 	@Override
-	public FrameData createFrameData(int nowFrame, int round) {
+	public FrameData createFrameData(int nowFrame, int round, boolean renderAudio) {
 		CharacterData[] characterData = new CharacterData[2];
 		for (int i = 0; i < 2; i++) {
 			characterData[i] = new CharacterData(this.playerCharacters[i]);
@@ -263,7 +263,7 @@ public class SimFighting extends Fighting {
 			newAttackDeque.addLast(new AttackData(loopEffect.getAttack()));
 		}
 
-		return new FrameData(characterData, nowFrame, round, newAttackDeque);
+		return new FrameData(characterData, nowFrame, round, newAttackDeque, renderAudio);
 	}
 
 }

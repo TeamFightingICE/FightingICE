@@ -291,7 +291,9 @@ public class InputManager<Data> {
 			try {
 				ThreadController.getInstance().resetAllAIsObj();
 				if (FlagSetting.fastModeFlag) {
+//					SoundManager.getInstance().pauseSound();
 					this.endFrame.wait();
+//					SoundManager.getInstance().resumeSound();
 				} else {
 
 				}

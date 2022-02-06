@@ -92,6 +92,7 @@ public class Play extends GameScene {
 
 	private int endFrame;
 
+	private int sourceid;
 	/**
 	 * クラスコンストラクタ．
 	 */
@@ -117,7 +118,8 @@ public class Play extends GameScene {
 		this.currentRound = 1;
 		this.roundStartFlag = true;
 		this.endFrame = -1;
-
+		this.sourceid = SoundManager.getInstance().CreateSource();
+		
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
 		this.keyData = new KeyData();
@@ -150,7 +152,7 @@ public class Play extends GameScene {
 			this.setNextGameScene(lunch);
 		}
 		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
-			SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
+			SoundManager.getInstance().play2(sourceid,SoundManager.getInstance().getBackGroundMusic(),350,0,true);
 		}
 
 	}
@@ -261,7 +263,7 @@ public class Play extends GameScene {
 			this.fighting.processingFight(this.nowFrame, this.keyData);
 		}
 
-		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, true);
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {

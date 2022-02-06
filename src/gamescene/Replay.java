@@ -44,6 +44,8 @@ public class Replay extends GameScene {
 	 * 現在のフレーム．
 	 */
 	private int nowFrame;
+	
+	private int sourceid;
 
 	/**
 	 * 各ラウンド前に行う初期化処理内における経過フレーム数．
@@ -122,6 +124,7 @@ public class Replay extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
+		this.sourceid = SoundManager.getInstance().CreateSource();
 
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
@@ -130,7 +133,7 @@ public class Replay extends GameScene {
 		this.playSpeedArray = new int[] { 0, 1, 2, 4 };
 		this.isFinished = false;
 
-		SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
+		SoundManager.getInstance().play2(sourceid,SoundManager.getInstance().getBackGroundMusic(),350,0,true);
 	}
 
 	@Override
@@ -220,7 +223,7 @@ public class Replay extends GameScene {
 		this.keyData = createKeyData();
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
-		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, true);
 	}
 
 	/**
