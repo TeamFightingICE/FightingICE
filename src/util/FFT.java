@@ -11,8 +11,6 @@ package util;
  * <b>input:</b> speech signal<br>
  * <b>output:</b> real and imaginary part of DFT output
  *
- * @author Danny Su
- * @author Hanns Holger Rutz
  */
 public class FFT {
     float[] real;

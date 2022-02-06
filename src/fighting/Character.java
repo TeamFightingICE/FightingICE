@@ -445,7 +445,6 @@ public class Character {
 	public void update() {
 		moveX(this.speedX);
 		moveY(this.speedY);
-		
 		frictionEffect();
 		gravityEffect();
 
@@ -506,7 +505,6 @@ public class Character {
 			this.processedCommands.removeFirst();
 	
 		// Sound Design Stuff
-		
 		if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
 			if(this.energy > this.PreEnergy + 50) {
 				this.PreEnergy = this.energy;
@@ -554,7 +552,6 @@ public class Character {
 						this.isProjectileLive = false;
 						this.ProjectileAttack = null;
 						this.ProjectileHit = false;
-
 					}
 				}
 			}
@@ -586,7 +583,7 @@ public class Character {
 		if (isGuard(attack)) {
 			setHp(this.hp - attack.getGuardDamage() - opponent.getExtraDamage());
 			setEnergy(this.energy + attack.getGiveEnergy());
-			setSpeedX(direction * attack.getImpactX() / 2); // é€šå¸¸ã�®å�Šåˆ†ã�®ãƒŽãƒƒã‚¯ãƒ�ãƒƒã‚¯
+			setSpeedX(direction * attack.getImpactX() / 2); // 通常の半分のノックバック
 			setRemainingFrame(attack.getGiveGuardRecov());
 			opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
