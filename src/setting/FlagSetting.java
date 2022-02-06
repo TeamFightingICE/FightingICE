@@ -76,7 +76,12 @@ public class FlagSetting {
     public static boolean slowmotion = false;
 
     /**
-     * Use sound to train AI
+     * Use only sound as AI's input
      */
-    public static boolean soundOnly = true;
+    public static boolean soundPlay = false;
+
+    /**
+     * Same as {@link setting.FlagSetting#soundPlay} but player's hp information is provided for training
+     */
+    public static boolean soundTrain = false;
 }

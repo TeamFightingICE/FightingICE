@@ -144,7 +144,7 @@ public class SoundManager {
     private void initialize() {
         // OpenAL㝮デフォルトデポイス㝫接続㝙る
         ALCCapabilities deviceCaps = null;
-        if (!FlagSetting.soundOnly) {
+        if (!FlagSetting.soundPlay) {
             String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
             this.device = alcOpenDevice(defaultDeviceName);
 

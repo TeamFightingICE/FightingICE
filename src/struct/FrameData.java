@@ -134,11 +134,21 @@ public class FrameData {
      * @return an instance of the CharacterData class of the player
      */
     public CharacterData getCharacter(boolean playerNumber) {
-        if(FlagSetting.soundOnly)
+        if(FlagSetting.soundPlay)
             return null;
         CharacterData temp = this.characterData[playerNumber ? 0 : 1];
 
         return temp == null ? null : new CharacterData(temp);
+    }
+
+    public int getPlayerHp(boolean playerNumber){
+        if (FlagSetting.soundPlay)
+            return 0;
+        if (FlagSetting.soundTrain) {
+            CharacterData characterData = this.characterData[playerNumber ? 0 : 1];
+            return characterData.getHp();
+        }
+        return 0;
     }
 
     /**
@@ -214,7 +224,7 @@ public class FrameData {
      */
     public Deque<AttackData> getProjectiles() {
         // create a deep copy of the attacks list
-        if(FlagSetting.soundOnly)
+        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
             return new LinkedList<>();
         LinkedList<AttackData> attackList = new LinkedList<AttackData>();
         for (AttackData attack : this.projectileData) {
@@ -229,7 +239,7 @@ public class FrameData {
      * @return the projectile data of player 1
      */
     public Deque<AttackData> getProjectilesByP1() {
-        if(FlagSetting.soundOnly)
+        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
             return new LinkedList<>();
         LinkedList<AttackData> attackList = new LinkedList<AttackData>();
         for (AttackData attack : this.projectileData) {
@@ -246,7 +256,7 @@ public class FrameData {
      * @return the projectile data of player 2
      */
     public Deque<AttackData> getProjectilesByP2() {
-        if(FlagSetting.soundOnly)
+        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
             return new LinkedList<>();
         LinkedList<AttackData> attackList = new LinkedList<AttackData>();
         for (AttackData attack : this.projectileData) {
@@ -274,7 +284,7 @@ public class FrameData {
      * @return the horizontal distance between P1 and P2
      */
     public int getDistanceX() {
-        if(FlagSetting.soundOnly)
+        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
             return 0;
         return Math.abs((this.characterData[0].getCenterX() - this.characterData[1].getCenterX()));
     }
@@ -285,7 +295,7 @@ public class FrameData {
      * @return the vertical distance between P1 and P2
      */
     public int getDistanceY() {
-        if(FlagSetting.soundOnly)
+        if(FlagSetting.soundPlay || FlagSetting.soundTrain)
             return 0;
         return Math.abs((this.characterData[0].getCenterY() - this.characterData[1].getCenterY()));
     }

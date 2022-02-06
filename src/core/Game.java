@@ -128,8 +128,12 @@ public class Game extends GameManager {
                 case "--err-log":
                     FlagSetting.outputErrorAndLogFlag = true;
                     break;
+                case "--sound-play":
+                    FlagSetting.soundPlay = true;
+                    break;
                 case "--sound-train":
-                    FlagSetting.soundOnly = true;
+                    FlagSetting.soundTrain = true;
+                    break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING,
                             "Arguments error: unknown format is exist. -> " + options[i] + " ?");
