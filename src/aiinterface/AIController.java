@@ -126,7 +126,10 @@ public class AIController extends Thread {
             }
             this.ai.getInformation(aiFrameData, isControl);
 
-            this.ai.getScreenData(this.screenData);
+            // screen raw data isn't provided to sound-only AI
+            if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
+                this.ai.getScreenData(this.screenData);
+            }
             this.ai.processing();
             setInput(this.ai.input());
             ThreadController.getInstance().notifyEndProcess(this.playerNumber);
