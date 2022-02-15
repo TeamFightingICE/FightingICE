@@ -15,10 +15,11 @@ You are provided with a version of DareFightingICE that already has a sample sou
 Source code files you are allowed to edit are:
 -	DareFightingICE\src\fighting\Character.java
 -	DareFightingICE\src\manager\SoundManager.java <br>
+
 Directory for sound effects:
 -	DareFightingICE\data\sounds <br>
 ~~~
-For this competition, you will only need to come up with the sound effects for a single character (Zen).
+For this competition, you will only need to come up with the sound design for a single character (Zen).
 All the sound effects must be in .wav format. The sound effects should be mono or stereo unless you have changed the source code. 
 ~~~
 
@@ -35,17 +36,17 @@ These three special sounds are in place to help visually impaired players be awa
 
 ### Rules
 ---
-- The sounds you submit must be copyright-free (legally made by yourself or use copyright-free sounds). Here copyright-free means CC0 licence.
+- The sounds you submit must be copyright-free (legally made by yourself or use copyright-free sounds). Here copyright-free means [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/) licence.
 - For all the sound effects you have changed, please make a list explaning if you came up with the sound yourself or you used an already exsisting free sound (CC0). In case of already exsisting free sound, please provide the reference. 
 - One team can only submit one sound design.
-- If you add any new sound (Special sound effect) which is not in the sample sound design. You are asked to give a reason for the addition.
-- If any sound effect is found not to be copyright free you will be contacted to change and resubmit before the deadline. If you are not able to resubmit before the deadline, your submission would be discarded. Your submission will also be discarded if your sounds are found not to be copyright free at any stage of the competition, even if the results are out and the participant below you will take your place. 
+- If you add any new sound (special sound effect) which is not in the sample sound design. You are asked to give a reason for the addition.
+- If any sound effect is found not to be copyright free you will be contacted to change and resubmit before the deadline. If you are not able to resubmit before the deadline, your submission will be discarded. Your submission will also be discarded if your sounds are found not to be copyright free at any stage of the competition, even if the results are out and the participant below you will take your place. 
 - Your sound design will be made publicly available and by submitting you will have agreed to this.
 
 ### Evaluation:
 ---
 Evaluation of your sound designs will be done as follows: <br>
-Normal players (players with vision) will test your sound design while wearing a blindfold. The total number of players testing your sound design is not static, but rest assured it will not be a very small number, like 3,4, etc. The blindfolded players will play against a weak AI (a weak form of [MCTS AI](https://github.com/TeamFightingICE/HighlightMCTS)), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded. Each person will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design and the score will be calculated by how many people were able to defeat the AI and how much health they have left. If they were not able to defeat the AI, the remaining health of the AI will be counted. After the play, they will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design. Apart from the blindfolded people. Our [Sample Blind AI](https://github.com/TeamFightingICE/FightingICE/tree/master/DareFightingICE/AI) will play the game against the same weak MCTS AI, also 3 game for each sound design. The AI learning rate, win-lose ratio, and hp difference will be used in the total score. In the end, the sound design with the highest overall score will win. <br>
+Normal players (players with vision) will test your sound design while wearing a blindfold. The total number of players testing your sound design is not static, but rest assured it will not be a very small number, like 3,4, etc. The blindfolded players will play against a weak AI (a weak form of [MCTS AI](https://github.com/TeamFightingICE/HighlightMCTS)), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded. Each player will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design, and the score will be calculated by health point (HP) difference between the player and the AI, in relative to the HP difference when playing without being blindfolded. After the play, they will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design. Apart from the blindfolded players. Our [Sample Blind AI](https://github.com/TeamFightingICE/FightingICE/tree/master/DareFightingICE/AI) will play the game against the same weak MCTS AI, also 3 games for each sound design. The Sample Blind AI's learning curve, win-lose ratio, and HP difference will be used in the total score. In the end, the sound design with the highest overall score will win. <br>
 
 
 
