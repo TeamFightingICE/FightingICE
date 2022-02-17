@@ -73,9 +73,6 @@ public class SoundRender {
         alSourcei(sourceId, AL_LOOPING, loop ? 1 : 0);
         AL10.alSourcePlay(sourceId);
         int error = alGetError();
-        if (error != 0){
-            System.out.print(this.device + " " + isPlaying(sourceId) + " " + error + ' ' + loop);
-        }
     }
 
     public void setListenerData() {

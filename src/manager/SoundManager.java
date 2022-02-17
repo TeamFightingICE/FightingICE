@@ -306,7 +306,6 @@ public class SoundManager {
             int sourceId = source.getSourceIds()[i];
             int bufferId = buffer.getBuffers()[i];
             soundRenderers.get(i).play(sourceId, bufferId, x, y, loop);
-            System.out.println();
         }
     }
 
