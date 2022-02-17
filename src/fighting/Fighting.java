@@ -79,6 +79,8 @@ public class Fighting {
 		this.playerCharacters[1].setProcessedCommand(new LinkedList<Key>());
 		this.playerCharacters[0].setInputCommand(new LinkedList<Key>());
 		this.playerCharacters[1].setInputCommand(new LinkedList<Key>());
+		this.playerCharacters[0].resetEnergyCount();
+		this.playerCharacters[1].resetEnergyCount();
 	}
 	
 	/**
@@ -459,7 +461,7 @@ public class Fighting {
 	 * @see KeyData
 	 * @see FrameData
 	 */
-	public FrameData createFrameData(int nowFrame, int round, boolean renderAudio) {
+	public FrameData createFrameData(int nowFrame, int round) {
 		CharacterData[] characterData = new CharacterData[] { new CharacterData(playerCharacters[0]),
 				new CharacterData(playerCharacters[1]) };
 
@@ -468,7 +470,7 @@ public class Fighting {
 			newAttackDeque.addLast(new AttackData(loopEffect.getAttack()));
 		}
 
-		return new FrameData(characterData, nowFrame, round, newAttackDeque, renderAudio);
+		return new FrameData(characterData, nowFrame, round, newAttackDeque);
 	}
 
 	/**

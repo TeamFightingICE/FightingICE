@@ -74,14 +74,4 @@ public class FlagSetting {
      * ラウンド終了時にスローモーションを発生させるかどうかのフラグ
      */
     public static boolean slowmotion = false;
-
-    /**
-     * Use only sound as AI's input
-     */
-    public static boolean soundPlay = false;
-
-    /**
-     * Same as {@link setting.FlagSetting#soundPlay} but player's hp information is provided for training
-     */
-    public static boolean soundTrain = false;
 }

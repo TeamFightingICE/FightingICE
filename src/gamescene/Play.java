@@ -23,9 +23,7 @@ import manager.SoundManager;
 import py4j.Py4JException;
 import setting.FlagSetting;
 import setting.GameSetting;
-import struct.FrameData;
-import struct.GameData;
-import struct.ScreenData;
+import struct.*;
 import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
@@ -92,7 +90,9 @@ public class Play extends GameScene {
 
 	private int endFrame;
 
-	private int sourceid;
+	private AudioSource sourceBackground;
+
+	private AudioData audioData;
 	/**
 	 * クラスコンストラクタ．
 	 */
@@ -118,10 +118,11 @@ public class Play extends GameScene {
 		this.currentRound = 1;
 		this.roundStartFlag = true;
 		this.endFrame = -1;
-		this.sourceid = SoundManager.getInstance().CreateSource();
-		
+		this.sourceBackground = SoundManager.getInstance().createAudioSource();
+
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
+		this.audioData = new AudioData();
 		this.keyData = new KeyData();
 		this.roundResults = new ArrayList<RoundResult>();
 
@@ -152,7 +153,7 @@ public class Play extends GameScene {
 			this.setNextGameScene(lunch);
 		}
 		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
-			SoundManager.getInstance().play2(sourceid,SoundManager.getInstance().getBackGroundMusic(),350,0,true);
+			SoundManager.getInstance().play2(sourceBackground,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
 		}
 
 	}
@@ -183,7 +184,7 @@ public class Play extends GameScene {
 			Logger.getAnonymousLogger().log(Level.INFO, "Game over");
 			if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
 				// BGMを止める
-				SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+				SoundManager.getInstance().stop(sourceBackground);
 			}
 
 			Result result = new Result(this.roundResults, this.timeInfo);
@@ -203,7 +204,7 @@ public class Play extends GameScene {
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
 			if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
 				// BGMを止める
-				SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+				SoundManager.getInstance().stop(sourceBackground);
 			}
 
 			HomeMenu homeMenu = new HomeMenu();
@@ -224,6 +225,9 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 
 		InputManager.getInstance().clear();
+		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+			SoundManager.getInstance().play2(sourceBackground,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
+		}
 	}
 
 	/**
@@ -231,7 +235,7 @@ public class Play extends GameScene {
 	 */
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
-		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData());
+		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), this.audioData);
 
 		if (FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
@@ -263,7 +267,7 @@ public class Play extends GameScene {
 			this.fighting.processingFight(this.nowFrame, this.keyData);
 		}
 
-		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound, true);
+		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {
@@ -286,9 +290,14 @@ public class Play extends GameScene {
 		}
 
 		this.screenData = new ScreenData();
-
+		if (this.nowFrame == 0) {
+			this.audioData = new AudioData();
+		}
+		else {
+            this.audioData = new AudioData(SoundManager.getInstance().getVirtualRenderer().sampleAudio());
+        }
 		// AIにFrameDataをセット
-		InputManager.getInstance().setFrameData(this.frameData, this.screenData);
+		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
 
 		// 体力が0orタイムオーバーならラウンド終了処理
 		if (isBeaten() || isTimeOver()) {
@@ -300,6 +309,12 @@ public class Play extends GameScene {
 	 * ラウンド終了時の処理を行う.
 	 */
 	private void processingRoundEnd() {
+		if (FlagSetting.enableWindow && !FlagSetting.muteFlag){
+			ArrayList<AudioSource> audioSources = SoundManager.getInstance().getAudioSources();
+			for(AudioSource audioSource: audioSources)
+				SoundManager.getInstance().stop(audioSource);
+		}
+
 		if (FlagSetting.slowmotion) {
 			if (this.endFrame > GameSetting.ROUND_EXTRAFRAME_NUMBER) {
 				this.fighting.processingRoundEnd();

@@ -128,14 +128,14 @@ public class Game extends GameManager {
                 case "--err-log":
                     FlagSetting.outputErrorAndLogFlag = true;
                     break;
-                case "--sound-play":
-                    FlagSetting.soundPlay = true;
-                    break;
-                case "--sound-train":
-                    FlagSetting.soundTrain = true;
-                    break;
                 case "--blind-player":
-                    LaunchSetting.noVisual[Integer.parseInt(options[++i]) - 1] = true;
+                    int blindPlayer = Integer.parseInt(options[++i]);
+                    if(blindPlayer == 0){
+                        LaunchSetting.noVisual[0] = true;
+                        LaunchSetting.noVisual[1] = true;
+                    }else{
+                        LaunchSetting.noVisual[blindPlayer - 1] = true;
+                    }
                     break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING,

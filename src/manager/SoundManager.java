@@ -11,15 +11,17 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.*;
 import org.lwjgl.util.WaveData;
+import render.audio.SoundRender;
 import setting.FlagSetting;
-import setting.GameSetting;
+import struct.AudioBuffer;
+import struct.AudioSource;
 
 /**
  * サウンドを管睆㝙るマポージャークラス．
@@ -65,11 +67,13 @@ public class SoundManager {
      * 音声ポッファを格紝㝙るリスト．
      */
     private ArrayList<Integer> buffers;
+    private ArrayList<AudioBuffer> audioBuffers;
 
     /**
      * 音溝を格紝㝙るリスト．
      */
     private ArrayList<Integer> sources;
+    private ArrayList<AudioSource> audioSources;
 
     /**
      * OpenAL㝫使ゝれる音声デポイス．
@@ -92,9 +96,13 @@ public class SoundManager {
     private Integer backGroundMusic;
 
     /**
-     * Sound rendering class
+     * Sound redendering classes;
      */
-    SoundRenderer soundRenderer;
+    List<SoundRender> soundRenderers;
+    SoundRender virtualRenderer;
+
+    private Map<String, AudioBuffer> soundBuffer;
+    private AudioBuffer backGroundMusicBuffer;
 
     /**
      * クラスコンストラクタ．
@@ -105,6 +113,8 @@ public class SoundManager {
         this.loadedFiles = new ArrayList<String>();
         this.buffers = new ArrayList<Integer>();
         this.sources = new ArrayList<Integer>();
+        this.audioBuffers = new ArrayList<>();
+        this.audioSources = new ArrayList<>();
 
         // 音溝㝨リスナー㝮デフォルトパラメータをセット
         this.sourcePos = new float[]{0.0F, 0.0F, 0.0F};
@@ -118,6 +128,7 @@ public class SoundManager {
         this.closeFlag = false;
 
         this.soundEffect = new HashMap<String, Integer>();
+        this.soundBuffer = new HashMap<>();
 
         this.initialize();
     }
@@ -143,31 +154,25 @@ public class SoundManager {
      */
     private void initialize() {
         // OpenAL㝮デフォルトデポイス㝫接続㝙る
-        ALCCapabilities deviceCaps = null;
-        if (!FlagSetting.soundPlay && ! FlagSetting.soundTrain) {
-            String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
-            this.device = alcOpenDevice(defaultDeviceName);
-
-            // 必覝㝪制御情報を作戝
-            this.context = alcCreateContext(this.device, (IntBuffer) null);
-            alcMakeContextCurrent(this.context);
-            deviceCaps = ALC.createCapabilities(this.device);
-            AL.createCapabilities(deviceCaps);
-        } else {
-            this.soundRenderer = new SoundRenderer(this);
-
+        // sound renderers
+        this.soundRenderers = new ArrayList<>();
+        if (!FlagSetting.fastModeFlag && !FlagSetting.muteFlag) {
+            this.soundRenderers.add(SoundRender.createDefaultRenderer());
         }
-
+        virtualRenderer = SoundRender.createVirtualRenderer();
+        this.soundRenderers.add(virtualRenderer);
         this.setListenerValues();
     }
 
     /**
      * リスナー㝮パラメータ(Position, Velocity, Orientation)を設定㝙る．
      */
-    private void setListenerValues() {
-        alListenerfv(AL_POSITION, this.listenerPos);
-        alListenerfv(AL_VELOCITY, this.listenerVel);
-        alListenerfv(AL_ORIENTATION, this.listenerOri);
+    private void setListenerValues(){
+        for (SoundRender render: soundRenderers){
+            render.alListenerfv(AL_POSITION, this.listenerPos);
+            render.alListenerfv(AL_VELOCITY, this.listenerVel);
+            render.alListenerfv(AL_ORIENTATION, this.listenerOri);
+        }
     }
 
     /**
@@ -178,38 +183,25 @@ public class SoundManager {
      * @param loop     ループ㝕㝛る㝋㝩㝆㝋(㝕㝛る場坈㝯true)
      * @return 設定済㝿㝮音溝
      */
-    public int loadSoundResource(String filePath, boolean loop) {
-        // 音声ポッファ㝮坖得
-        int buffer = this.getLoadedALBuffer(filePath);
-
-        // 音溝ポッファを生戝
-        //IntBuffer source = BufferUtils.createIntBuffer(1);
-
-        // 音溝㝮生戝
-        //alGenSources(source);
-
-        // 音溝㝮パラメータ設定
-        //alSourcei(source.get(0), AL_BUFFER, buffer);
-        //alSourcef(source.get(0), AL_PITCH, 1.0F);
-        //alSourcef(source.get(0), AL_GAIN, 1.0F);
-        //alSource3f(source.get(0), AL_POSITION, this.sourcePos[0], this.sourcePos[1], this.sourcePos[2]);
-        //alSource3f(source.get(0), AL_VELOCITY, this.sourceVel[0], this.sourceVel[1], this.sourceVel[2]);
-        //alSourcef(source.get(0), AL_ROLLOFF_FACTOR, 0.1F);
-        // ループ設定
-        //alSourcei(source.get(0), AL_LOOPING, loop ? 1 : 0);
-
-        // 音溝リスト㝫追加
-        //this.sources.add(new Integer(source.get(0)));
-
-        //return source.get(0);
-        return buffer;
+    public AudioBuffer createAudioBuffer(String filePath, boolean loop){
+        AudioBuffer audioBuffer = null;
+        int[] bufferIds = new int[soundRenderers.size()];
+        for (int i = 0; i < soundRenderers.size(); i++){
+            soundRenderers.get(i).set();
+            bufferIds[i] = this.registerSound(filePath);
+        }
+        audioBuffer = new AudioBuffer(bufferIds);
+        this.audioBuffers.add(audioBuffer);
+        return audioBuffer;
     }
 
-    public int CreateSource() {
-        IntBuffer source1 = BufferUtils.createIntBuffer(1);
+
+
+    public int createSource() {
+//        IntBuffer source1 = BufferUtils.createIntBuffer(1);
 
         // 音溝㝮生戝
-        alGenSources(source1);
+        IntBuffer source1 = IntBuffer.wrap(new int[] {alGenSources()});
 
         alSourcef(source1.get(0), AL_ROLLOFF_FACTOR, 0.01F);
         this.sources.add(new Integer(source1.get(0)));
@@ -217,8 +209,26 @@ public class SoundManager {
         return source1.get(0);
     }
 
-    public void SourcePos(int source, int x, int y) {
-        alSource3f(source, AL_POSITION, x, 0, 4);
+    public AudioSource createAudioSource(){
+        AudioSource audioSource = null;
+        int[] sourceIds = new int[soundRenderers.size()];
+        for (int i = 0; i < soundRenderers.size(); i++){
+            soundRenderers.get(i).set();
+            sourceIds[i] = createSource();
+        }
+        audioSource = new AudioSource(sourceIds);
+        this.audioSources.add(audioSource);
+        return audioSource;
+    }
+
+//    public void SourcePos(int source, int x, int y) {
+//        alSource3f(source, AL_POSITION, x, 0, 4);
+//    }
+
+    public void SourcePos(AudioSource source, int x, int y){
+        for(int i = 0; i < soundRenderers.size(); i++){
+            soundRenderers.get(i).setSource3f(source.getSourceIds()[i], AL_POSITION, x, 0, 4);
+        }
     }
 
     /**
@@ -291,25 +301,20 @@ public class SoundManager {
         alSourcePlay(source);
     }
 
-    public void play2(int source, int buffer, int x, int y, boolean loop) {
-        //alSourcef(source, AL_PITCH, 1.0F);
-        //alSourcef(source, AL_GAIN, 1.0F);
-        alSourcei(source, AL_BUFFER, buffer);
-        alSource3f(source, AL_POSITION, x, 0, 4);
-        alSourcei(source, AL_LOOPING, loop ? 1 : 0);
-        //alSource3f(source, AL_VELOCITY, this.sourceVel[0], this.sourceVel[1], this.sourceVel[2]);
-        alSourcePlay(source);
+    public void play2(AudioSource source, AudioBuffer buffer, int x, int y, boolean loop){
+        for (int i = 0; i < soundRenderers.size(); i++){
+            int sourceId = source.getSourceIds()[i];
+            int bufferId = buffer.getBuffers()[i];
+            soundRenderers.get(i).play(sourceId, bufferId, x, y, loop);
+            System.out.println();
+        }
     }
 
-    public boolean isPlaying(int source) {
-        boolean ans;
-
-        if (alGetSourcei(source, AL_SOURCE_STATE) == AL_PLAYING) {
-            ans = true;
-        } else {
-            ans = false;
+    public boolean isPlaying(AudioSource source) {
+        boolean ans = false;
+        for(int i = 0; i < soundRenderers.size(); i++){
+            ans = ans || soundRenderers.get(i).isPlaying(source.getSourceIds()[i]);
         }
-
         return ans;
     }
 
@@ -318,128 +323,81 @@ public class SoundManager {
      *
      * @param source 音溝
      */
-    public void stop(int source) {
-        alSourceStop(source);
+//    public void stop(int source) {
+//        alSourceStop(source);
+//    }
+    /**
+     * 引数㝧指定㝕れ㝟音溝を坜止㝙る．
+     *
+     * @param audioSource 音溝
+     */
+    public void stop(AudioSource audioSource){
+        for(int i = 0; i < soundRenderers.size(); i++){
+            soundRenderers.get(i).stop(audioSource.getSourceIds()[i]);
+        }
     }
 
     /**
      * 音声ファイルをクローズ㝙る．
      */
-    public void close() {
-        if (!this.closeFlag) {
-            IntBuffer scratch = BufferUtils.createIntBuffer(1);
-
-            // 冝生中㝮音声を坜止㝗㝦削除
-            for (Integer sce : this.sources) {
-                this.stop(sce.intValue());
-                scratch.put(0, sce);
-                alDeleteSources(scratch);
+    public void close(){
+        if(!this.closeFlag){
+            for(AudioSource source: this.audioSources){
+                this.stop(source);
+                deleteSource(source);
             }
-
-            // ポッファ削除
-            for (Integer buf : this.buffers) {
-                scratch.put(0, buf);
-                alDeleteBuffers(scratch);
+            for(AudioBuffer buffer: this.audioBuffers){
+                deleteBuffer(buffer);
             }
-
-            // 読㝿込㝿済㝿音声・ポッファ・音溝㝮リストを空㝫㝙る
             this.loadedFiles.clear();
-            this.buffers.clear();
-            this.sources.clear();
-
-            // コンテキスト削除㝨デポイス㝮クローズ
-            alcDestroyContext(this.context);
-            alcCloseDevice(this.device);
-
+            this.audioBuffers.clear();
+            this.audioSources.clear();
+            this.closeRenderers();
             this.closeFlag = true;
         }
     }
 
-    /**
-     * サウンドエフェクトを格紝㝗㝟マップを坖得㝙る．
-     *
-     * @return サウンドエフェクトを格紝㝗㝟マップ
-     */
-    public Map<String, Integer> getSoundEffect() {
-        return this.soundEffect;
+    public AudioBuffer getBackGroundMusicBuffer() {
+        return backGroundMusicBuffer;
     }
 
-    /**
-     * BGMを坖得㝙る．
-     *
-     * @return back ground music
-     */
-    public Integer getBackGroundMusic() {
-        return this.backGroundMusic;
+    public void setBackGroundMusicBuffer(AudioBuffer buffer){
+        this.backGroundMusicBuffer = buffer;
     }
 
-    /**
-     * 引数㝮音溝をBGM㝨㝗㝦セット㝙る．
-     *
-     * @param source 音溝
-     */
-    public void setBackGroundMusic(int source) {
-        this.backGroundMusic = source;
+    public List<SoundRender> getSoundRenderers() {
+        return soundRenderers;
     }
 
-
-    /**
-     * Pause audio rendering (soft)
-     */
-    public void pauseSound() {
-        SOFTPauseDevice.alcDevicePauseSOFT(this.device);
+    public Map<String, AudioBuffer> getSoundBuffers() {
+        return soundBuffer;
     }
 
-    /**
-     * Resume audio rendering (soft)
-     */
-    public void resumeSound() {
-        SOFTPauseDevice.alcDeviceResumeSOFT(this.device);
-    }
-
-    public SoundRenderer getSoundRenderer() {
-        return soundRenderer;
-    }
-
-    public class SoundRenderer {
-        private long device;
-        private long context;
-        private ALCCapabilities deviceCaps;
-
-        SoundRenderer(SoundManager manager) {
-            // OpenAL SOFT
-            this.device = SOFTLoopback.alcLoopbackOpenDeviceSOFT((CharSequence) null);
-            this.context = ALC10.alcCreateContext(this.device, new int[]{
-                    SOFTLoopback.ALC_FORMAT_TYPE_SOFT, SOFTLoopback.ALC_FLOAT_SOFT,
-                    SOFTLoopback.ALC_FORMAT_CHANNELS_SOFT, SOFTLoopback.ALC_STEREO_SOFT,
-                    ALC10.ALC_FREQUENCY, GameSetting.SOUND_SAMPLING_RATE,
-                    0
-            });
-            alcMakeContextCurrent(this.context);
-            deviceCaps = ALC.createCapabilities(this.device);
-            AL.createCapabilities(deviceCaps);
-            manager.device = this.device;
-            manager.context = this.context;
+    public void deleteSource(AudioSource source){
+        for(int i = 0; i < soundRenderers.size(); i++){
+            int sourceId = source.getSourceIds()[i];
+            soundRenderers.get(i).deleteSource(sourceId);
         }
+    }
 
-        /**
-         * Sample audio data
-         *
-         * @return rendered raw data in 2-channel format
-         */
-        public float[][] sampleAudio() {
-            float[] rawData = new float[GameSetting.SOUND_BUFFER_SIZE * 2];
-            SOFTLoopback.alcRenderSamplesSOFT(this.device, rawData, GameSetting.SOUND_RENDER_SIZE);
-            float[][] separatedBuffer = new float[2][];
-            float[] leftBuffer = new float[GameSetting.SOUND_BUFFER_SIZE];
-            float[] rightBuffer = new float[GameSetting.SOUND_BUFFER_SIZE];
-            for (int i = 0; i < GameSetting.SOUND_RENDER_SIZE; i++) {
-                leftBuffer[i] = rawData[i * 2];
-                rightBuffer[i] = rawData[i * 2 + 1];
-            }
-            separatedBuffer[0] = leftBuffer;
-            separatedBuffer[1] = rightBuffer;
-            return separatedBuffer;
+    public void deleteBuffer(AudioBuffer buffer){
+        for(int i = 0; i < soundRenderers.size(); i++){
+            int sourceId = buffer.getBuffers()[i];
+            soundRenderers.get(i).deleteBuffer(sourceId);
         }
+    }
+
+    public void closeRenderers(){
+        for(SoundRender render: soundRenderers){
+            render.close();
+        }
+    }
+
+    public SoundRender getVirtualRenderer() {
+        return virtualRenderer;
+    }
+
+    public ArrayList<AudioSource> getAudioSources() {
+        return audioSources;
     }
 }

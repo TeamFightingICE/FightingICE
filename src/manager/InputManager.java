@@ -18,10 +18,7 @@ import loader.ResourceLoader;
 import py4j.Py4JException;
 import setting.FlagSetting;
 import setting.LaunchSetting;
-import struct.FrameData;
-import struct.GameData;
-import struct.Key;
-import struct.ScreenData;
+import struct.*;
 
 /**
  * AIやキーボード等の入力関連のタスクを管理するマネージャークラス．
@@ -271,11 +268,13 @@ public class InputManager<Data> {
 	 *            フレームデータ
 	 * @param screenData
 	 *            スクリーンデータ
+	 * @param audioData
 	 *
 	 * @see FrameData
 	 * @see ScreenData
+	 * @see AudioData
 	 */
-	public void setFrameData(FrameData frameData, ScreenData screenData) {
+	public void setFrameData(FrameData frameData, ScreenData screenData, AudioData audioData) {
 		for (int i = 0; i < this.ais.length; i++) {
 			if (this.ais[i] != null) {
 				if (!frameData.getEmptyFlag()) {
@@ -284,6 +283,7 @@ public class InputManager<Data> {
 					this.ais[i].setFrameData(new FrameData());
 				}
 				this.ais[i].setScreenData(new ScreenData(screenData));
+				this.ais[i].setAudioData(new AudioData(audioData));
 			}
 		}
 

@@ -107,10 +107,7 @@ public class ScreenData {
 	 */
 	public byte[] getDisplayByteBufferAsBytes(int newWidth, int newHeight, boolean grayScale) {
 
-		if (FlagSetting.soundTrain || FlagSetting.soundPlay)
-			return new byte[]{};
 		if (this.displayByteBuffer != null) {
-
 			// Resizes the image
 			AffineTransformOp xform = new AffineTransformOp(AffineTransform
 					.getScaleInstance((double) newWidth / displayBufferedImage.getWidth(), (double) newHeight / displayBufferedImage.getHeight()),

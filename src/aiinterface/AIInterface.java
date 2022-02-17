@@ -1,15 +1,11 @@
 package aiinterface;
 
-import struct.FrameData;
-import struct.GameData;
-import struct.Key;
-import struct.ScreenData;
+import struct.*;
 
 /**
  * The interface that defines the methods to implement in AI.
  */
 public interface AIInterface {
-
 	/**
 	 * This method initializes AI, and it will be executed only once in the
 	 * beginning of each game. <br>
@@ -101,4 +97,7 @@ public interface AIInterface {
 	default void getScreenData(ScreenData sd) {
 	};
 
+	default void getAudioData(AudioData ad){
+
+	};
 }

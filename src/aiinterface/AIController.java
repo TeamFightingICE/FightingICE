@@ -8,10 +8,7 @@ import informationcontainer.RoundResult;
 import py4j.Py4JException;
 import setting.GameSetting;
 import setting.LaunchSetting;
-import struct.FrameData;
-import struct.GameData;
-import struct.Key;
-import struct.ScreenData;
+import struct.*;
 
 /**
  * AIのスレッドや処理を管理するクラス．
@@ -69,6 +66,7 @@ public class AIController extends Thread {
         this.ai = ai;
     }
 
+    private AudioData audioData;
     /**
      * 引数で与えられたパラメータをセットし，初期化を行う．
      *
@@ -125,6 +123,7 @@ public class AIController extends Thread {
                 aiFrameData.removeVisualData();
             }
             this.ai.getInformation(aiFrameData, isControl);
+            this.ai.getAudioData(this.audioData);
 
             // screen raw data isn't provided to sound-only AI
             if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
@@ -224,5 +223,9 @@ public class AIController extends Thread {
             this.ai.close();
             this.waitObj.notifyAll();
         }
+    }
+
+    public void setAudioData(AudioData audioData) {
+        this.audioData = audioData;
     }
 }
