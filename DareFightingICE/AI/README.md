@@ -24,6 +24,7 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 - AI Name, Developer's Name(s) and Affiliation(s)
 - AI's Outline 
 
+
 ### Sample AI:
 ---
 A sample AI will be provided later.
@@ -46,6 +47,18 @@ On this track, only "Zen" character will be used.
 
 The ranking rules are as follows:
 In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the AIs are ranked according to the number of winning rounds. If ties exit, their total remaining HPs will be used. Once the AIs are ranked in each league, league points are awarded to them according to their positions using **[the current (2010-) Formula-1 scoring system ](https://en.wikipedia.org/wiki/2010_Formula_One_season#Scoring_system)**. The competition winner is finally decided by the sum of league points across all two leagues.
+
+
+### Evaluation Environments: 
+---
+1. Software:
+   - Python: 3.7 or higher
+   - Java: 1.8 or higher
+   - OS: Windows 10
+2. Hardware:
+   - CPU: Intel(R) Xeon(R) W-2125 CPU @ 4.00GHz  4.01 GHz
+   - RAM: 32.0 GB
+
 
 ### Installation Guide:
 ---
