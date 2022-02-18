@@ -43,7 +43,7 @@ The Standard League considers the winner of a round as the one with the HP above
 
 In the Speedrunning League, the league winner of a given character type is the AI with the shortest average time to beat our weakened sample MctsAi (MctsAi65's jar file and its source code are available [here](https://github.com/dxcbobby/tesing-MCTSAI-DareFightingICE)). For each entry AI, 5 games are conducted with the entry AI being P1 and MctsAi being P2, and another set of 5 games with the entry AI being P2 and MctsAi being P1. Both AIs will be given the initial HP of 400. If MctsAi cannot be beaten in 60s, the beating time of its opponent entry AI is penalized to 70s. <br>
 
-On this track, only "Zen" character, with the same [motion data](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/Downloadfiles/Motion/ZEN/Motion.csv) as the motion data included in DareFightingICE will be used.
+In this track, only "Zen" character, with the same [motion data](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/Downloadfiles/Motion/ZEN/Motion.csv) as the motion data included in DareFightingICE will be used.
 
 The ranking rules are as follows:
 In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the AIs are ranked according to the number of winning rounds. If ties exit, their total remaining HPs will be used. Once the AIs are ranked in each league, league points are awarded to them according to their positions using **[the current (2010-) Formula-1 scoring system ](https://en.wikipedia.org/wiki/2010_Formula_One_season#Scoring_system)**. The competition winner is finally decided by the sum of league points across all two leagues.
