@@ -1,3 +1,4 @@
+
 # <div align ="center"> Sound Design Track </div>
 ----
 <div align = "center"> Welcome to the sound design track of DareFightingICE. Here you will be provided all the necessary information needed to participate in the sound design track. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
@@ -62,6 +63,7 @@ Midterm deadline (We recommend you do midterm submission, but if you miss it, yo
 
 Final deadline
 - July 29, 2022 (23:59 JST)(no extension!!)
+
 
 
 
