@@ -69,4 +69,8 @@ To install DareFightingICE please follow the instructions on this [link](https:/
 
 ### Submission Date:
 ---
-To be decided.
+Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your AI to us by the final deadline.)
+- May 24, 2022 (23:59 JST)
+
+Final deadline
+- July 29, 2022 (23:59 JST)(no extension!!)
