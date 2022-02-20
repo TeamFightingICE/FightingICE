@@ -16,7 +16,7 @@ You are provided with a version of DareFightingICE that already has a sample sou
 Source code files you are allowed to edit are:
 -	DareFightingICE\src\fighting\Character.java
 -	DareFightingICE\src\manager\SoundManager.java
--	DareFightingICE\render\audio\SoundRender.java <br>
+-	DareFightingICE\src\render\audio\SoundRender.java <br>
 
 Directory for sound effects:
 -	DareFightingICE\data\sounds <br>
