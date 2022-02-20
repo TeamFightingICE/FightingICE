@@ -44,7 +44,7 @@ public class Character {
     private AudioSource sourceDefault;
     private AudioSource sourceLanding;
     private AudioSource sourceWalking;
-    private AudioSource sourceProjectTiles;
+    private AudioSource[] sourceProjectTiles = new AudioSource[3];
     private AudioSource sourceEnergyChange;
     private AudioSource sourceBorderAlert;
     private AudioSource sourceHeartBeat;
@@ -183,43 +183,60 @@ public class Character {
     /**
      * For when the projectile is on screen and active.
      */
-    private volatile boolean isProjectileLive = false;
+    private volatile boolean[] isProjectileLive = new boolean[3] ;
     /**
      * For when the other player gets hit by the projectile.
      */
-    private volatile boolean ProjectileHit = false;
+    private volatile boolean[] ProjectileHit = new boolean[3];
 
+    /**
+     * To keep the crouch sound from playing over and over again while crouching.
+     */
     private String TempName = " ";
+    /**
+     * To stop the footsteps sound effect from playing while in air.
+     */
     private String TempName2 = " ";
-    private int sX, sY, preEnergy = 0;
-    private Attack projectileAttack = null;
+    /**
+     * For playing the Energy alert.
+     */
+    private int preEnergy = 0;
+    /**
+     * For Projectile attack sound movement and hit detections.size is 3 because 1 player can only have 3 projectiles active at a time.
+     */
+    private int[] sY = new int[3];
+    private int[] sX = new int[3];
+    private Attack[] projectileAttack =  new Attack[3];
 
-	/**
-	 * Class constructorï¼Ž
-	 */
-	public Character() {
-		initializeList();
+    // same as projecttileAttack (for attack hit detection)
+    private Attack[] projectileAttack2 =  new Attack[3];
 
-		this.playerNumber = true;
-		this.hp = 0;
-		this.energy = 0;
-		this.x = 0;
-		this.y = 0;
-		this.graphicSizeX = 0;
-		this.graphicSizeY = 0;
-		this.graphicAdjustX = 0;
-		this.speedX = 0;
-		this.speedY = 0;
-		this.state = State.STAND;
-		this.action = Action.NEUTRAL;
-		this.hitConfirm = false;
-		this.front = true;
-		this.control = false;
-		this.attack = null;
-		this.remainingFrame = 0;
-		this.lastHitFrame = 0;
-		this.hitCount = 0;
-		this.isSimulateProcess = false;
+    /**
+     * Class constructorï¼Ž
+     */
+    public Character() {
+        initializeList();
+
+        this.playerNumber = true;
+        this.hp = 0;
+        this.energy = 0;
+        this.x = 0;
+        this.y = 0;
+        this.graphicSizeX = 0;
+        this.graphicSizeY = 0;
+        this.graphicAdjustX = 0;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.state = State.STAND;
+        this.action = Action.NEUTRAL;
+        this.hitConfirm = false;
+        this.front = true;
+        this.control = false;
+        this.attack = null;
+        this.remainingFrame = 0;
+        this.lastHitFrame = 0;
+        this.hitCount = 0;
+        this.isSimulateProcess = false;
         this.initializeSound();
 
     }
@@ -349,10 +366,13 @@ public class Character {
             this.sourceDefault = SoundManager.getInstance().createAudioSource();
             this.sourceLanding = SoundManager.getInstance().createAudioSource();
             this.sourceWalking = SoundManager.getInstance().createAudioSource();
-            this.sourceProjectTiles = SoundManager.getInstance().createAudioSource();
+            this.sourceProjectTiles[0] = SoundManager.getInstance().createAudioSource();
+            this.sourceProjectTiles[1] = SoundManager.getInstance().createAudioSource();
+            this.sourceProjectTiles[2] = SoundManager.getInstance().createAudioSource();
             this.sourceEnergyChange = SoundManager.getInstance().createAudioSource();
             this.sourceBorderAlert = SoundManager.getInstance().createAudioSource();
             this.sourceHeartBeat = SoundManager.getInstance().createAudioSource();
+
         }
     }
 
@@ -411,9 +431,13 @@ public class Character {
 
         if (this.action != executeAction) {
             if (resetFlag) {
-                if(this.projectileAttack == null && this.sourceProjectTiles != null){
-                    SoundManager.getInstance().stop(this.sourceProjectTiles);
+
+                for(int a = 0 ; a < this.projectileAttack.length ; a++) {
+                    if(this.projectileAttack[a] == null && this.sourceProjectTiles[a] !=null) {
+                        SoundManager.getInstance().stop(this.sourceProjectTiles[a]);
+                    }
                 }
+
                 destroyAttackInstance();
             }
 
@@ -455,16 +479,26 @@ public class Character {
                     TempName2 = Name;
                 }
             } else if (Arrays.asList("STAND_D_DF_FA", "STAND_D_DF_FB", "AIR_D_DF_FA", "AIR_D_DF_FB", "STAND_D_DF_FC").contains(Name)) {
-
-                if (!this.isProjectileLive) {
-                    this.isProjectileLive = true;
-
-                    sX = this.x;
-                    sY = this.y;
+                for(int a = 0 ; a<this.isProjectileLive.length ; a++) {
+                    if(!this.isProjectileLive[a]) {
+                        this.isProjectileLive[a] = true;
+                        sY[a] = this.y;
+                        sX[a] = this.x;
+                        Name = Name + ".wav";
+                        SoundManager.getInstance().play2(sourceProjectTiles[a], SoundManager.getInstance().getSoundBuffers().get(Name), this.x, this.y, true);
+                        System.out.println(a);
+                        break;
+                    }
                 }
-                Name = Name + ".wav";
+                // if (!this.isProjectileLive) {
+                // this.isProjectileLive = true;
+
+                // sX = this.x;
+                // sY = this.y;
+                // }
+                // Name = Name + ".wav";
 //				SoundManager.getInstance().play2(sourceid4,SoundManager.getInstance().getSoundEffect().get(Name),this.x,this.y,true);
-                SoundManager.getInstance().play2(sourceProjectTiles, SoundManager.getInstance().getSoundBuffers().get(Name), this.x, this.y, true);
+                //SoundManager.getInstance().play2(sourceProjectTiles, SoundManager.getInstance().getSoundBuffers().get(Name), this.x, this.y, true);
             }
         }
     }
@@ -525,7 +559,14 @@ public class Character {
         createAttackInstance();
         if (this.attack != null) {
             if (this.attack.isProjectile()) {
-                this.projectileAttack = new Attack(this.attack);
+                for(int a = 0 ; a < this.projectileAttack.length ; a++) {
+                    if(this.projectileAttack[a] == null) {
+                        this.projectileAttack[a] =  new Attack (this.attack);
+                        this.projectileAttack2[a] = this.attack;
+
+                        break;
+                    }
+                }
 
             }
         }
@@ -568,7 +609,7 @@ public class Character {
 		/*	if(this.hp < 50) {
 				if(!SoundManager.getInstance().isPlaying(sourceid7)) {
 					if(this.playerNumber)SoundManager.getInstance().play2(sourceid7,SoundManager.getInstance().getSoundEffect().get("Heartbeat.wav"),0,0,false);
-					else SoundManager.getInstance().play2(sourceid7,SoundManager.getInstance().getSoundEffect().get("Heartbeat.wav"),GameSetting.STAGE_WIDTH,0,false);	
+					else SoundManager.getInstance().play2(sourceid7,SoundManager.getInstance().getSoundEffect().get("Heartbeat.wav"),GameSetting.STAGE_WIDTH,0,false);
 				}
 			}  */
 
@@ -584,30 +625,30 @@ public class Character {
                 SoundManager.getInstance().SourcePos(sourceWalking, this.x, this.y);
             }
 
-            if (this.projectileAttack != null) {
 
-                if (this.isProjectileLive) {
+            for(int a  = 0 ; a < this.projectileAttack.length ; a++) {
+                if(this.projectileAttack[a] != null) {
+                    if(this.isProjectileLive[a]) {
+                        if (this.projectileAttack[a].updateProjectileAttack() && !this.ProjectileHit[a]) {
 
+                            this.sX[a] = this.sX[a] + (this.projectileAttack[a].getSpeedX());
+                            this.sY[a] = this.sX[a] + (this.projectileAttack[a].getSpeedY());
+                            SoundManager.getInstance().SourcePos(sourceProjectTiles[a], this.sX[a], this.sY[a]);
+                        } else {
+                            SoundManager.getInstance().stop(sourceProjectTiles[a]);
+                            this.isProjectileLive[a] = false;
+                            this.projectileAttack[a] = null;
+                            this.ProjectileHit[a] = false;
+                        }
 
-                    if (this.projectileAttack.updateProjectileAttack() && !this.ProjectileHit) {
-
-                        this.sX = this.sX + (this.projectileAttack.getSpeedX());
-                        this.sY = this.sX + (this.projectileAttack.getSpeedY());
-                        SoundManager.getInstance().SourcePos(sourceProjectTiles, this.sX, this.sY);
-                    } else {
-                        SoundManager.getInstance().stop(sourceProjectTiles);
-                        this.isProjectileLive = false;
-                        this.projectileAttack = null;
-                        this.ProjectileHit = false;
                     }
                 }
             }
+
         }
     }
 
-    public void changePHit() {
-        this.ProjectileHit = !this.ProjectileHit;
-    }
+
 
     /**
      * 攻撃がヒットしたときの処理を行う．
@@ -619,7 +660,15 @@ public class Character {
     public void hitAttack(Character opponent, Attack attack, int currentFrame) {
 
         if (attack.isProjectile()) {
-            opponent.ProjectileHit = true;
+            for(int a = 0 ; a < this.projectileAttack.length ; a++) {
+                if(opponent.projectileAttack[a] != null) {
+                    if(attack == opponent.projectileAttack2[a]) {
+                        opponent.ProjectileHit[a] = true;
+                        break;
+                    }
+                }
+            }
+
         }
 
         int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
