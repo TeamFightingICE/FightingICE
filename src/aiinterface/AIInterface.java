@@ -92,11 +92,16 @@ public interface AIInterface {
 	 * Gets the screen information in each frame.
 	 *
 	 * @param sd
-	 *            the screen information such as the pixel data
+	 *            the screen information such as the pixel data, it will be empty in blind mode.
 	 */
 	default void getScreenData(ScreenData sd) {
 	};
 
+	/**
+	 * Gets the audio information in each frame.
+	 * @param ad
+	 * 			the audio information.
+	 */
 	default void getAudioData(AudioData ad){
 
 	};

@@ -1,7 +1,6 @@
 package manager;
 
 import static org.lwjgl.openal.AL10.*;
-import static org.lwjgl.openal.ALC10.*;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -66,42 +65,27 @@ public class SoundManager {
     /**
      * 音声ポッファを格紝㝙るリスト．
      */
-    private ArrayList<Integer> buffers;
     private ArrayList<AudioBuffer> audioBuffers;
 
     /**
      * 音溝を格紝㝙るリスト．
      */
-    private ArrayList<Integer> sources;
     private ArrayList<AudioSource> audioSources;
-
     /**
-     * OpenAL㝫使ゝれる音声デポイス．
-     */
-    private long device;
-
-    /**
-     * OpenAL㝮音声処睆コンテキスト．
-     */
-    private long context;
-
-    /**
-     * サウンドエフェクトを格紝㝙るマップ．
-     */
-    private Map<String, Integer> soundEffect;
-
-    /**
-     * BGM．
-     */
-    private Integer backGroundMusic;
-
-    /**
-     * Sound redendering classes;
+     * Sound rendering devices.
      */
     List<SoundRender> soundRenderers;
+    /**
+     *
+     */
     SoundRender virtualRenderer;
-
+    /**
+     * Sound buffers.
+     */
     private Map<String, AudioBuffer> soundBuffer;
+    /**
+     * Background music buffer.
+     */
     private AudioBuffer backGroundMusicBuffer;
 
     /**
@@ -111,8 +95,6 @@ public class SoundManager {
         Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + SoundManager.class.getName());
 
         this.loadedFiles = new ArrayList<String>();
-        this.buffers = new ArrayList<Integer>();
-        this.sources = new ArrayList<Integer>();
         this.audioBuffers = new ArrayList<>();
         this.audioSources = new ArrayList<>();
 
@@ -127,7 +109,6 @@ public class SoundManager {
         // 解放確誝フラグ
         this.closeFlag = false;
 
-        this.soundEffect = new HashMap<String, Integer>();
         this.soundBuffer = new HashMap<>();
 
         this.initialize();
@@ -167,8 +148,8 @@ public class SoundManager {
     /**
      * リスナー㝮パラメータ(Position, Velocity, Orientation)を設定㝙る．
      */
-    private void setListenerValues(){
-        for (SoundRender render: soundRenderers){
+    private void setListenerValues() {
+        for (SoundRender render : soundRenderers) {
             render.alListenerfv(AL_POSITION, this.listenerPos);
             render.alListenerfv(AL_VELOCITY, this.listenerVel);
             render.alListenerfv(AL_ORIENTATION, this.listenerOri);
@@ -183,10 +164,10 @@ public class SoundManager {
      * @param loop     ループ㝕㝛る㝋㝩㝆㝋(㝕㝛る場坈㝯true)
      * @return 設定済㝿㝮音溝
      */
-    public AudioBuffer createAudioBuffer(String filePath, boolean loop){
+    public AudioBuffer createAudioBuffer(String filePath, boolean loop) {
         AudioBuffer audioBuffer = null;
         int[] bufferIds = new int[soundRenderers.size()];
-        for (int i = 0; i < soundRenderers.size(); i++){
+        for (int i = 0; i < soundRenderers.size(); i++) {
             soundRenderers.get(i).set();
             bufferIds[i] = this.registerSound(filePath);
         }
@@ -196,23 +177,29 @@ public class SoundManager {
     }
 
 
-
-    public int createSource() {
-//        IntBuffer source1 = BufferUtils.createIntBuffer(1);
-
+    /**
+     * Create audio source at the current OpenAL context.
+     *
+     * @return a new source id.
+     */
+    private int createSource() {
         // 音溝㝮生戝
-        IntBuffer source1 = IntBuffer.wrap(new int[] {alGenSources()});
+        IntBuffer source1 = IntBuffer.wrap(new int[]{alGenSources()});
 
         alSourcef(source1.get(0), AL_ROLLOFF_FACTOR, 0.01F);
-        this.sources.add(new Integer(source1.get(0)));
 
         return source1.get(0);
     }
 
-    public AudioSource createAudioSource(){
+    /**
+     * Creates a new audio source.
+     *
+     * @return a new audio source.
+     */
+    public AudioSource createAudioSource() {
         AudioSource audioSource = null;
         int[] sourceIds = new int[soundRenderers.size()];
-        for (int i = 0; i < soundRenderers.size(); i++){
+        for (int i = 0; i < soundRenderers.size(); i++) {
             soundRenderers.get(i).set();
             sourceIds[i] = createSource();
         }
@@ -221,44 +208,17 @@ public class SoundManager {
         return audioSource;
     }
 
-//    public void SourcePos(int source, int x, int y) {
-//        alSource3f(source, AL_POSITION, x, 0, 4);
-//    }
-
-    public void SourcePos(AudioSource source, int x, int y){
-        for(int i = 0; i < soundRenderers.size(); i++){
+    /**
+     * Sets position for audio source.
+     *
+     * @param source audio source
+     * @param x      X position.
+     * @param y      Y position.
+     */
+    public void setSourcePos(AudioSource source, int x, int y) {
+        for (int i = 0; i < soundRenderers.size(); i++) {
             soundRenderers.get(i).setSource3f(source.getSourceIds()[i], AL_POSITION, x, 0, 4);
         }
-    }
-
-    /**
-     * 音声ポッファを坖得㝙る．<br>
-     * 新㝟㝫音声をポッファ㝫坖り込㝿〝読㝿込㝿済㝿ファイル㝮リスト㝫登録㝗㝟後㝫音声ポッファを返㝙．<br>
-     * 既㝫読㝿込ん㝧㝄㝟ファイル㝮場坈新㝟㝫坖り込㝾㝚㝫返㝙．
-     *
-     * @param filePath 音声㝮ファイルパス
-     * @return 音声ポッファ
-     */
-    private int getLoadedALBuffer(String filePath) {
-        int buffer;
-
-        // 読㝿込㝿済㝿㝮ファイル㝋㝩㝆㝋ポェック
-        for (int count = 0; count < this.loadedFiles.size(); count++) {
-            if (((String) this.loadedFiles.get(count)).equals(filePath)) {
-                return ((Integer) this.buffers.get(count)).intValue();
-            }
-        }
-
-        // 音声ポッファを坖得
-        buffer = this.registerSound(filePath);
-
-        // ポッファリスト㝫追加
-        this.buffers.add(new Integer(buffer));
-
-        // 読㝿込㝿済㝿ファイル㝮リスト㝫追加
-        this.loadedFiles.add(filePath);
-
-        return buffer;
     }
 
     /**
@@ -292,26 +252,39 @@ public class SoundManager {
      * 引数㝧指定㝕れ㝟音溝を冝生㝙る．
      *
      * @param source 音溝
+     * @deprecated
      */
     public void play(int source, int x, int y) {
-        //alSourcef(source, AL_PITCH, 1.0F);
-        //alSourcef(source, AL_GAIN, 1.0F);
         alSource3f(source, AL_POSITION, x, 0, 4);
-        //alSource3f(source, AL_VELOCITY, this.sourceVel[0], this.sourceVel[1], this.sourceVel[2]);
         alSourcePlay(source);
     }
 
-    public void play2(AudioSource source, AudioBuffer buffer, int x, int y, boolean loop){
-        for (int i = 0; i < soundRenderers.size(); i++){
+    /**
+     * Play audio in a source.
+     *
+     * @param source audio source.
+     * @param buffer audio buffer.
+     * @param x      X position.
+     * @param y      Y position.
+     * @param loop   looping.
+     */
+    public void play2(AudioSource source, AudioBuffer buffer, int x, int y, boolean loop) {
+        for (int i = 0; i < soundRenderers.size(); i++) {
             int sourceId = source.getSourceIds()[i];
             int bufferId = buffer.getBuffers()[i];
             soundRenderers.get(i).play(sourceId, bufferId, x, y, loop);
         }
     }
 
+    /**
+     * Checks if the current audio source is playing.
+     *
+     * @param source the current source.
+     * @return playing status.
+     */
     public boolean isPlaying(AudioSource source) {
         boolean ans = false;
-        for(int i = 0; i < soundRenderers.size(); i++){
+        for (int i = 0; i < soundRenderers.size(); i++) {
             ans = ans || soundRenderers.get(i).isPlaying(source.getSourceIds()[i]);
         }
         return ans;
@@ -320,18 +293,10 @@ public class SoundManager {
     /**
      * 引数㝧指定㝕れ㝟音溝を坜止㝙る．
      *
-     * @param source 音溝
-     */
-//    public void stop(int source) {
-//        alSourceStop(source);
-//    }
-    /**
-     * 引数㝧指定㝕れ㝟音溝を坜止㝙る．
-     *
      * @param audioSource 音溝
      */
-    public void stop(AudioSource audioSource){
-        for(int i = 0; i < soundRenderers.size(); i++){
+    public void stop(AudioSource audioSource) {
+        for (int i = 0; i < soundRenderers.size(); i++) {
             soundRenderers.get(i).stop(audioSource.getSourceIds()[i]);
         }
     }
@@ -339,13 +304,13 @@ public class SoundManager {
     /**
      * 音声ファイルをクローズ㝙る．
      */
-    public void close(){
-        if(!this.closeFlag){
-            for(AudioSource source: this.audioSources){
+    public void close() {
+        if (!this.closeFlag) {
+            for (AudioSource source : this.audioSources) {
                 this.stop(source);
                 deleteSource(source);
             }
-            for(AudioBuffer buffer: this.audioBuffers){
+            for (AudioBuffer buffer : this.audioBuffers) {
                 deleteBuffer(buffer);
             }
             this.loadedFiles.clear();
@@ -360,42 +325,80 @@ public class SoundManager {
         return backGroundMusicBuffer;
     }
 
-    public void setBackGroundMusicBuffer(AudioBuffer buffer){
+    /**
+     * Sets background music buffer.
+     *
+     * @param buffer background music buffer.
+     */
+    public void setBackGroundMusicBuffer(AudioBuffer buffer) {
         this.backGroundMusicBuffer = buffer;
     }
 
+    /**
+     * Gets all sound renderers
+     *
+     * @return all sound renderers
+     */
     public List<SoundRender> getSoundRenderers() {
         return soundRenderers;
     }
 
+    /**
+     * Gets sound buffers.
+     *
+     * @return sound buffers.
+     */
     public Map<String, AudioBuffer> getSoundBuffers() {
         return soundBuffer;
     }
 
-    public void deleteSource(AudioSource source){
-        for(int i = 0; i < soundRenderers.size(); i++){
+    /**
+     * Delete an audio source.
+     *
+     * @param source audio source.
+     */
+    public void deleteSource(AudioSource source) {
+        for (int i = 0; i < soundRenderers.size(); i++) {
             int sourceId = source.getSourceIds()[i];
             soundRenderers.get(i).deleteSource(sourceId);
         }
     }
 
-    public void deleteBuffer(AudioBuffer buffer){
-        for(int i = 0; i < soundRenderers.size(); i++){
+    /**
+     * Deletes an audio buffer.
+     *
+     * @param buffer audio buffer.
+     */
+    public void deleteBuffer(AudioBuffer buffer) {
+        for (int i = 0; i < soundRenderers.size(); i++) {
             int sourceId = buffer.getBuffers()[i];
             soundRenderers.get(i).deleteBuffer(sourceId);
         }
     }
 
-    public void closeRenderers(){
-        for(SoundRender render: soundRenderers){
+    /**
+     * Closes all audio renderers.
+     */
+    public void closeRenderers() {
+        for (SoundRender render : soundRenderers) {
             render.close();
         }
     }
 
+    /**
+     * Gets the virtual sound renderer.
+     *
+     * @return virtual sound render.
+     */
     public SoundRender getVirtualRenderer() {
         return virtualRenderer;
     }
 
+    /**
+     * Get audio sources.
+     *
+     * @return audio sources.
+     */
     public ArrayList<AudioSource> getAudioSources() {
         return audioSources;
     }

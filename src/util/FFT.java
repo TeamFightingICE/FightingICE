@@ -18,6 +18,7 @@ public class FFT {
 
     /**
      * Performs Fast Fourier Transformation in place.
+     * @param signal audio signals
      */
     public void process(float[] signal) {
         final int numPoints = signal.length;
