@@ -48,7 +48,7 @@ In the Speedrunning League, the league winner of a given character type is the A
 In this track, only "Zen" character, with the same [motion data](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/Downloadfiles/Motion/ZEN/Motion.csv) as the motion data included in DareFightingICE will be used.
 
 The ranking rules are as follows:
-In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the AIs are ranked according to the number of winning rounds. If ties exit, their total remaining HPs will be used. Once the AIs are ranked in each league, league points are awarded to them according to their positions using **[the current (2010-) Formula-1 scoring system ](https://en.wikipedia.org/wiki/2010_Formula_One_season#Scoring_system)**. The competition winner is finally decided by the sum of league points across all two leagues.
+In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the AIs are ranked according to the number of winning rounds. If ties exit, their total remaining HPs will be used. Once the AIs are ranked in each league, league points are awarded to them according to their positions using **[The 2018 Formula-1 scoring system ](https://en.wikipedia.org/wiki/2018_Formula_One_World_Championship#Scoring_system)**. The competition winner is finally decided by the sum of league points across all two leagues.
 
 
 ### Evaluation Environments: 
