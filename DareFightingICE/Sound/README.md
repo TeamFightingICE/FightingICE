@@ -12,7 +12,16 @@ As you can already tell from the name, you have to make a sound design for the D
 
 ### What To Submit:
 ---
-You are provided with a version of DareFightingICE that already has a sample sound design in it. You will be allowed to edit a part of the source code in the game as well as add your own sounds. Doing this gives you the full ability to make your own sound design. You will submit the sounds, the source code files you are allowed to edit, a slide file(ppt) explaining the changes and the reasoning behind them, and a tutorial video (maximum length of video is 3 min) featuring the important features of your sound design. Keep in mind that you do not need to edit the source code, you can just change the sounds, but give them the same name as the sounds already in the sound folder. To change the background music just overwrite the “BGM0” audio file with your own background music (name should remain the same). <br>
+You are provided with a version of DareFightingICE that already has a sample sound design in it. You will be allowed to edit a part of the source code in the game as well as add your own sounds. Doing this gives you the full ability to make your own sound design. 
+
+You will submit:
+- The sound effects.
+- The source code files you are allowed to edit.
+-  A slide file(ppt) explaining the changes and the reasoning behind them. 
+-  A tutorial video (maximum length of video is 3 min) featuring the important features of your sound design.
+-  Keep in mind that you do not need to edit the source code, you can just change the sounds, but give them the same name as the sounds already in the sound folder. To change the background music just overwrite the “BGM0” audio file with your own background music (name should remain the same). 
+-  You are allowed to add new soruce code files and any technique like procedural content generation (PCG) to generate sounds. The programming language you are allowed to use is Java and any other languages that can be wrapped with Java. Make sure to put new source files in "DareFightingICE\src" and any data files in 	"DareFightingICE\data". <br>
+
 Source code files you are allowed to edit are:
 -	DareFightingICE\src\fighting\Character.java
 -	DareFightingICE\src\manager\SoundManager.java
