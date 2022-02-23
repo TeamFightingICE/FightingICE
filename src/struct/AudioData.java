@@ -98,44 +98,4 @@ public class AudioData {
     public float[][][] getSpectrogramData() {
         return spectrogramData;
     }
-
-    /**
-     * The class representing Fast Fourier Transform data.
-     */
-    static class FFTData {
-        /**
-         * Real parts
-         */
-        private float[] real;
-        /**
-         * Imagination parts
-         */
-        private float[] imag;
-
-        /**
-         * Class constructor.
-         * @param real real data.
-         * @param imag imagination data.
-         */
-        FFTData(float[] real, float[] imag) {
-            this.real = real;
-            this.imag = imag;
-        }
-
-        /**
-         * Gets real part.
-         * @return
-         */
-        public float[] getReal() {
-            return real;
-        }
-
-        /**
-         * Gets imagination part.
-         * @return
-         */
-        public float[] getImag() {
-            return imag;
-        }
-    }
 }
