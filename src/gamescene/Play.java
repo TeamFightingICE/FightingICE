@@ -152,8 +152,8 @@ public class Play extends GameScene {
 			this.setTransitionFlag(true);
 			this.setNextGameScene(lunch);
 		}
-		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
-			SoundManager.getInstance().play2(sourceBackground,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
+		if (!FlagSetting.muteFlag) {
+			SoundManager.getInstance().play2(sourceBackground, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 		}
 
 	}
@@ -182,7 +182,7 @@ public class Play extends GameScene {
 
 		} else {
 			Logger.getAnonymousLogger().log(Level.INFO, "Game over");
-			if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+			if (!FlagSetting.muteFlag) {
 				// BGMを止める
 				SoundManager.getInstance().stop(sourceBackground);
 			}
@@ -202,7 +202,7 @@ public class Play extends GameScene {
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+			if (!FlagSetting.muteFlag) {
 				// BGMを止める
 				SoundManager.getInstance().stop(sourceBackground);
 			}
@@ -225,7 +225,7 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 
 		InputManager.getInstance().clear();
-		if (FlagSetting.enableWindow && !FlagSetting.muteFlag) {
+		if (!FlagSetting.muteFlag) {
 			SoundManager.getInstance().play2(sourceBackground,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
 		}
 	}
@@ -235,7 +235,7 @@ public class Play extends GameScene {
 	 */
 	private void processingBreakTime() {
 		// ダミーフレームをAIにセット
-		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), this.audioData);
+		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), new AudioData());
 
 		if (FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
@@ -309,7 +309,7 @@ public class Play extends GameScene {
 	 * ラウンド終了時の処理を行う.
 	 */
 	private void processingRoundEnd() {
-		if (FlagSetting.enableWindow && !FlagSetting.muteFlag){
+		if (!FlagSetting.muteFlag){
 			ArrayList<AudioSource> audioSources = SoundManager.getInstance().getAudioSources();
 			for(AudioSource audioSource: audioSources)
 				SoundManager.getInstance().stop(audioSource);

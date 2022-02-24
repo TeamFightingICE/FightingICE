@@ -440,7 +440,7 @@ public class Character {
         Name = executeAction.toString();
 
         // Playing sound effects based on the actions.
-        if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
+        if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
             if (Arrays.asList("JUMP", "FOR_JUMP", "BACK_JUMP", "THROW_A", "THROW_B", "THROW_HIT", "THROW_SUFFER", "STAND_A", "STAND_B", "CROUCH_A", "CROUCH_B", "AIR_A", "AIR_B", "AIR_DA", "AIR_DB", "STAND_FA", "STAND_FB", "CROUCH_FA", "CROUCH_FB", "AIR_FA", "AIR_FB", "AIR_UA", "AIR_UB", "STAND_F_D_DFA", "STAND_F_D_DFB", "STAND_D_DB_BA", "STAND_D_DB_BB", "AIR_F_D_DFA", "AIR_F_D_DFB", "AIR_D_DB_BA", "AIR_D_DB_BB").contains(Name)) {
                 Name = Name + ".wav";
 
@@ -509,7 +509,7 @@ public class Character {
                 runAction(Action.LANDING, true);
                 setSpeedY(0);
 
-                if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
+                if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
                     SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("LANDING.wav"), this.x, this.y, false);
                 }
             }
@@ -558,7 +558,7 @@ public class Character {
             this.processedCommands.removeFirst();
 
         // Different Conditions for the sound effects
-        if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
+        if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
             if (this.energy > this.preEnergy + 50) {
                 this.preEnergy = this.energy;
                 if (this.playerNumber) {
@@ -654,7 +654,7 @@ public class Character {
             setRemainingFrame(attack.getGiveGuardRecov());
             opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
-            if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
+            if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
                 SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("WeakGuard.wav"), this.x, this.y, false);
             }
         } else {
@@ -685,7 +685,7 @@ public class Character {
                     runAction(Action.CHANGE_DOWN, false);
                     setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
 
-                    if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
+                    if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
                         SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("HitB.wav"), this.x, this.y, false);
 
                     }
@@ -708,7 +708,7 @@ public class Character {
                             break;
                     }
 
-                    if (FlagSetting.enableWindow && !FlagSetting.muteFlag && !this.isSimulateProcess) {
+                    if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
                         SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("HitA.wav"), this.x, this.y, false);
                     }
                 }

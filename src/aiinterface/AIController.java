@@ -225,7 +225,7 @@ public class AIController extends Thread {
         }
     }
 
-    public void setAudioData(AudioData audioData) {
+    public synchronized void setAudioData(AudioData audioData) {
         this.audioData = audioData;
     }
 }

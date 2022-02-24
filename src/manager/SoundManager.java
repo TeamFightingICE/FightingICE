@@ -137,7 +137,7 @@ public class SoundManager {
         // OpenAL㝮デフォルトデポイス㝫接続㝙る
         // sound renderers
         this.soundRenderers = new ArrayList<>();
-        if (!FlagSetting.fastModeFlag && !FlagSetting.muteFlag) {
+        if (!FlagSetting.fastModeFlag && !FlagSetting.muteFlag && FlagSetting.enableWindow) {
             this.soundRenderers.add(SoundRender.createDefaultRenderer());
         }
         virtualRenderer = SoundRender.createVirtualRenderer();

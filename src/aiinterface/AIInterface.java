@@ -98,9 +98,12 @@ public interface AIInterface {
 	};
 
 	/**
-	 * Gets the audio information in each frame.
+	 * Gets the audio information in each frame.<br>
+	 * For more details on the data structure, please see
+	 * <a href="https://tinyurl.com/DareFightingICE/AI" target="blank">https://tinyurl.com/DareFightingICE/AI</a>.
 	 * @param ad
 	 * 			the audio information.
+	 *
 	 */
 	default void getAudioData(AudioData ad){
 

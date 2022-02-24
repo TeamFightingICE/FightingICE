@@ -22,7 +22,7 @@ public class SoundRender {
      */
     long context;
     /**
-     * The capacibillities of the OpenAL Context API.
+     * The capabilities of the OpenAL Context API.
      */
     ALCCapabilities deviceCaps;
 
@@ -108,6 +108,8 @@ public class SoundRender {
      */
     public void play(int sourceId, int bufferId, int x, int y, boolean loop) {
         set();
+        if(isPlaying(sourceId))
+            stop(sourceId);
         AL10.alSourcei(sourceId, AL10.AL_BUFFER, bufferId);
         alSourcei(sourceId, AL_BUFFER, bufferId);
         alSource3f(sourceId, AL_POSITION, x, 0, 4);
@@ -221,6 +223,10 @@ public class SoundRender {
         }
         separatedBuffer[0] = leftBuffer;
         separatedBuffer[1] = rightBuffer;
+        for(int i = 0; i < separatedBuffer.length; i++)
+            for(int j = 0; j < separatedBuffer[0].length; j++)
+                if(Math.abs(separatedBuffer[i][j]) > 1)
+                    System.out.println("not normalized");
         return separatedBuffer;
     }
 

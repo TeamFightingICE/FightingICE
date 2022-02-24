@@ -106,7 +106,7 @@ public class Game extends GameManager {
                     break;
                 case "--disable-window":
                     FlagSetting.enableWindow = false;
-                    FlagSetting.muteFlag = true;
+//                    FlagSetting.muteFlag = true;
                     FlagSetting.automationFlag = true;
                     break;
                 case "--fastmode":
