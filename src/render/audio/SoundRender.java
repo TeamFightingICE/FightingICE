@@ -223,10 +223,6 @@ public class SoundRender {
         }
         separatedBuffer[0] = leftBuffer;
         separatedBuffer[1] = rightBuffer;
-        for(int i = 0; i < separatedBuffer.length; i++)
-            for(int j = 0; j < separatedBuffer[0].length; j++)
-                if(Math.abs(separatedBuffer[i][j]) > 1)
-                    System.out.println("not normalized");
         return separatedBuffer;
     }
 
