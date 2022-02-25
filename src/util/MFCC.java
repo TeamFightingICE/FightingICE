@@ -19,9 +19,9 @@ public class MFCC {
 
     private final static int       n_mfcc       		= 20;
     private final static float    fMin                 = 0.0F;
-    private final static int       n_fft                = 32;
-    private final static int       hop_length           = 128;
-    private final static int	   n_mels               = 128;
+    private final static int       n_fft                = 1024;
+    private final static int       hop_length           = (int)(GameSetting.SOUND_SAMPLING_RATE * 0.01);
+    private final static int	   n_mels               = 80;
 
     private final static float    sampleRate           = GameSetting.SOUND_SAMPLING_RATE;
     private final static float    fMax                 = (float) (sampleRate/2.0);
