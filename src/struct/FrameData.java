@@ -122,7 +122,7 @@ public class FrameData {
 
     public void removeVisualData() {
         this.characterData = new CharacterData[2];
-        this.currentFrameNumber = -1;
+//        this.currentFrameNumber = -1;
         this.currentRound = -1;
         this.projectileData = new LinkedList<AttackData>();
     }
