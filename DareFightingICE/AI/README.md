@@ -32,7 +32,7 @@ A sample AI will be provided later.
 
 ### Rules:
 ---
-One game has three rounds. The maximum fighting time of a round is 60s. After one round, the character's positions and HPs will be reset, and a new round is started. All games in the competition are conducted with the options "--limithp [P1HP] [P2HP]" (limit-HP mode), "--grey-bg" (grey-background), "--inverted-player 1" (invert-color mode) and "--blind-player 1/2/0" (allow access only to sound data for players 1/2/both) of DareFightingICE. Please note that the FrameData information sent to AIs will have a delay of 15 frames, but sound data and visual data have no delay.
+One game has three rounds. The maximum fighting time of a round is 60s. After one round, the character's positions and HPs will be reset, and a new round is started. All games in the competition are conducted with the options "--limithp [P1HP] [P2HP]" (limit-HP mode) and "--blind-player 1/2/0" (limit access only to sound data for players 1/2/both) of DareFightingICE. Please note that the FrameData information sent to AIs will have a delay of 15 frames, but sound data and visual data have no delay.
 
 Please keep in mind that although FrameData and visual data are accessible during AI training phase, in the competition, only sound data is provided to all the participating AIs.
 
