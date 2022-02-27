@@ -18,7 +18,7 @@ See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</
 See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this page</a> for the details of this track.<br>
 
 ### <b>Prizes:</b>
-TBD -> TBD (around March 18, 2022)
+TBD (around March 18, 2022)
 
 ### <b>Contact Us:</b>
 ftg dot aic at gmail dot com 
