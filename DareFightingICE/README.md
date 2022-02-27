@@ -14,7 +14,7 @@ To know more about FightingICE, visit the website of <a href="https://www.ice.ci
 ### <b>AI Track:</b>
 See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</a> for the details of this track.<br>
 
-### <b>Sound Track:</b>
+### <b>Sound Design Track:</b>
 See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this page</a> for the details of this track.<br>
 
 ### <b>Prizes:</b>
