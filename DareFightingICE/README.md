@@ -22,3 +22,7 @@ TBD (around March 18, 2022)
 
 ### <b>Contact Us:</b>
 ftg dot aic at gmail dot com 
+
+### <b>Papers:</b>
+See also <a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about this competition (under review).<br>
+
