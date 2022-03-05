@@ -26,3 +26,7 @@ ftg dot aic at gmail dot com
 ### <b>Papers:</b>
 See also <a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about this competition (under review).<br>
 
+### <b>Facebook:</b>
+Here is our <a href="https://www.facebook.com/ftg.aic" target="_blank">FB page</a>.<br>
+
+---
