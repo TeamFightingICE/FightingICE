@@ -523,21 +523,21 @@ public class ResourceLoader {
 		File[] files = new File(ResourceSetting.SOUND_DIRECTORY).listFiles();
 		sortByFileName(files);
 
-		for (File file : files) {
-			if (!file.getName().equals(ResourceSetting.BGM_FILE)) {
-				SoundManager.getInstance().getSoundEffect().put(file.getName(),
-						SoundManager.getInstance().loadSoundResource(file.getPath(), false));
-			}
-		}
-	}
+        for (File file : files) {
+            if (!file.getName().equals(ResourceSetting.BGM_FILE)) {
+                SoundManager.getInstance().getSoundBuffers().put(file.getName(),
+                        SoundManager.getInstance().createAudioBuffer(file.getPath(), false));
+            }
+        }
+    }
 
-	/**
-	 * BGMを読み込む．
-	 */
-	private void loadBackGroundMusic() {
-		SoundManager.getInstance().setBackGroundMusic(SoundManager.getInstance()
-				.loadSoundResource(ResourceSetting.SOUND_DIRECTORY + ResourceSetting.BGM_FILE, true));
-	}
+    /**
+     * BGMを読み込む．
+     */
+    private void loadBackGroundMusic() {
+        SoundManager.getInstance().setBackGroundMusicBuffer(SoundManager.getInstance()
+                .createAudioBuffer(ResourceSetting.SOUND_DIRECTORY + ResourceSetting.BGM_FILE, true));
+    }
 
 	/**
 	 * リソースが読み込み済みかどうかを返す．

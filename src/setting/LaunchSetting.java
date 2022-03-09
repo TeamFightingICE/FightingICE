@@ -70,4 +70,9 @@ public final class LaunchSetting {
 	 */
 	public static PyGatewayServer pyGatewayServer = null;
 
+	/**
+	 * AI's visual data is disabled or not
+	 */
+
+	public static boolean[] noVisual = {false, false};
 }

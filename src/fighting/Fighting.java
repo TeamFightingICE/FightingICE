@@ -79,6 +79,8 @@ public class Fighting {
 		this.playerCharacters[1].setProcessedCommand(new LinkedList<Key>());
 		this.playerCharacters[0].setInputCommand(new LinkedList<Key>());
 		this.playerCharacters[1].setInputCommand(new LinkedList<Key>());
+		this.playerCharacters[0].resetEnergyCount();
+		this.playerCharacters[1].resetEnergyCount();
 	}
 	
 	/**

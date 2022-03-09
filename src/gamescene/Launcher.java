@@ -84,10 +84,11 @@ public class Launcher extends GameScene {
 				this.setGameEndFlag(true);
 			}
 
-			if (FlagSetting.enableWindow) {
-				// Loads resources
-				ResourceLoader.getInstance().loadResource();
-			}
+//			if (FlagSetting.enableWindow) {
+//				// Loads resources
+//				ResourceLoader.getInstance().loadResource();
+//			}
+			ResourceLoader.getInstance().loadResource();
 		}
 	}
 

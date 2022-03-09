@@ -20,6 +20,7 @@ import manager.SoundManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import struct.AudioSource;
 import struct.FrameData;
 import struct.Key;
 import struct.ScreenData;
@@ -44,6 +45,8 @@ public class Replay extends GameScene {
 	 * 現在のフレーム．
 	 */
 	private int nowFrame;
+
+	private AudioSource audioSource;
 
 	/**
 	 * 各ラウンド前に行う初期化処理内における経過フレーム数．
@@ -122,6 +125,7 @@ public class Replay extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
+		this.audioSource = SoundManager.getInstance().createAudioSource();
 
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
@@ -130,7 +134,7 @@ public class Replay extends GameScene {
 		this.playSpeedArray = new int[] { 0, 1, 2, 4 };
 		this.isFinished = false;
 
-		SoundManager.getInstance().play(SoundManager.getInstance().getBackGroundMusic());
+		SoundManager.getInstance().play2(audioSource,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
 	}
 
 	@Override
@@ -174,13 +178,13 @@ public class Replay extends GameScene {
 
 		} else {
 			// BGMを止める
-			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+			SoundManager.getInstance().stop(audioSource);
 			transitionProcess();
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
 			// BGMを止める
-			SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+			SoundManager.getInstance().stop(audioSource);
 			transitionProcess();
 		}
 
@@ -293,7 +297,7 @@ public class Replay extends GameScene {
 					e1.printStackTrace();
 				}
 				// BGMを止める
-				SoundManager.getInstance().stop(SoundManager.getInstance().getBackGroundMusic());
+				SoundManager.getInstance().stop(audioSource);
 				transitionProcess();
 
 				break;
