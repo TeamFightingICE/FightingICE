@@ -1,15 +1,11 @@
 package aiinterface;
 
-import struct.FrameData;
-import struct.GameData;
-import struct.Key;
-import struct.ScreenData;
+import struct.*;
 
 /**
  * The interface that defines the methods to implement in AI.
  */
 public interface AIInterface {
-
 	/**
 	 * This method initializes AI, and it will be executed only once in the
 	 * beginning of each game. <br>
@@ -49,19 +45,16 @@ public interface AIInterface {
 	 * @param isControl
 	 *            whether the character can act. this parameter is not delayed
 	 *            unlike {@link struct.CharacterData#isControl()}
-	 * @param nonDelay
-	 *            frameData that has no delay.
 	 * @see FrameData
 	 */
-	
-	default void getInformation(FrameData fd, boolean isControl, FrameData nonDelay) {
-		getInformation(fd, isControl);
-	}
 
 	default void getInformation(FrameData fd, boolean isControl) {
 		getInformation(fd);
 	}
-	
+	default void getInformation(FrameData fd, boolean isControl, FrameData nonDelay) {
+		getInformation(fd);
+	}
+
 	void getInformation(FrameData fd);
 
 	/**
@@ -102,9 +95,20 @@ public interface AIInterface {
 	 * Gets the screen information in each frame.
 	 *
 	 * @param sd
-	 *            the screen information such as the pixel data
+	 *            the screen information such as the pixel data, it will be empty in blind mode.
 	 */
 	default void getScreenData(ScreenData sd) {
 	};
 
+	/**
+	 * Gets the audio information in each frame.<br>
+	 * For more details on the data structure, please see
+	 * <a href="https://tinyurl.com/DareFightingICE/AI" target="blank">https://tinyurl.com/DareFightingICE/AI</a>.
+	 * @param ad
+	 * 			the audio information.
+	 *
+	 */
+	default void getAudioData(AudioData ad){
+
+	};
 }

@@ -1436,4 +1436,17 @@ public class Character {
     public boolean isSimulateProcess() {
         return this.isSimulateProcess;
     }
+
+    public void close(){
+        // close all sound sources
+        sourceDefault.close();
+        sourceLanding.close();
+        sourceWalking.close();
+        sourceProjectTiles[0].close();
+        sourceProjectTiles[1].close();
+        sourceProjectTiles[2].close();
+        sourceEnergyChange.close();
+        sourceBorderAlert.close();
+        sourceHeartBeat.close();
+    }
 }

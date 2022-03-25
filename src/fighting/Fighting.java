@@ -503,4 +503,9 @@ public class Fighting {
 	public Deque<LoopEffect> getProjectileDeque() {
 		return new LinkedList<LoopEffect>(this.projectileDeque);
 	}
+
+	public void close(){
+		for (Character character: this.getCharacters())
+			character.close();
+	}
 }

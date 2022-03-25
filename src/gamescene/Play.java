@@ -393,6 +393,10 @@ public class Play extends GameScene {
 
 	@Override
 	public void close() {
+		// close fight
+		this.fighting.close();
+		this.sourceBackground.close();
+
 		this.fighting = null;
 		this.frameData = null;
 		this.screenData = null;
