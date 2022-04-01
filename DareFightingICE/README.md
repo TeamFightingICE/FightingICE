@@ -18,7 +18,7 @@ See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</
 See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this page</a> for the details of this track.<br>
 
 ### <b>Prizes:</b>
-TBD (around March 18, 2022)
+A money prize of $500 from IEEE CIS will be equally split and awarded to the qualified winner of each track (i.e., $250 each). However, if there is only one qualified winner, that winner will be awarded with $500. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### <b>Contact Us:</b>
 ftg dot aic at gmail dot com 
