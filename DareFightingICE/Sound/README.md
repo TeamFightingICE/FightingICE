@@ -31,7 +31,7 @@ Directory for sound effects:
 -	DareFightingICE\data\sounds <br>
 ~~~
 For this competition, you will only need to come up with the sound design for a single character (Zen).
-All the sound effects must be in .wav format. The sound effects should be mono or stereo unless you have changed the source code. 
+All the sound effects must be in .wav format. The sound effects should be mono unless you have changed the source code. 
 ~~~
 
 ### Sample Sound Design:
@@ -60,8 +60,8 @@ Evaluation of your sound designs will be done as follows: <br>
 Normal players (players with vision) will test your sound design while wearing a blindfold. The total number of players testing your sound design is not static, but rest assured it will not be a very small number, like 3,4, etc. If the total number of sound designs is more than 5, the sound designs will go through the Pre-Screening process and the top 5 will be selected. The top 5 will then go through the screening process. If the number is 5 or lower, the pre-screening process will be skipped.<br>
 
 Pre-screening:
-- 2 human players will play against each other for one round using the sample sound design. The replay of the same round will be played using all the sound designs submitted (all videos will be of the same match but different sound designs).
-- A sound aesthetic survey will be conducted targeting general respondents (students from Ritsumeikan University). The result of this survey will determine the top 5 sound designs.
+- Two most capable normal test players will play against each other for one round using the default sound design. The replay of the same round will be played using all the submitted sound designs – all videos will be of the same match but different sound designs.
+- A sound aesthetic survey will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
 
 Screening:
 - The blindfolded players will play against a [weak AI](../SampleAI/MctsAi65) (a weak form of [MCTS AI](http://www.ice.ci.ritsumei.ac.jp/~ftgaic/Downloadfiles/2018_Sample_AIs.zip)), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
