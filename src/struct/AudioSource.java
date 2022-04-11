@@ -1,5 +1,7 @@
 package struct;
 
+import manager.SoundManager;
+
 /**
  * The class representing OpenAL audio source in multiple devices.
  */
@@ -23,5 +25,12 @@ public class AudioSource {
      */
     public int[] getSourceIds() {
         return sourceIds;
+    }
+
+    /**
+     * Close the source to release OpenAL source ids
+     */
+    public void close(){
+        SoundManager.getInstance().deleteSource(this);
     }
 }
