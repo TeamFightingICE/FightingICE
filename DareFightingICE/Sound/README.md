@@ -71,6 +71,11 @@ Screening:
 -  The sample blind DL AI's learning curve, win-lose ratio, and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
 
 
+### Instructions About Sound Design:
+---
+- To understand the working of our sample sound design please read this [guide](https://github.com/TeamFightingICE/FightingICE/blob/a746f8800954afbb4148f940f9495bf3b353d8cc/DareFightingICE/Sound/Guides/Instructions%20and%20Tips.pdf).
+- For tips on how to change the sample sound design or create a new one, follow this [guide](https://github.com/TeamFightingICE/FightingICE/blob/a746f8800954afbb4148f940f9495bf3b353d8cc/DareFightingICE/Sound/Guides/Instructions%20on%20Sound%20Design.pdf).
+
 ### Installation Guide:
 ---
 To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html).
