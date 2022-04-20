@@ -20,7 +20,7 @@ You will submit:
 -  A slide file(ppt) explaining the changes and the reasoning behind them. 
 -  A tutorial video (maximum length of video is 3 min) featuring the important features of your sound design.
 -  Keep in mind that you do not need to edit the source code, you can just change the sounds, but give them the same name as the sounds already in the sound folder. To change the background music just overwrite the “BGM0” audio file with your own background music (name should remain the same). 
--  You are allowed to add new soruce code files and any technique like procedural content generation to generate sounds. The programming language you are allowed to use is Java and any other languages that can be wrapped with Java. Make sure to put new source files in "DareFightingICE\src" and any data files in 	"DareFightingICE\data". <br>
+-  You are allowed to add new source code files and any technique like procedural content generation to generate sounds. The programming language you are allowed to use is Java or any other languages that can be wrapped with Java. Make sure to put new source files in "DareFightingICE\src" and any data files in 	"DareFightingICE\data". <br>
 
 Source code files you are allowed to edit are:
 -	DareFightingICE\src\fighting\Character.java
@@ -31,7 +31,7 @@ Directory for sound effects:
 -	DareFightingICE\data\sounds <br>
 ~~~
 For this competition, you will only need to come up with the sound design for a single character (Zen).
-All the sound effects must be in .wav format. The sound effects should be mono or stereo unless you have changed the source code. 
+All the sound effects must be in .wav format. The sound effects should be mono unless you have changed the source code. 
 ~~~
 
 ### Sample Sound Design:
@@ -60,20 +60,25 @@ Evaluation of your sound designs will be done as follows: <br>
 Normal players (players with vision) will test your sound design while wearing a blindfold. The total number of players testing your sound design is not static, but rest assured it will not be a very small number, like 3,4, etc. If the total number of sound designs is more than 5, the sound designs will go through the Pre-Screening process and the top 5 will be selected. The top 5 will then go through the screening process. If the number is 5 or lower, the pre-screening process will be skipped.<br>
 
 Pre-screening:
-- 2 human players will play against each other for one round using the sample sound design. The replay of the same round will be played using all the sound designs submitted (all videos will be of the same match but different sound designs).
-- A sound aesthetic survey will be conducted targeting general respondents (students from Ritsumeikan University). The result of this survey will determine the top 5 sound designs.
+- Two most capable normal test players will play against each other for one round using the default sound design. The replay of the same round will be played using all the submitted sound designs – all videos will be of the same match but different sound designs.
+- A sound aesthetic survey will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
 
 Screening:
 - The blindfolded players will play against a [weak AI](../SampleAI/MctsAi65) (a weak form of [MCTS AI](http://www.ice.ci.ritsumei.ac.jp/~ftgaic/Downloadfiles/2018_Sample_AIs.zip)), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
 - Each player will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design, and the score will be calculated by health point (HP) difference between the player and the AI, in relative to the HP difference when playing without being blindfolded.
 - After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
-- In addition, [our sample blind deep-learning (DL) AI](../SampleAI/Deep%20Learning%20AI) will play the game against the same weak MCTS AI, also 3 games for each sound design.
+- In addition, [our sample blind deep-learning (DL) AI](../SampleAI/Deep%20Learning%20AI) will be newly trained with each sound design and then play the game (3 games per sound design) against the same weak MCTS AI.
 -  The sample blind DL AI's learning curve, win-lose ratio, and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
 
 
+### Instructions About Sound Design:
+---
+- To understand the working of our sample sound design please read this [guide](https://github.com/TeamFightingICE/FightingICE/blob/e5e132d055675472700ca101470c14ea2742735d/DareFightingICE/Sound/Guides/Instructions%20on%20Sound%20Design.pdf).
+- For tips on how to change the sample sound design or create a new one, follow this [guide](https://github.com/TeamFightingICE/FightingICE/blob/a746f8800954afbb4148f940f9495bf3b353d8cc/DareFightingICE/Sound/Guides/Instructions%20and%20Tips.pdf).
+
 ### Installation Guide:
 ---
-To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html).
+To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 5.2)
 
 
 ### Submission:

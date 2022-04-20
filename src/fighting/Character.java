@@ -578,12 +578,14 @@ public class Character {
 
                 }
             }
-		/*	if(this.hp < 50) {
-				if(!SoundManager.getInstance().isPlaying(sourceid7)) {
-					if(this.playerNumber)SoundManager.getInstance().play2(sourceid7,SoundManager.getInstance().getSoundEffect().get("Heartbeat.wav"),0,0,false);
-					else SoundManager.getInstance().play2(sourceid7,SoundManager.getInstance().getSoundEffect().get("Heartbeat.wav"),GameSetting.STAGE_WIDTH,0,false);
-				}
-			}  */
+            if(FlagSetting.limitHpFlag) {
+            	if(this.hp < 50) {
+            		if(!SoundManager.getInstance().isPlaying(sourceHeartBeat)) {
+            			if(this.playerNumber)SoundManager.getInstance().play2(sourceHeartBeat,SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"),0,0,false);
+            			else SoundManager.getInstance().play2(sourceHeartBeat,SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"),GameSetting.STAGE_WIDTH,0,false);
+            		}
+            	}  
+            }
 
             // This is to make sure crouch sound does not loop while the character is crouching.
             if (!this.state.toString().equals("CROUCH")) {
