@@ -24,7 +24,7 @@ A money prize of $500 from IEEE CIS will be equally split and awarded to the qua
 ftg dot aic at gmail dot com 
 
 ### <b>Papers:</b>
-See also <a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about this competition (under review).<br>
+See also <a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about this competition (accepted for oral presentation at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a>, to be updated by the end of May 2022).<br>
 
 ### <b>Facebook:</b>
 Here is our <a href="https://www.facebook.com/ftg.aic" target="_blank">FB page</a>.<br>
