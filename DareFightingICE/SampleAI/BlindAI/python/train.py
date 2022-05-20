@@ -17,9 +17,9 @@ from py4j.java_gateway import JavaGateway, GatewayParameters, CallbackServerPara
 from torch import optim
 from torch.utils.tensorboard import SummaryWriter
 
-from torch_agent import SoundAgent, CollectDataHelper, SandboxAgent
-from torch_model import Actor, Critic, FeedForwardActor, FeedForwardCritic
-from torch_encoder import SampleEncoder, RawEncoder, FFTEncoder, MelSpecEncoder
+from agent import SoundAgent, CollectDataHelper, SandboxAgent
+from model import RecurrentActor, RecurrentCritic, FeedForwardActor, FeedForwardCritic
+from encoder import SampleEncoder, RawEncoder, FFTEncoder, MelSpecEncoder
 import pickle
 import tqdm
 import pathlib
@@ -52,7 +52,7 @@ LEARNING_RATE = 0.0003
 GAMMA = 0.99
 C1 = 0.95
 LAMBDA = 0.95
-ENCODER_NAME = 'raw'
+ENCODER_NAME = 'conv1d'
 # EXPERIMENT_NAME = 'experiment_{}'.format(args.encoder)
 BASE_CHECKPOINT_PATH = f'ppo_pytorch/checkpoints'
 ROLL_OUT = 3600
@@ -60,12 +60,12 @@ ROLL_OUT = 3600
 BATCH_SIZE = 64
 STATE_DIM = {
     1: {
-        'raw': 160,
+        'conv1d': 160,
         'fft': 512,
         'mel': 2560
     },
     4: {
-        'raw': 64,
+        'conv1d': 64,
         'fft': 512,
         'mel': 1280
     }
@@ -73,7 +73,7 @@ STATE_DIM = {
 GATHER_DEVICE = 'cpu'
 # GATHER_DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 TRAIN_DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-BATCH_LEN = 512
+BATCH_LEN = 32
 TRAIN_EPOCH = 10
 PPO_CLIP = 0.2
 ENTROPY_FACTOR = 0.01
@@ -81,10 +81,7 @@ VF_FACTOR = 1
 MAX_GRAD_NORM = 1.0
 ACTION_NUM = 40
 N_FRAME = 1
-CMDS = {
-    "windows": "java -cp FightingICE.jar;./lib/lwjgl/*;./lib/natives/windows/*;./lib/*;  Main --limithp 400 400 --py4j --port {} --fastmode",
-    "linux": "java -cp FightingICE.jar:./lib/lwjgl/*:./lib/natives/linux/*:./lib/* Main --limithp 400 400 --py4j --port {} --fastmode",
-}
+
 def kill_proc_tree(pid, including_parent=True):    
     parent = psutil.Process(pid)
     children = parent.children(recursive=True)
@@ -212,21 +209,6 @@ def normalize_reward(reward):
 
 # collect trajectories
 def collect_trajectories(actor, critic, port, game_num, p2, rnn, n_frame):
-    # init java gateway
-    # cmd = f"java -cp FightingICE.jar:./lib/lwjgl/*:./lib/natives/linux/*:./lib/* Main --limithp 400 400 --py4j --fastmode --port {GAME_NUM}"
-    # detect the os
-    os_name = platform.system()
-    if os_name.startswith("Linux"):
-        system_name = "linux"
-    elif os_name.startswith("Darwin"):
-        system_name = "macos"
-    else:
-        system_name = "windows"
-    cmd = CMDS[system_name].format(port)
-    # logger.info(f'Opening fightingice platform: {cmd}')
-    # java_env = subprocess.Popen(cmd, stdout=open('log.txt', 'a'), stderr=open('error.txt', 'a'), shell=False)
-    # logger.info('Sleep for 3 seconds')
-    # time.sleep(3)
     logger.info(f'start fight with {p2}')
     logger.info(f'game_num value {game_num}')
     error = True
@@ -242,9 +224,7 @@ def collect_trajectories(actor, critic, port, game_num, p2, rnn, n_frame):
             sandbox_agent = SandboxAgent(gateway)
             manager.registerAI(f'SoundAgent', agent)
             manager.registerAI('Sandbox', sandbox_agent)
-            # game = manager.createGame('ZEN', 'ZEN', f'SoundAgent', 'MctsAi', game_num)
             game = manager.createGame('ZEN', 'ZEN', 'SoundAgent', p2, game_num)
-            # game = manager.createGame('ZEN', 'ZEN', f'SoundAgent', 'Sandbox_agent', game_num)
 
             # start game
             manager.runGame(game)
@@ -263,12 +243,6 @@ def collect_trajectories(actor, critic, port, game_num, p2, rnn, n_frame):
             gateway.close_callback_server()
             gateway.close()
             error = True
-    # java_env.kill()
-    # java_env.terminate()
-    # java_env.wait()
-    # del java_env
-    # os.killpg(os.getpgid(java_env.pid), signal.SIGTERM)
-
 
     # return agent.get_trajectories_data()
     agent_data = process_game_agent_data(actor, critic, agent.collect_data_helper, rnn)
@@ -278,11 +252,6 @@ def collect_trajectories(actor, critic, port, game_num, p2, rnn, n_frame):
     #     print('kill process')
     # agent.reset()
     return agent_data
-
-
-# # manage java gateway
-# def run_game_gateway(actor, critic):
-#     agent = SoundAgent()
 
 
 def compute_advantages(rewards, values, discount, gae_lambda):
@@ -388,12 +357,12 @@ class TrajectoryDataset():
     Fast dataset for producing training batches from trajectories.
     """
 
-    def __init__(self, trajectories, batch_size, device, batch_len, recurrent=True):
+    def __init__(self, trajectories, batch_size, device, sequence_len, recurrent=True):
 
         # Combine multiple trajectories into
         self.trajectories = {key: value.to(device) for key, value in trajectories.items()}
-        self.batch_len = batch_len
-        truncated_seq_len = torch.clamp(trajectories["seq_len"] - batch_len + 1, 0, ROLL_OUT)
+        self.sequence_len = sequence_len
+        truncated_seq_len = torch.clamp(trajectories["seq_len"] - sequence_len + 1, 0, ROLL_OUT)
         self.cumsum_seq_len = np.cumsum(np.concatenate((np.array([0]), truncated_seq_len.numpy())))
         self.batch_size = batch_size
         self.recurrent = recurrent
@@ -405,7 +374,7 @@ class TrajectoryDataset():
 
     def __next__(self):
         # print(self.batch_count * self.batch_size, math.ceil(self.cumsum_seq_len[-1] / self.batch_len))
-        if self.batch_count * self.batch_size >= math.ceil(self.cumsum_seq_len[-1] / self.batch_len):
+        if self.batch_count * self.batch_size >= math.ceil(self.cumsum_seq_len[-1] / self.sequence_len):
             raise StopIteration
         else:
             actual_batch_size = min(len(self.valid_idx), self.batch_size)
@@ -413,7 +382,7 @@ class TrajectoryDataset():
             self.valid_idx = np.setdiff1d(self.valid_idx, start_idx)
             eps_idx = np.digitize(start_idx, bins=self.cumsum_seq_len, right=False) - 1
             seq_idx = start_idx - self.cumsum_seq_len[eps_idx]
-            series_idx = np.linspace(seq_idx, seq_idx + self.batch_len - 1, num=self.batch_len, dtype=np.int64)
+            series_idx = np.linspace(seq_idx, seq_idx + self.sequence_len - 1, num=self.sequence_len, dtype=np.int64)
             self.batch_count += 1
             if self.recurrent:
                 return TrajectorBatchRNN(**{key: magic_combine(value[eps_idx, series_idx], 0, 2) for key, value
@@ -489,8 +458,6 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, por
         # Train actor and critic
         for _ in tqdm.trange(TRAIN_EPOCH):
             for batch in trajectory_dataset:
-                # print(train_count)
-                # train_count += 1
                 # Get batch
                 # actor.hidden_cell = (batch.actor_hidden_states[:1], batch.actor_cell_states[:1])
                 if recurrent:
@@ -526,21 +493,6 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, por
                 torch.nn.utils.clip_grad.clip_grad_norm_(critic.parameters(), MAX_GRAD_NORM)
                 critic_loss.backward()
                 critic_optimizer.step()
-
-
-
-
-                # critic_loss = (batch.discounted_returns - values.squeeze()) ** 2
-                # critic_loss = critic_loss.mean()
-                
-                # # critic_loss.backward()
-                # loss = actor_loss + VF_FACTOR * critic_loss
-                # torch.nn.utils.clip_grad.clip_grad_norm_(actor.parameters(), MAX_GRAD_NORM)
-                # # actor_optimizer.step()
-                # torch.nn.utils.clip_grad.clip_grad_norm_(critic.parameters(), MAX_GRAD_NORM)
-                # loss.backward()
-                # actor_optimizer.step()
-                # critic_optimizer.step()
         end_train_time = time.time()
 
         # save mean reward to text file
@@ -624,14 +576,14 @@ def init(encoder_name, experiment_id, n_frame, rnn=True):
         print('init feedforward network')
     # initialize new data
     if rnn:
-        actor_model = Actor(STATE_DIM[n_frame][encoder_name], HIDDEN_SIZE, RECURRENT_LAYERS, get_sound_encoder(encoder_name, n_frame),
+        actor_model = RecurrentActor(STATE_DIM[n_frame][encoder_name], HIDDEN_SIZE, RECURRENT_LAYERS, get_sound_encoder(encoder_name, n_frame),
                         action_num=ACTION_NUM)
     else:
         actor_model = FeedForwardActor(STATE_DIM[n_frame][encoder_name], HIDDEN_SIZE, RECURRENT_LAYERS, get_sound_encoder(encoder_name, n_frame),
                         action_num=ACTION_NUM)
     actor_opt = optim.Adam(actor_model.parameters(), lr=LEARNING_RATE)
     if rnn:
-        critic_model = Critic(STATE_DIM[n_frame][encoder_name], HIDDEN_SIZE, RECURRENT_LAYERS, get_sound_encoder(encoder_name, n_frame))
+        critic_model = RecurrentCritic(STATE_DIM[n_frame][encoder_name], HIDDEN_SIZE, RECURRENT_LAYERS, get_sound_encoder(encoder_name, n_frame))
     else:
         critic_model = FeedForwardCritic(STATE_DIM[n_frame][encoder_name], HIDDEN_SIZE, RECURRENT_LAYERS, get_sound_encoder(encoder_name, n_frame))
     critic_opt = optim.Adam(critic_model.parameters(), lr=LEARNING_RATE)
@@ -673,7 +625,7 @@ def get_last_checkpoint_iteration(encoder_name, experiment_id, rnn):
 
 def get_sound_encoder(encoder_name, n_frame):
     encoder = None
-    if encoder_name == 'raw':
+    if encoder_name == 'conv1d':
         encoder = RawEncoder(frame_skip=n_frame)
     elif encoder_name == 'fft':
         encoder = FFTEncoder(frame_skip=n_frame)
@@ -709,17 +661,13 @@ def save_checkpoint(actor, critic, actor_optimizer, critic_optimizer, iteration,
     with open(CHECKPOINT_PATH + "parameters.pt", "wb") as f:
         pickle.dump(checkpoint, f)
     with open(CHECKPOINT_PATH + "actor_class.pt", "wb") as f:
-        pickle.dump(Actor, f)
+        pickle.dump(type(actor), f)
     with open(CHECKPOINT_PATH + "critic_class.pt", "wb") as f:
-        pickle.dump(Critic, f)
+        pickle.dump(type(actor), f)
     torch.save(actor.state_dict(), CHECKPOINT_PATH + "actor.pt")
     torch.save(critic.state_dict(), CHECKPOINT_PATH + "critic.pt")
     torch.save(actor_optimizer.state_dict(), CHECKPOINT_PATH + "actor_optimizer.pt")
     torch.save(critic_optimizer.state_dict(), CHECKPOINT_PATH + "critic_optimizer.pt")
-
-
-# def get_las_checkpoint_iteration(encoder_name, experiment_id):
-#     CHECKPOINT_PATH = f'{BASE_CHECKPOINT_PATH}/{encoder_name}/{experiment_id}'
 
 
 def load_checkpoint(encoder_name, experiment_id, iteration, rnn):
@@ -743,12 +691,12 @@ def load_checkpoint(encoder_name, experiment_id, iteration, rnn):
 if __name__ == '__main__':
     # EXPERIMENT_NAME
     parser = argparse.ArgumentParser()
-    parser.add_argument('--encoder', type=str, choices=['raw', 'fft', 'mel'], default='raw')
-    parser.add_argument('--port', type=int, default=JAVA_GATEWAY_PORT)
-    parser.add_argument('--id', type=str, required=True)
-    parser.add_argument('--p2', choices=['Sandbox', 'MctsAi65', 'MctsAi'], type=str, required=True)
-    parser.add_argument('--recurrent', action='store_true')
-    parser.add_argument('--n_frame', type=int, default=N_FRAME)
+    parser.add_argument('--encoder', type=str, choices=['conv1d', 'fft', 'mel'], default='conv1d', help='Choose an encoder for the Blind AI')
+    parser.add_argument('--port', type=int, default=JAVA_GATEWAY_PORT, help='Port used by DareFightingICE')
+    parser.add_argument('--id', type=str, required=True, help='Experiment id')
+    parser.add_argument('--p2', choices=['Sandbox', 'MctsAi65', 'MctsAi'], type=str, required=True, help='The opponent AI')
+    parser.add_argument('--recurrent', action='store_true', help='Use GRU')
+    parser.add_argument('--n_frame', type=int, default=N_FRAME, help='Number of frame to sample data')
     args = parser.parse_args()
     logger.info('Input parameters:')
     logger.info(' '.join(f'{k}={v}' for k, v in vars(args).items()))

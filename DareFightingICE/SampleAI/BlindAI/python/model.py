@@ -6,7 +6,7 @@ import numpy as np
 HIDDEN_SIZE_1 = 256
 HIDDEN_SIZE_2 = 256
 
-class Actor(nn.Module):
+class RecurrentActor(nn.Module):
     def __init__(self, state_dim, hidden_size, recurrent_layers, encoder=None, action_num=40):
         super().__init__()
         self.hidden_size = hidden_size
@@ -121,7 +121,7 @@ class FeedForwardActor(nn.Module):
         # action = torch.argmax(policy_logits_out)
         return policy_logits_out
 
-class Critic(nn.Module):
+class RecurrentCritic(nn.Module):
     def __init__(self, state_dim, hidden_size, recurrent_layers, encoder=None):
         super().__init__()
         self.hidden_size = hidden_size

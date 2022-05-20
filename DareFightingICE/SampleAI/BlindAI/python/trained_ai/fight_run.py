@@ -8,10 +8,10 @@ gateway = JavaGateway(gateway_parameters=GatewayParameters(port=4242),
                             callback_server_parameters=CallbackServerParameters())
 manager = gateway.entry_point
 current_time = int(time.time() * 1000)
-encoder1 = 'raw'
+encoder1 = 'conv1d'
 encoder2 = 'mel'
 encoder3 = 'fft'
-encoders = ['raw']
+encoders = ['conv1d']
 # register AIs
 # collect_data_helper = CollectDataHelper(logger)
 agent1 = SoundAgent(gateway, encoder=encoder1, logger=logger)

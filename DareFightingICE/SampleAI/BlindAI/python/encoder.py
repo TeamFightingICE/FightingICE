@@ -123,7 +123,6 @@ class FFTEncoder(BaseEncoder):
         c = torch.view_as_complex(x)
         ffts = torch.fft.fft(c)
         ffts = torch.view_as_real(ffts)
-        # print(ffts)
         # Remove mirrored part
         ffts = ffts[:, :(ffts.shape[1] // 2), :]
         # To magnitudes
@@ -132,7 +131,6 @@ class FFTEncoder(BaseEncoder):
 
     def encode_single_channel(self, data):
         """Shape of x: [batch_size, num_samples]"""
-        # TODO Torch 1.8 has "torch.fft.fft"
         mags = self._torch_1d_fft_magnitude(data)
         mags = torch.log(mags + 1e-5)
 
@@ -147,10 +145,6 @@ if __name__ == '__main__':
     # TODO: compare data value vs pytorch version
     encoder = FFTEncoder()
     import numpy as np
-    # torch.Tensor()
     np.random.seed(0)
     data = np.random.randn(1, 3200, 2)
-    # print(data)
-    # print(encoder(torch.Tensor(data)))
-    # print(encoder(torch.Tensor(data)))
 

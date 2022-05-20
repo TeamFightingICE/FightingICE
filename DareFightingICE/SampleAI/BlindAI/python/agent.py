@@ -110,49 +110,7 @@ class SoundAgent:
         # final step
         # state = torch.tensor(obs, dtype=torch.float32)
         terminal = 1
-        # with torch.no_grad():
-        #     value = self.critic(state.unsqueeze(0).to(self.device), terminal=terminal)
-            # future value for terminal episodes is 0
-            # self.round_value_list.append(value.squeeze().to(self.device) * 0)
-        # reward
         true_reward = self.get_reward()
-        # previous state
-        # self.round_true_reward_list.append(torch.tensor(true_reward).float())
-        # self.round_reward_list.append(torch.tensor(self.normalize_reward(true_reward)).float())
-        # self.round_terminal_list.append(torch.tensor(terminal).float())
-        # # final state
-        # self.round_true_reward_list.append(torch.tensor(0).float())
-        # self.round_reward_list.append(torch.tensor(self.normalize_reward(0)).float())
-        # self.round_terminal_list.append(torch.tensor(1).float())
-        # print('reward', len(self.round_reward_list), 'value', len(self.round_value_list), 'state',
-        #       len(self.round_state_list))
-        # append 1 round's data
-        # self.state_list.append(self.round_state_list)
-        # self.value_list.append(self.round_value_list)
-        # self.action_list.append(self.round_action_list)
-        # self.action_probs_list.append(self.round_action_probs_list)
-        # self.true_reward_list.append(self.round_true_reward_list)
-        # self.reward_list.append(self.round_reward_list)
-        # self.terminal_list.append(self.round_terminal_list)
-        # self.actor_hidden_state_list.append(self.round_actor_hidden_state_list)
-        # self.actor_cell_state_list.append(self.round_actor_cell_state_list)
-        # self.critic_hidden_state_list.append(self.round_critic_hidden_state_list)
-        # self.critic_cell_state_list.append(self.round_critic_cell_state_list)
-        # self.episode_lengths.append(len(self.round_state_list))
-
-        # reset round data
-        # self.round_state_list = []
-        # self.round_value_list = []
-        # self.round_action_list = []
-        # self.round_action_probs_list = []
-        # self.round_true_reward_list = []
-        # self.round_reward_list = []
-        # self.round_terminal_list = []
-        # self.round_actor_hidden_state_list = []
-        # self.round_actor_cell_state_list = []
-        # self.round_critic_hidden_state_list = []
-        # self.round_critic_cell_state_list = []
-
         self.collect_data_helper.finish_round()
         self.raw_audio_memory = None
         self.round_count += 1 
@@ -232,55 +190,9 @@ class SoundAgent:
         #
         self.cc.commandCall(self.actions[action])
         self.inputKey = self.cc.getSkillKey()
-
-            ## old
-            # self.round_actor_hidden_state_list.append(self.actor.hidden_cell.squeeze(0).to(self.device))
-            # self.round_critic_hidden_state_list.append(self.critic.hidden_cell.squeeze(0).to(self.device))
-            #
-            # state = torch.tensor(self.raw_audio_memory, dtype=torch.float32)
-            # self.round_state_list.append(state)
-            # value = self.critic(state.unsqueeze(0).to(self.device))  # terminal?
-            # self.round_value_list.append(value.squeeze().to(self.device))
-            # action_dist = self.actor(state.unsqueeze(0).to(self.device))
-            # action = action_dist.sample()
-            # self.round_action_list.append(action.squeeze().to(self.device))
-            # self.round_action_probs_list.append(action_dist.log_prob(action).to(self.device))
-            # if not self.just_inited:
-            #     done = 0
-            #     done = torch.tensor(done).float()
-            #     true_reward = self.get_reward()
-            #     true_reward = torch.tensor(true_reward).float()
-            #     reward = self.normalize_reward(true_reward)
-            #     reward = torch.tensor(reward).float()
-            #     self.round_terminal_list.append(done)
-            #     self.round_true_reward_list.append(true_reward)
-            #     self.round_reward_list.append(reward)
-            #     # self.just_inited = False
-            #
-            # self.just_inited = False
-            # self.cc.commandCall(self.actions[action])
-            # self.inputKey = self.cc.getSkillKey()
-            # with open('log.txt', 'a') as f:
-            #     data = 'reward {} value {} state {}\n'.format(len(self.round_reward_list), len(self.round_value_list),
-            #                                                   len(self.round_state_list))
-            #     f.write(data)
-        # end_time = time.time()
-        # print('processing time', end_time - start_time)
-        # if self.currentFrameNum == 14:
-        #     pass
-        # elif self.isControl:
-        #     pass
-        # process audio hidden state
-        end_time = time.time() * 1000
-        # print('processing time', end_time - start_time)
-        # print(np.sum(obs))
-    # maximin normalization
-    def normalize_reward(self, reward):
-        return (reward + 400) / 800
+        # end_time = time.time() * 1000
 
     def get_reward(self):
-        # offence_reward = self.last_opp_hp - self.nonDelay.getCharacter(not self.player).getHp()
-        # defence_reward = self.nonDelay.getCharacter(self.player).getHp() - self.last_my_hp
         offence_reward = self.pre_framedata.getCharacter(not self.player).getHp() - self.nonDelay.getCharacter(
             not self.player).getHp()
         defence_reward = self.nonDelay.getCharacter(self.player).getHp() - self.pre_framedata.getCharacter(
@@ -291,64 +203,29 @@ class SoundAgent:
         self.last_my_hp = self.nonDelay.getCharacter(self.player).getHp()
         self.last_opp_hp = self.nonDelay.getCharacter(not self.player).getHp()
 
-    @torch.no_grad()
-    def give_action(self):
-        state = self.raw_audio_memory
-        action_dist = self.actor
-
     def getAudioData(self, audio_data):
         self.audio_data = audio_data
         # process audio
         try:
-            start_time = time.time() * 1000
             byte_data = self.audio_data.getRawDataAsBytes()
             np_array = np.frombuffer(byte_data, dtype=np.float32)
             raw_audio = np_array.reshape((2, 1024))
             raw_audio = raw_audio.T
-            # raw_audio = np_array.reshape((1024, 2))
             raw_audio = raw_audio[:800, :]
-            end_time = time.time() * 1000
-            # windows 1-2 ms
-            # linux 40 ms
-            # print('total time', end_time - start_time)
         except Exception as ex:
-            # print('no audio', self.currentFrameNum)
             raw_audio = np.zeros((800, 2))
-            # print(ex)
-            # raise ex # test
         if self.raw_audio_memory is None:
-            self.logger.info('raw_audio_memory none {}'.format(raw_audio.shape))
-            # self.raw_audio_memory = np.expand_dims(raw_audio, axis=0)
+            # self.logger.info('raw_audio_memory none {}'.format(raw_audio.shape))
             self.raw_audio_memory = raw_audio
         else:
-            # self.raw_audio_memory = np.vstack((np.expand_dims(raw_audio, axis=0), self.raw_audio_memory))
             self.raw_audio_memory = np.vstack((raw_audio, self.raw_audio_memory))
             # self.raw_audio_memory = self.raw_audio_memory[:4, :, :]
             self.raw_audio_memory = self.raw_audio_memory[:800 * self.n_frame, :]
 
-        # append so that audio memory has the first shape of 4
+        # append so that audio memory has the first shape of n_frame
         increase = (800 * self.n_frame - self.raw_audio_memory.shape[0]) // 800
         for _ in range(increase):
-            # self.raw_audio_memory = np.vstack((np.zeros((1, 1024, 2)), self.raw_audio_memory))
             self.raw_audio_memory = np.vstack((np.zeros((800, 2)), self.raw_audio_memory))
-
-    # def get_trajectories_data(self):
-    #     trajectories_data = {
-    #         "actions": self.action_list,
-    #         "action_probabilities": self.action_probs_list,
-    #         "states": self.state_list,
-    #         "rewards": self.reward_list,
-    #         "values": self.value_list,
-    #         "true_rewards": self.true_reward_list,
-    #         "terminals": self.terminal_list,
-    #         # add hidden state list
-    #         "actor_hidden_states": self.actor_hidden_state_list,
-    #         # "actor_cell_states": self.actor_cell_state_list,
-    #         "critic_hidden_states": self.critic_hidden_state_list,
-    #         # "critic_cell_states": self.critic_cell_state_list
-    #     }
-    #     # return tensor
-    #     return {key: [torch.stack(v) for v in value] for key, value in trajectories_data.items()}, self.episode_lengths
 
     class Java:
         implements = ["aiinterface.AIInterface"]
@@ -395,11 +272,6 @@ class CollectDataHelper:
 
     def put_actor_hidden_data(self, hidden_data):
         self.current_round_actor_hidden_data.append(hidden_data)
-
-    # def get(self):
-    #     data = self.current_round_data[self.curr_idx]
-    #     self.curr_idx += 1
-    #     return data
 
     def finish_round(self):
         self.total_round_data.append(self.current_round_data)
@@ -465,11 +337,6 @@ class SandboxAgent:
     
     def getScreenData(self, sd):
         pass
-        # start_time = time.time()
-        # data = sd.getDisplayByteBufferAsBytes()
-        # # tmp = np.frombuffer(data)
-        # end_time = time.time()
-        # print('screen', (end_time - start_time) * 1000)
 
     def input(self):
         return self.inputKey
