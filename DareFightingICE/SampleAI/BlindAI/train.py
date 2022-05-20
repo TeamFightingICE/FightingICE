@@ -495,15 +495,15 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, por
 
         # save mean reward to text file
         logger.info("Save mean reward to file")
-        save_reward_file(encoder_name, experiment_id, mean_reward.float(), recurrent=recurrent)
-        logger.info("Save stddev reward to file")
-        save_reward_file(encoder_name, experiment_id, stddev_reward, filename="std", recurrent=recurrent)
+        save_reward_file(encoder_name, experiment_id, mean_reward.float(), recurrent=recurrent, filename='result')
+        # logger.info("Save stddev reward to file")
+        # save_reward_file(encoder_name, experiment_id, stddev_reward, filename="std", recurrent=recurrent)
 
-        # save normalized_rewards to text file
-        logger.info('Save mean normalized reward to file')
-        save_reward_file(encoder_name, experiment_id, normalized_mean_reward.float(), filename='reward_normalized', recurrent=recurrent)
-        logger.info('Save std normalized reward to file')
-        save_reward_file(encoder_name, experiment_id, normalized_stddev_reward, filename="std_normalized", recurrent=recurrent)
+        # # save normalized_rewards to text file
+        # logger.info('Save mean normalized reward to file')
+        # save_reward_file(encoder_name, experiment_id, normalized_mean_reward.float(), filename='reward_normalized', recurrent=recurrent)
+        # logger.info('Save std normalized reward to file')
+        # save_reward_file(encoder_name, experiment_id, normalized_stddev_reward, filename="std_normalized", recurrent=recurrent)
 
         logger.info(f"Iteration: {iteration}, Reward std: {stddev_reward},  Mean reward: {mean_reward}, Mean Entropy: {torch.mean(surrogate_loss_2)}, " +
               f"complete_episode_count: {complete_episode_count}, Gather time: {end_gather_time - start_gather_time:.2f}s, " +

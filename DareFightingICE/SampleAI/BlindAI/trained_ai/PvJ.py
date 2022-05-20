@@ -15,7 +15,7 @@ def start_game(Character):
 
     for Chara in Character:
         # FFT GRU
-        for i in range(3):
+        for i in range(30):
             gateway = JavaGateway(gateway_parameters=GatewayParameters(port=4242), callback_server_parameters=CallbackServerParameters());
             manager = gateway.entry_point
             ai_name = 'FFTGRU'
