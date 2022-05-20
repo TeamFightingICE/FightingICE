@@ -432,10 +432,8 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, por
         logger.info('Calculate returns')
         trajectories = pad_and_compute_returns(trajectories_data, episode_lengths)
         logger.info('Calculate mean reward')
-        # calculate mean reward
-        # complete_episode_count = trajectories["terminals"].sum().item()
-        # terminal_episodes_rewards = (
-        #         trajectories["terminals"].sum(axis=1) * trajectories["true_rewards"].sum(axis=1)).sum()
+
+        # sum of rewards over all steps is actually HP_self - HP_opp at the end of round.
         complete_episode_count = len(trajectories_data['states'])
         terminal_episodes_rewards = trajectories["true_rewards"].sum(axis=1).sum()
         mean_reward = terminal_episodes_rewards / complete_episode_count
