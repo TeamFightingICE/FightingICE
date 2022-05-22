@@ -26,16 +26,21 @@ See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this pag
 ### <b>Prizes:</b>
 A money prize of $500 from IEEE CIS will be equally split and awarded to the qualified winner of each track (i.e., $250 each). However, if there is only one qualified winner, that winner will be awarded with $500. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
-### <b>Contact Us:</b>
-ftg dot aic at gmail dot com 
-
 ### <b>Papers:</b>
-See also:<br>
-<a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about this competition (accepted for oral presentation at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a>, to be updated by the end of May 2022) and<br>
+Read also:<br>
+<a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about the competition (accepted for oral presentation at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a>, to be updated by the end of May 2022) and<br>
 <a href="https://arxiv.org/abs/2205.07444" target="_blank">this paper</a> (under review) about our blind sample AI.
 <br>
+<br>
+Click [here](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-4.html) for relevant links and a full list of publications. 
 
 ### <b>Facebook:</b>
-Here is our <a href="https://www.facebook.com/ftg.aic" target="_blank">FB page</a>.<br>
+Here is our <a href="https://www.facebook.com/ftg.aic" target="_blank">FB page</a>. Please do not forget to subscribe!<br>
+
+### <b>Team Members:</b>
+Click [here](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-5.html) for a list of team members since 2013.
+
+### <b>Contact Us:</b>
+ftg dot aic at gmail dot com 
 
 ---
