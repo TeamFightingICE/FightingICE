@@ -15,7 +15,7 @@ On this track, you will be asked to make an AI that plays DareFightingICE using 
 For submission, please create a zip file containing:
 
 - Your AI's jar file (if you use java)
-- Source code (.java for a Java AI or .py for a Python AI) and/or
+- Source code (for training AI and evaluating AI, in .java for a Java AI or .py for a Python AI) and/or
 - File-I/O folder with the same name as your AI
 - A README file that describes the environment, file structure, and instruction to run your AI
 
@@ -27,7 +27,7 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 
 ### Sample AI:
 ---
-A sample AI will be provided later.
+The source code and model of our deep reinforcement learning blind AI is available [here](../SampleAI/BlindAI).
 
 
 ### Rules:
@@ -58,8 +58,8 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
    - Java: 1.8 or higher
    - OS: Windows 10
 2. Hardware:
-   - CPU: Intel(R) Xeon(R) W-2125 CPU @ 4.00GHz  4.01 GHz
-   - RAM: 32.0 GB
+   - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz   3.70 GHz
+   - RAM: 16 GB
 
 
 ### Installation Guide:
