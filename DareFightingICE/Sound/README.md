@@ -66,8 +66,8 @@ Screening:
 - The blindfolded players will play against a [weak AI](../SampleAI/MctsAi65) (a weak form of [MCTS AI](http://www.ice.ci.ritsumei.ac.jp/~ftgaic/Downloadfiles/2018_Sample_AIs.zip)), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
 - Each player will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design, and the score will be calculated by health point (HP) difference between the player and the AI, in relative to the HP difference when playing without being blindfolded.
 - After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
--  In addition, [our sample blind deep-learning (DL) AI](../SampleAI/Deep%20Learning%20AI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
--  The sample blind DL AI's learning curve, win-lose ratio, and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
+-  In addition, [our deep reinforcement learning blind AI](../SampleAI/Blind%20AI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
+-  The sample blind AI's learning curve, win-lose ratio, and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
 
 
 ### Instructions About Sound Design:
