@@ -80,9 +80,9 @@ class SoundAgent:
 
     @torch.no_grad()
     def processing(self):
-        if self.frameData.getEmptyFlag() or self.frameData.getRemainingFramesNumber() <= 0:
-            self.isGameJustStarted = True
-            return
+#         if self.frameData.getEmptyFlag() or self.frameData.getRemainingFramesNumber() <= 0:
+#             self.isGameJustStarted = True
+#             return
         self.inputKey.empty()
         self.cc.skillCancel()
         obs = self.raw_audio_memory
