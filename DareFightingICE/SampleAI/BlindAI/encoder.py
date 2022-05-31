@@ -95,8 +95,6 @@ class FFTEncoder(BaseEncoder):
     def __init__(self, sampling_rate=48000, fps=60, frame_skip=4):
         super(FFTEncoder, self).__init__(sampling_rate, fps, frame_skip)
         self.num_to_subsample = 8
-        # ViZDoom runs at 35 fps, but we will get frameskip number of
-        # frames in total (concatenated)
         self.num_samples = (self.sampling_rate / self.FPS) * self.frame_skip
         self.num_frequencies = self.num_samples / 2
         assert int(self.num_samples) == self.num_samples
