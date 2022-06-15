@@ -29,7 +29,7 @@ A money prize of $500 from IEEE CIS will be equally split and awarded to the qua
 
 ### <b>Papers:</b>
 Read also:<br>
-<a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about the competition (accepted for oral presentation at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a> and<br>
+<a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about the competition (accepted for oral presentation at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022)</a> and<br>
 <a href="https://arxiv.org/abs/2205.07444" target="_blank">this paper</a> about our blind sample AI. (accepted for oral presentation at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a>, to be updated by the end of June 2022) 
 <br>
 Click [here](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-4.html) for relevant links and a full list of publications. 
