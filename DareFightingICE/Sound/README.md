@@ -7,7 +7,7 @@
 
 ### What is Sound Design Track:
 ----
-As you can already tell from the name, you have to make a sound design for the DareFightingICE. Here we define a sound design as, a set of sound effects combined with the source code that implements their timing-control algorithm. Keep in mind that DareFightingICE is targeting visually impaired players, so the sound design you come up with should be made for visually impaired players. You will be provided with a sample sound design and all the sound effects used in the sample. 
+As you can already tell from the name, you have to make a sound design for the DareFightingICE. Here, we define a sound design as a set of sound effects combined with the source code that implements their timing-control algorithm. Keep in mind that DareFightingICE is targeting visually impaired players, so the sound design you come up with should be made for visually impaired players. You will be provided with a sample sound design and all the sound effects used in the sample. 
 
 
 ### What To Submit:
