@@ -67,7 +67,7 @@ Screening:
 - Each player will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design, and the score will be calculated by health point (HP) difference between the player and the AI, in relative to the HP difference when playing without being blindfolded.
 - After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
 -  In addition, [our deep reinforcement learning blind AI](../SampleAI/BlindAI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
--  The sample blind AI's learning curve, win-lose ratio, and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
+-  The sample blind AI's win-lose ratio and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
 
 
 ### Instructions About Sound Design:

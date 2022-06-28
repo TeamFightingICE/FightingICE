@@ -19,7 +19,7 @@ def start_game(Character):
             gateway = JavaGateway(gateway_parameters=GatewayParameters(port=4242), callback_server_parameters=CallbackServerParameters());
             manager = gateway.entry_point
             ai_name = 'FFTGRU'
-            manager.registerAI(ai_name, SoundAgent(gateway,logger=logger, encoder='fft', path='trained_model', rnn=True))
+            manager.registerAI(ai_name, SoundAgent(gateway,logger=logger, encoder='mel', path='trained_model', rnn=True))
             print("Start game")
             game = manager.createGame(Chara, Chara, ai_name, "MctsAi65", GAME_NUM)
             manager.runGame(game)
