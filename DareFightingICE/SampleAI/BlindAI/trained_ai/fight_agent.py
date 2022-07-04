@@ -107,6 +107,8 @@ class SoundAgent:
             np_array = np_array.reshape((2, 1024))
             np_array = np_array.T
             raw_audio = np_array[:800, :]
+            if not self.player:
+                raw_audio = raw_audio[:,::-1].copy()
         except Exception as ex:
             raw_audio = np.zeros((800, 2))
         if self.raw_audio_memory is None:
