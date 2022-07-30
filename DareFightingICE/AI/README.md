@@ -17,7 +17,7 @@ For submission, please create a zip file containing:
 - Your AI's jar file (if you use java)
 - Source code (for training AI and evaluating AI, in .java for a Java AI or .py for a Python AI) and/or
 - File-I/O folder with the same name as your AI
-- A README file that describes the environment, file structure, and instruction to run your AI
+- A README file that describes the environment, file structure, and instructions to run your AI
 
 Please also attach a PowerPoint (or OpenOffice) file describing the following information:
 
