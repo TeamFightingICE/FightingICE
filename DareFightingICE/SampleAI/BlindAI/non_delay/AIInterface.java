@@ -53,7 +53,7 @@ public interface AIInterface {
 	}
 	
 	default void getInformation(FrameData fd, boolean isControl, FrameData nonDelay) {
-		getInformation(fd);
+		getInformation(fd, isControl);
 	}
 	
 	void getInformation(FrameData fd);
