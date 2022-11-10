@@ -31,7 +31,7 @@ Directory for sound effects:
 -	DareFightingICE\data\sounds <br>
 ~~~
 For this competition, you will only need to come up with the sound design for a single character (Zen).
-All the sound effects must be in .wav format. The sound effects should be mono unless you have changed the source code. 
+All the sound effects must be in .wav format. The sound effects should be **mono** unless you have changed the source code. 
 ~~~
 
 ### Sample Sound Design:
