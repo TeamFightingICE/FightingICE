@@ -23,7 +23,7 @@ import struct.*;
 /**
  * AIやキーボード等の入力関連のタスクを管理するマネージャークラス．
  */
-public class InputManager<Data> {
+public class InputManager {
 
 	/**
 	 * キー入力を格納するバッファ．
@@ -165,21 +165,21 @@ public class InputManager<Data> {
 		Key key = new Key();
 
 		if (playerNumber) {
-			key.A = keyboard.getKeyDown(GLFW_KEY_Z);
-			key.B = keyboard.getKeyDown(GLFW_KEY_X);
-			key.C = keyboard.getKeyDown(GLFW_KEY_C);
-			key.U = keyboard.getKeyDown(GLFW_KEY_UP);
-			key.D = keyboard.getKeyDown(GLFW_KEY_DOWN);
-			key.R = keyboard.getKeyDown(GLFW_KEY_RIGHT);
-			key.L = keyboard.getKeyDown(GLFW_KEY_LEFT);
+			key.A = Keyboard.getKeyDown(GLFW_KEY_Z);
+			key.B = Keyboard.getKeyDown(GLFW_KEY_X);
+			key.C = Keyboard.getKeyDown(GLFW_KEY_C);
+			key.U = Keyboard.getKeyDown(GLFW_KEY_UP);
+			key.D = Keyboard.getKeyDown(GLFW_KEY_DOWN);
+			key.R = Keyboard.getKeyDown(GLFW_KEY_RIGHT);
+			key.L = Keyboard.getKeyDown(GLFW_KEY_LEFT);
 		} else {
-			key.A = keyboard.getKeyDown(GLFW_KEY_T);
-			key.B = keyboard.getKeyDown(GLFW_KEY_Y);
-			key.C = keyboard.getKeyDown(GLFW_KEY_U);
-			key.U = keyboard.getKeyDown(GLFW_KEY_I);
-			key.D = keyboard.getKeyDown(GLFW_KEY_K);
-			key.R = keyboard.getKeyDown(GLFW_KEY_L);
-			key.L = keyboard.getKeyDown(GLFW_KEY_J);
+			key.A = Keyboard.getKeyDown(GLFW_KEY_T);
+			key.B = Keyboard.getKeyDown(GLFW_KEY_Y);
+			key.C = Keyboard.getKeyDown(GLFW_KEY_U);
+			key.U = Keyboard.getKeyDown(GLFW_KEY_I);
+			key.D = Keyboard.getKeyDown(GLFW_KEY_K);
+			key.R = Keyboard.getKeyDown(GLFW_KEY_L);
+			key.L = Keyboard.getKeyDown(GLFW_KEY_J);
 		}
 
 		return key;
@@ -287,18 +287,14 @@ public class InputManager<Data> {
 			}
 		}
 
-		synchronized (this.endFrame) {
-			try {
-				ThreadController.getInstance().resetAllAIsObj();
-				if (FlagSetting.fastModeFlag) {
-//					SoundManager.getInstance().pauseSound();
-					this.endFrame.wait();
-//					SoundManager.getInstance().resumeSound();
-				} else {
-
+		ThreadController.getInstance().resetAllAIsObj();
+		if (FlagSetting.fastModeFlag) {
+			synchronized (this.endFrame) {
+				try {
+					this.endFrame.wait(16, 66);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		}
 	}

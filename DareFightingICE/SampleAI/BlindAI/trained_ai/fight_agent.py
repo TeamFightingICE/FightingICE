@@ -60,7 +60,7 @@ class SoundAgent:
     def close(self):
         pass
 
-    def getInformation(self, frameData, inControl, nonDelay):
+    def getInformation(self, frameData, inControl):
         # Load the frame data every time getInformation gets called
         self.frameData = frameData
         self.cc.setFrameData(self.frameData, self.player)
