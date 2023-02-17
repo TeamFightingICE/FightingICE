@@ -19,7 +19,6 @@ class BaseEncoder(nn.Module, ABC):
         # right side
         right = x[:, :, 1]
         right = self.encode_single_channel(right)
-        print('single', right.shape)
         return torch.cat((left, right), dim=1)
 
     @abstractmethod

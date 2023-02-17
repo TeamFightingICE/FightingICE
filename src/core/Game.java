@@ -106,12 +106,10 @@ public class Game extends GameManager {
                     break;
                 case "--disable-window":
                     FlagSetting.enableWindow = false;
-//                    FlagSetting.muteFlag = true;
                     FlagSetting.automationFlag = true;
                     break;
                 case "--fastmode":
                     FlagSetting.fastModeFlag = true;
-                    FlagSetting.automationFlag = true;
                     break;
                 case "--json":
                     FlagSetting.jsonFlag = true;
