@@ -1,6 +1,16 @@
 package loader;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_RGBA8;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
@@ -14,7 +24,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
@@ -248,10 +257,9 @@ public class ResourceLoader {
 		try {
 			ClassLoader cl = URLClassLoader.newInstance(new URL[] { file.toURI().toURL() });
 			Class<?> c = cl.loadClass(aiName);
-			AIInterface ai = (AIInterface) c.newInstance();
-
+			AIInterface ai = (AIInterface) c.getDeclaredConstructor().newInstance();
 			return new AIController(ai);
-		} catch (MalformedURLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -282,6 +290,19 @@ public class ResourceLoader {
 		}
 
 		return fileNames;
+	}
+	
+	public ArrayList<String> loadSoundNames() {
+		File[] files = new File(ResourceSetting.SOUND_DIRECTORY).listFiles();
+		sortByFileName(files);
+		ArrayList<String> soundNames = new ArrayList<String>();
+		
+		for (File file: files) {
+			if (file.isDirectory()) {
+				soundNames.add(file.getName());
+			}
+		}
+		return soundNames;
 	}
 
 	/**
@@ -515,7 +536,7 @@ public class ResourceLoader {
 			}
 		}
 	}
-
+	
 	/**
 	 * サウンドエフェクトを読み込んでマップに格納する．
 	 */
@@ -524,7 +545,7 @@ public class ResourceLoader {
 		sortByFileName(files);
 
         for (File file : files) {
-            if (!file.getName().equals(ResourceSetting.BGM_FILE)) {
+            if (!file.getName().equals(ResourceSetting.BGM_FILE) && !file.isDirectory()) {
                 SoundManager.getInstance().getSoundBuffers().put(file.getName(),
                         SoundManager.getInstance().createAudioBuffer(file.getPath(), false));
             }

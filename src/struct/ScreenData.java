@@ -1,6 +1,8 @@
 package struct;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_RGB;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glReadPixels;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -13,7 +15,6 @@ import java.nio.ByteBuffer;
 import org.lwjgl.BufferUtils;
 
 import manager.GraphicManager;
-import setting.FlagSetting;
 import setting.GameSetting;
 
 /**
@@ -23,31 +24,18 @@ import setting.GameSetting;
 public class ScreenData {
 
 	/**
-	 * The pixel data of the screen are saved in the form of ByteBuffer.
+	 * The pixel data of the screen are saved in the form of bytes.
 	 */
-	private ByteBuffer displayByteBuffer;
+	private byte[] displayBytes;
 
 	/**
 	 *
 	 */
 	private BufferedImage displayBufferedImage;
-
-	/**
-	 * The class constructor.
-	 */
+	
 	public ScreenData() {
-		this.displayByteBuffer = createDisplayByteBuffer();
+		this.displayBytes = createDisplayBytes();
 		this.displayBufferedImage =  GraphicManager.getInstance().getScreenImage();
-
-		//You can check the displayBufferedImage.
-//		boolean result = false;
-//		try {
-//		  result = ImageIO.write(this.displayBufferedImage, "jpeg", new File("sample.jpeg"));
-//		} catch (Exception e) {
-//		  e.printStackTrace();
-//		  result = false;
-//		}
-
 	}
 
 	/**
@@ -58,7 +46,7 @@ public class ScreenData {
 	 *            an instance of ScreenData class
 	 */
 	public ScreenData(ScreenData screenData) {
-		this.displayByteBuffer = screenData.getDisplayByteBuffer();
+		this.displayBytes = screenData.getDisplayBytes();
 		this.displayBufferedImage = screenData.getDisplayBufferedImage();
 	}
 
@@ -69,7 +57,7 @@ public class ScreenData {
 	 * @return the RGB data of the screen in the form of ByteBuffer
 	 */
 	public ByteBuffer getDisplayByteBuffer() {
-		return this.displayByteBuffer;
+		return ByteBuffer.wrap(displayBytes);
 	}
 
 	public BufferedImage getDisplayBufferedImage() {
@@ -82,11 +70,8 @@ public class ScreenData {
 	 *
 	 * @return the RGB data of the screen in the form of byte[]
 	 */
-	public byte[] getDisplayByteBufferAsBytes() {
-		byte[] buffer = new byte[this.displayByteBuffer.remaining()];
-		this.displayByteBuffer.get(buffer);
-
-		return buffer;
+	public byte[] getDisplayBytes() {
+		return this.displayBytes;
 	}
 
 	/**
@@ -106,44 +91,39 @@ public class ScreenData {
 	 *         byte[]
 	 */
 	public byte[] getDisplayByteBufferAsBytes(int newWidth, int newHeight, boolean grayScale) {
+		// Resizes the image
+		AffineTransformOp xform = new AffineTransformOp(AffineTransform
+				.getScaleInstance((double) newWidth / displayBufferedImage.getWidth(), (double) newHeight / displayBufferedImage.getHeight()),
+				AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage resize = new BufferedImage(newWidth, newHeight, displayBufferedImage.getType());
+		xform.filter(displayBufferedImage, resize);
 
-		if (this.displayByteBuffer != null) {
-			// Resizes the image
-			AffineTransformOp xform = new AffineTransformOp(AffineTransform
-					.getScaleInstance((double) newWidth / displayBufferedImage.getWidth(), (double) newHeight / displayBufferedImage.getHeight()),
-					AffineTransformOp.TYPE_BILINEAR);
-			BufferedImage resize = new BufferedImage(newWidth, newHeight, displayBufferedImage.getType());
-			xform.filter(displayBufferedImage, resize);
+		// Converts it back to array of bytes
+		byte[] dst;
 
-			// Converts it back to array of bytes
-			byte[] dst;
+		if (grayScale) {
+			BufferedImage temp = new BufferedImage(resize.getWidth(), resize.getHeight(),
+					BufferedImage.TYPE_BYTE_GRAY);
+			Graphics2D g = temp.createGraphics();
+			g.drawImage(resize, 0, 0, newWidth, newHeight, null);
+			g.dispose();
 
-			if (grayScale) {
-				BufferedImage temp = new BufferedImage(resize.getWidth(), resize.getHeight(),
-						BufferedImage.TYPE_BYTE_GRAY);
-				Graphics2D g = temp.createGraphics();
-				g.drawImage(resize, 0, 0, newWidth, newHeight, null);
-				g.dispose();
+			dst = ((DataBufferByte) temp.getData().getDataBuffer()).getData();
+		} else {
+			dst = new byte[newWidth * newHeight * 3];
 
-				dst = ((DataBufferByte) temp.getData().getDataBuffer()).getData();
-			} else {
-				dst = new byte[newWidth * newHeight * 3];
-
-				int[] array = ((DataBufferInt) resize.getRaster().getDataBuffer()).getData();
-				for (int x = 0; x < newWidth; x++) {
-					for (int y = 0; y < newHeight; y++) {
-						int idx = x + y * newWidth;
-						dst[idx * 3] = (byte) ((array[idx] >> 16) & 0xFF); // R
-						dst[idx * 3 + 1] = (byte) ((array[idx] >> 8) & 0xFF); // G
-						dst[idx * 3 + 2] = (byte) ((array[idx]) & 0xFF); // B
-					}
+			int[] array = ((DataBufferInt) resize.getRaster().getDataBuffer()).getData();
+			for (int x = 0; x < newWidth; x++) {
+				for (int y = 0; y < newHeight; y++) {
+					int idx = x + y * newWidth;
+					dst[idx * 3] = (byte) ((array[idx] >> 16) & 0xFF); // R
+					dst[idx * 3 + 1] = (byte) ((array[idx] >> 8) & 0xFF); // G
+					dst[idx * 3 + 2] = (byte) ((array[idx]) & 0xFF); // B
 				}
 			}
-
-			return dst;
-		} else {
-			return null;
 		}
+
+		return dst;
 	}
 
 	/**
@@ -152,7 +132,7 @@ public class ScreenData {
 	 *
 	 * @return RGB data of the screen in the form of ByteBuffer
 	 */
-	private ByteBuffer createDisplayByteBuffer() {
+	private byte[] createDisplayBytes() {
 		// Allocate memory for the RGB data of the screen
 		ByteBuffer pixels = BufferUtils.createByteBuffer(3 * GameSetting.STAGE_WIDTH * GameSetting.STAGE_HEIGHT);
 		pixels.clear();
@@ -161,8 +141,11 @@ public class ScreenData {
 		// variable
 		glReadPixels(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 		pixels.rewind();
+		
+		byte[] buffer = new byte[pixels.remaining()];
+		pixels.get(buffer);
 
-		return pixels;
+		return buffer;
 	}
 
 //	private BufferedImage createDisplayBufferedImage(){

@@ -1,5 +1,8 @@
 package python;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import gamescene.Python;
 import py4j.GatewayServer;
 import setting.LaunchSetting;
@@ -20,7 +23,15 @@ public class PyGatewayServer {
 	 * @param python Python用のゲームシーン
 	 */
 	public PyGatewayServer(Python python) {
-		this.gatewayServer = new GatewayServer(new PyManager(python), LaunchSetting.py4jPort);
+		GatewayServer.GatewayServerBuilder builder = new GatewayServer.GatewayServerBuilder(new PyManager(python));
+		try {
+			builder.javaAddress(InetAddress.getByName("0.0.0.0"));
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		builder.javaPort(LaunchSetting.py4jPort);
+		this.gatewayServer = builder.build();
 		this.gatewayServer.start();
 	}
 

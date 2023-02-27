@@ -72,6 +72,17 @@ public class Key {
 		this.D = false;
 		this.L = false;
 	}
+	
+	public boolean isEmpty() {
+		if (this.A) return false;
+		else if (this.B) return false;
+		else if (this.C) return false;
+		else if (this.U) return false;
+		else if (this.R) return false;
+		else if (this.D) return false;
+		else if (this.L) return false;
+		return true;
+	}
 
 	/**
 	 * Returns the value indicating the direction key input by the player using

@@ -1,6 +1,7 @@
 package setting;
 
 import enumerate.BackgroundType;
+import grpc.GrpcServer;
 import python.PyGatewayServer;
 
 /**
@@ -28,6 +29,8 @@ public final class LaunchSetting {
 	 * P1,P2のキャラクター名．
 	 */
 	public static String[] characterNames = { "ZEN", "ZEN" };
+	
+	public static String soundName = "Default";
 
 	/**
 	 * 利用するデバイスタイプ．<br>
@@ -75,4 +78,9 @@ public final class LaunchSetting {
 	 */
 
 	public static boolean[] noVisual = {false, false};
+	public static boolean[] nonDelay = {false, false};
+	
+	public static int grpcPort = 50051;
+	
+	public static GrpcServer grpcServer = null;
 }

@@ -12,7 +12,8 @@
 .mtj.tmp/
 
 # Package Files #
-#*.jar
+*.jar
+*.jardesc
 *.war
 *.ear
 *.zip
@@ -29,19 +30,18 @@ hs_err_pid*
 .project
 .settings
 bin
-!.gitkeep
+data
+lib
+log
 log/point/*
-!.gitkeep
 log/replay/*
-!.gitkeep
 log/err/*
-!.gitkeep
 log/json/*
-!.gitkeep
 log/out/*
-!.gitkeep
-debugData
 *.ini
 #intellJ
 /.idea/*
 *.iml
+
+!DareFightingICE/**
+**/__pycache__/

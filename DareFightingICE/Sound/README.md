@@ -24,6 +24,7 @@ You will submit:
 
 Source code files you are allowed to edit are:
 -	DareFightingICE\src\fighting\Character.java
+-	DareFightingICE\src\gamescene\Play.java
 -	DareFightingICE\src\manager\SoundManager.java
 -	DareFightingICE\src\render\audio\SoundRender.java <br>
 

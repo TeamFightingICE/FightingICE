@@ -27,12 +27,7 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 
 ### Sample AI:
 ---
-The source code and model of our deep reinforcement learning blind AI is available [here](../SampleAI/BlindAI).
-#### About the sample AIs in the [python](../../python/) folder: Please define this method when you use FightingICE version 5.0 or later:
-``` python
-def getAudioData(self, ad):
-        pass
-```
+The source code and model of our deep reinforcement learning blind AI is available [here](https://github.com/Staciiaz/FightingICE_PythonAI/tree/master/SampleAI/BlindAI).
 
 ### Rules:
 ---
