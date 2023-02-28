@@ -31,7 +31,7 @@ hs_err_pid*
 .settings
 bin
 data
-lib
+# lib
 log
 log/point/*
 log/replay/*
@@ -43,5 +43,6 @@ log/out/*
 /.idea/*
 *.iml
 
+!lib/**
 !DareFightingICE/**
 **/__pycache__/

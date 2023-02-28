@@ -1,1 +1,0 @@
-protoc -I.\protos --plugin=protoc-gen-grpc-java=.\protoc-gen.exe --java_out=.\src --grpc-java_out=.\src .\protos\*.proto

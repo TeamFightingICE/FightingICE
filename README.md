@@ -8,21 +8,20 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 
 ### How to start development ###
 Important contents
-- data: Directory containing resources used in the game
+- data: Directory containing resources used in the game [Download here](https://ritsumei365-my.sharepoint.com/:u:/g/personal/gr0608sp_ed_ritsumei_ac_jp/ET1Bspx4REtNlU3pFGSOpi0Bst_Ei3-H-8ROlKvvCF9GGw?e=XV4nmE)
 	- ai: Directory containing AI jar files used in the game (for version 6.0 and later, internal use only)
 	- aiData: Directory containing data files required by AI (for version 6.0 and later, internal use only)
 	- characters: Directory containing character images and action parameter files
 	- graphics: Directory containing graphics such as backgrounds and hadouken
 	- sounds: Directory containing background music and sound effects
 - lib: Directory containing libraries required for startup
+- protoc-gen: Directory containing libraries required for generate gRPC code
 - src: Directory containing source code
-
-To start development on DareFightingICE, please find `data` and `lib` [here](https://ritsumei365-my.sharepoint.com/:u:/g/personal/gr0608sp_ed_ritsumei_ac_jp/ET1Bspx4REtNlU3pFGSOpi0Bst_Ei3-H-8ROlKvvCF9GGw?e=XV4nmE).
 
 See FightingICE official website for more detail. <http://www.ice.ci.ritsumei.ac.jp/~ftgaic/index.htm>
 
 ### Java libraries in use ###
-- grpc: Directory containing libraries related to gRPC module
+- grpc: Containing libraries related to gRPC module
 	- grpc-api 1.52.1
 	- grpc-context 1.52.1
 	- grpc-core 1.52.1
@@ -32,8 +31,9 @@ See FightingICE official website for more detail. <http://www.ice.ci.ritsumei.ac
 	- grpc-stub 1.52.1
 	- protobuf-java 3.21.12
 	- protobuf-java-util 3.21.12
-- lwjgl: Directory containing libraries related to LWJGL module
-	- natives: Directory containing libraries related to LWJGL module native to many architectures.
+	- protoc-gen-grpc-java 1.53.0 (use for generate gRPC code)
+- lwjgl: Containing libraries related to LWJGL module
+	- natives: Containing libraries related to LWJGL module native to many architectures.
 		- linux/amd64: for Linux
 		- linux/arm64: for Linux with ARM-architecture CPU
 		- macos/amd64: for macOS with Intel chip
