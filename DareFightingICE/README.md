@@ -1,4 +1,5 @@
 # <div align="center" ><b>DareFightingICE </b></div>
+# <div align="center" >*We are revamping the framework for the 2023 competition. Please stay tuned!*</div>
 ## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games, targeting visually impaired players</b></div>
 **We hope research findings from this competition could contribute to Sustainable Development Goals:**
 <p align="center">
@@ -32,9 +33,9 @@ The 2022 competition results are avialable on this <a href="https://www.ice.ci.r
 
 ### <b>Papers:</b>
 Read also:<br>
-<a href="https://arxiv.org/abs/2203.01556" target="_blank">this paper</a> about the competition (<a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a>) <br>
+<a href="https://ieee-cog.org/2022/assets/papers/paper_133.pdf" target="_blank">this paper</a> about the competition at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a> <br>
 and<br>
-<a href="https://arxiv.org/abs/2205.07444" target="_blank">this paper</a> about our blind sample AI. (<a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a>) 
+<a href="https://ieee-cog.org/2022/assets/papers/paper_223.pdf" target="_blank">this paper</a> about our blind sample AI at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a> 
 <br>
 Click [here](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-4.html) for relevant links and a full list of publications. 
 
