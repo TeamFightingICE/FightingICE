@@ -53,12 +53,16 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
 ### Evaluation Environments: 
 ---
 1. Software:
-   - Python: 3.7 or higher
-   - Java: 1.8 or higher
+   - Python: 3.7
+   - Java: 17
    - OS: Windows 10
+   - PyTorch: 1.11.0
+   - TorchAudio: 0.11.0
+   - TorchVision: 0.12.0
 2. Hardware:
-   - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz   3.70 GHz
+   - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz
    - RAM: 16 GB
+   - GPU: NVIDIA Quadro P1000 4GB VRAM
 
 
 ### Installation Guide:
