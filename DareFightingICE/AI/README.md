@@ -1,4 +1,4 @@
-# <div align="center"> AI Track </div>
+# <div align="center"> AI Track (2023)</div>
 ----
 <div align = "center"> Welcome to the AI track of DareFightingICE. Here you will be provided all the necessary information needed to participate in the AI track. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 
@@ -7,7 +7,7 @@
 
 ### What is AI Track:
 ----
-On this track, you will be asked to make an AI that plays DareFightingICE using only in-game sound data as input. You will be provided with an interface that allows access to sound data and a sample AI.
+On this track, you will be asked to make an AI that plays DareFightingICE using only in-game sound data as input. You will be provided with a gRPC interface that allows access to sound data and a sample AI.
 
 
 ### What To Submit:
