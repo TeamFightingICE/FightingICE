@@ -63,16 +63,16 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
 
 ### Installation Guide:
 ---
-To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 5.2)
+To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0)
 
 
 ### Submission:
 ---
 
-Please submit your entry via email to ftg dot aic at gmail dot com with an email subject of "2022_AI". In case the attached file's size is larger than 5.0 MB, please add a link in the email for us to download it. Below are the deadlines.
+Please submit your entry via email to ftg dot aic at gmail dot com with an email subject of "2023_AI". In case the attached file's size is larger than 5.0 MB, please add a link in the email for us to download it. Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your AI to us by the final deadline.)
-- May 24, 2022 (23:59 JST)
+- May 24, 2023 (23:59 JST)
 
 Final deadline
-- July 29, 2022 (23:59 JST)(no extension!!)
+- July 29, 2023 (23:59 JST)(no extension!!)
