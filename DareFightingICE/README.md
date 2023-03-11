@@ -1,5 +1,5 @@
 # <div align="center" ><b>DareFightingICE </b></div>
-# <div align="center" >*We are revamping the framework for the 2023 competition. Please stay tuned!*</div>
+# <div align="center" >*2023 Competition @ CoG 2023* (awaiting the approval)</div>
 ## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games, targeting visually impaired players</b></div>
 **We hope research findings from this competition could contribute to Sustainable Development Goals:**
 <p align="center">
