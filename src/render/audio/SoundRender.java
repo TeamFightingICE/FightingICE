@@ -7,7 +7,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.openal.AL10.*;
-import static org.lwjgl.openal.AL10.AL_LOOPING;
 
 /**
  * The class dealing with sound rendering in the game using the default speaker or a virtual device.
@@ -125,6 +124,11 @@ public class SoundRender {
         AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
         AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
     }
+    public void setSourceGains(int sourceId,float Val) {
+    	set();
+    	alSourcef(sourceId,AL10.AL_GAIN,Val);
+    }
+
 
     public long getDevice() {
         return device;

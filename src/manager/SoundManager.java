@@ -41,6 +41,11 @@ public class SoundManager {
      * 音溝㝮速度．
      */
     private float[] sourceVel;
+    private AudioSource Violin;
+    private AudioSource Piano;
+    private AudioSource Flute;
+    private AudioSource Ukulele;
+    private AudioSource Cello;
 
     /**
      * リスナー㝮佝置．
@@ -87,6 +92,7 @@ public class SoundManager {
      * Background music buffer.
      */
     private AudioBuffer backGroundMusicBuffer;
+    private float a = 0;
 
     /**
      * クラスコンストラクタ．
@@ -324,6 +330,22 @@ public class SoundManager {
     public AudioBuffer getBackGroundMusicBuffer() {
         return backGroundMusicBuffer;
     }
+    /**
+     * Set the gain of a source. For changing the volume of the source
+     * @param source
+     * @param val
+     */
+    
+    public void setSourceGain(AudioSource source,float val) {
+    	if(a!=val) {
+    		a = val;
+    	for (int i = 0; i < soundRenderers.size(); i++) {
+            int sourceId = source.getSourceIds()[i];
+            soundRenderers.get(i).setSourceGains(sourceId, val);
+        }
+    	
+    	}
+    }
 
     /**
      * Sets background music buffer.
@@ -401,5 +423,40 @@ public class SoundManager {
      */
     public ArrayList<AudioSource> getAudioSources() {
         return audioSources;
+    }
+    public void initializeBGM() {
+    	this.Violin = SoundManager.getInstance().createAudioSource();
+    	this.Piano = SoundManager.getInstance().createAudioSource();
+    	this.Flute = SoundManager.getInstance().createAudioSource();
+    	this.Ukulele = SoundManager.getInstance().createAudioSource();
+    	this.Cello = SoundManager.getInstance().createAudioSource();
+    }
+    public AudioSource getBGMSource(int a) {
+    	if(a==0) return this.Violin;
+    	else if(a==1) return this.Piano;
+    	else if(a==2) return this.Flute;
+    	else if(a==3) return this.Ukulele;
+    	else if(a==4) {return this.Cello; }
+    	else return null;
+    }
+    public void playBGM() {
+    	setSourceGain(this.Violin,0.75f);
+    	setSourceGain(this.Piano,0.10f);
+    	setSourceGain(this.Flute,0.75f);
+    	setSourceGain(this.Ukulele,0.10f);
+    	setSourceGain(this.Cello,0.75f);
+    	play2(this.Violin,getSoundBuffers().get("bach_V.wav") , 350, 0, true);
+    	play2(this.Piano,getSoundBuffers().get("bach_P.wav") , 350, 0, true);
+    	play2(this.Flute,getSoundBuffers().get("bach_F.wav") , 350, 0, true);
+    	play2(this.Ukulele,getSoundBuffers().get("bach_U.wav") , 350, 0, true);
+    	play2(this.Cello,getSoundBuffers().get("bach_C.wav") , 350, 0, true);
+
+    }
+    public void closeBGMSources() {
+    	this.Violin.close();
+    	this.Piano.close();
+    	this.Flute.close();
+    	this.Ukulele.close();
+    	this.Cello.close();
     }
 }
