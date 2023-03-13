@@ -1,4 +1,4 @@
-# <div align="center"> AI Track </div>
+# <div align="center"> AI Track (2023)</div>
 ----
 <div align = "center"> Welcome to the AI track of DareFightingICE. Here you will be provided all the necessary information needed to participate in the AI track. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 
@@ -7,7 +7,7 @@
 
 ### What is AI Track:
 ----
-On this track, you will be asked to make an AI that plays DareFightingICE using only in-game sound data as input. You will be provided with an interface that allows access to sound data and a sample AI.
+On this track, you will be asked to make an AI that plays DareFightingICE using only in-game sound data as input. You will be provided with a gRPC interface that allows access to sound data and a sample AI.
 
 
 ### What To Submit:
@@ -27,12 +27,7 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 
 ### Sample AI:
 ---
-The source code and model of our deep reinforcement learning blind AI is available [here](../SampleAI/BlindAI).
-#### About the sample AIs in the [python](../../python/) folder: Please define this method when you use FightingICE version 5.0 or later:
-``` python
-def getAudioData(self, ad):
-        pass
-```
+The source code and model of our deep reinforcement learning blind AI is available [here](https://github.com/Staciiaz/FightingICE_PythonAI/tree/master/SampleAI/BlindAI).
 
 ### Rules:
 ---
@@ -58,12 +53,16 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
 ### Evaluation Environments: 
 ---
 1. Software:
-   - Python: 3.7 or higher
-   - Java: 1.8 or higher
+   - Python: 3.7
+   - Java: 17
    - OS: Windows 10
+   - PyTorch: 1.11.0
+   - TorchAudio: 0.11.0
+   - TorchVision: 0.12.0
 2. Hardware:
-   - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz   3.70 GHz
+   - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz
    - RAM: 16 GB
+   - GPU: NVIDIA Quadro P1000 4GB VRAM
 
 
 ### Installation Guide:

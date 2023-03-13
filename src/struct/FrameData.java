@@ -53,6 +53,7 @@ public class FrameData {
         this.currentRound = -1;
         this.projectileData = new LinkedList<AttackData>();
         this.emptyFlag = true;
+        this.front = new boolean[2];
     }
 
     /**
@@ -142,18 +143,17 @@ public class FrameData {
     }
 
     /**
-     * Returns the expected remaining time in milliseconds of the current round.
-     * <br>
+     * Returns the number of remaining frames of the round. <br>
      * When FightingICE was launched with the training mode, this method returns
      * the max value of integer.
      *
-     * @return the expected remaining time in milliseconds of the current round
+     * @return the number of remaining frames of the round
      */
-    public int getRemainingTimeMilliseconds() {
+    public int getRemainingFramesNumber() {
         if (FlagSetting.trainingModeFlag) {
             return Integer.MAX_VALUE;
         } else {
-            return GameSetting.ROUND_TIME - (int) (((float) this.currentFrameNumber / GameSetting.FPS) * 1000);
+            return GameSetting.ROUND_FRAME_NUMBER - currentFrameNumber;
         }
     }
 
@@ -175,17 +175,18 @@ public class FrameData {
     }
 
     /**
-     * Returns the number of remaining frames of the round. <br>
+     * Returns the expected remaining time in milliseconds of the current round.
+     * <br>
      * When FightingICE was launched with the training mode, this method returns
      * the max value of integer.
      *
-     * @return the number of remaining frames of the round
+     * @return the expected remaining time in milliseconds of the current round
      */
-    public int getRemainingFramesNumber() {
+    public int getRemainingTimeMilliseconds() {
         if (FlagSetting.trainingModeFlag) {
             return Integer.MAX_VALUE;
         } else {
-            return (GameSetting.ROUND_FRAME_NUMBER - currentFrameNumber);
+        	return (int) (((float) getRemainingFramesNumber() / GameSetting.FPS) * 1000);
         }
     }
 

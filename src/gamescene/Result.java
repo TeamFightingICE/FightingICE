@@ -149,7 +149,7 @@ public class Result extends GameScene {
 	 */
 	private void endProcess() {
 		// -aや-nを引数にして起動 or Repeat Countを2以上にして起動した場合の処理
-		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag || FlagSetting.py4j) {
+		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag || FlagSetting.py4j || FlagSetting.grpcAuto) {
 			if (++this.displayedTime > 300) {
 				// まだ繰り返し回数が残っている場合
 				if (FlagSetting.automationFlag && LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
@@ -185,6 +185,11 @@ public class Result extends GameScene {
 					this.setNextGameScene(python);
 
 					// 指定した繰り返し回数分対戦が終わった場合
+				} else if (FlagSetting.grpcAuto) {
+					LaunchSetting.grpcServer.release();
+					Grpc grpc = new Grpc();
+					this.setTransitionFlag(true);
+					this.setNextGameScene(grpc);
 				} else {
 					this.setGameEndFlag(true);
 				}

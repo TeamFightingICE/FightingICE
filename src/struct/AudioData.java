@@ -1,11 +1,11 @@
 package struct;
 
+import java.util.Arrays;
+
 import setting.GameSetting;
 import util.FFT;
 import util.MFCC;
 import util.NumberConverter;
-
-import java.util.Arrays;
 
 /**
  * The class dealing with the audio information in game such as raw audio data, FFT and Mel-Spectrogram transformation.<br>
@@ -47,6 +47,8 @@ public class AudioData {
      * Class constructor.
      */
     public AudioData() {
+    	this.init();
+    	this.tranformRawData();
     }
 
     /**
@@ -57,6 +59,17 @@ public class AudioData {
         this.fftData = new FFTData[2];
         this.spectrogramData = new float[2][][];
     }
+    
+    private void tranformRawData() {
+        fft.process(Arrays.copyOf(this.rawData[0], this.rawData[0].length));
+        this.fftData[0] = new FFTData(fft.getReal(), fft.getImag());
+        fft.process(Arrays.copyOf(this.rawData[1], this.rawData[1].length));
+        this.fftData[1] = new FFTData(fft.getReal(), fft.getImag());
+        this.rawDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawData);
+        this.spectrogramData[0] = mfcc.melSpectrogram(Arrays.copyOf(this.rawData[0], this.rawData[0].length));
+        this.spectrogramData[1] = mfcc.melSpectrogram(Arrays.copyOf(this.rawData[1], this.rawData[1].length));
+        this.spectrogramDataAsBytes = NumberConverter.getInstance().getByteArray(this.spectrogramData);
+    }
 
     /**
      * Class constructor.
@@ -64,7 +77,7 @@ public class AudioData {
      */
     public AudioData(AudioData audioData) {
         int bufferSize = (audioData.getRawData() != null && audioData.getRawData()[0].length > 0) ? audioData.getRawData()[0].length : 0;
-        init();
+        this.init();
         if (bufferSize > 0) {
             this.rawData = audioData.getRawData();
             this.fftData = audioData.getFftData();
@@ -82,15 +95,7 @@ public class AudioData {
         this.init();
         this.rawData = rawData;
 
-        // transform raw data
-        fft.process(Arrays.copyOf(this.rawData[0], this.rawData[0].length));
-        this.fftData[0] = new FFTData(fft.getReal(), fft.getImag());
-        fft.process(Arrays.copyOf(this.rawData[1], this.rawData[1].length));
-        this.fftData[1] = new FFTData(fft.getReal(), fft.getImag());
-        this.rawDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawData);
-        this.spectrogramData[0] = mfcc.melSpectrogram(Arrays.copyOf(this.rawData[0], this.rawData[0].length));
-        this.spectrogramData[1] = mfcc.melSpectrogram(Arrays.copyOf(this.rawData[1], this.rawData[1].length));
-        this.spectrogramDataAsBytes = NumberConverter.getInstance().getByteArray(this.spectrogramData);
+        this.tranformRawData();
     }
 
     /**

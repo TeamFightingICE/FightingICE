@@ -77,6 +77,8 @@ public class ResourceDrawer {
 		drawEnergyGaugeImage(characters);
 
 		drawTimeImage(remainingTime);
+		
+		drawPlayerDetail(characters);
 
 		drawRoundNumber(round);
 
@@ -112,7 +114,7 @@ public class ResourceDrawer {
 		// draw players name
 		for (int i = 0; i < 2; ++i) {
 			// Draw a character to match the direction
-			BufferedImage image = playerCharacters[i].getNowImage().getBufferedImage();
+			// BufferedImage image = playerCharacters[i].getNowImage().getBufferedImage();
 			// キャラクターの向いている方向に応じて,画像を反転させる
 			//image = flipImage(image, playerCharacters[i].isFront());
 
@@ -185,13 +187,6 @@ public class ResourceDrawer {
 			GraphicManager.getInstance().drawQuad(480 + 50, 75, 300, 20, 0.2f, 0.2f, 0.2f, 0.0f);
 			GraphicManager.getInstance().drawQuad(480 - 50, 75, p1Hp, 20, 0, 1.0f, 0, 0.0f);
 			GraphicManager.getInstance().drawQuad(480 + 50, 75, p2Hp, 20, 1.0f, 0.65f, 0, 0.0f);
-
-			GraphicManager.getInstance().drawString("P1 HP:" + playerCharacters[0].getHp(), 130 + 30, 50);
-			GraphicManager.getInstance().drawString("P2 HP:" + playerCharacters[1].getHp(), 590 - 30, 50);
-
-		} else {
-			GraphicManager.getInstance().drawString("P1 HP:" + playerCharacters[0].getHp(), 100, 50);
-			GraphicManager.getInstance().drawString("P2 HP:" + playerCharacters[1].getHp(), 760, 50);
 		}
 	}
 
@@ -226,12 +221,6 @@ public class ResourceDrawer {
 
 			GraphicManager.getInstance().drawQuad(480 - 50, 75 + 20, p1Energy, 8, red[0], green[0], blue[0], 0.0f);
 			GraphicManager.getInstance().drawQuad(480 + 50, 75 + 20, p2Energy, 8, red[1], green[1], blue[1], 0.0f);
-			GraphicManager.getInstance().drawString("ENERGY:" + playerCharacters[0].getEnergy(), 250 + 30, 50);
-			GraphicManager.getInstance().drawString("ENERGY:" + playerCharacters[1].getEnergy(), 710 - 30, 50);
-
-		} else {
-			GraphicManager.getInstance().drawString("P1 ENERGY:" + playerCharacters[0].getEnergy(), 100, 100);
-			GraphicManager.getInstance().drawString("P2 ENERGY:" + playerCharacters[1].getEnergy(), 760, 100);
 		}
 	}
 
@@ -245,12 +234,26 @@ public class ResourceDrawer {
 		if (FlagSetting.trainingModeFlag) {
 			GraphicManager.getInstance().drawString("Training Mode", GameSetting.STAGE_WIDTH / 2 - 80, 10);
 		} else {
-			GraphicManager.getInstance().drawString(Integer.toString(remainingTime), GameSetting.STAGE_WIDTH / 2 - 30,
-					10);
+			GraphicManager.getInstance().drawString(String.format("%.3f", remainingTime / 1000.0), GameSetting.STAGE_WIDTH / 2 - 35, 10);
 		}
-
 	}
 
+	private void drawPlayerDetail(Character[] playerCharacters) {
+		if (FlagSetting.limitHpFlag) {
+			GraphicManager.getInstance().drawString("P1 HP: " + playerCharacters[0].getHp(), 130 + 30, 45);
+			GraphicManager.getInstance().drawString("Energy: " + playerCharacters[0].getEnergy(), 260 + 30, 45);
+			
+			GraphicManager.getInstance().drawString("P2 HP: " + playerCharacters[1].getHp(), 590 - 30, 45);
+			GraphicManager.getInstance().drawString("Energy: " + playerCharacters[1].getEnergy(), 720 - 30, 45);
+		} else {
+			GraphicManager.getInstance().drawString("P1 HP: " + playerCharacters[0].getHp(), 100, 50);
+			GraphicManager.getInstance().drawString("P1 Energy: " + playerCharacters[0].getEnergy(), 100, 90);
+			
+			GraphicManager.getInstance().drawString("P2 HP: " + playerCharacters[1].getHp(), 760, 50);
+			GraphicManager.getInstance().drawString("P2 Energy: " + playerCharacters[1].getEnergy(), 760, 90);
+		}
+	}
+	
 	/**
 	 * Draws round number.
 	 *
@@ -258,7 +261,7 @@ public class ResourceDrawer {
 	 *            現在のラウンド
 	 */
 	private void drawRoundNumber(int round) {
-		GraphicManager.getInstance().drawString("ROUND:" + round, 850, 10);
+		GraphicManager.getInstance().drawString("Round: " + round, 850, 10);
 	}
 
 	/**

@@ -1,30 +1,53 @@
 <font color="red">For the information on the competition from 2022, please see [this page](https://github.com/TeamFightingICE/FightingICE/tree/master/DareFightingICE).</font>
 
 # FightingICE #
-
-このリポジトリは、格闘ゲームAIの性能を競う国際大会に使用されている2D格闘ゲームFightingICEの開発用リポジトリです。<br>
-
+This repository is a repository for the development of the 2D fighting game FightingICE, which is used in international competitions for fighting game AI performance.<br>
 
 ### About FightingICE ###
-FightingICEはComputational Intelligence and Games (CIG)公認の格闘ゲームAIの性能を競う国際大会 Fighting Game AI Competition (FTGAIC)に使用されている2D格闘ゲームです。  
+FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGAIC), an international competition that competes for the performance of fighting game AI certified by Computational Intelligence and Games (CIG).
 
-### Important contents ###
-- src: ソースコードを格納したディレクトリ  
-- data: ゲーム内で使用されるリソースを格納したディレクトリ  
-	- ai: ゲーム内で用いるAIのjarファイルを格納したディレクトリ  
-	- aiData: AIが参照するデータファイル等を格納したディレクトリ  
-	- characters: キャラクタの画像及びアクションのパラメータファイルを格納したディレクトリ  
-	- graphics: 背景や波動拳等のキャラクター以外の画像を格納したディレクトリ  
-	- sounds: BGM及びSEを格納したディレクトリ  
-- lib: 起動に必要なライブラリを格納したディレクトリ  
-- doc: Javadocを格納したディレクトリ  
-- python: pythonでFightingICEを起動する際に用いられるファイルやAI等を格納したディレクトリ  
-- jar: FightingICEの及びAI作成用のライブラリのjarファイルを格納したディレクトリ  
-- multi_start_up_for_Deep: FightingICEをpython経由で複数起動する方法を記述したディレクトリ
-- for_nonDelay: 遅れフレームの無いFightigICEの起動方法を記述したディレクトリ．DeepLearningの使用時にオススメ
+### How to start development ###
+Important contents
+- data: Directory containing resources used in the game [Download here](https://ritsumei365-my.sharepoint.com/:u:/g/personal/gr0608sp_ed_ritsumei_ac_jp/ET1Bspx4REtNlU3pFGSOpi0Bst_Ei3-H-8ROlKvvCF9GGw?e=XV4nmE)
+	- ai: Directory containing AI jar files used in the game (for version 6.0 and later, internal use only)
+	- aiData: Directory containing data files required by AI (for version 6.0 and later, internal use only)
+	- characters: Directory containing character images and action parameter files
+	- graphics: Directory containing graphics such as backgrounds and hadouken
+	- sounds: Directory containing background music and sound effects
+- lib: Directory containing libraries required for startup
+- protoc-gen: Directory containing libraries required for generate gRPC code
+- src: Directory containing source code
 
-### How to use ###
-FightingICE公式サイトを参照してください。  
-<http://www.ice.ci.ritsumei.ac.jp/~ftgaic/index.htm>
+See FightingICE official website for more detail. <http://www.ice.ci.ritsumei.ac.jp/~ftgaic/index.htm>
 
-
+### Java libraries in use ###
+- grpc: Containing libraries related to gRPC module
+	- grpc-api 1.52.1
+	- grpc-context 1.52.1
+	- grpc-core 1.52.1
+	- grpc-netty-shaded 1.52.1
+	- grpc-protobuf 1.52.1
+	- grpc-protobuf-lite 1.52.1
+	- grpc-stub 1.52.1
+	- protobuf-java 3.21.12
+	- protobuf-java-util 3.21.12
+	- protoc-gen-grpc-java 1.53.0 (use for generate gRPC code)
+- lwjgl: Containing libraries related to LWJGL module
+	- natives: Containing libraries related to LWJGL module native to many architectures.
+		- linux/amd64: for Linux
+		- linux/arm64: for Linux with ARM-architecture CPU
+		- macos/amd64: for macOS with Intel chip
+		- macos/arm64: for macOS with Apple chip
+		- windows/amd64: for Windows
+		- windows/arm64: for Windows with ARM-architecture CPU
+	- lwjgl 3.3.1
+	- lwjgl-glfw 3.3.1
+	- lwjgl-openal 3.3.1
+	- lwjgl-opengl 3.3.1
+- annotations-api 6.0.53
+- failureaccess 1.0.1
+- guava 31.1-jre
+- javax.json 1.0.4
+- lwjgl_util 2.9.3
+- perfmark-api 0.26.0
+- py4j 0.10.4
