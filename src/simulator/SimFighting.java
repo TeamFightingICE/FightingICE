@@ -247,6 +247,7 @@ public class SimFighting extends Fighting {
 		detectionFusion();
 		// run effect when character's are in the end of stage.
 		decisionEndStage();
+
 	}
 
 	@Override

@@ -11,5 +11,4 @@ public enum GameSceneName {
 	RESULT,
 	REPLAY,
 	PYTHON,
-	GRPC,
 }

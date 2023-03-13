@@ -1,11 +1,10 @@
 package gamescene;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
-import grpc.PlayerAgent;
 import informationcontainer.MenuItem;
 import input.Keyboard;
 import loader.ResourceLoader;
@@ -14,7 +13,6 @@ import manager.InputManager;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
-import setting.ResourceSetting;
 import struct.Key;
 
 /**
@@ -22,15 +20,10 @@ import struct.Key;
  */
 public class FightingMenu extends GameScene {
 
-	public static final String DEFAULT_AI_NAME = "Keyboard";
-	public static final String DEFAULT_SOUND_NAME = "Default";
-	public static final int DEFAULT_AI_INDEX = 1;
-	public static final int GRPC_INDEX = 0;
-	
 	/**
 	 * 画面に表示する項目数．
 	 */
-	private final int NUMBER_OF_ITEM = 8;
+	private final int NUMBER_OF_ITEM = 7;
 
 	/**
 	 * 表示する各項目のインデックス,名前,座標を格納している配列．
@@ -41,8 +34,6 @@ public class FightingMenu extends GameScene {
 	 * aiフォルダ内にある全AIの名前を格納したリスト．
 	 */
 	private ArrayList<String> allAiNames;
-	
-	private ArrayList<String> allSounds;
 
 	/**
 	 * 現在のカーソル位置．
@@ -53,8 +44,6 @@ public class FightingMenu extends GameScene {
 	 * 繰り返し回数(Repeat Count)の項目における現在の選択位置．
 	 */
 	private int numberIndex;
-	
-	private int soundIndex;
 
 	/**
 	 * PLAYERの項目における現在の選択位置．<br>
@@ -78,40 +67,22 @@ public class FightingMenu extends GameScene {
 		//////////////////////////////////////
 	}
 
-	private boolean isGrpcReady() {
-		if (this.playerIndexes[0] == GRPC_INDEX && LaunchSetting.grpcServer.getPlayer(true).isCancelled()) {
-			return false;
-		} else if (this.playerIndexes[1] == GRPC_INDEX && LaunchSetting.grpcServer.getPlayer(false).isCancelled()) {
-			return false;
-		}
-		return true;
-	}
-	
 	@Override
 	public void initialize() {
 		InputManager.getInstance().setSceneName(GameSceneName.FIGHTING_MENU);
 
-		this.menuItems = new MenuItem[] { 
-				new MenuItem("PLAY", 50, 50, 0), new MenuItem("Player 1: ", 75, 90, 1),
-				new MenuItem("Player 2: ", 75, 130, 2), new MenuItem("Character 1: ", 75, 170, 3),
-				new MenuItem("Character 2: ", 75, 210, 4), new MenuItem("Repeat Count: ", 50, 260, 5),
-				new MenuItem("Sound: ", 50, 310, 6), new MenuItem("RETURN", 50, 360, 7) 
-				};
+		this.menuItems = new MenuItem[] { new MenuItem("PLAY ", 50, 50, 0), new MenuItem("PLAYER1 : ", 75, 90, 1),
+				new MenuItem("PLAYER2 : ", 75, 130, 2), new MenuItem("CHARACTER1 : ", 75, 170, 3),
+				new MenuItem("CHARACTER2 : ", 75, 210, 4), new MenuItem("Repeat Count : ", 50, 260, 5),
+				new MenuItem("RETURN ", 50, 310, 6) };
 
 		this.playerIndexes = new int[2];
 		this.characterIndexes = new int[2];
 		this.cursorPosition = 0;
 		this.numberIndex = 0;
-		this.soundIndex = 0;
 
 		this.allAiNames = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
-		if (FlagSetting.grpc) {
-			allAiNames.add(GRPC_INDEX, "gRPC");
-		}
-		allAiNames.add(DEFAULT_AI_INDEX, DEFAULT_AI_NAME);
-		
-		this.allSounds = ResourceLoader.getInstance().loadSoundNames();
-		allSounds.add(0, DEFAULT_SOUND_NAME);
+		this.allAiNames.add(0, "KeyBoard");
 	}
 
 	@Override
@@ -137,32 +108,23 @@ public class FightingMenu extends GameScene {
 		switch (this.cursorPosition) {
 		// PLAYの項目の位置のとき
 		case 0:
-			if (key.A && this.isGrpcReady()) {
+			if (key.A) {
 				// Launch情報をセット
 				for (int i = 0; i < 2; i++) {
 					LaunchSetting.aiNames[i] = this.allAiNames.get(this.playerIndexes[i]);
 					LaunchSetting.characterNames[i] = GameSetting.CHARACTERS[this.characterIndexes[i]];
 
-					if (LaunchSetting.aiNames[i].equals(DEFAULT_AI_NAME)) {
+					if (LaunchSetting.aiNames[i].equals("KeyBoard")) {
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_KEYBOARD;
-					} else if (this.playerIndexes[i] == GRPC_INDEX && FlagSetting.grpc) {
-						LaunchSetting.aiNames[i] = LaunchSetting.grpcServer.getPlayer(i == 0).getPlayerName();
-						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_GRPC;
 					} else {
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_AI;
 					}
+
 				}
 
 				LaunchSetting.repeatNumber = GameSetting.REPEAT_NUMBERS[this.numberIndex];
 				if (LaunchSetting.repeatNumber > 1) {
 					FlagSetting.automationFlag = true;
-				}
-
-				LaunchSetting.soundName = this.allSounds.get(this.soundIndex);
-				if (LaunchSetting.soundName.equals(DEFAULT_SOUND_NAME)) {
-					ResourceSetting.SOUND_DIRECTORY = "./data/sounds/";
-				} else {
-					ResourceSetting.SOUND_DIRECTORY = String.format("./data/sounds/%s/", LaunchSetting.soundName);
 				}
 
 				// Launcherの次の遷移先を登録
@@ -260,25 +222,9 @@ public class FightingMenu extends GameScene {
 				}
 			}
 			break;
-		// Sound
-		case 6:
-			if (key.R) {
-				if (this.soundIndex == this.allSounds.size() - 1) {
-					this.soundIndex = 0;
-				} else {
-					this.soundIndex++;
-				}
-			}
-			if (key.L) {
-				if (this.soundIndex == 0) {
-					this.soundIndex = this.allSounds.size() - 1;
-				} else {
-					this.soundIndex--;
-				}
-			}
-			break;
+
 		// RETURNの位置のとき
-		case 7:
+		case 6:
 			if (key.A) {
 				HomeMenu homeMenu = new HomeMenu();
 				this.setTransitionFlag(true);
@@ -299,36 +245,29 @@ public class FightingMenu extends GameScene {
 		this.drawScreen();
 	}
 
-	private String getAIName(int i) {
-		if (FlagSetting.grpc) {
-			PlayerAgent player = LaunchSetting.grpcServer.getPlayer(i == 0);
-			if (this.playerIndexes[i] == GRPC_INDEX && !player.isCancelled()) {
-				return String.format("%s (%s AI)", player.getPlayerName(), player.isBlind() ? "Blind" : "Visual");
-			}
-		}
-		return this.allAiNames.get(this.playerIndexes[i]);
-	}
-	
 	/**
 	 * 対戦の設定を行うメニュー画面を描画する．
 	 */
 	private void drawScreen() {
-		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(), 
+		GraphicManager.getInstance().drawString(this.menuItems[0].getString(), this.menuItems[0].getCoordinateX(),
 				this.menuItems[0].getCoordinateY());
-		GraphicManager.getInstance().drawString(this.menuItems[1].getString() + this.getAIName(0),
+		GraphicManager.getInstance().drawString(
+				this.menuItems[1].getString() + this.allAiNames.get(this.playerIndexes[0]),
 				this.menuItems[1].getCoordinateX(), this.menuItems[1].getCoordinateY());
-		GraphicManager.getInstance().drawString(this.menuItems[2].getString() + this.getAIName(1),
+		GraphicManager.getInstance().drawString(
+				this.menuItems[2].getString() + this.allAiNames.get(this.playerIndexes[1]),
 				this.menuItems[2].getCoordinateX(), this.menuItems[2].getCoordinateY());
-		GraphicManager.getInstance().drawString(this.menuItems[3].getString() + GameSetting.CHARACTERS[this.characterIndexes[0]],
+		GraphicManager.getInstance().drawString(
+				this.menuItems[3].getString() + GameSetting.CHARACTERS[this.characterIndexes[0]],
 				this.menuItems[3].getCoordinateX(), this.menuItems[3].getCoordinateY());
-		GraphicManager.getInstance().drawString(this.menuItems[4].getString() + GameSetting.CHARACTERS[this.characterIndexes[1]],
+		GraphicManager.getInstance().drawString(
+				this.menuItems[4].getString() + GameSetting.CHARACTERS[this.characterIndexes[1]],
 				this.menuItems[4].getCoordinateX(), this.menuItems[4].getCoordinateY());
-		GraphicManager.getInstance().drawString(this.menuItems[5].getString() + GameSetting.REPEAT_NUMBERS[this.numberIndex],
+		GraphicManager.getInstance().drawString(
+				this.menuItems[5].getString() + GameSetting.REPEAT_NUMBERS[this.numberIndex],
 				this.menuItems[5].getCoordinateX(), this.menuItems[5].getCoordinateY());
-		GraphicManager.getInstance().drawString(this.menuItems[6].getString() + this.allSounds.get(this.soundIndex),
-				this.menuItems[6].getCoordinateX(), this.menuItems[6].getCoordinateY());
-		GraphicManager.getInstance().drawString(this.menuItems[7].getString(), this.menuItems[7].getCoordinateX(), 
-				this.menuItems[7].getCoordinateY());
+		GraphicManager.getInstance().drawString(this.menuItems[6].getString(), this.menuItems[6].getCoordinateX(),
+				this.menuItems[6].getCoordinateY());
 		GraphicManager.getInstance().drawString("=>", this.menuItems[this.cursorPosition].getCoordinateX() - 30,
 				this.menuItems[this.cursorPosition].getCoordinateY());
 	}
@@ -337,7 +276,6 @@ public class FightingMenu extends GameScene {
 	public void close() {
 		this.menuItems = null;
 		this.allAiNames.clear();
-		this.allSounds.clear();
 		this.characterIndexes = null;
 		this.playerIndexes = null;
 	}

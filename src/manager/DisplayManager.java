@@ -1,43 +1,10 @@
 package manager;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
-import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
-import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
-import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
-import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
-import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
-import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
-import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
-import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
-import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
-import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
-import static org.lwjgl.glfw.GLFW.glfwHideWindow;
-import static org.lwjgl.glfw.GLFW.glfwInit;
-import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetTime;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
-import static org.lwjgl.glfw.GLFW.glfwShowWindow;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
-import static org.lwjgl.glfw.GLFW.glfwTerminate;
-import static org.lwjgl.glfw.GLFW.glfwWindowHint;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glOrtho;
-import static org.lwjgl.system.MemoryStack.stackPush;
-import static org.lwjgl.system.MemoryUtil.NULL;
+import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryStack.*;
+import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.IntBuffer;
 import java.util.logging.Level;
@@ -50,7 +17,6 @@ import org.lwjgl.system.MemoryStack;
 
 import setting.FlagSetting;
 import setting.GameSetting;
-import setting.LaunchSetting;
 
 /**
  * ゲームの進行管理を行うマネージャクラス．
@@ -88,6 +54,7 @@ public class DisplayManager {
 
 		// ゲームの終了処理
 		close();
+
 	}
 
 	/**
@@ -112,8 +79,7 @@ public class DisplayManager {
 		// windowの作成
 		short width = GameSetting.STAGE_WIDTH;
 		short height = GameSetting.STAGE_HEIGHT;
-		String title = GameSetting.TITLE_NAME;
-		this.window = glfwCreateWindow(width, height, title, NULL, NULL);
+		this.window = glfwCreateWindow(width, height, "FightingICE", NULL, NULL);
 		if (this.window == NULL) {
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
@@ -220,14 +186,6 @@ public class DisplayManager {
 	private void close() {
 		GraphicManager.getInstance().close();
 		SoundManager.getInstance().close();
-		
-		if (FlagSetting.grpc) {
-			try {
-				LaunchSetting.grpcServer.stop();
-			} catch (InterruptedException e) {
-				Logger.getAnonymousLogger().log(Level.INFO, "Fail to stop gRPC server");
-			}
-		}
 
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(this.window);
@@ -236,7 +194,6 @@ public class DisplayManager {
 		// Terminate GLFW and free the error callback
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
-		
 		Logger.getAnonymousLogger().log(Level.INFO, "Close FightingICE");
 		System.exit(0);
 	}

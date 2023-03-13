@@ -2,16 +2,17 @@
 # TODO check the actions from RHEA_PPO bot (currently 56 by default)
 # TODO collect data
 import time
+
 import numpy as np
+
 import torch
-from pyftg.ai_interface import AIInterface
-from pyftg.struct import *
 
 GATHER_DEVICE = 'cpu'
 
 import logging
-class SoundAgent(AIInterface):
-    def __init__(self, **kwargs):
+class SoundAgent:
+    def __init__(self, gateway, **kwargs):
+        self.gateway = gateway
         self.actor = kwargs.get('actor')
         self.critic = kwargs.get('critic')
         self.device = kwargs.get('device')
@@ -38,8 +39,8 @@ class SoundAgent(AIInterface):
         self.audio_data = None
         self.raw_audio_memory = None
         self.just_inited = True
-        self.pre_framedata: FrameData = None
-        self.nonDelay: FrameData = None
+        self.pre_framedata = None
+        self.nonDelay = None
 
         # data of 1 rounds
         # self.round_state_list = []
@@ -73,41 +74,35 @@ class SoundAgent(AIInterface):
         self.round_count = 0
         self.n_frame = kwargs.get('n_frame')
         # self.collect_data_helper = CollectDataHelper()
-    
-    def name(self) -> str:
-        return self.__class__.__name__
-    
-    def is_blind(self) -> bool:
-        return False
 
     def initialize(self, gameData, player):
         # Initializng the command center, the simulator and some other things
-        self.inputKey = Key()
-        self.frameData = FrameData()
-        self.cc = CommandCenter()
+        self.inputKey = self.gateway.jvm.struct.Key()
+        self.frameData = self.gateway.jvm.struct.FrameData()
+        self.cc = self.gateway.jvm.aiinterface.CommandCenter()
         self.player = player  # p1 == True, p2 == False
         self.gameData = gameData
+        self.simulator = self.gameData.getSimulator()
         self.isGameJustStarted = True
         return 0
 
     def close(self):
         pass
 
-    def get_information(self, frame_data: FrameData, is_control: bool, non_delay: FrameData):
+    def getInformation(self, frameData, inControl, nonDelay):
         # Load the frame data every time getInformation gets called
-        self.frameData = frame_data
-        self.cc.set_frame_data(self.frameData, self.player)
+        self.frameData = frameData
+        self.cc.setFrameData(self.frameData, self.player)
         # nonDelay = self.frameData
-        self.pre_framedata = self.nonDelay if self.nonDelay is not None else non_delay
-        self.nonDelay = non_delay
-        self.isControl = is_control
-        self.currentFrameNum = self.frameData.current_frame_number  # first frame is 14
+        self.pre_framedata = self.nonDelay if self.nonDelay is not None else nonDelay
+        self.nonDelay = nonDelay
+        self.isControl = inControl
+        self.currentFrameNum = nonDelay.getFramesNumber()  # first frame is 14
 
-
-    def round_end(self, round_result: RoundResult):
-        self.logger.info(round_result.remaining_hps[0])
-        self.logger.info(round_result.remaining_hps[1])
-        self.logger.info(round_result.elapsed_frame)
+    def roundEnd(self, x, y, z):
+        self.logger.info(x)
+        self.logger.info(y)
+        self.logger.info(z)
         self.just_inited = True
         obs = self.raw_audio_memory
         if obs is not None:
@@ -121,6 +116,15 @@ class SoundAgent(AIInterface):
         self.round_count += 1 
         self.logger.info('Finished {} round'.format(self.round_count))
 
+    # please define this method when you use FightingICE version 4.00 or later
+    def getScreenData(self, sd):
+        pass
+        # start_time = time.time()
+        # data = sd.getDisplayByteBufferAsBytes()
+        # # tmp = np.frombuffer(data)
+        # end_time = time.time()
+        # print('screen', (end_time - start_time) * 1000)
+
     def input(self):
         return self.inputKey
 
@@ -129,14 +133,14 @@ class SoundAgent(AIInterface):
         # start_time = time.time()
         # First we check whether we are at the end of the round
         start_time = time.time() * 1000
-        if self.frameData.empty_flag or self.frameData.current_frame_number <= 0:
+        if self.frameData.getEmptyFlag() or self.frameData.getRemainingFramesNumber() <= 0:
             self.isGameJustStarted = True
             return
         # if self.cc.getSkillFlag():
         #     self.inputKey = self.cc.getSkillKey()
         #     return
         self.inputKey.empty()
-        self.cc.skill_cancel()
+        self.cc.skillCancel()
         # if not self.isGameJustStarted:
         #     pass
         # else:
@@ -184,24 +188,26 @@ class SoundAgent(AIInterface):
         if self.rnn:
             self.collect_data_helper.put_actor_hidden_data(self.actor.hidden_cell.squeeze(0).to(self.device))
         #
-        self.cc.command_call(self.actions[action])
-        self.inputKey = self.cc.get_skill_key()
+        self.cc.commandCall(self.actions[action])
+        self.inputKey = self.cc.getSkillKey()
         # end_time = time.time() * 1000
 
     def get_reward(self):
-        offence_reward = self.pre_framedata.get_character(not self.player).hp - self.nonDelay.get_character(not self.player).hp
-        defence_reward = self.nonDelay.get_character(self.player).hp - self.pre_framedata.get_character(self.player).hp
+        offence_reward = self.pre_framedata.getCharacter(not self.player).getHp() - self.nonDelay.getCharacter(
+            not self.player).getHp()
+        defence_reward = self.nonDelay.getCharacter(self.player).getHp() - self.pre_framedata.getCharacter(
+            self.player).getHp()
         return offence_reward + defence_reward
 
     def set_last_hp(self):
-        self.last_my_hp = self.nonDelay.get_character(self.player).hp
-        self.last_opp_hp = self.nonDelay.get_character(not self.player).hp
+        self.last_my_hp = self.nonDelay.getCharacter(self.player).getHp()
+        self.last_opp_hp = self.nonDelay.getCharacter(not self.player).getHp()
 
-    def get_audio_data(self, audio_data: AudioData):
+    def getAudioData(self, audio_data):
         self.audio_data = audio_data
         # process audio
         try:
-            byte_data = self.audio_data.raw_data_as_bytes
+            byte_data = self.audio_data.getRawDataAsBytes()
             np_array = np.frombuffer(byte_data, dtype=np.float32)
             raw_audio = np_array.reshape((2, 1024))
             raw_audio = raw_audio.T
@@ -220,6 +226,9 @@ class SoundAgent(AIInterface):
         increase = (800 * self.n_frame - self.raw_audio_memory.shape[0]) // 800
         for _ in range(increase):
             self.raw_audio_memory = np.vstack((np.zeros((800, 2)), self.raw_audio_memory))
+
+    class Java:
+        implements = ["aiinterface.AIInterface"]
 
     def reset(self):
         self.collect_data_helper = CollectDataHelper(self.logger)
@@ -289,3 +298,54 @@ class CollectDataHelper:
 
         self.total_round_actor_hidden_data = []
         self.current_round_actor_hidden_data = []
+
+
+class SandboxAgent:
+    def __init__(self, gateway, **kwargs):
+        self.gateway = gateway
+        self.nonDelay = None
+        # self.logger = kwargs.get('logger')
+
+    def initialize(self, gameData, player):
+        # Initializng the command center, the simulator and some other things
+        self.inputKey = self.gateway.jvm.struct.Key()
+        self.frameData = self.gateway.jvm.struct.FrameData()
+        self.cc = self.gateway.jvm.aiinterface.CommandCenter()
+        self.player = player  # p1 == True, p2 == False
+        self.gameData = gameData
+        self.simulator = self.gameData.getSimulator()
+        self.isGameJustStarted = True
+        return 0
+
+    def close(self):
+        pass
+
+    def getInformation(self, frameData, inControl, nonDelay):
+        # Load the frame data every time getInformation gets called
+        self.frameData = frameData
+        self.cc.setFrameData(self.frameData, self.player)
+        # nonDelay = self.frameData
+        self.pre_framedata = self.nonDelay if self.nonDelay is not None else nonDelay
+        self.nonDelay = nonDelay
+        self.isControl = inControl
+        self.currentFrameNum = nonDelay.getFramesNumber()  # first frame is 14
+
+    def roundEnd(self, x, y, z):
+        print(x)
+        print(y)
+        print(z)
+    
+    def getScreenData(self, sd):
+        pass
+
+    def input(self):
+        return self.inputKey
+    def processing(self):
+        self.inputKey.empty()
+        self.cc.skillCancel()
+
+    def getAudioData(self, audio_data):
+        pass
+
+    class Java:
+        implements = ["aiinterface.AIInterface"]

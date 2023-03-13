@@ -14,8 +14,6 @@ public class GameSetting {
      * ゲーム画面の縦幅．
      */
     public static final int STAGE_HEIGHT = 640;
-    
-    public static final String TITLE_NAME = "DareFightingICE";
 
     /**
      * ゲームのFPS設定．
@@ -57,6 +55,11 @@ public class GameSetting {
      * キー入力を保持する上限数．
      */
     public static final int INPUT_LIMIT = 30;
+
+    /**
+     * 1ラウンドの制限時間(ミリ秒)．
+     */
+    public static final int ROUND_TIME = 60000;
 
     /**
      * ラウンド数の上限数．

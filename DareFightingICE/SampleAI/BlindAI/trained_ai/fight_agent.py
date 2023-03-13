@@ -1,12 +1,10 @@
 import sys
 sys.path.append('./')
 import numpy as np
-import os
+import time
 import torch
 from model import FeedForwardActor, RecurrentActor
 from encoder import RawEncoder, FFTEncoder, MelSpecEncoder, SampleEncoder
-from pyftg.ai_interface import AIInterface
-from pyftg.struct import *
 
 STATE_DIM = {
     1: {
@@ -20,8 +18,9 @@ STATE_DIM = {
         'mel': 1280
     }
 }
-class SoundAgent(AIInterface):
-    def __init__(self, **kwargs):
+class SoundAgent:
+    def __init__(self, gateway, **kwargs):
+        self.gateway = gateway
         self.encoder = kwargs.get('encoder')
         self.logger = kwargs.get('logger')
         self.path = kwargs.get('path')
@@ -46,36 +45,31 @@ class SoundAgent(AIInterface):
         if self.rnn:
             self.actor.get_init_state(self.device)
         self.round_count = 0
-    
-    def name(self) -> str:
-        return self.__class__.__name__
-
-    def is_blind(self) -> bool:
-        return True
 
     def initialize(self, gameData, player):
         # Initializng the command center, the simulator and some other things
-        self.inputKey = Key()
-        self.frameData = FrameData()
-        self.cc = CommandCenter()
+        self.inputKey = self.gateway.jvm.struct.Key()
+        self.frameData = self.gateway.jvm.struct.FrameData()
+        self.cc = self.gateway.jvm.aiinterface.CommandCenter()
         self.player = player  # p1 == True, p2 == False
         self.gameData = gameData
+        self.simulator = self.gameData.getSimulator()
         self.isGameJustStarted = True
         return 0
 
     def close(self):
         pass
 
-    def get_information(self, frame_data: FrameData, is_control: bool, non_delay: FrameData):
+    def getInformation(self, frameData, inControl):
         # Load the frame data every time getInformation gets called
-        self.frameData = frame_data
-        self.cc.set_frame_data(self.frameData, self.player)
-        self.isControl = is_control
+        self.frameData = frameData
+        self.cc.setFrameData(self.frameData, self.player)
+        self.isControl = inControl
 
-    def round_end(self, round_result: RoundResult):
-        self.logger.info(round_result.remaining_hps[0])
-        self.logger.info(round_result.remaining_hps[1])
-        self.logger.info(round_result.elapsed_frame)
+    def roundEnd(self, x, y, z):
+        self.logger.info(x)
+        self.logger.info(y)
+        self.logger.info(z)
         self.just_inited = True
         self.raw_audio_memory = None
         self.round_count += 1
@@ -90,7 +84,7 @@ class SoundAgent(AIInterface):
 #             self.isGameJustStarted = True
 #             return
         self.inputKey.empty()
-        self.cc.skill_cancel()
+        self.cc.skillCancel()
         obs = self.raw_audio_memory
         if self.just_inited:
             self.just_inited = False
@@ -101,14 +95,14 @@ class SoundAgent(AIInterface):
             state = torch.tensor(obs, dtype=torch.float32)
             action_idx = self.actor.act(state.unsqueeze(0).to(self.device)).float()
             action_idx = torch.argmax(action_idx)
-        self.cc.command_call(self.actions[int(action_idx)])
-        self.inputKey = self.cc.get_skill_key()
+        self.cc.commandCall(self.actions[int(action_idx)])
+        self.inputKey = self.cc.getSkillKey()
 
-    def get_audio_data(self, audio_data: AudioData):
+    def getAudioData(self, audio_data):
         self.audio_data = audio_data
         # process audio
         try:
-            byte_data = self.audio_data.raw_data_as_bytes
+            byte_data = self.audio_data.getRawDataAsBytes()
             np_array = np.frombuffer(byte_data, dtype=np.float32)
             np_array = np_array.reshape((2, 1024))
             np_array = np_array.T
@@ -131,8 +125,15 @@ class SoundAgent(AIInterface):
             self.raw_audio_memory = np.vstack((np.zeros((800, 2)), self.raw_audio_memory))
 
     def load_actor(self):
-        actor_state_dict = torch.load(os.path.join(self.path, "actor.pt"), map_location=torch.device(self.device))
+        actor_state_dict = torch.load(self.path + "\\actor.pt", map_location=torch.device(self.device))
         self.actor.load_state_dict(actor_state_dict, strict=True)
+    
+    # please define this method when you use FightingICE version 4.00 or later
+    def getScreenData(self, sd):
+        pass
+    class Java:
+        implements = ["aiinterface.AIInterface"]
+
 
 def get_sound_encoder(encoder_name, n_frame=1):
     encoder = None

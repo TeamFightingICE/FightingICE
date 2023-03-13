@@ -74,7 +74,4 @@ public class FlagSetting {
      * ラウンド終了時にスローモーションを発生させるかどうかのフラグ
      */
     public static boolean slowmotion = false;
-    
-    public static boolean grpc = false;
-    public static boolean grpcAuto = false;
 }
