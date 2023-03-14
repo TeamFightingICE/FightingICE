@@ -494,52 +494,46 @@ public class Character {
         moveY(this.speedY);
         frictionEffect();
         gravityEffect();
-        // For Adaptive sound :
-    	//MAX volume should not go over 0.75
-    		// For Player 1
-        if(this.playerNumber) {
-    		if(this.hp < 400 && this.hp >= 0) {
-    			if(this.hp < 400 && this.hp > 300)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(0),  0.75f);
-    			if(this.hp < 300 && this.hp > 250)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(0),  0.60f);
-    			if(this.hp < 250 && this.hp > 200)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(0),  0.55f);
-    			if(this.hp < 200 && this.hp > 150)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(0),  0.40f);
-    			if(this.hp < 150 && this.hp > 100)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(0),  0.35f);
-    			if(this.hp < 100 && this.hp > 50)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(0),  0.25f);
-    			if(this.hp < 50 && this.hp >= 0)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(0),  0.10f);
-    		}
-    		if(this.energy < 300 && this.energy >= 0) {
-    			if(this.energy<300 && this.energy > 250)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(1),  0.75f);
-    			if(this.energy<250 && this.energy > 200)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(1),  0.60f);
-    			if(this.energy<200 && this.energy > 150)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(1),  0.55f);
-    			if(this.energy<150 && this.energy > 100)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(1), 0.40f);
-    			if(this.energy<100 && this.energy > 70)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(1), 0.35f);
-    			if(this.energy<70 && this.energy > 50)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(1), 0.25f);
-    			if(this.energy<50 && this.energy >= 0)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(1), 0.10f);
-    			
-    		}	
+        
+		// for Adaptive Sound Design
+    	// MAX volume should not go over 0.75
+        AudioSource hpBgmSource = SoundManager.getInstance().getBGMSource(this.playerNumber ? "violin" : "flute");
+        AudioSource energyBgmSource = SoundManager.getInstance().getBGMSource(this.playerNumber ? "piano" : "ukulele");
+        float hpVal, energyVal;
+        if (hp <= 400 && hp > 300) {
+        	hpVal = 0.75f;
+        } else if (hp > 250) {
+        	hpVal = 0.6f;
+        } else if (hp > 200) {
+        	hpVal = 0.55f;
+        } else if (hp > 150) {
+        	hpVal = 0.4f;
+        } else if (hp > 100) {
+        	hpVal = 0.35f;
+        } else if (hp > 50) {
+        	hpVal = 0.25f;
+        } else {
+        	hpVal = 0.1f;
         }
-    		// For player 2
-    		  if(!this.playerNumber) {
-    	    		if(this.hp < 400 && this.hp >= 0) {
-    	    			if(this.hp < 400 && this.hp > 300)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(2),  0.75f);
-    	    			if(this.hp < 300 && this.hp > 250)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(2),  0.60f);
-    	    			if(this.hp < 250 && this.hp > 200)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(2),  0.55f);
-    	    			if(this.hp < 200 && this.hp > 150)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(2),  0.40f);
-    	    			if(this.hp < 150 && this.hp > 100)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(2),  0.35f);
-    	    			if(this.hp < 100 && this.hp > 50)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(2),  0.25f);
-    	    			if(this.hp < 50 && this.hp >= 0)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(2),  0.10f);
-    	    		}
-    	    		if(this.energy < 300 && this.energy > 0) {
-    	    			if(this.energy<300 && this.energy > 250)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(3),  0.75f);
-    	    			if(this.energy<250 && this.energy > 200)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(3),  0.60f);
-    	    			if(this.energy<200 && this.energy > 150)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(3),  0.55f);
-    	    			if(this.energy<150 && this.energy > 100)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(3),  0.40f);
-    	    			if(this.energy<100 && this.energy > 70)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(3),  0.35f);
-    	    			if(this.energy<70 && this.energy > 50)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(3),  0.25f);
-    	    			if(this.energy<50 && this.energy >= 0)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(3),  0.10f);
-    	    			
-    	    		}
-    	}
+        
+        if (energy <= 300 && energy > 250) {
+        	energyVal = 0.75f;
+        } else if (energy > 200) {
+        	energyVal = 0.6f;
+        } else if (energy > 150) {
+        	energyVal = 0.55f;
+        } else if (energy > 100) {
+        	energyVal = 0.4f;
+        } else if (energy > 70) {
+        	energyVal = 0.35f;
+        } else if (energy > 50) {
+        	energyVal = 0.25f;
+        } else {
+        	energyVal = 0.1f;
+        }
+        
+        SoundManager.getInstance().setSourceGain(hpBgmSource, hpVal);
+        SoundManager.getInstance().setSourceGain(energyBgmSource, energyVal);
 
         if (FlagSetting.trainingModeFlag) {
             this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
@@ -667,8 +661,6 @@ public class Character {
 
         }
     }
-
-
 
     /**
      * 攻撃がヒットしたときの処理を行う．

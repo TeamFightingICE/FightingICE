@@ -14,8 +14,8 @@ This page contains the source code and model of our deep reinforcement learning 
     ```
 
 - Boot DareFightingICE with the option `--limithp 400 400 --grpc-auto --non-delay 0`.
-- Run the ```train.py``` file to train. e.g ```python train.py --p2 MctsAi10is --encoder fft --id rnn_1_frame_256_mctsai10is --n_frame 1 --recurrent```
-- Run the ```trained_ai/test.py``` to test the Blind AI. e.g. ```python trained_ai/test.py --p2 MctsAi10is --encoder fft```
+- Run the ```train.py``` file to train. e.g ```python train.py --p2 MctsAi23i --encoder mel --id rnn_1_frame_256_mctsai23i --n_frame 1 --recurrent```
+- Run the ```trained_ai/test.py``` to test the Blind AI. e.g. ```python trained_ai/test.py --p2 MctsAi23i --encoder mel```
 
 ## File Description
 - ```train.py``` is a file used to train Blind AI. Please run ```python train.py -h``` for our explanation of the parameters.

@@ -124,8 +124,6 @@ public class Play extends GameScene {
 		this.currentRound = 1;
 		this.roundStartFlag = true;
 		this.endFrame = -1;
-		this.sourceBackground = SoundManager.getInstance().createAudioSource();
-		SoundManager.getInstance().initializeBGM();
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
 		this.audioData = new AudioData();
@@ -170,8 +168,9 @@ public class Play extends GameScene {
 			this.setTransitionFlag(true);
 			this.setNextGameScene(launch);
 		}
+		
+		SoundManager.getInstance().initializeBGM();
 		SoundManager.getInstance().playBGM();
-		//SoundManager.getInstance().play2(sourceBackground, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 	}
 
 	@Override
@@ -275,21 +274,30 @@ public class Play extends GameScene {
 	 * 8. ラウンドが終了しているか判定する.<br>
 	 */
 	private void processingGame() {
-		//For adaptive Sound Design
+		// for Adaptive Sound Design
+    	// MAX volume should not go over 0.75
 		
-		if(this.frameData.getCharacter(true)!= null && this.frameData.getCharacter(false)!= null ) {
-			int a  = Math.abs(this.frameData.getCharacter(true).getX() - this.frameData.getCharacter(false).getX());
-			//System.out.println(Math.abs(this.frameData.getCharacter(true).getX() - this.frameData.getCharacter(false).getX()));
-		if(a<800 ) {
-			if(a<750 && a> 600)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(4),  0.10f);
-			if(a<600 && a> 500) SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(4), 0.20f);
-			if(a<500 && a> 400) SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(4),  0.30f);
-			if(a<400 && a> 300)SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(4),  0.40f);
-			if(a<300 && a> 60) SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(4),  0.50f);
-			if(a<60 && a> 30) SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(4),  0.70f);
-			if(a<30 && a>= 0) SoundManager.getInstance().setSourceGain(SoundManager.getInstance().getBGMSource(4),  0.75f);
-
-		}
+		if (this.frameData.getCharacter(true) != null && this.frameData.getCharacter(false) != null) {
+			AudioSource audioSource = SoundManager.getInstance().getBGMSource("cello");
+			int distance  = Math.abs(this.frameData.getCharacter(true).getCenterX() - this.frameData.getCharacter(false).getCenterX());
+			float val;
+			if (distance < 750 && distance > 600) {
+				val = 0.1f;
+			} else if (distance > 500) {
+				val = 0.2f;
+			} else if (distance > 400) {
+				val = 0.3f;
+			} else if (distance > 300) {
+				val = 0.4f;
+			} else if (distance > 60) {
+				val = 0.5f;
+			} else if (distance > 30) {
+				val = 0.7f;
+			} else {
+				val = 0.75f;
+			}
+			// float val = (float) ((1 - (distance / 750.0)) * 0.65 + 0.1);
+			SoundManager.getInstance().setSourceGain(audioSource, val);
 		}
 		
 		if (this.endFrame != -1) {
