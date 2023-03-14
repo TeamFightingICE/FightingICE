@@ -668,7 +668,7 @@ if __name__ == '__main__':
     parser.add_argument('--encoder', type=str, choices=['conv1d', 'fft', 'mel'], default='conv1d', help='Choose an encoder for the Blind AI')
     parser.add_argument('--port', type=int, default=50051, help='Port used by DareFightingICE')
     parser.add_argument('--id', type=str, required=True, help='Experiment id')
-    parser.add_argument('--p2', choices=['Sandbox', 'MctsAi10is'], type=str, required=True, help='The opponent AI')
+    parser.add_argument('--p2', choices=['Sandbox', 'MctsAi23i'], type=str, required=True, help='The opponent AI')
     parser.add_argument('--recurrent', action='store_true', help='Use GRU')
     parser.add_argument('--n_frame', type=int, default=1, help='Number of frame to sample data')
     parser.add_argument('--epoch', type=int, default=10, help='Number of epochs to train')

@@ -25,7 +25,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--encoder', type=str, choices=['conv1d', 'fft', 'mel'], default='conv1d', help='Choose an encoder for the Blind AI')
     parser.add_argument('--port', type=int, default=50051, help='Port used by DareFightingICE')
-    parser.add_argument('--p2', choices=['Sandbox', 'MctsAi10is'], type=str, required=True, help='The opponent AI')
+    parser.add_argument('--p2', choices=['Sandbox', 'MctsAi23i'], type=str, required=True, help='The opponent AI')
     parser.add_argument('--game_num', type=int, default=30, help='Number of games to play')
     args = parser.parse_args()
     characters = ['ZEN']
