@@ -17,6 +17,9 @@ This page contains the source code and model of our deep reinforcement learning 
 - Run the ```train.py``` file to train. e.g ```python train.py --p2 MctsAi23i --encoder mel --id rnn_1_frame_256_mctsai23i --n_frame 1 --recurrent```
 - Run the ```trained_ai/test.py``` to test the Blind AI. e.g. ```python trained_ai/test.py --p2 MctsAi23i --encoder mel```
 
+## Model:
+TBA<br>
+
 ## File Description
 - ```train.py``` is a file used to train Blind AI. Please run ```python train.py -h``` for our explanation of the parameters.
 - ```train_ai``` folder contains source code for the trained AI which is used as a sample AI for the AI track. It uses the FFT audio encoder and GRU. All weights are stored in ```trained_model```.
