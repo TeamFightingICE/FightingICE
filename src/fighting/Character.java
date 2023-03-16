@@ -499,6 +499,7 @@ public class Character {
     	// MAX volume should not go over 0.75
         AudioSource hpBgmSource = SoundManager.getInstance().getBGMSource(this.playerNumber ? "violin" : "flute");
         AudioSource energyBgmSource = SoundManager.getInstance().getBGMSource(this.playerNumber ? "piano" : "ukulele");
+        
         float hpVal, energyVal;
         if (hp <= 400 && hp > 300) {
         	hpVal = 0.75f;
@@ -531,6 +532,9 @@ public class Character {
         } else {
         	energyVal = 0.1f;
         }
+        
+        // float hpVal = this.getHpPercentage() * 0.65f + 0.1f;
+        // float energyVal = this.getEnergyPercentage() * 0.65f + 0.1f;
         
         SoundManager.getInstance().setSourceGain(hpBgmSource, hpVal);
         SoundManager.getInstance().setSourceGain(energyBgmSource, energyVal);
@@ -957,6 +961,16 @@ public class Character {
         return this.hp;
     }
 
+
+    /**
+     * Returns the character's HP percentage.
+     *
+     * @return the character's HP percentage
+     */
+    public float getHpPercentage() {
+    	return (float) this.hp / LaunchSetting.maxHp[playerNumber ? 0 : 1];
+    }
+
     /**
      * Returns the character's energy.
      *
@@ -964,6 +978,15 @@ public class Character {
      */
     public int getEnergy() {
         return this.energy;
+    }
+    
+    /**
+     * Returns the character's energy percentage.
+     *
+     * @return the character's energy percentage
+     */
+    public float getEnergyPercentage() {
+    	return (float) this.energy / LaunchSetting.maxEnergy[playerNumber ? 0 : 1];
     }
 
     /**

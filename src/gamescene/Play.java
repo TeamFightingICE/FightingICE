@@ -277,9 +277,9 @@ public class Play extends GameScene {
 		// for Adaptive Sound Design
     	// MAX volume should not go over 0.75
 		
-		if (this.frameData.getCharacter(true) != null && this.frameData.getCharacter(false) != null) {
+		if (!this.frameData.getEmptyFlag()) {
 			AudioSource audioSource = SoundManager.getInstance().getBGMSource("cello");
-			int distance  = Math.abs(this.frameData.getCharacter(true).getCenterX() - this.frameData.getCharacter(false).getCenterX());
+			int distance = (int) Math.sqrt(Math.pow(this.frameData.getDistanceX(), 2) + Math.pow(this.frameData.getDistanceY(), 2));
 			float val;
 			if (distance < 750 && distance > 600) {
 				val = 0.1f;
@@ -296,7 +296,7 @@ public class Play extends GameScene {
 			} else {
 				val = 0.75f;
 			}
-			// float val = (float) ((1 - (distance / 750.0)) * 0.65 + 0.1);
+			// float val = (float) ((1 - (Math.max(distance, 750) / 750.0)) * 0.65 + 0.1);
 			SoundManager.getInstance().setSourceGain(audioSource, val);
 		}
 		
