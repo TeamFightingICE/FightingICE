@@ -8,7 +8,7 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 
 ### How to start development ###
 Important contents
-- data: Directory containing resources used in the game [Download here](https://ritsumei365-my.sharepoint.com/:u:/g/personal/gr0608sp_ed_ritsumei_ac_jp/ET1Bspx4REtNlU3pFGSOpi0Bst_Ei3-H-8ROlKvvCF9GGw?e=XV4nmE)
+- data: Directory containing resources used in the game [Download here](https://github.com/TeamFightingICE/FightingICE/releases/download/v6.0.1/resources-6.0.1.zip)
 	- ai: Directory containing AI jar files used in the game (for version 6.0 and later, internal use only)
 	- aiData: Directory containing data files required by AI (for version 6.0 and later, internal use only)
 	- characters: Directory containing character images and action parameter files
