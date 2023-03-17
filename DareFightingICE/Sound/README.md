@@ -78,7 +78,7 @@ Screening:
 
 ### Installation Guide:
 ---
-To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0)
+To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0.1)
 
 
 ### Submission:
