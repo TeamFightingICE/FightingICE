@@ -5,7 +5,7 @@
 - ```data/aiData``` is where the data required for AI loading is located.
 - ```lib``` is where the library required to run this project is located.
 - ```src``` contains the source code of example Java-implemented AI.
-- ```AIToolkit.jar``` is a JAR file that includes the interfaces necessary for implementing Java AI for DareFightingICE. [Javadoc](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/)
+- ```AIToolkit.jar``` is a JAR file that includes the interfaces necessary for implementing Java AI for DareFightingICE. See also [Javadoc](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/).
 - ```FTG-JavaAI.jar``` is the compiled JAR file for this project, and it is used for connecting to the DareFightingICE platform.
 - ```run-linux.sh```, ```run-windows.bat``` are predefined scripts that include the commands to run this platform, along with the necessary parameters.
 
