@@ -7,7 +7,6 @@ This repository is a repository for the development of the 2D fighting game Figh
 FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGAIC), an international competition that competes for the performance of fighting game AI certified by Computational Intelligence and Games (CIG).
 
 ### How to start development ###
-Instructions
 - Clone the project into your local workspace.
 - Download resources required for development from [here](https://github.com/TeamFightingICE/FightingICE/releases/download/v6.0.1/resources-6.0.1.zip) and extract into the root directory.
 - Add all libraries from `lib` into your project. (for LWJGL, please add only one native match with your OS)
