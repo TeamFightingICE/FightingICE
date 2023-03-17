@@ -97,8 +97,6 @@ public class Play extends GameScene {
 
 	private int endFrame;
 
-	private AudioSource sourceBackground;
-
 	private AudioData audioData;
 	/**
 	 * クラスコンストラクタ．
@@ -223,8 +221,6 @@ public class Play extends GameScene {
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			SoundManager.getInstance().stop(sourceBackground);
-
 			HomeMenu homeMenu = new HomeMenu();
 			this.setTransitionFlag(true);
 			this.setNextGameScene(homeMenu);
@@ -280,23 +276,7 @@ public class Play extends GameScene {
 		if (!this.frameData.getEmptyFlag()) {
 			AudioSource audioSource = SoundManager.getInstance().getBGMSource("cello");
 			int distance = (int) Math.sqrt(Math.pow(this.frameData.getDistanceX(), 2) + Math.pow(this.frameData.getDistanceY(), 2));
-			float val;
-			if (distance < 750 && distance > 600) {
-				val = 0.1f;
-			} else if (distance > 500) {
-				val = 0.2f;
-			} else if (distance > 400) {
-				val = 0.3f;
-			} else if (distance > 300) {
-				val = 0.4f;
-			} else if (distance > 60) {
-				val = 0.5f;
-			} else if (distance > 30) {
-				val = 0.7f;
-			} else {
-				val = 0.75f;
-			}
-			// float val = (float) ((1 - (Math.max(distance, 750) / 750.0)) * 0.65 + 0.1);
+			float val = (float) ((1 - (Math.max(distance, 750) / 750.0)) * 0.65 + 0.1);
 			SoundManager.getInstance().setSourceGain(audioSource, val);
 		}
 		
@@ -401,7 +381,6 @@ public class Play extends GameScene {
 	
 	private void processingGameEnd() {
 		InputManager.getInstance().gameEnd();
-		SoundManager.getInstance().stop(sourceBackground);
 	}
 
 	/**
@@ -441,17 +420,15 @@ public class Play extends GameScene {
 
 	@Override
 	public void close() {
-		// close fight
 		this.fighting.close();
-		this.sourceBackground.close();
-		SoundManager.getInstance().closeBGMSources();
 		this.fighting = null;
 		this.frameData = null;
 		this.screenData = null;
 		this.keyData = null;
-		// AIの実行を終了する
-		InputManager.getInstance().closeAI();
 		this.roundResults.clear();
+		
+		SoundManager.getInstance().closeBGMSources();
+		InputManager.getInstance().closeAI();
 
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().closeAllWriters();

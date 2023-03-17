@@ -500,41 +500,8 @@ public class Character {
         AudioSource hpBgmSource = SoundManager.getInstance().getBGMSource(this.playerNumber ? "violin" : "flute");
         AudioSource energyBgmSource = SoundManager.getInstance().getBGMSource(this.playerNumber ? "piano" : "ukulele");
         
-        float hpVal, energyVal;
-        if (hp <= 400 && hp > 300) {
-        	hpVal = 0.75f;
-        } else if (hp > 250) {
-        	hpVal = 0.6f;
-        } else if (hp > 200) {
-        	hpVal = 0.55f;
-        } else if (hp > 150) {
-        	hpVal = 0.4f;
-        } else if (hp > 100) {
-        	hpVal = 0.35f;
-        } else if (hp > 50) {
-        	hpVal = 0.25f;
-        } else {
-        	hpVal = 0.1f;
-        }
-        
-        if (energy <= 300 && energy > 250) {
-        	energyVal = 0.75f;
-        } else if (energy > 200) {
-        	energyVal = 0.6f;
-        } else if (energy > 150) {
-        	energyVal = 0.55f;
-        } else if (energy > 100) {
-        	energyVal = 0.4f;
-        } else if (energy > 70) {
-        	energyVal = 0.35f;
-        } else if (energy > 50) {
-        	energyVal = 0.25f;
-        } else {
-        	energyVal = 0.1f;
-        }
-        
-        // float hpVal = this.getHpPercentage() * 0.65f + 0.1f;
-        // float energyVal = this.getEnergyPercentage() * 0.65f + 0.1f;
+        float hpVal = this.getHpPercentage() * 0.65f + 0.1f;
+        float energyVal = this.getEnergyPercentage() * 0.65f + 0.1f;
         
         SoundManager.getInstance().setSourceGain(hpBgmSource, hpVal);
         SoundManager.getInstance().setSourceGain(energyBgmSource, energyVal);
