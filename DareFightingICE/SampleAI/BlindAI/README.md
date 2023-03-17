@@ -35,6 +35,7 @@ This page contains the source code and model of our deep reinforcement learning 
 - Run ```python trained_ai/test.py --p2 MctsAi65 --encoder fft``` to begin testing.
 - After testing, please run ```python analyze_fight_result.py --path {path}``` where ```path``` is the location of ```log/point``` of DareFightingICE.
 - Both win ratio and average HP difference will be printed out.
+
 ## Tested Environment
 - Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz   3.70 GHz
 - 16.0 GB RAM
@@ -42,6 +43,10 @@ This page contains the source code and model of our deep reinforcement learning 
 - Windows 10 Pro
 - Python 3.8
 - DareFightingICE 5.2 (from the project's Github)
+
+## Performance against MctsAi23i
+- Winning ratio: 0.54
+- Average HP difference: 18.87   
 
 ## Deep learning libraries in use:
 - pytorch 1.11.0
