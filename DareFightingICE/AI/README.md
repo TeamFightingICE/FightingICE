@@ -80,3 +80,5 @@ Midterm deadline (We recommend you do midterm submission, but if you miss it, yo
 
 Final deadline
 - July 29, 2023 (23:59 JST)(no extension!!)
+
+#### Note that all the submissions will be made publicly available after the competition.
