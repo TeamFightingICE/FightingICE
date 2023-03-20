@@ -34,7 +34,7 @@ The 2022 competition results are avialable on this <a href="https://www.ice.ci.r
 
 ### <b>Papers:</b>
 Read also:<br>
-<a href="http://www.ice.ci.ritsumei.ac.jp/~ruck/PAP/FightingICEgRPC_ICBIR2023.pdf" target="_blank">the paper</a> about the introduced gRPC framework at <a href="https://icbir.tni.ac.th/" target="_blank">ICBIR 2023</a><br> 
+<a href="http://arxiv.org/abs/2303.10001" target="_blank">the paper</a> about the introduced gRPC framework at <a href="https://icbir.tni.ac.th/" target="_blank">ICBIR 2023</a><br> 
 <a href="https://ieee-cog.org/2022/assets/papers/paper_133.pdf" target="_blank">the paper</a> about the competition at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a> <br>
 <a href="https://ieee-cog.org/2022/assets/papers/paper_223.pdf" target="_blank">the paper</a> about our blind sample AI at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a> 
 <br>
