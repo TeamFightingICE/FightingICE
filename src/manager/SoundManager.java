@@ -73,7 +73,7 @@ public class SoundManager {
      */
     private ArrayList<AudioSource> audioSources;
     // BGM Source
-    private static final String[] INSTRUMENTAL_NAMES = { "violin", "piano", "flute", "ukulele", "cello" };
+    private static final String[] INSTRUMENT_NAMES = { "violin", "piano", "flute", "ukulele", "cello" };
     private HashMap<String, AudioSource> bgmSources;
     /**
      * Sound rendering devices.
@@ -142,7 +142,7 @@ public class SoundManager {
         // OpenAL㝮デフォルトデポイス㝫接続㝙る
         // sound renderers
         this.soundRenderers = new ArrayList<>();
-        if (!FlagSetting.fastModeFlag && !FlagSetting.muteFlag && FlagSetting.enableWindow) {
+        if (!FlagSetting.muteFlag && FlagSetting.enableWindow) {
             this.soundRenderers.add(SoundRender.createDefaultRenderer());
         }
         virtualRenderer = SoundRender.createVirtualRenderer();
@@ -305,41 +305,32 @@ public class SoundManager {
             soundRenderers.get(i).stop(audioSource.getSourceIds()[i]);
         }
     }
-
-    /**
-     * 音声ファイルをクローズ㝙る．
-     */
-    public void close() {
-        if (!this.closeFlag) {
-            for (AudioSource source : this.audioSources) {
-                this.stop(source);
-                deleteSource(source);
-            }
-            for (AudioBuffer buffer : this.audioBuffers) {
-                deleteBuffer(buffer);
-            }
-            this.loadedFiles.clear();
-            this.audioBuffers.clear();
-            this.audioSources.clear();
-            this.closeRenderers();
-            this.closeFlag = true;
-        }
+    
+    public void stopAll() {
+    	for (AudioSource audioSource: getAudioSources())
+			stop(audioSource);
     }
 
     public AudioBuffer getBackGroundMusicBuffer() {
         return backGroundMusicBuffer;
     }
+    
     /**
      * Set the gain of a source. For changing the volume of the source
      * @param source
      * @param val
      */
-    
     public void setSourceGain(AudioSource source, float gain) {
 		for (int i = 0; i < soundRenderers.size(); i++) {
 	        int sourceId = source.getSourceIds()[i];
-	        soundRenderers.get(i).setSourceGain(sourceId, gain);
+	        soundRenderers.get(i).setSourceGain(sourceId, Math.min(1.0f, Math.max(0.0f, gain)));
 	    }
+    }
+    
+    public void setBGMAudioGains(float[] audioGains) {
+    	for (int i = 0; i < INSTRUMENT_NAMES.length; i++) {
+    		setSourceGain(getBGMSource(INSTRUMENT_NAMES[i]), audioGains[i]);
+    	}
     }
 
     /**
@@ -421,13 +412,18 @@ public class SoundManager {
     }
     
     public void initializeBGM() {
-    	for (int i = 0; i < INSTRUMENTAL_NAMES.length; i++) {
-    		this.bgmSources.put(INSTRUMENTAL_NAMES[i], SoundManager.getInstance().createAudioSource());
+    	for (int i = 0; i < INSTRUMENT_NAMES.length; i++) {
+    		this.bgmSources.put(INSTRUMENT_NAMES[i], SoundManager.getInstance().createAudioSource());
     	}
     }
     
-    public AudioSource getBGMSource(String instrumental) {
-    	return this.bgmSources.get(instrumental);
+    public void closeBGM() {
+    	this.bgmSources.values().forEach(x -> x.close());
+    	this.bgmSources.clear();
+    }
+    
+    public AudioSource getBGMSource(String instrument) {
+    	return this.bgmSources.get(instrument);
     }
     
     public void playBGM() {
@@ -437,17 +433,38 @@ public class SoundManager {
     	setSourceGain(this.getBGMSource("ukulele"), 0.10f);
     	setSourceGain(this.getBGMSource("cello"), 0.75f);
     	
-    	play2(this.getBGMSource("violin"),getSoundBuffers().get("bach_V.wav") , 350, 0, true);
-    	play2(this.getBGMSource("piano"),getSoundBuffers().get("bach_P.wav") , 350, 0, true);
-    	play2(this.getBGMSource("flute"),getSoundBuffers().get("bach_F.wav") , 350, 0, true);
-    	play2(this.getBGMSource("ukulele"),getSoundBuffers().get("bach_U.wav") , 350, 0, true);
-    	play2(this.getBGMSource("cello"),getSoundBuffers().get("bach_C.wav") , 350, 0, true);
+    	play2(this.getBGMSource("violin"), getSoundBuffers().get("bach_V.wav") , 350, 0, true);
+    	play2(this.getBGMSource("piano"), getSoundBuffers().get("bach_P.wav") , 350, 0, true);
+    	play2(this.getBGMSource("flute"), getSoundBuffers().get("bach_F.wav") , 350, 0, true);
+    	play2(this.getBGMSource("ukulele"), getSoundBuffers().get("bach_U.wav") , 350, 0, true);
+    	play2(this.getBGMSource("cello"), getSoundBuffers().get("bach_C.wav") , 350, 0, true);
     }
     
-    public void closeBGMSources() {
-    	for (AudioSource bgm: this.bgmSources.values()) {
-    		bgm.close();
+    public void closeSources() {
+    	for (AudioSource source: getAudioSources()) {
+    		source.close();
     	}
-    	this.bgmSources.clear();
+    }
+
+    /**
+     * 音声ファイルをクローズ㝙る．
+     */
+    public void close() {
+        if (!this.closeFlag) {
+            for (AudioSource source : this.audioSources) {
+                this.stop(source);
+                deleteSource(source);
+            }
+            for (AudioBuffer buffer : this.audioBuffers) {
+                deleteBuffer(buffer);
+            }
+            this.loadedFiles.clear();
+            this.audioBuffers.clear();
+            this.audioSources.clear();
+            this.bgmSources.clear();
+            this.closeRenderers();
+            this.closeSources();
+            this.closeFlag = true;
+        }
     }
 }

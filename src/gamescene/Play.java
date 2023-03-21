@@ -4,6 +4,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,10 +29,10 @@ import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
-import struct.AudioSource;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
+import util.BGMUtil;
 import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
@@ -98,6 +100,9 @@ public class Play extends GameScene {
 	private int endFrame;
 
 	private AudioData audioData;
+	
+	private FileWriter writer;
+	
 	/**
 	 * クラスコンストラクタ．
 	 */
@@ -168,7 +173,6 @@ public class Play extends GameScene {
 		}
 		
 		SoundManager.getInstance().initializeBGM();
-		SoundManager.getInstance().playBGM();
 	}
 
 	@Override
@@ -192,14 +196,6 @@ public class Play extends GameScene {
 				} else if (this.endFrame % 30 == 0) {
 					this.nowFrame++;
 				}
-				
-//				if (FlagSetting.grpcMode) {
-//					try {
-//						GrpcServer.instance().enqueueGameData(frameData, audioData);
-//					} catch (InterruptedException e) {
-//						Logger.getAnonymousLogger().log(Level.SEVERE, "Fail to publish game data to gRPC channel");
-//					}
-//				}
 			}
 
 		} else {
@@ -240,7 +236,17 @@ public class Play extends GameScene {
 
 		InputManager.getInstance().clear();
 		SoundManager.getInstance().playBGM();
-		//SoundManager.getInstance().play2(sourceBackground,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
+		
+		//TODO to be remove
+		String timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
+    	String fileName = String.format("log/bgm_%s.csv", timeInfo);
+    	try {
+			this.writer = new FileWriter(new File(fileName));
+			this.writer.write("frame,violin,piano,flute,ukulele,cello\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -270,16 +276,6 @@ public class Play extends GameScene {
 	 * 8. ラウンドが終了しているか判定する.<br>
 	 */
 	private void processingGame() {
-		// for Adaptive Sound Design
-    	// MAX volume should not go over 0.75
-		
-		if (!this.frameData.getEmptyFlag()) {
-			AudioSource audioSource = SoundManager.getInstance().getBGMSource("cello");
-			int distance = (int) Math.sqrt(Math.pow(this.frameData.getDistanceX(), 2) + Math.pow(this.frameData.getDistanceY(), 2));
-			float val = (float) ((1 - (Math.max(distance, 750) / 750.0)) * 0.65 + 0.1);
-			SoundManager.getInstance().setSourceGain(audioSource, val);
-		}
-		
 		if (this.endFrame != -1) {
 			this.keyData = new KeyData();
 			if (this.endFrame % 30 == 0) {
@@ -291,6 +287,19 @@ public class Play extends GameScene {
 		}
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		
+		// for Adaptive Sound Design -> volume [ 0.1, 0.75 ]
+		if (!this.frameData.getEmptyFlag()) {
+			float[] audioGains = BGMUtil.getAudioGains(this.frameData);
+			try {
+				this.writer.write(String.format("%d,%f,%f,%f,%f,%f\n", this.frameData.getFramesNumber(), audioGains[0], 
+						audioGains[1], audioGains[2], audioGains[3], audioGains[4]));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			SoundManager.getInstance().setBGMAudioGains(audioGains);
+		}
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {
@@ -337,8 +346,14 @@ public class Play extends GameScene {
 	 * ラウンド終了時の処理を行う.
 	 */
 	private void processingRoundEnd() {
-		for (AudioSource audioSource: SoundManager.getInstance().getAudioSources())
-			SoundManager.getInstance().stop(audioSource);
+		SoundManager.getInstance().stopAll();
+		try {
+			this.writer.close();
+			this.writer = null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (FlagSetting.slowmotion) {
 			if (this.endFrame > GameSetting.ROUND_EXTRAFRAME_NUMBER) {
@@ -381,6 +396,7 @@ public class Play extends GameScene {
 	
 	private void processingGameEnd() {
 		InputManager.getInstance().gameEnd();
+		SoundManager.getInstance().closeBGM();
 	}
 
 	/**
@@ -427,7 +443,6 @@ public class Play extends GameScene {
 		this.keyData = null;
 		this.roundResults.clear();
 		
-		SoundManager.getInstance().closeBGMSources();
 		InputManager.getInstance().closeAI();
 
 		if (FlagSetting.debugActionFlag) {
