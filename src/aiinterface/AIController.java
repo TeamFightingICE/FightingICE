@@ -148,9 +148,6 @@ public class AIController extends Thread {
                 }
 
                 FrameData frameData = !this.framesData.isEmpty() ? new FrameData(this.framesData.removeFirst()) : new FrameData();
-                if ((this.deviceType == InputManager.DEVICE_TYPE_AI && LaunchSetting.noVisual[this.playerNumber ? 0 : 1])) {
-                    frameData.removeVisualData();
-                }
                 
                 if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
                 	this.ai.getInformation(frameData, isControl);
@@ -158,6 +155,8 @@ public class AIController extends Thread {
         	        // screen raw data isn't provided to sound-only AI
         	        if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
         	            this.ai.getScreenData(this.screenData);
+        	        } else {
+        	        	frameData.removeVisualData();
         	        }
         	        
         	        this.ai.processing();

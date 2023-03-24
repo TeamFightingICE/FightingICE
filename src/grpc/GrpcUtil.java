@@ -120,6 +120,10 @@ public class GrpcUtil {
   	}
   	
   	public static GrpcScreenData convertScreenData(ScreenData screenData, int width, int height, boolean grayscale) {
+  		if (screenData == null) {
+  			return GrpcScreenData.getDefaultInstance();
+  		}
+  		
   		GrpcScreenData.Builder builder = GrpcScreenData.newBuilder();
   		if (screenData.getDisplayBytes() != null) {
   			builder.setDisplayBytes(ByteString.copyFrom(screenData.getDisplayByteBufferAsBytes(width, height, grayscale)));
@@ -128,6 +132,10 @@ public class GrpcUtil {
   	}
   	
   	public static GrpcAudioData convertAudioData(AudioData audioData) {
+  		if (audioData == null) {
+  			return GrpcAudioData.getDefaultInstance();
+  		}
+  		
   		return GrpcAudioData.newBuilder()
   				.setRawDataAsBytes(ByteString.copyFrom(audioData.getRawDataAsBytes()))
   				.addAllFftData(Arrays.stream(audioData.getFftData()).map(x -> convertFftData(x)).toList())
