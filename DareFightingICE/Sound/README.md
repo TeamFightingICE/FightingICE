@@ -1,5 +1,5 @@
 
-# <div align ="center"> Sound Design Track </div>
+# <div align ="center"> Sound Design Track (2023) </div>
 ----
 <div align = "center"> Welcome to the sound design track of DareFightingICE. Here you will be provided all the necessary information needed to participate in the sound design track. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
@@ -37,7 +37,7 @@ All the sound effects must be in .wav format. The sound effects should be **mono
 
 ### Sample Sound Design:
 ---
-The sample sound design is made using OpenAL from the Lightweight Java Game Library (lwjgl). There is a total of 51 sound effects in the sounds folder including the background music. For the sample sound design, some sound effects are the same for similar moves. To know in detail what the moves look like visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/ZEN_action_animations.htm).<br>
+The sample sound design (available in the data\sounds folder [here](https://github.com/TeamFightingICE/FightingICE/releases/download/v6.0.1/resources-6.0.1.zip)) is made using OpenAL from the Lightweight Java Game Library (lwjgl). There is a total of 51 sound effects in the sounds folder including the background music. For the sample sound design, some sound effects are the same for similar moves. To know in detail what the moves look like visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/ZEN_action_animations.htm).<br>
 There are a few special sound effects added into the DareFightingICE.
 -	<b>Heartbeat:</b> This sound effect is played when the player’s health is below 50. For player 1 the sound effect is played on the left speaker and for player 2 on the right.
 -	<b>Energy Increase:</b> This sound effect is played when the player’s energy goes +50 from the previous value. For player 1 the sound effect is played on the left speaker and for player 2 on the right.
@@ -78,7 +78,7 @@ Screening:
 
 ### Installation Guide:
 ---
-To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0)
+To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0.1)
 
 
 ### Submission:
@@ -90,6 +90,8 @@ Midterm deadline (We recommend you do midterm submission, but if you miss it, yo
 
 Final deadline
 - July 29, 2023 (23:59 JST)(no extension!!)
+
+#### Note that all the submissions will be made publicly available after the competition.
 
 
 

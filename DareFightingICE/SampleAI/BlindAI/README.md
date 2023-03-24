@@ -17,6 +17,9 @@ This page contains the source code and model of our deep reinforcement learning 
 - Run the ```train.py``` file to train. e.g ```python train.py --p2 MctsAi23i --encoder mel --id rnn_1_frame_256_mctsai23i --n_frame 1 --recurrent```
 - Run the ```trained_ai/test.py``` to test the Blind AI. e.g. ```python trained_ai/test.py --p2 MctsAi23i --encoder mel```
 
+## Model:
+- [Click here.](https://drive.google.com/file/d/1Kz_qzUmcJOAj0B9JfFbTJ1FzRFu8fg0B/view?usp=share_link)<br>
+
 ## File Description
 - ```train.py``` is a file used to train Blind AI. Please run ```python train.py -h``` for our explanation of the parameters.
 - ```train_ai``` folder contains source code for the trained AI which is used as a sample AI for the AI track. It uses the FFT audio encoder and GRU. All weights are stored in ```trained_model```.
@@ -32,6 +35,7 @@ This page contains the source code and model of our deep reinforcement learning 
 - Run ```python trained_ai/test.py --p2 MctsAi65 --encoder fft``` to begin testing.
 - After testing, please run ```python analyze_fight_result.py --path {path}``` where ```path``` is the location of ```log/point``` of DareFightingICE.
 - Both win ratio and average HP difference will be printed out.
+
 ## Tested Environment
 - Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz   3.70 GHz
 - 16.0 GB RAM
@@ -39,6 +43,10 @@ This page contains the source code and model of our deep reinforcement learning 
 - Windows 10 Pro
 - Python 3.8
 - DareFightingICE 5.2 (from the project's Github)
+
+## Performance against MctsAi23i
+- Winning ratio: 0.54
+- Average HP difference: 18.87   
 
 ## Deep learning libraries in use:
 - pytorch 1.11.0
