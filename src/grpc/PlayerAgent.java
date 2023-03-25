@@ -134,10 +134,11 @@ public class PlayerAgent {
 		this.frameData = frameData;
 		this.nonDelayFrameData = nonDelayFrameData;
 		this.screenData = screenData;
+		this.audioData = audioData;
 		if (this.isBlind()) {
 			this.frameData.removeVisualData();
+			this.screenData = null;
 		}
-		this.audioData = audioData;
 	}
 	
 	public void onInitialize(GameData gameData) {
