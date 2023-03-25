@@ -1,4 +1,4 @@
-package grpc;
+package util;
 
 import java.util.Arrays;
 
@@ -68,6 +68,8 @@ public class GrpcUtil {
   				.setPlayerNumber(characterData.isPlayerNumber())
   				.setHp(characterData.getHp())
   				.setEnergy(characterData.getEnergy())
+  				.setX(characterData.getCenterX())
+  				.setY(characterData.getCenterY())
   				.setLeft(characterData.getLeft())
   				.setRight(characterData.getRight())
   				.setTop(characterData.getTop())

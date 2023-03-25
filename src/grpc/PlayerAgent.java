@@ -28,6 +28,7 @@ import struct.FrameData;
 import struct.GameData;
 import struct.Key;
 import struct.ScreenData;
+import util.GrpcUtil;
 
 public class PlayerAgent {
 	
@@ -106,7 +107,7 @@ public class PlayerAgent {
 	}
 	
 	public boolean isBlind() {
-		return this.blind;
+		return this.blind || LaunchSetting.noVisual[this.playerNumber ? 0 : 1];
 	}
 	
 	public boolean isGameStarted() {

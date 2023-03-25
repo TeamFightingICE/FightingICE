@@ -11,6 +11,7 @@ import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
+import util.GrpcUtil;
 
 public class ObserverAgent {
 	
