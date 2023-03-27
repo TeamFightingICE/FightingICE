@@ -1,14 +1,11 @@
 # <div align="center"> AI Track (2023)</div>
 ----
 <div align = "center"> Welcome to the AI track of DareFightingICE. Here you will be provided all the necessary information needed to participate in the AI track. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
-
 <br>
-
 
 ### What is AI Track:
 ----
 On this track, you will be asked to make an AI that plays DareFightingICE using only in-game sound data as input. You will be provided with a gRPC interface that allows access to sound data and a sample AI.
-
 
 ### What To Submit:
 ---
@@ -22,18 +19,35 @@ For submission, please create a zip file containing:
 Please also attach a PowerPoint (or OpenOffice) file describing the following information:
 
 - AI Name, Developer's Name(s) and Affiliation(s)
-- AI's Outline 
-
+- AI's Outline
 
 ### Sample AI:
 ---
-The source code and model of our deep reinforcement learning blind AI is available [here](../SampleAI/BlindAI).
+The source code and model of our deep reinforcement learning blind AI implemented using Python is available [here](../SampleAI/BlindAI).
+
+See also the sample AI:
+- The sample AI implemented using Java is available [here](../SampleAI/JavaSamples/).
+- The sample AI implemented using Python is available [here](../SampleAI/PythonSamples).
 
 ### Rules:
 ---
-One game has three rounds. The maximum fighting time of a round is 60s. After one round, the character's positions and HPs will be reset, and a new round is started. All games in the competition are conducted with the options "--limithp [P1HP] [P2HP]" (limit-HP mode) and "--blind-player 1/2/0" (limit access only to sound data for players 1/2/both) of DareFightingICE. Please note that the FrameData information sent to AIs will have a delay of 15 frames, but sound data and visual data have no delay.
+One game has three rounds. The maximum fighting time of a round is 60s. After one round, the character's positions and HPs will be reset, and a new round is started. All games in the competition are conducted with the options "--limithp 400 400" (limit HP of both players to be 400) and "--blind-player 2" (limit access only to sound data for both players) of DareFightingICE.
 
-Please keep in mind that although FrameData and visual data are accessible during AI training phase, in the competition, only sound data is provided to all the participating AIs.
+Even if the game will boot with `--blind-player` option, it is still recommended to notify the game that your AI will process only audio data by modifying [`isBlind`](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/aiinterface/AIInterface.html#isBlind()) method to be as follows:
+- For Java,
+``` java
+@Override
+public boolean isBlind() {
+   return true;
+}
+```
+- For Python,
+``` python
+def is_blind(self):
+   return True
+```
+
+The FrameData sent to AIs will have a delay of 15 frames, but AudioData and ScreenData have no delay. Please keep in mind that although [FrameData](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/struct/FrameData.html) and [ScreenData](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/struct/ScreenData.html) are accessible during AI training phase, in the competition, only [AudioData](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/struct/AudioData.html) is provided to all the participating AIs.
 
 Your AI will be made publicly available and by submitting you will have agreed to this.
 
@@ -49,7 +63,6 @@ In this track, only "Zen" character, with the same [motion data](https://www.ice
 The ranking rules are as follows:
 In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the AIs are ranked according to the number of winning rounds. If ties exit, their total remaining HPs will be used. Once the AIs are ranked in each league, league points are awarded to them according to their positions using **[the 2018 Formula-1 scoring system ](https://en.wikipedia.org/wiki/2018_Formula_One_World_Championship#Scoring_system)**. The competition winner is finally decided by the sum of league points across all two leagues.
 
-
 ### Evaluation Environments: 
 ---
 1. Software:
@@ -64,11 +77,9 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
    - RAM: 16 GB
    - GPU: NVIDIA Quadro P1000 4GB VRAM
 
-
 ### Installation Guide:
 ---
 To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0.2)
-
 
 ### Submission:
 ---
