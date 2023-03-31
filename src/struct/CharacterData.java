@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import enumerate.Action;
 import enumerate.State;
 import fighting.Character;
+import setting.LaunchSetting;
 
 /**
  * The class dealing with data on the character such as the character's HP,
@@ -257,6 +258,15 @@ public class CharacterData {
 		return this.hp;
 	}
 
+    /**
+     * Returns the character's HP percentage.
+     *
+     * @return the character's HP percentage
+     */
+    public float getHpPercentage() {
+    	return (float) this.hp / LaunchSetting.maxHp[playerNumber ? 0 : 1];
+    }
+
 	/**
 	 * Returns the character's energy.
 	 *
@@ -265,6 +275,15 @@ public class CharacterData {
 	public int getEnergy() {
 		return this.energy;
 	}
+    
+    /**
+     * Returns the character's energy percentage.
+     *
+     * @return the character's energy percentage
+     */
+    public float getEnergyPercentage() {
+    	return (float) this.energy / LaunchSetting.maxEnergy[playerNumber ? 0 : 1];
+    }
 
 	/**
 	 * Returns the character graphic's most top-left x-coordinate.

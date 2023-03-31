@@ -284,4 +284,5 @@ public class FrameData {
     public boolean isFront(boolean player) {
         return this.front[player ? 0 : 1];
     }
+    
 }
