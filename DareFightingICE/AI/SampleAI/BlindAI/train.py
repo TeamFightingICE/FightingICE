@@ -62,9 +62,9 @@ STATE_DIM = {
         'mel': 1280
     }
 }
-GATHER_DEVICE = 'cpu'
-# GATHER_DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-TRAIN_DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+GATHER_DEVICE = torch.device('cpu')
+# TRAIN_DEVICE = torch.device('cuda')
 BATCH_LEN = 32
 PPO_CLIP = 0.2
 ENTROPY_FACTOR = 0.01
@@ -372,7 +372,9 @@ class TrajectoryDataset():
         return math.ceil(math.ceil(self.cumsum_seq_len[-1] / self.sequence_len) / self.batch_size)
 
 
-def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, port, encoder_name, experiment_id, p2, recurrent, n_frame, epoch, training_iteration, game_num):
+def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, train_device, args):
+    port, encoder_name, experiment_id, p2, recurrent, n_frame, epoch, training_iteration, game_num = \
+        args.port, args.encoder, args.id, args.p2, args.recurrent, args.n_frame, args.epoch, args.training_iteration, args.game_num
     loop_count = 0
     if not recurrent:
         writer = SummaryWriter(log_dir=f'ppo_pytorch/logs/{encoder_name}/{experiment_id}')
@@ -424,11 +426,11 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, por
         normalized_stddev_reward = np.std(trajectories["rewards"].sum(axis=1).numpy())
 
         # log mean_reward
-        trajectory_dataset = TrajectoryDataset(trajectories, batch_size=BATCH_SIZE, device=TRAIN_DEVICE, sequence_len=BATCH_LEN, recurrent=recurrent)
+        trajectory_dataset = TrajectoryDataset(trajectories, batch_size=BATCH_SIZE, device=train_device, sequence_len=BATCH_LEN, recurrent=recurrent)
         end_gather_time = time.time()
         start_train_time = time.time()
-        actor = actor.to(TRAIN_DEVICE)
-        critic = critic.to(TRAIN_DEVICE)
+        actor = actor.to(train_device)
+        critic = critic.to(train_device)
         logger.info('Start policy gradient')
         # Train actor and critic
         for i in range(epoch):
@@ -444,14 +446,14 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, por
                 action_dist = actor(batch.states)
                 # Action dist runs on cpu as a workaround to CUDA illegal memory access.
                 # action_probabilities = action_dist.log_prob(batch.actions.to("cpu")).to(TRAIN_DEVICE)  # batch.actions[-1, :]
-                action_probabilities = action_dist.log_prob(batch.actions).to(TRAIN_DEVICE)
+                action_probabilities = action_dist.log_prob(batch.actions).to(train_device)
                 # Compute probability ratio from probabilities in logspace.
                 probabilities_ratio = torch.exp(action_probabilities - batch.action_probabilities)  # [-1, :])
                 surrogate_loss_0 = probabilities_ratio * batch.advantages  # [-1, :]
                 surrogate_loss_1 = torch.clamp(probabilities_ratio, 1. - PPO_CLIP,
                                                1. + PPO_CLIP) * batch.advantages  # [-1, :]
                 actor_loss = -torch.mean(torch.min(surrogate_loss_0, surrogate_loss_1))
-                surrogate_loss_2 = action_dist.entropy().to(TRAIN_DEVICE)
+                surrogate_loss_2 = action_dist.entropy().to(train_device)
                 # actor_loss = -torch.mean(torch.min(surrogate_loss_0, surrogate_loss_1)) - torch.mean(
                 #     ENTROPY_FACTOR * surrogate_loss_2)
                 actor_loss.backward()
@@ -493,11 +495,13 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, por
         writer.add_scalar("critic_loss", critic_loss, iteration)
         writer.add_scalar("policy_entropy", torch.mean(surrogate_loss_2), iteration)
         writer.add_scalar("total_normalized_reward", normalized_mean_reward, iteration)
+        logger.info("write tensorboard log success")
 
         # write actor, critic parameters
         save_parameters(writer, "actor", actor, iteration, encoder_name, experiment_id)
+        logger.info("write actor parameters success")
         save_parameters(writer, "value", critic, iteration, encoder_name, experiment_id)
-        iteration += 1
+        logger.info("write critic parameters success")
                 
         # del loss
         del surrogate_loss_0
@@ -505,7 +509,15 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, por
         del probabilities_ratio
         del critic_loss
         del actor_loss
+        logger.info("del loss success")
+
+        # close writer
+        writer.flush()
+        writer.close()
+        logger.info("flush and close writer success")
+
         torch.cuda.empty_cache()
+        iteration += 1
 
 
 def save_parameters(writer, tag, model, batch_idx, encoder, experiment_id):
@@ -542,7 +554,8 @@ def save_reward_file(encoder, experiment_id, reward, filename="reward", recurren
         f.write('\n')
 
 
-def init(encoder_name, experiment_id, n_frame, rnn=True):
+def init(train_device, args):
+    encoder_name, experiment_id, n_frame, rnn = args.encoder, args.id, args.n_frame, args.recurrent
     # TODO load data from checkpoint
     if rnn:
         print('init recurrent network')
@@ -565,7 +578,7 @@ def init(encoder_name, experiment_id, n_frame, rnn=True):
     max_checkpoint_iteration = get_last_checkpoint_iteration(encoder_name, experiment_id, rnn)
     if max_checkpoint_iteration > -1:
         actor_state_dict, critic_state_dict, actor_optimizer_state_dict, critic_optimizer_state_dict = load_checkpoint(
-            encoder_name, experiment_id, max_checkpoint_iteration, rnn)
+            encoder_name, experiment_id, max_checkpoint_iteration, rnn, train_device)
         actor_model.load_state_dict(actor_state_dict, strict=True)
         critic_model.load_state_dict(critic_state_dict, strict=True)
         actor_opt.load_state_dict(actor_optimizer_state_dict)
@@ -574,11 +587,11 @@ def init(encoder_name, experiment_id, n_frame, rnn=True):
         for state in actor_opt.state.values():
             for k, v in state.items():
                 if isinstance(v, torch.Tensor):
-                    state[k] = v.to(TRAIN_DEVICE)
+                    state[k] = v.to(train_device)
         for state in critic_opt.state.values():
             for k, v in state.items():
                 if isinstance(v, torch.Tensor):
-                    state[k] = v.to(TRAIN_DEVICE)
+                    state[k] = v.to(train_device)
     return actor_model, critic_model, actor_opt, critic_opt, max_checkpoint_iteration
 
 
@@ -644,7 +657,7 @@ def save_checkpoint(actor, critic, actor_optimizer, critic_optimizer, iteration,
     torch.save(critic_optimizer.state_dict(), CHECKPOINT_PATH + "critic_optimizer.pt")
 
 
-def load_checkpoint(encoder_name, experiment_id, iteration, rnn):
+def load_checkpoint(encoder_name, experiment_id, iteration, rnn, train_device):
     if not rnn:
         CHECKPOINT_PATH = f'{BASE_CHECKPOINT_PATH}/{encoder_name}/{experiment_id}/{iteration}/'
     else:
@@ -652,14 +665,11 @@ def load_checkpoint(encoder_name, experiment_id, iteration, rnn):
     with open(CHECKPOINT_PATH + 'parameters.pt', 'rb') as f:
         checkpoint = pickle.load(f)
 
-    actor_state_dict = torch.load(CHECKPOINT_PATH + "actor.pt", map_location=torch.device(TRAIN_DEVICE))
-    critic_state_dict = torch.load(CHECKPOINT_PATH + "critic.pt", map_location=torch.device(TRAIN_DEVICE))
-    actor_optimizer_state_dict = torch.load(CHECKPOINT_PATH + "actor_optimizer.pt",
-                                            map_location=torch.device(TRAIN_DEVICE))
-    critic_optimizer_state_dict = torch.load(CHECKPOINT_PATH + "critic_optimizer.pt",
-                                             map_location=torch.device(TRAIN_DEVICE))
-    return actor_state_dict, critic_state_dict, \
-           actor_optimizer_state_dict, critic_optimizer_state_dict,
+    actor_state_dict = torch.load(CHECKPOINT_PATH + "actor.pt", map_location=train_device)
+    critic_state_dict = torch.load(CHECKPOINT_PATH + "critic.pt", map_location=train_device)
+    actor_optimizer_state_dict = torch.load(CHECKPOINT_PATH + "actor_optimizer.pt", map_location=train_device)
+    critic_optimizer_state_dict = torch.load(CHECKPOINT_PATH + "critic_optimizer.pt", map_location=train_device)
+    return actor_state_dict, critic_state_dict, actor_optimizer_state_dict, critic_optimizer_state_dict
 
 
 if __name__ == '__main__':
@@ -669,23 +679,23 @@ if __name__ == '__main__':
     parser.add_argument('--port', type=int, default=50051, help='Port used by DareFightingICE')
     parser.add_argument('--id', type=str, required=True, help='Experiment id')
     parser.add_argument('--p2', choices=['Sandbox', 'MctsAi23i'], type=str, required=True, help='The opponent AI')
+    parser.add_argument('--device', type=str, choices=['cpu', 'cuda', 'mps'], default='cpu', help='Device to use for training')
     parser.add_argument('--recurrent', action='store_true', help='Use GRU')
-    parser.add_argument('--n_frame', type=int, default=1, help='Number of frame to sample data')
+    parser.add_argument('--n-frame', type=int, default=1, help='Number of frame to sample data')
     parser.add_argument('--epoch', type=int, default=10, help='Number of epochs to train')
-    parser.add_argument('--training_iteration', type=int, default=60, help='Number of training iterations')
-    parser.add_argument('--game_num', type=int, default=5, help='Number of games to play per iteration')
+    parser.add_argument('--training-iteration', type=int, default=60, help='Number of training iterations')
+    parser.add_argument('--game-num', type=int, default=5, help='Number of games to play per iteration')
     args = parser.parse_args()
     logger.info('Input parameters:')
     logger.info(' '.join(f'{k}={v}' for k, v in vars(args).items()))
-    actor, critic, actor_optim, critic_optim, iteration = init(args.encoder, args.id, args.n_frame, args.recurrent)
+    train_device = torch.device(args.device)
+    actor, critic, actor_optim, critic_optim, iteration = init(train_device, args)
     logger.info(f'iteration {iteration}')
     while iteration < args.training_iteration - 1:
         logger.info(f'Start training at epoch: {iteration}')
         try:
-            actor, critic, actor_optim, critic_optim, iteration = init(args.encoder, args.id, args.n_frame, args.recurrent)
-            train_model(actor, critic, actor_optim, critic_optim, iteration, args.port, args.encoder, args.id, args.p2, args.recurrent, 
-                        args.n_frame, args.epoch, args.training_iteration, args.game_num)
+            actor, critic, actor_optim, critic_optim, iteration = init(train_device, args)
+            train_model(actor, critic, actor_optim, critic_optim, iteration, train_device, args)
         except Exception as ex:
             print(ex)
             logger.error("Error occurred while collecting trajectories data, restarting")
-

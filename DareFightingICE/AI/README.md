@@ -23,11 +23,11 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 
 ### Sample AI:
 ---
-The source code and model of our deep reinforcement learning blind AI implemented using Python is available [here](../SampleAI/BlindAI).
+The source code and model of our deep reinforcement learning blind AI implemented using Python is available [here](./SampleAI/BlindAI).
 
 See also the sample AI:
-- The sample AI implemented using Java is available [here](../SampleAI/JavaSamples/).
-- The sample AI implemented using Python is available [here](../SampleAI/PythonSamples).
+- The sample AI implemented using Java is available [here](./SampleAI/JavaSamples/).
+- The sample AI implemented using Python is available [here](./SampleAI/PythonSamples).
 
 ### Rules:
 ---
@@ -66,12 +66,13 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
 ### Evaluation Environments: 
 ---
 1. Software:
-   - Python: 3.7
-   - Java: 17
    - OS: Windows 10
-   - PyTorch: 1.11.0
-   - TorchAudio: 0.11.0
-   - TorchVision: 0.12.0
+   - Java: 17
+   - Python: 3.10
+   - CUDA: 11.8
+   - PyTorch: 2.0.0
+   - TorchAudio: 2.0.0
+   - TorchVision: 0.15.0
 2. Hardware:
    - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz
    - RAM: 16 GB

@@ -7,9 +7,8 @@ import torch
 from pyftg.ai_interface import AIInterface
 from pyftg.struct import *
 
-GATHER_DEVICE = 'cpu'
+GATHER_DEVICE = torch.device('cpu')
 
-import logging
 class SoundAgent(AIInterface):
     def __init__(self, **kwargs):
         self.actor = kwargs.get('actor')

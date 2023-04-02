@@ -1,5 +1,3 @@
-import sys
-sys.path.append('./')
 import numpy as np
 import os
 import torch
@@ -20,6 +18,7 @@ STATE_DIM = {
         'mel': 1280
     }
 }
+
 class SoundAgent(AIInterface):
     def __init__(self, **kwargs):
         self.encoder = kwargs.get('encoder')
@@ -118,7 +117,6 @@ class SoundAgent(AIInterface):
         except Exception as ex:
             raw_audio = np.zeros((800, 2))
         if self.raw_audio_memory is None:
-            self.logger.info('raw_audio_memory none {}'.format(raw_audio.shape))
             # self.raw_audio_memory = np.expand_dims(raw_audio, axis=0)
             self.raw_audio_memory = raw_audio
         else:
