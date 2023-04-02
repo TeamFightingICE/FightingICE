@@ -1,6 +1,8 @@
 import argparse
 import logging
 import os
+import numpy as np
+from common import BASE_CHECKPOINT_PATH
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -10,7 +12,11 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-BASE_CHECKPOINT_PATH = 'ppo_pytorch\checkpoints'
+def analyze_fight_result(results: 'np.ndarray'):
+    win_ratio = np.sum(results[:, 0] > results[:, 1]) / results.shape[0]
+    avg_hp_diff = np.mean(results[:, 0] - results[:, 1])
+    logger.info('Win ratio: {}'.format(win_ratio))
+    logger.info('Avg. HP difference: {}'.format(avg_hp_diff))
 
 def start_game(characters: 'list[str]', args: 'argparse.Namespace'):
     encoder, rnn, port, p2, game_num = args.encoder, args.recurrent, args.port, args.p2, args.game_num
@@ -31,14 +37,16 @@ def start_game(characters: 'list[str]', args: 'argparse.Namespace'):
         from pyftg.gateway import Gateway
 
         for character in characters:
+            results = list()
             for i in range(game_num):
                 gateway = Gateway(port=port)
-                agent = SoundAgent(logger=logger, encoder=encoder, path=model_path, rnn=rnn)
+                agent = SoundAgent(logger=logger, encoder=encoder, path=model_path, rnn=rnn, results=results)
                 gateway.register_ai(ai_name, agent)
                 logger.info('Start game {}'.format(i+1))
                 gateway.run_game([character, character], [ai_name, p2], 1)
                 logger.info('Game {} finished'.format(i+1))
                 gateway.close()
+            analyze_fight_result(np.array(results))
     else:
         print(f'No model found at {model_path}')
 

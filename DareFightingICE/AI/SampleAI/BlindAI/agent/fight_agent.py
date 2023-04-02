@@ -5,24 +5,13 @@ from model import FeedForwardActor, RecurrentActor
 from encoder import RawEncoder, FFTEncoder, MelSpecEncoder, SampleEncoder
 from pyftg.ai_interface import AIInterface
 from pyftg.struct import *
-
-STATE_DIM = {
-    1: {
-        'conv1d': 160,
-        'fft': 512,
-        'mel': 2560
-    },
-    4: {
-        'conv1d': 64,
-        'fft': 512,
-        'mel': 1280
-    }
-}
+from common import STATE_DIM
 
 class SoundAgent(AIInterface):
     def __init__(self, **kwargs):
         self.encoder = kwargs.get('encoder')
         self.logger = kwargs.get('logger')
+        self.results = kwargs.get('results')
         self.path = kwargs.get('path')
         self.rnn = kwargs.get('rnn', False)
 
@@ -75,6 +64,8 @@ class SoundAgent(AIInterface):
         self.logger.info(round_result.remaining_hps[0])
         self.logger.info(round_result.remaining_hps[1])
         self.logger.info(round_result.elapsed_frame)
+        if self.results is not None:
+            self.results.append([round_result.remaining_hps[0], round_result.remaining_hps[1]])
         self.just_inited = True
         self.raw_audio_memory = None
         self.round_count += 1

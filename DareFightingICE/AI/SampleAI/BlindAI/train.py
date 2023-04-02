@@ -3,7 +3,6 @@ import math
 import time
 import os
 import re
-import psutil
 import numpy as np
 import sys
 import torch
@@ -12,7 +11,7 @@ from dataclasses import dataclass
 from dotmap import DotMap
 from torch import optim
 from torch.utils.tensorboard import SummaryWriter
-from agent import SoundAgent, CollectDataHelper
+from agent.train_agent import SoundAgent, CollectDataHelper
 from model import RecurrentActor, RecurrentCritic, FeedForwardActor, FeedForwardCritic
 from encoder import SampleEncoder, RawEncoder, FFTEncoder, MelSpecEncoder
 import pickle
@@ -20,6 +19,7 @@ import tqdm
 import pathlib
 import logging
 from pyftg.gateway import Gateway
+from common import BASE_CHECKPOINT_PATH, STATE_DIM
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -46,22 +46,9 @@ GAMMA = 0.99
 C1 = 0.95
 LAMBDA = 0.95
 # EXPERIMENT_NAME = 'experiment_{}'.format(args.encoder)
-BASE_CHECKPOINT_PATH = f'ppo_pytorch/checkpoints'
 ROLL_OUT = 3600
 # BATCH_SIZE = 512
 BATCH_SIZE = 64
-STATE_DIM = {
-    1: {
-        'conv1d': 160,
-        'fft': 512,
-        'mel': 2560
-    },
-    4: {
-        'conv1d': 64,
-        'fft': 512,
-        'mel': 1280
-    }
-}
 
 GATHER_DEVICE = torch.device('cpu')
 # TRAIN_DEVICE = torch.device('cuda')
@@ -71,16 +58,6 @@ ENTROPY_FACTOR = 0.01
 VF_FACTOR = 1
 MAX_GRAD_NORM = 1.0
 ACTION_NUM = 40
-
-def kill_proc_tree(pid, including_parent=True):    
-    parent = psutil.Process(pid)
-    children = parent.children(recursive=True)
-    for child in children:
-        child.kill()
-    gone, still_alive = psutil.wait_procs(children, timeout=5)
-    if including_parent:
-        parent.kill()
-        parent.wait(5)
 
 @torch.no_grad()
 def process_game_agent_data(actor_, critic_, data_collect_helper, recurrent):
@@ -225,10 +202,6 @@ def collect_trajectories(actor, critic, port, game_num, p2, rnn, n_frame):
 
     # return agent.get_trajectories_data()
     agent_data = process_game_agent_data(actor, critic, agent.collect_data_helper, rnn)
-    # try:
-    #     kill_proc_tree(java_env.pid, False)
-    # except:
-    #     print('kill process')
     # agent.reset()
     return agent_data
 
@@ -499,9 +472,8 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, tra
 
         # write actor, critic parameters
         save_parameters(writer, "actor", actor, iteration, encoder_name, experiment_id)
-        logger.info("write actor parameters success")
         save_parameters(writer, "value", critic, iteration, encoder_name, experiment_id)
-        logger.info("write critic parameters success")
+        logger.info("write actor and critic parameters success")
                 
         # del loss
         del surrogate_loss_0
@@ -509,14 +481,11 @@ def train_model(actor, critic, actor_optimizer, critic_optimizer, iteration, tra
         del probabilities_ratio
         del critic_loss
         del actor_loss
-        logger.info("del loss success")
-
-        # close writer
         writer.flush()
         writer.close()
-        logger.info("flush and close writer success")
-
         torch.cuda.empty_cache()
+        logger.info("free up memory success")
+        
         iteration += 1
 
 
@@ -699,3 +668,4 @@ if __name__ == '__main__':
         except Exception as ex:
             print(ex)
             logger.error("Error occurred while collecting trajectories data, restarting")
+
