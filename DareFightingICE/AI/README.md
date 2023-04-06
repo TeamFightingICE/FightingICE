@@ -23,11 +23,11 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 
 ### Sample AI:
 ---
-The source code and model of our deep reinforcement learning blind AI implemented using Python is available [here](../SampleAI/BlindAI).
+The source code and model of our deep reinforcement learning blind AI implemented using Python is available [here](https://github.com/TeamFightingICE/BlindAI).
 
 See also the sample AI:
-- The sample AI implemented using Java is available [here](../SampleAI/JavaSamples/).
-- The sample AI implemented using Python is available [here](../SampleAI/PythonSamples).
+- The sample AI implemented using Java is available [here](https://github.com/TeamFightingICE/JavaAISamples).
+- The sample AI implemented using Python is available [here](https://github.com/TeamFightingICE/PythonAISamples).
 
 ### Rules:
 ---
@@ -54,7 +54,7 @@ Your AI will be made publicly available and by submitting you will have agreed t
 ### Evaluation:
 ---
 Two leagues (Standard and Speedrunning) in this track are described as follows:
-The Standard League considers the winner of a round as the one with the HP above zero at the time its opponent's HP has reached zero. Both AIs will be given the initial HP of 400. The league for a given character type is conducted in a round-robin fashion with two games for any pair of entry AIs switching P1 and P2. The AI with highest number of winning rounds becomes the league winner; If necessary, remaining HPs are used for breaking ties. In this league, our weakened sample MctsAi with limited to 23 iterations per frame (MctsAi23i's jar file and its source code are available [here](../SampleAI/MctsAi23i)), played in the non-blind mode or with FrameData, and our [sample deep-learning blind AI](../SampleAI/BlindAI), played in the blind mode, will also be participating as baseline AIs.
+The Standard League considers the winner of a round as the one with the HP above zero at the time its opponent's HP has reached zero. Both AIs will be given the initial HP of 400. The league for a given character type is conducted in a round-robin fashion with two games for any pair of entry AIs switching P1 and P2. The AI with highest number of winning rounds becomes the league winner; If necessary, remaining HPs are used for breaking ties. In this league, our weakened sample MctsAi with limited to 23 iterations per frame (MctsAi23i's jar file and its source code are available [here](https://github.com/TeamFightingICE/MctsAi23i)), played in the non-blind mode or with FrameData, and our [sample deep-learning blind AI](https://github.com/TeamFightingICE/BlindAI), played in the blind mode, will also be participating as baseline AIs.
 
 In the Speedrunning League, the league winner of a given character type is the AI with the shortest average time to beat both of our aforementioned sample AIs. For each entry AI, 5 games are conducted with the entry AI being P1 and a sample AI being P2, and another set of 5 games with the entry AI being P2 and a sample AI being P1. Both AIs will be given the initial HP of 400. If a sample AI of interest cannot be beaten in 60s, the beating time of its opponent entry AI is penalized to 70s. <br>
 
