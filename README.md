@@ -24,16 +24,16 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 
 ### Java libraries in use ###
 - grpc: Containing libraries related to gRPC module
-	- grpc-api 1.52.1
-	- grpc-context 1.52.1
-	- grpc-core 1.52.1
-	- grpc-netty-shaded 1.52.1
-	- grpc-protobuf 1.52.1
-	- grpc-protobuf-lite 1.52.1
-	- grpc-stub 1.52.1
-	- protobuf-java 3.21.12
-	- protobuf-java-util 3.21.12
-	- protoc-gen-grpc-java 1.53.0 (use for generate gRPC code)
+	- grpc-api 1.54.0
+	- grpc-context 1.54.0
+	- grpc-core 1.54.0
+	- grpc-netty-shaded 1.54.0
+	- grpc-protobuf 1.54.0
+	- grpc-protobuf-lite 1.54.0
+	- grpc-stub 1.54.0
+	- protobuf-java 3.22.2
+	- protobuf-java-util 3.22.2
+	- protoc-gen-grpc-java 1.54.0 (use for generate gRPC code)
 - lwjgl: Containing libraries related to LWJGL module
 	- natives: Containing libraries related to LWJGL module native to many architectures.
 		- linux/amd64: for Linux
@@ -46,10 +46,10 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 	- lwjgl-glfw 3.3.1
 	- lwjgl-openal 3.3.1
 	- lwjgl-opengl 3.3.1
-- annotations-api 6.0.53
 - failureaccess 1.0.1
 - guava 31.1-jre
-- javax.json 1.0.4
+- javax.annotation-api 1.3.2
+- javax.json-api 1.1.4
 - lwjgl_util 2.9.3
 - perfmark-api 0.26.0
-- py4j 0.10.4
+- py4j 0.10.9.7

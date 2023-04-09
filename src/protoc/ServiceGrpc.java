@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
+    value = "by gRPC proto compiler (version 1.54.0)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class ServiceGrpc {
@@ -216,87 +216,60 @@ public final class ServiceGrpc {
 
   /**
    */
-  public static abstract class ServiceImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      */
-    public void runGame(protoc.ServiceProto.RunGameRequest request,
+    default void runGame(protoc.ServiceProto.RunGameRequest request,
         io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRunGameMethod(), responseObserver);
     }
 
     /**
      */
-    public void spectate(protoc.ServiceProto.SpectateRequest request,
+    default void spectate(protoc.ServiceProto.SpectateRequest request,
         io.grpc.stub.StreamObserver<protoc.ServiceProto.SpectatorGameState> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSpectateMethod(), responseObserver);
     }
 
     /**
      */
-    public void initialize(protoc.ServiceProto.InitializeRequest request,
+    default void initialize(protoc.ServiceProto.InitializeRequest request,
         io.grpc.stub.StreamObserver<protoc.ServiceProto.InitializeResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getInitializeMethod(), responseObserver);
     }
 
     /**
      */
-    public void participate(protoc.ServiceProto.ParticipateRequest request,
+    default void participate(protoc.ServiceProto.ParticipateRequest request,
         io.grpc.stub.StreamObserver<protoc.ServiceProto.PlayerGameState> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getParticipateMethod(), responseObserver);
     }
 
     /**
      */
-    public void input(protoc.ServiceProto.PlayerInput request,
+    default void input(protoc.ServiceProto.PlayerInput request,
         io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getInputMethod(), responseObserver);
-    }
-
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getRunGameMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                protoc.ServiceProto.RunGameRequest,
-                com.google.protobuf.Empty>(
-                  this, METHODID_RUN_GAME)))
-          .addMethod(
-            getSpectateMethod(),
-            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
-              new MethodHandlers<
-                protoc.ServiceProto.SpectateRequest,
-                protoc.ServiceProto.SpectatorGameState>(
-                  this, METHODID_SPECTATE)))
-          .addMethod(
-            getInitializeMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                protoc.ServiceProto.InitializeRequest,
-                protoc.ServiceProto.InitializeResponse>(
-                  this, METHODID_INITIALIZE)))
-          .addMethod(
-            getParticipateMethod(),
-            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
-              new MethodHandlers<
-                protoc.ServiceProto.ParticipateRequest,
-                protoc.ServiceProto.PlayerGameState>(
-                  this, METHODID_PARTICIPATE)))
-          .addMethod(
-            getInputMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                protoc.ServiceProto.PlayerInput,
-                com.google.protobuf.Empty>(
-                  this, METHODID_INPUT)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service Service.
    */
-  public static final class ServiceStub extends io.grpc.stub.AbstractAsyncStub<ServiceStub> {
+  public static abstract class ServiceImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return ServiceGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service Service.
+   */
+  public static final class ServiceStub
+      extends io.grpc.stub.AbstractAsyncStub<ServiceStub> {
     private ServiceStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -350,8 +323,10 @@ public final class ServiceGrpc {
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service Service.
    */
-  public static final class ServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<ServiceBlockingStub> {
+  public static final class ServiceBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<ServiceBlockingStub> {
     private ServiceBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -402,8 +377,10 @@ public final class ServiceGrpc {
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service Service.
    */
-  public static final class ServiceFutureStub extends io.grpc.stub.AbstractFutureStub<ServiceFutureStub> {
+  public static final class ServiceFutureStub
+      extends io.grpc.stub.AbstractFutureStub<ServiceFutureStub> {
     private ServiceFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -451,10 +428,10 @@ public final class ServiceGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final ServiceImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(ServiceImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -497,6 +474,46 @@ public final class ServiceGrpc {
           throw new AssertionError();
       }
     }
+  }
+
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getRunGameMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              protoc.ServiceProto.RunGameRequest,
+              com.google.protobuf.Empty>(
+                service, METHODID_RUN_GAME)))
+        .addMethod(
+          getSpectateMethod(),
+          io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+            new MethodHandlers<
+              protoc.ServiceProto.SpectateRequest,
+              protoc.ServiceProto.SpectatorGameState>(
+                service, METHODID_SPECTATE)))
+        .addMethod(
+          getInitializeMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              protoc.ServiceProto.InitializeRequest,
+              protoc.ServiceProto.InitializeResponse>(
+                service, METHODID_INITIALIZE)))
+        .addMethod(
+          getParticipateMethod(),
+          io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+            new MethodHandlers<
+              protoc.ServiceProto.ParticipateRequest,
+              protoc.ServiceProto.PlayerGameState>(
+                service, METHODID_PARTICIPATE)))
+        .addMethod(
+          getInputMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              protoc.ServiceProto.PlayerInput,
+              com.google.protobuf.Empty>(
+                service, METHODID_INPUT)))
+        .build();
   }
 
   private static abstract class ServiceBaseDescriptorSupplier
