@@ -239,7 +239,16 @@ public class Game extends GameManager {
         new File("log").mkdir();
         new File("log/replay").mkdir();
         new File("log/point").mkdir();
-        new File("log/grpc").mkdir();
+        
+        File grpcDir = new File("log/grpc");
+        grpcDir.mkdir();
+        
+        File[] contents = grpcDir.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                f.delete();
+            }
+        }
     }
 
     @Override

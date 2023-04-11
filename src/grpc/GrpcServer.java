@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.ServerInterceptors;
 
 public class GrpcServer {
 	
@@ -27,8 +26,8 @@ public class GrpcServer {
   	public void start(int port) throws IOException {
   		ServiceImpl service = new ServiceImpl(this);
     	server = ServerBuilder.forPort(port)
-    			.addService(ServerInterceptors.intercept(service, new RequestInterceptor()))
-    			.executor(Executors.newFixedThreadPool(4))
+    			.addService(service)
+    			.executor(Executors.newFixedThreadPool(6))
     			.build();
     	
     	server.start();
