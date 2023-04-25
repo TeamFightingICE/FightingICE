@@ -12,7 +12,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import aiinterface.ThreadController;
 import informationcontainer.RoundResult;
 import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
@@ -46,15 +45,18 @@ public class PlayerAgent {
 	private FrameData nonDelayFrameData;
 	
 	private StreamObserver<PlayerGameState> responseObserver;
-	private boolean gameStarted;
 	private boolean waitFlag;
 	
 	public PlayerAgent() {
 		this.playerUuid = UUID.randomUUID();
 		this.cancelled = true;
 
-		this.gameStarted = false;
 		this.waitFlag = false;
+		
+		this.isControl = false;
+		this.frameData = new FrameData();
+		this.audioData = new AudioData();
+		this.screenData = new ScreenData();
 	}
 	
 	public void initializeRPC(InitializeRequest request) {
@@ -79,11 +81,6 @@ public class PlayerAgent {
 	
 	public void initialize(GameData gameData, boolean playerNumber) {
 		this.playerNumber = playerNumber;
-		
-		this.isControl = false;
-		this.frameData = new FrameData();
-		this.audioData = new AudioData();
-		this.screenData = new ScreenData();
 		
 		//this.rpcWarmingUp();
 		this.onInitialize(gameData);
@@ -111,7 +108,7 @@ public class PlayerAgent {
 	}
 	
 	public boolean isGameStarted() {
-		return this.gameStarted;
+		return !this.frameData.getEmptyFlag() && this.frameData.getFramesNumber() > 0;
 	}
 	
 	public boolean isReady() {
@@ -147,12 +144,10 @@ public class PlayerAgent {
 				.setGameData(GrpcUtil.convertGameData(gameData))
   				.build();
 		this.onNext(response);
-		
-		this.gameStarted = true;
 	}
 	
 	public void onGameUpdate() {
-		if (!this.waitFlag) {
+		if (this.isReady() && this.isGameStarted()) {
 			this.startTimer(frameData.getFramesNumber());
 			this.waitFlag = true;
 		}
@@ -180,9 +175,7 @@ public class PlayerAgent {
   				.build();
 		this.onNext(response);
 		
-		if (isGameEnd) {
-			this.gameStarted = false;
-		}
+		this.frameData = new FrameData();
 	}
 	
 	public void onInputReceived(PlayerInput pAction) {
@@ -204,8 +197,8 @@ public class PlayerAgent {
 	}
 	
 	public void onCancel() {
-		this.cancel();
 		this.responseObserver.onCompleted();
+		this.cancel();
 	}
 	
 	public void onCompleted() {
