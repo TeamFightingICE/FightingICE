@@ -28,8 +28,7 @@ See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this pag
 ### Installation Guide:
 To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0.2)
 
-### <b>Prizes:</b>
-TBA (updated on June 22, 2023)
+### <b>Prizes: (updated on June 22, 2023) </b>
 A money prize of $500 from IEEE CIS will be equally split and awarded to the qualified winner of each track (i.e., $250 each). However, if there is only one qualified winner, that winner will be awarded with $500. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### <b>Results:</b>
