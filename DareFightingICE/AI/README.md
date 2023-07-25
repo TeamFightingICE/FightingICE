@@ -21,7 +21,7 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 - AI Name, Developer's Name(s) and Affiliation(s)
 - AI's Outline
 
-### Sample AI:
+### Sample AIs:
 ---
 The source code and model of our deep reinforcement learning blind AI implemented using Python is available [here](https://github.com/TeamFightingICE/BlindAI).
 
