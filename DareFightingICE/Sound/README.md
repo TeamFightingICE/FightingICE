@@ -88,7 +88,7 @@ Please submit your entry via email to ftg dot aic at gmail dot com with an email
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your sound design to us by the final deadline.) <br>
 - May 24, 2023 (23:59 JST)
 
-Final deadline
+Final deadline (**closed**)
 - July 29, 2023 (23:59 JST)(no extension!!)
 
 #### Note that all the submissions will be made publicly available after the competition.
