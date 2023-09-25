@@ -235,12 +235,12 @@ public class Game extends GameManager {
     private void mkDirThenRemove(File dir) {
     	dir.mkdir();
     	
-    	File[] contents = dir.listFiles();
-        if (contents != null) {
-            for (File f : contents) {
-                f.delete();
-            }
-        }
+//    	File[] contents = dir.listFiles();
+//        if (contents != null) {
+//            for (File f : contents) {
+//                f.delete();
+//            }
+//        }
     }
 
     /**

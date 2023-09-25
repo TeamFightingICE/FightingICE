@@ -425,19 +425,19 @@ public class SoundManager {
     public AudioSource getBGMSource(String instrument) {
     	return this.bgmSources.get(instrument);
     }
+
+    private void setSourceGainAndPlay(String instrument, String soundFile, float gain) {
+        AudioSource source = getBGMSource(instrument);
+        setSourceGain(source, gain);
+        play2(source, getSoundBuffers().get(soundFile), 350, 0, true);
+    }
     
     public void playBGM() {
-    	setSourceGain(this.getBGMSource("violin"), 0.75f);
-    	setSourceGain(this.getBGMSource("piano"), 0.10f);
-    	setSourceGain(this.getBGMSource("flute"), 0.75f);
-    	setSourceGain(this.getBGMSource("ukulele"), 0.10f);
-    	setSourceGain(this.getBGMSource("cello"), 0.75f);
-    	
-    	play2(this.getBGMSource("violin"), getSoundBuffers().get("bach_V.wav") , 350, 0, true);
-    	play2(this.getBGMSource("piano"), getSoundBuffers().get("bach_P.wav") , 350, 0, true);
-    	play2(this.getBGMSource("flute"), getSoundBuffers().get("bach_F.wav") , 350, 0, true);
-    	play2(this.getBGMSource("ukulele"), getSoundBuffers().get("bach_U.wav") , 350, 0, true);
-    	play2(this.getBGMSource("cello"), getSoundBuffers().get("bach_C.wav") , 350, 0, true);
+        setSourceGainAndPlay("violin", "bach_V.wav", 0.75f);
+        setSourceGainAndPlay("piano", "bach_P.wav", 0.10f);
+        setSourceGainAndPlay("flute", "bach_F.wav", 0.75f);
+        setSourceGainAndPlay("ukulele", "bach_U.wav", 0.10f);
+        setSourceGainAndPlay("cello", "bach_C.wav", 0.75f);
     }
     
     public void closeSources() {

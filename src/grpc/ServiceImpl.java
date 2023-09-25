@@ -10,6 +10,8 @@ import protoc.ServiceProto.ParticipateRequest;
 import protoc.ServiceProto.PlayerGameState;
 import protoc.ServiceProto.PlayerInput;
 import protoc.ServiceProto.RunGameRequest;
+import protoc.ServiceProto.SpectateRequest;
+import protoc.ServiceProto.SpectatorGameState;
 
 public class ServiceImpl extends ServiceGrpc.ServiceImplBase {
 	
@@ -17,6 +19,12 @@ public class ServiceImpl extends ServiceGrpc.ServiceImplBase {
 	
 	public ServiceImpl(GrpcServer server) {
 		this.server = server;
+	}
+	
+	@Override
+	public void spectate(SpectateRequest request, StreamObserver<SpectatorGameState> responseObserver) {
+		ObserverAgent observer = server.getObserver();
+		observer.register(responseObserver);
 	}
 	
 	@Override

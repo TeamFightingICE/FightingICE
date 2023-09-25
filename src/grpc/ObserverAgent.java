@@ -1,12 +1,11 @@
 package grpc;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import informationcontainer.RoundResult;
 import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
 import protoc.EnumProto.GrpcFlag;
 import protoc.ServiceProto.SpectatorGameState;
+import setting.GameSetting;
 import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
@@ -30,8 +29,6 @@ public class ObserverAgent {
 		this.frameData = new FrameData();
 		this.audioData = new AudioData();
 		this.screenData = new ScreenData();
-		
-		this.rpcWarmingUp();
 	}
 	
 	public void register(StreamObserver<SpectatorGameState> responseObserver) {
@@ -65,21 +62,6 @@ public class ObserverAgent {
 		}
 	}
 	
-	public void rpcWarmingUp() {
-		if (this.isCancelled()) {
-			return;
-		}
-		
-		// Warming up RPC streaming
-        Logger.getAnonymousLogger().log(Level.INFO, "Warming up RPC streaming for observer");
-		for (int i = 0; i < 100; i++) {
-			SpectatorGameState response = SpectatorGameState.newBuilder()
-	  				.setStateFlag(GrpcFlag.EMPTY)
-	  				.build();
-			this.onNext(response);
-		}
-	}
-	
 	public void setInformation(FrameData frameData, AudioData audioData, ScreenData screenData) {
 		this.frameData = frameData;
 		this.screenData = screenData;
@@ -94,6 +76,18 @@ public class ObserverAgent {
   				.setAudioData(GrpcUtil.convertAudioData(audioData))
   				.build();
 		this.onNext(response);
+	}
+	
+	public void onRoundEnd(RoundResult roundResult) {
+		boolean isGameEnd = roundResult.getRound() >= GameSetting.ROUND_MAX;
+		
+		SpectatorGameState response = SpectatorGameState.newBuilder()
+				.setStateFlag(isGameEnd ? GrpcFlag.GAME_END : GrpcFlag.ROUND_END)
+				.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
+  				.build();
+		this.onNext(response);
+		
+		this.frameData = new FrameData();
 	}
 	
 	public void onNext(SpectatorGameState state) {

@@ -120,11 +120,13 @@ public class HomeMenu extends GameScene {
 
 			if (key.A) {
 				LaunchSetting.replayName = this.allReplayNames.get(this.replayIndex);
-				// Launcherの次の遷移先を登録
-				Launcher launcher = new Launcher(GameSceneName.REPLAY);
-				this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
-				this.setNextGameScene(launcher); // 次のシーンをセットする
-
+				
+				if (!LaunchSetting.replayName.equals("None")) {
+					// Launcherの次の遷移先を登録
+					Launcher launcher = new Launcher(GameSceneName.REPLAY);
+					this.setTransitionFlag(true); // 現在のシーンからの遷移要求をtrueに
+					this.setNextGameScene(launcher); // 次のシーンをセットする
+				}
 			}
 			break;
 

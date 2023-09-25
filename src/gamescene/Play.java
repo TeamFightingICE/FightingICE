@@ -363,6 +363,12 @@ public class Play extends GameScene {
 
 				// AIに結果を渡す
 				InputManager.getInstance().sendRoundResult(roundResult);
+				
+				if (FlagSetting.grpc) {
+					ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
+					observer.onRoundEnd(roundResult);
+				}
+				
 				this.currentRound++;
 				this.roundStartFlag = true;
 				this.endFrame = -1;
@@ -383,6 +389,12 @@ public class Play extends GameScene {
 
 			// AIに結果を渡す
 			InputManager.getInstance().sendRoundResult(roundResult);
+			
+			if (FlagSetting.grpc) {
+				ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
+				observer.onRoundEnd(roundResult);
+			}
+			
 			this.currentRound++;
 			this.roundStartFlag = true;
 			this.endFrame = -1;

@@ -79,7 +79,9 @@ public class FightingMenu extends GameScene {
 	}
 
 	private boolean isGrpcReady() {
-		if (this.playerIndexes[0] == GRPC_INDEX && LaunchSetting.grpcServer.getPlayer(true).isCancelled()) {
+		if (LaunchSetting.grpcServer == null) {
+			return true;
+		} else if (this.playerIndexes[0] == GRPC_INDEX && LaunchSetting.grpcServer.getPlayer(true).isCancelled()) {
 			return false;
 		} else if (this.playerIndexes[1] == GRPC_INDEX && LaunchSetting.grpcServer.getPlayer(false).isCancelled()) {
 			return false;
@@ -107,8 +109,10 @@ public class FightingMenu extends GameScene {
 		this.allAiNames = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
 		if (FlagSetting.grpc) {
 			allAiNames.add(GRPC_INDEX, "gRPC");
+			allAiNames.add(DEFAULT_AI_INDEX, DEFAULT_AI_NAME);
+		} else {
+			allAiNames.add(0, DEFAULT_AI_NAME);
 		}
-		allAiNames.add(DEFAULT_AI_INDEX, DEFAULT_AI_NAME);
 		
 		this.allSounds = ResourceLoader.getInstance().loadSoundNames();
 		allSounds.add(0, DEFAULT_SOUND_NAME);
