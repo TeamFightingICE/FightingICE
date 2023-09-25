@@ -121,6 +121,18 @@ public class GrpcUtil {
   				.build();
   	}
   	
+  	public static GrpcScreenData convertScreenData(ScreenData screenData) {
+  		if (screenData == null) {
+  			return GrpcScreenData.getDefaultInstance();
+  		}
+  		
+  		GrpcScreenData.Builder builder = GrpcScreenData.newBuilder();
+  		if (screenData.getDisplayBytes() != null) {
+  			builder.setDisplayBytes(ByteString.copyFrom(screenData.getDisplayBytes()));
+  		}
+  		return builder.build();
+  	}
+  	
   	public static GrpcScreenData convertScreenData(ScreenData screenData, int width, int height, boolean grayscale) {
   		if (screenData == null) {
   			return GrpcScreenData.getDefaultInstance();

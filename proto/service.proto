@@ -23,10 +23,11 @@ message SpectateRequest {
 
 message SpectatorGameState {
 	GrpcFlag state_flag = 1;
-	GrpcFrameData frame_data = 2;
-	GrpcScreenData screen_data = 3;
-	GrpcAudioData audio_data = 4;
-	GrpcRoundResult round_result = 5;
+	GrpcGameData game_data = 2;
+	GrpcFrameData frame_data = 3;
+	GrpcScreenData screen_data = 4;
+	GrpcAudioData audio_data = 5;
+	GrpcRoundResult round_result = 6;
 }
 
 message InitializeRequest {

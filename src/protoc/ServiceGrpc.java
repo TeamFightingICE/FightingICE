@@ -5,14 +5,14 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.54.0)",
+    value = "by gRPC proto compiler (version 1.58.0)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class ServiceGrpc {
 
   private ServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "service.Service";
+  public static final java.lang.String SERVICE_NAME = "service.Service";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<protoc.ServiceProto.RunGameRequest,
@@ -539,9 +539,9 @@ public final class ServiceGrpc {
   private static final class ServiceMethodDescriptorSupplier
       extends ServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
-    private final String methodName;
+    private final java.lang.String methodName;
 
-    ServiceMethodDescriptorSupplier(String methodName) {
+    ServiceMethodDescriptorSupplier(java.lang.String methodName) {
       this.methodName = methodName;
     }
 
