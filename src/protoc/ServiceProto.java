@@ -1091,6 +1091,24 @@ public final class ServiceProto {
      * @return The interval.
      */
     int getInterval();
+
+    /**
+     * <code>bool frame_data_flag = 2;</code>
+     * @return The frameDataFlag.
+     */
+    boolean getFrameDataFlag();
+
+    /**
+     * <code>bool screen_data_flag = 3;</code>
+     * @return The screenDataFlag.
+     */
+    boolean getScreenDataFlag();
+
+    /**
+     * <code>bool audio_data_flag = 4;</code>
+     * @return The audioDataFlag.
+     */
+    boolean getAudioDataFlag();
   }
   /**
    * Protobuf type {@code service.SpectateRequest}
@@ -1138,6 +1156,39 @@ public final class ServiceProto {
       return interval_;
     }
 
+    public static final int FRAME_DATA_FLAG_FIELD_NUMBER = 2;
+    private boolean frameDataFlag_ = false;
+    /**
+     * <code>bool frame_data_flag = 2;</code>
+     * @return The frameDataFlag.
+     */
+    @java.lang.Override
+    public boolean getFrameDataFlag() {
+      return frameDataFlag_;
+    }
+
+    public static final int SCREEN_DATA_FLAG_FIELD_NUMBER = 3;
+    private boolean screenDataFlag_ = false;
+    /**
+     * <code>bool screen_data_flag = 3;</code>
+     * @return The screenDataFlag.
+     */
+    @java.lang.Override
+    public boolean getScreenDataFlag() {
+      return screenDataFlag_;
+    }
+
+    public static final int AUDIO_DATA_FLAG_FIELD_NUMBER = 4;
+    private boolean audioDataFlag_ = false;
+    /**
+     * <code>bool audio_data_flag = 4;</code>
+     * @return The audioDataFlag.
+     */
+    @java.lang.Override
+    public boolean getAudioDataFlag() {
+      return audioDataFlag_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1155,6 +1206,15 @@ public final class ServiceProto {
       if (interval_ != 0) {
         output.writeInt32(1, interval_);
       }
+      if (frameDataFlag_ != false) {
+        output.writeBool(2, frameDataFlag_);
+      }
+      if (screenDataFlag_ != false) {
+        output.writeBool(3, screenDataFlag_);
+      }
+      if (audioDataFlag_ != false) {
+        output.writeBool(4, audioDataFlag_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1167,6 +1227,18 @@ public final class ServiceProto {
       if (interval_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, interval_);
+      }
+      if (frameDataFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, frameDataFlag_);
+      }
+      if (screenDataFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, screenDataFlag_);
+      }
+      if (audioDataFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, audioDataFlag_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -1185,6 +1257,12 @@ public final class ServiceProto {
 
       if (getInterval()
           != other.getInterval()) return false;
+      if (getFrameDataFlag()
+          != other.getFrameDataFlag()) return false;
+      if (getScreenDataFlag()
+          != other.getScreenDataFlag()) return false;
+      if (getAudioDataFlag()
+          != other.getAudioDataFlag()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1198,6 +1276,15 @@ public final class ServiceProto {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + INTERVAL_FIELD_NUMBER;
       hash = (53 * hash) + getInterval();
+      hash = (37 * hash) + FRAME_DATA_FLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getFrameDataFlag());
+      hash = (37 * hash) + SCREEN_DATA_FLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getScreenDataFlag());
+      hash = (37 * hash) + AUDIO_DATA_FLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAudioDataFlag());
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1330,6 +1417,9 @@ public final class ServiceProto {
         super.clear();
         bitField0_ = 0;
         interval_ = 0;
+        frameDataFlag_ = false;
+        screenDataFlag_ = false;
+        audioDataFlag_ = false;
         return this;
       }
 
@@ -1365,6 +1455,15 @@ public final class ServiceProto {
         int from_bitField0_ = bitField0_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.interval_ = interval_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.frameDataFlag_ = frameDataFlag_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.screenDataFlag_ = screenDataFlag_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.audioDataFlag_ = audioDataFlag_;
         }
       }
 
@@ -1415,6 +1514,15 @@ public final class ServiceProto {
         if (other.getInterval() != 0) {
           setInterval(other.getInterval());
         }
+        if (other.getFrameDataFlag() != false) {
+          setFrameDataFlag(other.getFrameDataFlag());
+        }
+        if (other.getScreenDataFlag() != false) {
+          setScreenDataFlag(other.getScreenDataFlag());
+        }
+        if (other.getAudioDataFlag() != false) {
+          setAudioDataFlag(other.getAudioDataFlag());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -1446,6 +1554,21 @@ public final class ServiceProto {
                 bitField0_ |= 0x00000001;
                 break;
               } // case 8
+              case 16: {
+                frameDataFlag_ = input.readBool();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                screenDataFlag_ = input.readBool();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                audioDataFlag_ = input.readBool();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1491,6 +1614,102 @@ public final class ServiceProto {
       public Builder clearInterval() {
         bitField0_ = (bitField0_ & ~0x00000001);
         interval_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean frameDataFlag_ ;
+      /**
+       * <code>bool frame_data_flag = 2;</code>
+       * @return The frameDataFlag.
+       */
+      @java.lang.Override
+      public boolean getFrameDataFlag() {
+        return frameDataFlag_;
+      }
+      /**
+       * <code>bool frame_data_flag = 2;</code>
+       * @param value The frameDataFlag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFrameDataFlag(boolean value) {
+
+        frameDataFlag_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool frame_data_flag = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFrameDataFlag() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        frameDataFlag_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean screenDataFlag_ ;
+      /**
+       * <code>bool screen_data_flag = 3;</code>
+       * @return The screenDataFlag.
+       */
+      @java.lang.Override
+      public boolean getScreenDataFlag() {
+        return screenDataFlag_;
+      }
+      /**
+       * <code>bool screen_data_flag = 3;</code>
+       * @param value The screenDataFlag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setScreenDataFlag(boolean value) {
+
+        screenDataFlag_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool screen_data_flag = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearScreenDataFlag() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        screenDataFlag_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean audioDataFlag_ ;
+      /**
+       * <code>bool audio_data_flag = 4;</code>
+       * @return The audioDataFlag.
+       */
+      @java.lang.Override
+      public boolean getAudioDataFlag() {
+        return audioDataFlag_;
+      }
+      /**
+       * <code>bool audio_data_flag = 4;</code>
+       * @param value The audioDataFlag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAudioDataFlag(boolean value) {
+
+        audioDataFlag_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool audio_data_flag = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAudioDataFlag() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        audioDataFlag_ = false;
         onChanged();
         return this;
       }
@@ -7480,40 +7699,42 @@ public final class ServiceProto {
       "f/empty.proto\032\nenum.proto\032\rmessage.proto" +
       "\"s\n\016RunGameRequest\022\023\n\013character_1\030\001 \001(\t\022" +
       "\023\n\013character_2\030\002 \001(\t\022\020\n\010player_1\030\003 \001(\t\022\020" +
-      "\n\010player_2\030\004 \001(\t\022\023\n\013game_number\030\005 \001(\005\"#\n" +
-      "\017SpectateRequest\022\020\n\010interval\030\001 \001(\005\"\233\002\n\022S" +
-      "pectatorGameState\022%\n\nstate_flag\030\001 \001(\0162\021." +
-      "service.GrpcFlag\022(\n\tgame_data\030\002 \001(\0132\025.se" +
-      "rvice.GrpcGameData\022*\n\nframe_data\030\003 \001(\0132\026" +
-      ".service.GrpcFrameData\022,\n\013screen_data\030\004 " +
+      "\n\010player_2\030\004 \001(\t\022\023\n\013game_number\030\005 \001(\005\"o\n" +
+      "\017SpectateRequest\022\020\n\010interval\030\001 \001(\005\022\027\n\017fr" +
+      "ame_data_flag\030\002 \001(\010\022\030\n\020screen_data_flag\030" +
+      "\003 \001(\010\022\027\n\017audio_data_flag\030\004 \001(\010\"\233\002\n\022Spect" +
+      "atorGameState\022%\n\nstate_flag\030\001 \001(\0162\021.serv" +
+      "ice.GrpcFlag\022(\n\tgame_data\030\002 \001(\0132\025.servic" +
+      "e.GrpcGameData\022*\n\nframe_data\030\003 \001(\0132\026.ser" +
+      "vice.GrpcFrameData\022,\n\013screen_data\030\004 \001(\0132" +
+      "\027.service.GrpcScreenData\022*\n\naudio_data\030\005" +
+      " \001(\0132\026.service.GrpcAudioData\022.\n\014round_re" +
+      "sult\030\006 \001(\0132\030.service.GrpcRoundResult\"Q\n\021" +
+      "InitializeRequest\022\025\n\rplayer_number\030\001 \001(\010" +
+      "\022\023\n\013player_name\030\002 \001(\t\022\020\n\010is_blind\030\003 \001(\010\"" +
+      ")\n\022InitializeResponse\022\023\n\013player_uuid\030\001 \001" +
+      "(\t\")\n\022ParticipateRequest\022\023\n\013player_uuid\030" +
+      "\001 \001(\t\"\342\002\n\017PlayerGameState\022%\n\nstate_flag\030" +
+      "\001 \001(\0162\021.service.GrpcFlag\022\022\n\nis_control\030\002" +
+      " \001(\010\022*\n\nframe_data\030\003 \001(\0132\026.service.GrpcF" +
+      "rameData\0224\n\024non_delay_frame_data\030\004 \001(\0132\026" +
+      ".service.GrpcFrameData\022,\n\013screen_data\030\005 " +
       "\001(\0132\027.service.GrpcScreenData\022*\n\naudio_da" +
-      "ta\030\005 \001(\0132\026.service.GrpcAudioData\022.\n\014roun" +
-      "d_result\030\006 \001(\0132\030.service.GrpcRoundResult" +
-      "\"Q\n\021InitializeRequest\022\025\n\rplayer_number\030\001" +
-      " \001(\010\022\023\n\013player_name\030\002 \001(\t\022\020\n\010is_blind\030\003 " +
-      "\001(\010\")\n\022InitializeResponse\022\023\n\013player_uuid" +
-      "\030\001 \001(\t\")\n\022ParticipateRequest\022\023\n\013player_u" +
-      "uid\030\001 \001(\t\"\342\002\n\017PlayerGameState\022%\n\nstate_f" +
-      "lag\030\001 \001(\0162\021.service.GrpcFlag\022\022\n\nis_contr" +
-      "ol\030\002 \001(\010\022*\n\nframe_data\030\003 \001(\0132\026.service.G" +
-      "rpcFrameData\0224\n\024non_delay_frame_data\030\004 \001" +
-      "(\0132\026.service.GrpcFrameData\022,\n\013screen_dat" +
-      "a\030\005 \001(\0132\027.service.GrpcScreenData\022*\n\naudi" +
-      "o_data\030\006 \001(\0132\026.service.GrpcAudioData\022(\n\t" +
-      "game_data\030\007 \001(\0132\025.service.GrpcGameData\022." +
-      "\n\014round_result\030\010 \001(\0132\030.service.GrpcRound" +
-      "Result\"G\n\013PlayerInput\022\023\n\013player_uuid\030\001 \001" +
-      "(\t\022#\n\tinput_key\030\002 \001(\0132\020.service.GrpcKey2" +
-      "\332\002\n\007Service\022<\n\007RunGame\022\027.service.RunGame" +
-      "Request\032\026.google.protobuf.Empty\"\000\022E\n\010Spe" +
-      "ctate\022\030.service.SpectateRequest\032\033.servic" +
-      "e.SpectatorGameState\"\0000\001\022G\n\nInitialize\022\032" +
-      ".service.InitializeRequest\032\033.service.Ini" +
-      "tializeResponse\"\000\022H\n\013Participate\022\033.servi" +
-      "ce.ParticipateRequest\032\030.service.PlayerGa" +
-      "meState\"\0000\001\0227\n\005Input\022\024.service.PlayerInp" +
-      "ut\032\026.google.protobuf.Empty\"\000B\036\n\006protocB\014" +
-      "ServiceProtoP\000\242\002\003HLWb\006proto3"
+      "ta\030\006 \001(\0132\026.service.GrpcAudioData\022(\n\tgame" +
+      "_data\030\007 \001(\0132\025.service.GrpcGameData\022.\n\014ro" +
+      "und_result\030\010 \001(\0132\030.service.GrpcRoundResu" +
+      "lt\"G\n\013PlayerInput\022\023\n\013player_uuid\030\001 \001(\t\022#" +
+      "\n\tinput_key\030\002 \001(\0132\020.service.GrpcKey2\332\002\n\007" +
+      "Service\022<\n\007RunGame\022\027.service.RunGameRequ" +
+      "est\032\026.google.protobuf.Empty\"\000\022E\n\010Spectat" +
+      "e\022\030.service.SpectateRequest\032\033.service.Sp" +
+      "ectatorGameState\"\0000\001\022G\n\nInitialize\022\032.ser" +
+      "vice.InitializeRequest\032\033.service.Initial" +
+      "izeResponse\"\000\022H\n\013Participate\022\033.service.P" +
+      "articipateRequest\032\030.service.PlayerGameSt" +
+      "ate\"\0000\001\0227\n\005Input\022\024.service.PlayerInput\032\026" +
+      ".google.protobuf.Empty\"\000B\036\n\006protocB\014Serv" +
+      "iceProtoP\000\242\002\003HLWb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -7533,7 +7754,7 @@ public final class ServiceProto {
     internal_static_service_SpectateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service_SpectateRequest_descriptor,
-        new java.lang.String[] { "Interval", });
+        new java.lang.String[] { "Interval", "FrameDataFlag", "ScreenDataFlag", "AudioDataFlag", });
     internal_static_service_SpectatorGameState_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_service_SpectatorGameState_fieldAccessorTable = new

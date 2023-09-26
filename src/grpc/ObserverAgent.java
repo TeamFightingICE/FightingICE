@@ -16,6 +16,10 @@ import util.GrpcUtil;
 public class ObserverAgent {
 	
 	private int interval;
+	private boolean frameDataFlag;
+	private boolean screenDataFlag;
+	private boolean audioDataFlag;
+	
 	private boolean cancelled;
 	private StreamObserver<SpectatorGameState> responseObserver;
 	
@@ -48,13 +52,14 @@ public class ObserverAgent {
 				ObserverAgent.this.cancel();
 			}
 		});
+		
 		this.interval = request.getInterval();
+		this.frameDataFlag = request.getFrameDataFlag();
+		this.screenDataFlag = request.getScreenDataFlag();
+		this.audioDataFlag = request.getAudioDataFlag();
+		
 		this.cancelled = false;
 		this.responseObserver = responseObserver;
-	}
-	
-	public int getInterval() {
-		return this.interval;
 	}
 	
 	public boolean isCancelled() {
@@ -87,14 +92,23 @@ public class ObserverAgent {
 	}
 	
 	public void onGameUpdate() {
-		if (frameData.getFramesNumber() % this.getInterval() == 0) {
-			SpectatorGameState response = SpectatorGameState.newBuilder()
-	  				.setStateFlag(GrpcFlag.PROCESSING)
-	  				.setFrameData(GrpcUtil.convertFrameData(frameData))
-	  				.setScreenData(GrpcUtil.convertScreenData(screenData, 960, 640, false))
-	  				.setAudioData(GrpcUtil.convertAudioData(audioData))
-	  				.build();
-			this.onNext(response);
+		if (frameData.getFramesNumber() % this.interval == 0) {
+			SpectatorGameState.Builder response = SpectatorGameState.newBuilder()
+					.setStateFlag(GrpcFlag.PROCESSING);
+			
+			if (this.frameDataFlag) {
+				response.setFrameData(GrpcUtil.convertFrameData(frameData));
+			}
+			
+			if (this.screenDataFlag) {
+				response.setScreenData(GrpcUtil.convertScreenData(screenData));
+			}
+			
+			if (this.audioDataFlag) {
+				response.setAudioData(GrpcUtil.convertAudioData(audioData));
+			}
+			
+			this.onNext(response.build());
 		}
 	}
 	
