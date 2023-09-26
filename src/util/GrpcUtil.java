@@ -128,7 +128,7 @@ public class GrpcUtil {
   		
   		GrpcScreenData.Builder builder = GrpcScreenData.newBuilder();
   		if (screenData.getDisplayBytes() != null) {
-  			builder.setDisplayBytes(ByteString.copyFrom(screenData.getDisplayBytes()));
+  			builder.setDisplayBytes(ByteString.copyFrom(screenData.getCompressedDisplayBytes()));
   		}
   		return builder.build();
   	}

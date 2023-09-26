@@ -10,7 +10,10 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.zip.GZIPOutputStream;
 
 import org.lwjgl.BufferUtils;
 
@@ -72,6 +75,28 @@ public class ScreenData {
 	 */
 	public byte[] getDisplayBytes() {
 		return this.displayBytes;
+	}
+	
+	public byte[] getCompressedDisplayBytes() {
+		try {
+		    // Create a ByteArrayOutputStream to store the compressed data
+		    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+		    // Create a GZIPOutputStream to compress the data
+		    try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
+		        // Write the original data to the compressed stream
+		        gzipOutputStream.write(this.displayBytes);
+		    }
+
+		    // Get the compressed data as a byte array
+		    byte[] compressedData = byteArrayOutputStream.toByteArray();
+
+		    // Now you can send the compressedData over gRPC
+		    return compressedData;
+		} catch (IOException e) {
+		    // Handle compression or I/O errors
+			return new byte[1];
+		}
 	}
 
 	/**
