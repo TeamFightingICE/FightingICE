@@ -4,6 +4,7 @@ import informationcontainer.RoundResult;
 import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
 import protoc.EnumProto.GrpcFlag;
+import protoc.ServiceProto.SpectateRequest;
 import protoc.ServiceProto.SpectatorGameState;
 import setting.GameSetting;
 import struct.AudioData;
@@ -14,6 +15,7 @@ import util.GrpcUtil;
 
 public class ObserverAgent {
 	
+	private int interval;
 	private boolean cancelled;
 	private StreamObserver<SpectatorGameState> responseObserver;
 	
@@ -34,7 +36,7 @@ public class ObserverAgent {
 		this.onInitialize();
 	}
 	
-	public void register(StreamObserver<SpectatorGameState> responseObserver) {
+	public void register(SpectateRequest request, StreamObserver<SpectatorGameState> responseObserver) {
 		if (!this.isCancelled()) {
 			this.notifyOnCompleted();
 			this.cancel();
@@ -46,8 +48,13 @@ public class ObserverAgent {
 				ObserverAgent.this.cancel();
 			}
 		});
+		this.interval = request.getInterval();
 		this.cancelled = false;
 		this.responseObserver = responseObserver;
+	}
+	
+	public int getInterval() {
+		return this.interval;
 	}
 	
 	public boolean isCancelled() {
@@ -80,13 +87,15 @@ public class ObserverAgent {
 	}
 	
 	public void onGameUpdate() {
-		SpectatorGameState response = SpectatorGameState.newBuilder()
-  				.setStateFlag(GrpcFlag.PROCESSING)
-  				.setFrameData(GrpcUtil.convertFrameData(frameData))
-  				.setScreenData(GrpcUtil.convertScreenData(screenData))
-  				.setAudioData(GrpcUtil.convertAudioData(audioData))
-  				.build();
-		this.onNext(response);
+		if (frameData.getFramesNumber() % this.getInterval() == 0) {
+			SpectatorGameState response = SpectatorGameState.newBuilder()
+	  				.setStateFlag(GrpcFlag.PROCESSING)
+	  				.setFrameData(GrpcUtil.convertFrameData(frameData))
+	  				.setScreenData(GrpcUtil.convertScreenData(screenData, 960, 640, false))
+	  				.setAudioData(GrpcUtil.convertAudioData(audioData))
+	  				.build();
+			this.onNext(response);
+		}
 	}
 	
 	public void onRoundEnd(RoundResult roundResult) {

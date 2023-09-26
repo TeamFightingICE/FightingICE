@@ -18,7 +18,7 @@ message RunGameRequest {
 }
 
 message SpectateRequest {
-	
+	int32 interval = 1;
 }
 
 message SpectatorGameState {

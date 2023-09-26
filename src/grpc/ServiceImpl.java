@@ -24,7 +24,7 @@ public class ServiceImpl extends ServiceGrpc.ServiceImplBase {
 	@Override
 	public void spectate(SpectateRequest request, StreamObserver<SpectatorGameState> responseObserver) {
 		ObserverAgent observer = server.getObserver();
-		observer.register(responseObserver);
+		observer.register(request, responseObserver);
 	}
 	
 	@Override

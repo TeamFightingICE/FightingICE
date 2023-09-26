@@ -1085,6 +1085,12 @@ public final class ServiceProto {
   public interface SpectateRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:service.SpectateRequest)
       com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 interval = 1;</code>
+     * @return The interval.
+     */
+    int getInterval();
   }
   /**
    * Protobuf type {@code service.SpectateRequest}
@@ -1121,6 +1127,17 @@ public final class ServiceProto {
               protoc.ServiceProto.SpectateRequest.class, protoc.ServiceProto.SpectateRequest.Builder.class);
     }
 
+    public static final int INTERVAL_FIELD_NUMBER = 1;
+    private int interval_ = 0;
+    /**
+     * <code>int32 interval = 1;</code>
+     * @return The interval.
+     */
+    @java.lang.Override
+    public int getInterval() {
+      return interval_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1135,6 +1152,9 @@ public final class ServiceProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (interval_ != 0) {
+        output.writeInt32(1, interval_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1144,6 +1164,10 @@ public final class ServiceProto {
       if (size != -1) return size;
 
       size = 0;
+      if (interval_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, interval_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1159,6 +1183,8 @@ public final class ServiceProto {
       }
       protoc.ServiceProto.SpectateRequest other = (protoc.ServiceProto.SpectateRequest) obj;
 
+      if (getInterval()
+          != other.getInterval()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1170,6 +1196,8 @@ public final class ServiceProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + INTERVAL_FIELD_NUMBER;
+      hash = (53 * hash) + getInterval();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1300,6 +1328,8 @@ public final class ServiceProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
+        interval_ = 0;
         return this;
       }
 
@@ -1326,8 +1356,16 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.SpectateRequest buildPartial() {
         protoc.ServiceProto.SpectateRequest result = new protoc.ServiceProto.SpectateRequest(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.SpectateRequest result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.interval_ = interval_;
+        }
       }
 
       @java.lang.Override
@@ -1374,6 +1412,9 @@ public final class ServiceProto {
 
       public Builder mergeFrom(protoc.ServiceProto.SpectateRequest other) {
         if (other == protoc.ServiceProto.SpectateRequest.getDefaultInstance()) return this;
+        if (other.getInterval() != 0) {
+          setInterval(other.getInterval());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -1400,6 +1441,11 @@ public final class ServiceProto {
               case 0:
                 done = true;
                 break;
+              case 8: {
+                interval_ = input.readInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1413,6 +1459,39 @@ public final class ServiceProto {
         } finally {
           onChanged();
         } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int interval_ ;
+      /**
+       * <code>int32 interval = 1;</code>
+       * @return The interval.
+       */
+      @java.lang.Override
+      public int getInterval() {
+        return interval_;
+      }
+      /**
+       * <code>int32 interval = 1;</code>
+       * @param value The interval to set.
+       * @return This builder for chaining.
+       */
+      public Builder setInterval(int value) {
+
+        interval_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 interval = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearInterval() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        interval_ = 0;
+        onChanged();
         return this;
       }
       @java.lang.Override
@@ -7401,40 +7480,40 @@ public final class ServiceProto {
       "f/empty.proto\032\nenum.proto\032\rmessage.proto" +
       "\"s\n\016RunGameRequest\022\023\n\013character_1\030\001 \001(\t\022" +
       "\023\n\013character_2\030\002 \001(\t\022\020\n\010player_1\030\003 \001(\t\022\020" +
-      "\n\010player_2\030\004 \001(\t\022\023\n\013game_number\030\005 \001(\005\"\021\n" +
-      "\017SpectateRequest\"\233\002\n\022SpectatorGameState\022" +
-      "%\n\nstate_flag\030\001 \001(\0162\021.service.GrpcFlag\022(" +
-      "\n\tgame_data\030\002 \001(\0132\025.service.GrpcGameData" +
-      "\022*\n\nframe_data\030\003 \001(\0132\026.service.GrpcFrame" +
-      "Data\022,\n\013screen_data\030\004 \001(\0132\027.service.Grpc" +
-      "ScreenData\022*\n\naudio_data\030\005 \001(\0132\026.service" +
-      ".GrpcAudioData\022.\n\014round_result\030\006 \001(\0132\030.s" +
-      "ervice.GrpcRoundResult\"Q\n\021InitializeRequ" +
-      "est\022\025\n\rplayer_number\030\001 \001(\010\022\023\n\013player_nam" +
-      "e\030\002 \001(\t\022\020\n\010is_blind\030\003 \001(\010\")\n\022InitializeR" +
-      "esponse\022\023\n\013player_uuid\030\001 \001(\t\")\n\022Particip" +
-      "ateRequest\022\023\n\013player_uuid\030\001 \001(\t\"\342\002\n\017Play" +
-      "erGameState\022%\n\nstate_flag\030\001 \001(\0162\021.servic" +
-      "e.GrpcFlag\022\022\n\nis_control\030\002 \001(\010\022*\n\nframe_" +
-      "data\030\003 \001(\0132\026.service.GrpcFrameData\0224\n\024no" +
-      "n_delay_frame_data\030\004 \001(\0132\026.service.GrpcF" +
-      "rameData\022,\n\013screen_data\030\005 \001(\0132\027.service." +
-      "GrpcScreenData\022*\n\naudio_data\030\006 \001(\0132\026.ser" +
-      "vice.GrpcAudioData\022(\n\tgame_data\030\007 \001(\0132\025." +
-      "service.GrpcGameData\022.\n\014round_result\030\010 \001" +
-      "(\0132\030.service.GrpcRoundResult\"G\n\013PlayerIn" +
-      "put\022\023\n\013player_uuid\030\001 \001(\t\022#\n\tinput_key\030\002 " +
-      "\001(\0132\020.service.GrpcKey2\332\002\n\007Service\022<\n\007Run" +
-      "Game\022\027.service.RunGameRequest\032\026.google.p" +
-      "rotobuf.Empty\"\000\022E\n\010Spectate\022\030.service.Sp" +
-      "ectateRequest\032\033.service.SpectatorGameSta" +
-      "te\"\0000\001\022G\n\nInitialize\022\032.service.Initializ" +
-      "eRequest\032\033.service.InitializeResponse\"\000\022" +
-      "H\n\013Participate\022\033.service.ParticipateRequ" +
-      "est\032\030.service.PlayerGameState\"\0000\001\0227\n\005Inp" +
-      "ut\022\024.service.PlayerInput\032\026.google.protob" +
-      "uf.Empty\"\000B\036\n\006protocB\014ServiceProtoP\000\242\002\003H" +
-      "LWb\006proto3"
+      "\n\010player_2\030\004 \001(\t\022\023\n\013game_number\030\005 \001(\005\"#\n" +
+      "\017SpectateRequest\022\020\n\010interval\030\001 \001(\005\"\233\002\n\022S" +
+      "pectatorGameState\022%\n\nstate_flag\030\001 \001(\0162\021." +
+      "service.GrpcFlag\022(\n\tgame_data\030\002 \001(\0132\025.se" +
+      "rvice.GrpcGameData\022*\n\nframe_data\030\003 \001(\0132\026" +
+      ".service.GrpcFrameData\022,\n\013screen_data\030\004 " +
+      "\001(\0132\027.service.GrpcScreenData\022*\n\naudio_da" +
+      "ta\030\005 \001(\0132\026.service.GrpcAudioData\022.\n\014roun" +
+      "d_result\030\006 \001(\0132\030.service.GrpcRoundResult" +
+      "\"Q\n\021InitializeRequest\022\025\n\rplayer_number\030\001" +
+      " \001(\010\022\023\n\013player_name\030\002 \001(\t\022\020\n\010is_blind\030\003 " +
+      "\001(\010\")\n\022InitializeResponse\022\023\n\013player_uuid" +
+      "\030\001 \001(\t\")\n\022ParticipateRequest\022\023\n\013player_u" +
+      "uid\030\001 \001(\t\"\342\002\n\017PlayerGameState\022%\n\nstate_f" +
+      "lag\030\001 \001(\0162\021.service.GrpcFlag\022\022\n\nis_contr" +
+      "ol\030\002 \001(\010\022*\n\nframe_data\030\003 \001(\0132\026.service.G" +
+      "rpcFrameData\0224\n\024non_delay_frame_data\030\004 \001" +
+      "(\0132\026.service.GrpcFrameData\022,\n\013screen_dat" +
+      "a\030\005 \001(\0132\027.service.GrpcScreenData\022*\n\naudi" +
+      "o_data\030\006 \001(\0132\026.service.GrpcAudioData\022(\n\t" +
+      "game_data\030\007 \001(\0132\025.service.GrpcGameData\022." +
+      "\n\014round_result\030\010 \001(\0132\030.service.GrpcRound" +
+      "Result\"G\n\013PlayerInput\022\023\n\013player_uuid\030\001 \001" +
+      "(\t\022#\n\tinput_key\030\002 \001(\0132\020.service.GrpcKey2" +
+      "\332\002\n\007Service\022<\n\007RunGame\022\027.service.RunGame" +
+      "Request\032\026.google.protobuf.Empty\"\000\022E\n\010Spe" +
+      "ctate\022\030.service.SpectateRequest\032\033.servic" +
+      "e.SpectatorGameState\"\0000\001\022G\n\nInitialize\022\032" +
+      ".service.InitializeRequest\032\033.service.Ini" +
+      "tializeResponse\"\000\022H\n\013Participate\022\033.servi" +
+      "ce.ParticipateRequest\032\030.service.PlayerGa" +
+      "meState\"\0000\001\0227\n\005Input\022\024.service.PlayerInp" +
+      "ut\032\026.google.protobuf.Empty\"\000B\036\n\006protocB\014" +
+      "ServiceProtoP\000\242\002\003HLWb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -7454,7 +7533,7 @@ public final class ServiceProto {
     internal_static_service_SpectateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service_SpectateRequest_descriptor,
-        new java.lang.String[] { });
+        new java.lang.String[] { "Interval", });
     internal_static_service_SpectatorGameState_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_service_SpectatorGameState_fieldAccessorTable = new
