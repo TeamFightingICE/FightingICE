@@ -84,6 +84,10 @@ public class ObserverAgent {
 	}
 	
 	public void onInitialize() {
+		if (this.isCancelled()) {
+			return;
+		}
+		
 		SpectatorGameState response = SpectatorGameState.newBuilder()
   				.setStateFlag(GrpcFlag.INITIALIZE)
   				.setGameData(GrpcUtil.convertGameData(gameData))
@@ -92,6 +96,10 @@ public class ObserverAgent {
 	}
 	
 	public void onGameUpdate() {
+		if (this.isCancelled()) {
+			return;
+		}
+		
 		if (frameData.getFramesNumber() % this.interval == 0) {
 			SpectatorGameState.Builder response = SpectatorGameState.newBuilder()
 					.setStateFlag(GrpcFlag.PROCESSING);
@@ -113,8 +121,11 @@ public class ObserverAgent {
 	}
 	
 	public void onRoundEnd(RoundResult roundResult) {
-		boolean isGameEnd = roundResult.getRound() >= GameSetting.ROUND_MAX;
+		if (this.isCancelled()) {
+			return;
+		}
 		
+		boolean isGameEnd = roundResult.getRound() >= GameSetting.ROUND_MAX;
 		SpectatorGameState response = SpectatorGameState.newBuilder()
 				.setStateFlag(isGameEnd ? GrpcFlag.GAME_END : GrpcFlag.ROUND_END)
 				.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
