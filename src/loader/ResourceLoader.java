@@ -386,6 +386,7 @@ public class ResourceLoader {
 					new IndexColorModel(1, 1, new byte[] { (byte) 128 }, new byte[] { (byte) 128 },
 							new byte[] { (byte) 128 }));
 			container.add(loadTextureFromBufferedImage(bg));
+			break;
 
 		default:
 			loadImages(container, path);

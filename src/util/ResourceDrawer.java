@@ -96,9 +96,7 @@ public class ResourceDrawer {
 	 */
 	public void drawBackGroundImage() {
 		Image bg = GraphicManager.getInstance().getBackgroundImage().get(0);
-
-		GraphicManager.getInstance().drawImage(bg, 0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT,
-				Image.DIRECTION_RIGHT);
+		GraphicManager.getInstance().drawImage(bg, 0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, Image.DIRECTION_RIGHT);
 	}
 
 	/**
@@ -123,12 +121,7 @@ public class ResourceDrawer {
 			int positionY = playerCharacters[i].getHitAreaTop() - 50;
 
 			GraphicManager.getInstance().drawString(names[i], positionX, positionY);
-
 			GraphicManager.getInstance().drawImage(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
-					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
-					playerCharacters[i].getGraphicSizeY(), playerCharacters[i].isFront());
-
-			GraphicManager.getInstance().drawImageinScreenData(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
 					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
 					playerCharacters[i].getGraphicSizeY(), playerCharacters[i].isFront());
 		}
@@ -163,11 +156,7 @@ public class ResourceDrawer {
 				BufferedImage tmpImage = image.getBufferedImage();
 				tmpImage = flipImage(tmpImage, attack.getSpeedX() >= 0);
 
-				GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(), image.getHeight(),
-						attack.getSpeedX() >= 0);
-
-				GraphicManager.getInstance().drawImageinScreenData(image, positionX, positionY, image.getWidth(), image.getHeight(),
-						attack.getSpeedX() >= 0);
+				GraphicManager.getInstance().drawImage(image, positionX, positionY, attack.getSpeedX() >= 0);
 			}
 		}
 	}
@@ -304,19 +293,11 @@ public class ResourceDrawer {
 					playerCharacters[i].getHitAreaBottom() - playerCharacters[i].getHitAreaTop(), 0.0f + i,
 					1.0f - i * 0.35f, 0.0f, 0.0f);
 
-			GraphicManager.getInstance().drawLineQuadinScreenData(playerCharacters[i].getHitAreaLeft(),
-					playerCharacters[i].getHitAreaTop(),
-					playerCharacters[i].getHitAreaRight() - playerCharacters[i].getHitAreaLeft(),
-					playerCharacters[i].getHitAreaBottom() - playerCharacters[i].getHitAreaTop(), 0.0f + i,
-					1.0f - i * 0.35f, 0.0f, 0.0f);
-
 			// 攻撃の当たり判定ボックスの描画
 			if (playerCharacters[i].getAttack() != null) {
 				HitArea area = playerCharacters[i].getAttack().getCurrentHitArea();
 
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),
-						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
-				GraphicManager.getInstance().drawLineQuadinScreenData(area.getLeft(), area.getTop(),
 						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
 			}
 		}
@@ -329,9 +310,6 @@ public class ResourceDrawer {
 				HitArea area = temp.getCurrentHitArea();
 
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),
-						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
-
-				GraphicManager.getInstance().drawLineQuadinScreenData(area.getLeft(), area.getTop(),
 						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
 			}
 		}
@@ -364,8 +342,7 @@ public class ResourceDrawer {
 					if (hitEffect.getVariationX() == 0 && hitEffect.getVariationY() == 0) {
 						positionX += 30;
 					}
-					GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(),
-							image.getHeight(), i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT);
+					GraphicManager.getInstance().drawImage(image, positionX, positionY, i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT);
 				}
 			}
 		}

@@ -59,8 +59,7 @@ public class Image {
 	 */
 	public Image(int id, BufferedImage bimg) {
 		this.textureId = id;
-		this.bimg = new BufferedImage(bimg.getWidth(), bimg.getHeight(), bimg.getType());
-		this.bimg.setData(bimg.getData());
+		this.bimg = bimg;
 	}
 
 	/**
@@ -80,7 +79,7 @@ public class Image {
 	public BufferedImage getBufferedImage() {
 		BufferedImage res = new BufferedImage(this.bimg.getWidth(), this.bimg.getHeight(), this.bimg.getType());
 		res.setData(bimg.getData());
-		return res;
+		return bimg;
 	}
 
 	/**

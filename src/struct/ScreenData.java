@@ -78,25 +78,7 @@ public class ScreenData {
 	}
 	
 	public byte[] getCompressedDisplayBytes() {
-		try {
-		    // Create a ByteArrayOutputStream to store the compressed data
-		    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-		    // Create a GZIPOutputStream to compress the data
-		    try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
-		        // Write the original data to the compressed stream
-		        gzipOutputStream.write(this.displayBytes);
-		    }
-
-		    // Get the compressed data as a byte array
-		    byte[] compressedData = byteArrayOutputStream.toByteArray();
-
-		    // Now you can send the compressedData over gRPC
-		    return compressedData;
-		} catch (IOException e) {
-		    // Handle compression or I/O errors
-			return new byte[1];
-		}
+		return this.compressByteData(this.displayBytes);
 	}
 
 	/**
@@ -149,6 +131,33 @@ public class ScreenData {
 		}
 
 		return dst;
+	}
+	
+	public byte[] getCompressedDisplayByteBufferAsBytes(int newWidth, int newHeight, boolean grayScale) {
+		byte[] displayBytes = this.getDisplayByteBufferAsBytes(newWidth, newHeight, grayScale);
+		return this.compressByteData(displayBytes);
+	}
+	
+	private byte[] compressByteData(byte[] original) {
+		try {
+		    // Create a ByteArrayOutputStream to store the compressed data
+		    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+		    // Create a GZIPOutputStream to compress the data
+		    try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
+		        // Write the original data to the compressed stream
+		        gzipOutputStream.write(original);
+		    }
+
+		    // Get the compressed data as a byte array
+		    byte[] compressedData = byteArrayOutputStream.toByteArray();
+
+		    // Now you can send the compressedData over gRPC
+		    return compressedData;
+		} catch (IOException e) {
+		    // Handle compression or I/O errors
+			return new byte[1];
+		}
 	}
 
 	/**

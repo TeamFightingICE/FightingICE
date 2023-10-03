@@ -4,8 +4,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -101,8 +99,6 @@ public class Play extends GameScene {
 
 	private AudioData audioData;
 	
-	private FileWriter writer;
-	
 	/**
 	 * クラスコンストラクタ．
 	 */
@@ -150,7 +146,7 @@ public class Play extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		if (FlagSetting.grpc) {
-			LaunchSetting.grpcServer.getObserver().initialize(gameData);
+			LaunchSetting.grpcServer.getObserver().onInitialize(gameData);
 		}
 
 		try {
@@ -236,17 +232,6 @@ public class Play extends GameScene {
 
 		InputManager.getInstance().clear();
 		SoundManager.getInstance().playBGM();
-		
-		//TODO to be remove
-		String timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
-    	String fileName = String.format("log/bgm_%s.csv", timeInfo);
-    	try {
-			this.writer = new FileWriter(new File(fileName));
-			this.writer.write("frame,violin,piano,flute,ukulele,cello\n");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -288,16 +273,8 @@ public class Play extends GameScene {
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 		
-		// for Adaptive Sound Design -> volume [ 0.1, 0.75 ]
 		if (!this.frameData.getEmptyFlag()) {
 			float[] audioGains = BGMUtil.getAudioGains(this.frameData);
-			try {
-				this.writer.write(String.format("%d,%f,%f,%f,%f,%f\n", this.frameData.getFramesNumber(), audioGains[0], 
-						audioGains[1], audioGains[2], audioGains[3], audioGains[4]));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			SoundManager.getInstance().setBGMAudioGains(audioGains);
 		}
 
@@ -322,18 +299,19 @@ public class Play extends GameScene {
 		}
 
 		this.screenData = new ScreenData();
+		
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();
 		} else {
             this.audioData = new AudioData(SoundManager.getInstance().getVirtualRenderer().sampleAudio());
         }
+		
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
 		
 		if (FlagSetting.grpc) {
 			ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
-			observer.setInformation(this.frameData, this.audioData, this.screenData);
-			observer.onGameUpdate();
+			observer.onGameUpdate(this.frameData, this.audioData, this.screenData);
 		}
 
 		// 体力が0orタイムオーバーならラウンド終了処理
@@ -347,13 +325,6 @@ public class Play extends GameScene {
 	 */
 	private void processingRoundEnd() {
 		SoundManager.getInstance().stopAll();
-		try {
-			this.writer.close();
-			this.writer = null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		if (FlagSetting.slowmotion) {
 			if (this.endFrame > GameSetting.ROUND_EXTRAFRAME_NUMBER) {

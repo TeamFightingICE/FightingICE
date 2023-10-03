@@ -35,11 +35,6 @@ public class ObserverAgent {
 		this.screenData = new ScreenData();
 	}
 	
-	public void initialize(GameData gameData) {
-		this.gameData = gameData;
-		this.onInitialize();
-	}
-	
 	public void register(SpectateRequest request, StreamObserver<SpectatorGameState> responseObserver) {
 		if (!this.isCancelled()) {
 			this.notifyOnCompleted();
@@ -77,13 +72,9 @@ public class ObserverAgent {
 		}
 	}
 	
-	public void setInformation(FrameData frameData, AudioData audioData, ScreenData screenData) {
-		this.frameData = frameData;
-		this.screenData = screenData;
-		this.audioData = audioData;
-	}
-	
-	public void onInitialize() {
+	public void onInitialize(GameData gameData) {
+		this.gameData = gameData;
+		
 		if (this.isCancelled()) {
 			return;
 		}
@@ -95,7 +86,11 @@ public class ObserverAgent {
 		this.onNext(response);
 	}
 	
-	public void onGameUpdate() {
+	public void onGameUpdate(FrameData frameData, AudioData audioData, ScreenData screenData) {
+		this.frameData = frameData;
+		this.screenData = screenData;
+		this.audioData = audioData;
+		
 		if (this.isCancelled()) {
 			return;
 		}
@@ -109,7 +104,7 @@ public class ObserverAgent {
 			}
 			
 			if (this.screenDataFlag) {
-				response.setScreenData(GrpcUtil.convertScreenData(screenData));
+				response.setScreenData(GrpcUtil.convertScreenData(screenData, 960, 640, false));
 			}
 			
 			if (this.audioDataFlag) {
