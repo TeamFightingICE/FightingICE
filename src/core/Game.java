@@ -231,26 +231,14 @@ public class Game extends GameManager {
         Logger.getAnonymousLogger().log(Level.WARNING, characterName + " is does not exist. Please check the set character name.");
         return "ZEN"; // Default character
     }
-    
-    private void mkDirThenRemove(File dir) {
-    	dir.mkdir();
-    	
-//    	File[] contents = dir.listFiles();
-//        if (contents != null) {
-//            for (File f : contents) {
-//                f.delete();
-//            }
-//        }
-    }
 
     /**
      * Creates log directories if they do not exist.
      */
     private void createLogDirectories() {
         new File("log").mkdir();
-        mkDirThenRemove(new File("log/replay"));
-        mkDirThenRemove(new File("log/point"));
-        mkDirThenRemove(new File("log/grpc"));
+        new File("log/replay").mkdir();
+        new File("log/point").mkdir();
     }
 
     @Override

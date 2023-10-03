@@ -1,16 +1,6 @@
 package grpc;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import informationcontainer.RoundResult;
 import io.grpc.stub.ServerCallStreamObserver;
@@ -81,8 +71,6 @@ public class PlayerAgent {
 	
 	public void initialize(GameData gameData, boolean playerNumber) {
 		this.playerNumber = playerNumber;
-		
-		//this.rpcWarmingUp();
 		this.onInitialize(gameData);
 	}
 	
@@ -115,16 +103,6 @@ public class PlayerAgent {
 		return !this.waitFlag;
 	}
 	
-	public void rpcWarmingUp() {
-        Logger.getAnonymousLogger().log(Level.INFO, "Warming up RPC streaming for P" + (playerNumber ? "1" : "2"));
-		for (int i = 0; i < 100; i++) {
-			PlayerGameState response = PlayerGameState.newBuilder()
-					.setStateFlag(GrpcFlag.EMPTY)
-	  				.build();
-			this.onNext(response);
-		}
-	}
-	
 	public void setInformation(boolean isControl, FrameData frameData, AudioData audioData, 
 			ScreenData screenData, FrameData nonDelayFrameData) {
 		this.isControl = isControl;
@@ -148,7 +126,6 @@ public class PlayerAgent {
 	
 	public void onGameUpdate() {
 		if (this.isReady() && this.isGameStarted()) {
-			this.startTimer(frameData.getFramesNumber());
 			this.waitFlag = true;
 		}
 		
@@ -166,7 +143,6 @@ public class PlayerAgent {
 	
 	public void onRoundEnd(RoundResult roundResult) {
 		this.waitFlag = false;
-		this.exportGrpcPerfAsCsv();
 		boolean isGameEnd = roundResult.getRound() >= GameSetting.ROUND_MAX;
 		
 		PlayerGameState response = PlayerGameState.newBuilder()
@@ -185,7 +161,6 @@ public class PlayerAgent {
 		}
 		
 		if (this.waitFlag) {
-    		this.endTimer();
     		this.waitFlag = false;
     	}
 	}
@@ -206,45 +181,5 @@ public class PlayerAgent {
 			this.responseObserver.onCompleted();
 		}
 	}
-    
-	//to be delete when launch
-    private int fn = -1;
-    private long ts = System.nanoTime();
-    private List<Integer> fns = new ArrayList<>();
-    private List<Double> ms = new ArrayList<>();
-    
-    public void startTimer(int fn) {
-    	this.fn = fn;
-    	this.ts = System.nanoTime();
-    }
-    
-    public void endTimer() {
-    	this.fns.add(this.fn);
-        this.ms.add((System.nanoTime() - this.ts) / 1000000.0);
-    }
-
-    private void exportGrpcPerfAsCsv() {
-    	try {
-            String pNumber = String.format("P%s", playerNumber ? "1" : "2");
-			String timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
-        	String fileName = String.format("log/grpc/%s_%s.csv", pNumber, timeInfo);
-			FileWriter writer = new FileWriter(new File(fileName));
-			writer.write("frame_number,processing_time\n");
-			for (int i = 0; i < ms.size(); i++) {
-				writer.write(String.format("%s,%s\n", fns.get(i), ms.get(i)));
-			}
-			writer.close();
-	        
-	    	double mean = ms.stream().reduce(0.0, (a, b) -> a + b) / ms.size();
-	    	double std = ms.stream().reduce(0.0, (a, b) -> a += Math.abs(b - mean)) / ms.size();
-	    	Logger.getAnonymousLogger().log(Level.INFO, String.format("%s Average processing time: %.4f ms (%.4f std.dev.)", pNumber, mean, std));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-    	this.fns.clear();
-    	this.ms.clear();
-    }
 	
 }
