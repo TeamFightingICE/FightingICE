@@ -231,7 +231,7 @@ public class GraphicManager {
 	 *            画像の左右の向き(右がtrue)
 	 */
 	public void drawImage(Image img, int x, int y, boolean direction) {
-		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction);
+		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, 0, 0);
 	}
 
 	/**
@@ -250,21 +250,21 @@ public class GraphicManager {
 	 * @param direction
 	 *            画像の左右の向き(右がtrue)
 	 */
-	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction) {
+	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty) {
 		ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
 		this.renderTaskList.add(task);
 		
-		this.drawImageinScreenData(img, x, y, sizeX, sizeY, direction);
+		this.drawImageinScreenData(img, x, y, sizeX, sizeY, direction, tx, ty);
 	}
 
-	public void drawImageinScreenData(Image img, int x, int y, int sizeX, int sizeY, boolean direction){
-		if(direction){
+	public void drawImageinScreenData(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty) {
+		if (direction) {
 			screenGraphic.drawImage(img.getBufferedImage(), x, y, sizeX, sizeY, null);
-		}else{
-			AffineTransform tx = AffineTransform.getScaleInstance(-1d, 1d);
-			tx.translate(-sizeX/2, 0);
-			AffineTransformOp flip = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			screenGraphic.drawImage(flip.filter(img.getBufferedImage(),null), x, y, sizeX, sizeY, null);
+		} else {
+			AffineTransform transform = AffineTransform.getScaleInstance(-1d, 1d);
+			transform.translate(tx, ty);
+			AffineTransformOp flip = new AffineTransformOp(transform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			screenGraphic.drawImage(flip.filter(img.getBufferedImage(), null), x, y, sizeX, sizeY, null);
 		}
 	}
 
