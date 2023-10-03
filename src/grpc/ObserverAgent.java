@@ -23,16 +23,8 @@ public class ObserverAgent {
 	private boolean cancelled;
 	private StreamObserver<SpectatorGameState> responseObserver;
 	
-	private GameData gameData;
-	private FrameData frameData;
-	private AudioData audioData;
-	private ScreenData screenData;
-	
 	public ObserverAgent() {
 		this.cancelled = true;
-		this.frameData = new FrameData();
-		this.audioData = new AudioData();
-		this.screenData = new ScreenData();
 	}
 	
 	public void register(SpectateRequest request, StreamObserver<SpectatorGameState> responseObserver) {
@@ -73,8 +65,6 @@ public class ObserverAgent {
 	}
 	
 	public void onInitialize(GameData gameData) {
-		this.gameData = gameData;
-		
 		if (this.isCancelled()) {
 			return;
 		}
@@ -87,10 +77,6 @@ public class ObserverAgent {
 	}
 	
 	public void onGameUpdate(FrameData frameData, AudioData audioData, ScreenData screenData) {
-		this.frameData = frameData;
-		this.screenData = screenData;
-		this.audioData = audioData;
-		
 		if (this.isCancelled()) {
 			return;
 		}
@@ -104,7 +90,7 @@ public class ObserverAgent {
 			}
 			
 			if (this.screenDataFlag) {
-				response.setScreenData(GrpcUtil.convertScreenData(screenData, 960, 640, false));
+				response.setScreenData(GrpcUtil.convertScreenData(screenData));
 			}
 			
 			if (this.audioDataFlag) {
@@ -126,8 +112,6 @@ public class ObserverAgent {
 				.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
   				.build();
 		this.onNext(response);
-		
-		this.frameData = new FrameData();
 	}
 	
 	public void onNext(SpectatorGameState state) {

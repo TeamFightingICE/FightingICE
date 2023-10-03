@@ -15,6 +15,7 @@ import protoc.MessageProto.GrpcHitArea;
 import protoc.MessageProto.GrpcKey;
 import protoc.MessageProto.GrpcRoundResult;
 import protoc.MessageProto.GrpcScreenData;
+import setting.GameSetting;
 import struct.AttackData;
 import struct.AudioData;
 import struct.CharacterData;
@@ -122,15 +123,7 @@ public class GrpcUtil {
   	}
   	
   	public static GrpcScreenData convertScreenData(ScreenData screenData) {
-  		if (screenData == null) {
-  			return GrpcScreenData.getDefaultInstance();
-  		}
-  		
-  		GrpcScreenData.Builder builder = GrpcScreenData.newBuilder();
-  		if (screenData.getDisplayBytes() != null) {
-  			builder.setDisplayBytes(ByteString.copyFrom(screenData.getCompressedDisplayBytes()));
-  		}
-  		return builder.build();
+  		return convertScreenData(screenData, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, false);
   	}
   	
   	public static GrpcScreenData convertScreenData(ScreenData screenData, int width, int height, boolean grayscale) {
