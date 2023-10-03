@@ -231,7 +231,7 @@ public class GraphicManager {
 	 *            画像の左右の向き(右がtrue)
 	 */
 	public void drawImage(Image img, int x, int y, boolean direction) {
-		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, 0, 0);
+		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, -img.getWidth(), 0);
 	}
 
 	/**

@@ -149,9 +149,7 @@ public class ResourceDrawer {
 				}
 				int positionY = area.getTop() - ((image.getHeight() - (area.getBottom() - area.getTop())) / 2);
 
-				GraphicManager.getInstance().drawImage(image, positionX, positionY,
-						image.getWidth(), image.getHeight(), attack.getSpeedX() >= 0,
-						-image.getWidth(), 0);
+				GraphicManager.getInstance().drawImage(image, positionX, positionY, attack.getSpeedX() >= 0);
 			}
 		}
 	}
@@ -333,8 +331,7 @@ public class ResourceDrawer {
 					if (hitEffect.getVariationX() == 0 && hitEffect.getVariationY() == 0) {
 						positionX += 30;
 					}
-					GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(), image.getHeight(),
-							i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT, -image.getWidth(), 0);
+					GraphicManager.getInstance().drawImage(image, positionX, positionY, i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT);
 				}
 			}
 		}
