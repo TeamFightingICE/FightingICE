@@ -79,7 +79,7 @@ public class Image {
 	public BufferedImage getBufferedImage() {
 		BufferedImage res = new BufferedImage(this.bimg.getWidth(), this.bimg.getHeight(), this.bimg.getType());
 		res.setData(bimg.getData());
-		return bimg;
+		return res;
 	}
 
 	/**
