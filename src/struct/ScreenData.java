@@ -1,41 +1,29 @@
 package struct;
 
-import static org.lwjgl.opengl.GL11.GL_RGB;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glReadPixels;
-
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
-import java.nio.ByteBuffer;
-
-import org.lwjgl.BufferUtils;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.GZIPOutputStream;
 
 import manager.GraphicManager;
-import setting.GameSetting;
 
 /**
  * The class dealing with the screen information such as the game screen's image
  * and the background color.
  */
 public class ScreenData {
-
-	/**
-	 * The pixel data of the screen are saved in the form of bytes.
-	 */
-	private byte[] displayBytes;
-
 	/**
 	 *
 	 */
 	private BufferedImage displayBufferedImage;
 	
 	public ScreenData() {
-		this.displayBytes = createDisplayBytes();
-		this.displayBufferedImage =  GraphicManager.getInstance().getScreenImage();
+		this.displayBufferedImage = GraphicManager.getInstance().getScreenImage();
 	}
 
 	/**
@@ -46,32 +34,11 @@ public class ScreenData {
 	 *            an instance of ScreenData class
 	 */
 	public ScreenData(ScreenData screenData) {
-		this.displayBytes = screenData.getDisplayBytes();
 		this.displayBufferedImage = screenData.getDisplayBufferedImage();
-	}
-
-	/**
-	 * Obtains RGB data of the screen in the form of ByteBuffer.<br>
-	 * Warning: If the window is disabled, will just return a black buffer.
-	 *
-	 * @return the RGB data of the screen in the form of ByteBuffer
-	 */
-	public ByteBuffer getDisplayByteBuffer() {
-		return ByteBuffer.wrap(displayBytes);
 	}
 
 	public BufferedImage getDisplayBufferedImage() {
 		return this.displayBufferedImage;
-	}
-
-	/**
-	 * Obtains RGB data of the screen in the form of byte[].<br>
-	 * Warning: If the window is disabled, will just return a black buffer.
-	 *
-	 * @return the RGB data of the screen in the form of byte[]
-	 */
-	public byte[] getDisplayBytes() {
-		return this.displayBytes;
 	}
 
 	/**
@@ -125,53 +92,24 @@ public class ScreenData {
 
 		return dst;
 	}
-
-	/**
-	 * Obtains RGB data of the screen in the form of ByteBuffer<br>
-	 * Warning: If the window is disabled, will just returns a black buffer.
-	 *
-	 * @return RGB data of the screen in the form of ByteBuffer
-	 */
-	private byte[] createDisplayBytes() {
-		// Allocate memory for the RGB data of the screen
-		ByteBuffer pixels = BufferUtils.createByteBuffer(3 * GameSetting.STAGE_WIDTH * GameSetting.STAGE_HEIGHT);
-		pixels.clear();
-
-		// Assign the RGB data of the screen to pixels, a ByteBuffer
-		// variable
-		glReadPixels(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-		pixels.rewind();
-		
-		byte[] buffer = new byte[pixels.remaining()];
-		pixels.get(buffer);
-
-		return buffer;
+	
+	public byte[] getCompressedDisplayByteBufferAsBytes(int newWidth, int newHeight, boolean grayScale) {
+		byte[] displayBytes = this.getDisplayByteBufferAsBytes(newWidth, newHeight, grayScale);
+		return this.compressByteData(displayBytes);
 	}
-
-//	private BufferedImage createDisplayBufferedImage(){
-//		int width = GameSetting.STAGE_WIDTH;
-//		int height = GameSetting.STAGE_HEIGHT;
-//		int bpp = 3;
-//		BufferedImage src = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-//
-//		for (int x = 0; x < width; x++) {
-//			for (int y = 0; y < height; y++) {
-//				int i = (x + width * y) * bpp;
-//				int r = this.displayByteBuffer.get(i) & 0xFF;
-//				int g = this.displayByteBuffer.get(i + 1) & 0xFF;
-//				int b = this.displayByteBuffer.get(i + 2) & 0xFF;
-//				src.setRGB(x, height - (y + 1), (0xFF << 24) | (r << 16) | (g << 8) | b);
-//			}
-//		}
-//		boolean result = false;
-//
-//		try {
-//		  result = ImageIO.write(src, "jpeg", new File("sample.jpeg"));
-//		} catch (Exception e) {
-//		  e.printStackTrace();
-//		  result = false;
-//		}
-//		return src;
-//	}
+	
+	private byte[] compressByteData(byte[] original) {
+		try {
+		    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		    try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
+		        gzipOutputStream.write(original);
+		    }
+		    
+		    byte[] compressedData = byteArrayOutputStream.toByteArray();
+		    return compressedData;
+		} catch (IOException e) {
+			return new byte[1];
+		}
+	}
 
 }

@@ -622,8 +622,6 @@ public class Character {
         }
     }
 
-
-
     /**
      * 攻撃がヒットしたときの処理を行う．
      *

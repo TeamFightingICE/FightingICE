@@ -24,16 +24,16 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 
 ### Java libraries in use ###
 - grpc: Containing libraries related to gRPC module
-	- grpc-api 1.52.1
-	- grpc-context 1.52.1
-	- grpc-core 1.52.1
-	- grpc-netty-shaded 1.52.1
-	- grpc-protobuf 1.52.1
-	- grpc-protobuf-lite 1.52.1
-	- grpc-stub 1.52.1
-	- protobuf-java 3.21.12
-	- protobuf-java-util 3.21.12
-	- protoc-gen-grpc-java 1.53.0 (use for generate gRPC code)
+	- grpc-api 1.58.0
+	- grpc-context 1.58.0
+	- grpc-core 1.58.0
+	- grpc-netty-shaded 1.58.0
+	- grpc-protobuf 1.58.0
+	- grpc-protobuf-lite 1.58.0
+	- grpc-stub 1.58.0
+	- protobuf-java 3.24.3
+	- protobuf-java-util 3.24.3
+	- protoc-gen-grpc-java 1.58.0 (use for generate gRPC code) [Download](https://mvnrepository.com/artifact/io.grpc/protoc-gen-grpc-java)
 - lwjgl: Containing libraries related to LWJGL module
 	- natives: Containing libraries related to LWJGL module native to many architectures.
 		- linux/amd64: for Linux
@@ -42,14 +42,14 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 		- macos/arm64: for macOS with Apple chip
 		- windows/amd64: for Windows
 		- windows/arm64: for Windows with ARM-architecture CPU
-	- lwjgl 3.3.1
-	- lwjgl-glfw 3.3.1
-	- lwjgl-openal 3.3.1
-	- lwjgl-opengl 3.3.1
-- annotations-api 6.0.53
+	- lwjgl 3.3.3
+	- lwjgl-glfw 3.3.3
+	- lwjgl-openal 3.3.3
+	- lwjgl-opengl 3.3.3
 - failureaccess 1.0.1
-- guava 31.1-jre
-- javax.json 1.0.4
+- guava 32.1.2-jre
+- jakarta.json-api 2.1.2
+- javax.annotation-api 1.3.2
 - lwjgl_util 2.9.3
 - perfmark-api 0.26.0
-- py4j 0.10.4
+- py4j 0.10.9.7

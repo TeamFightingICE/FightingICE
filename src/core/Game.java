@@ -239,7 +239,6 @@ public class Game extends GameManager {
         new File("log").mkdir();
         new File("log/replay").mkdir();
         new File("log/point").mkdir();
-        new File("log/grpc").mkdir();
     }
 
     @Override

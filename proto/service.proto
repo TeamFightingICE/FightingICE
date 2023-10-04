@@ -18,15 +18,19 @@ message RunGameRequest {
 }
 
 message SpectateRequest {
-	
+	int32 interval = 1;
+	bool frame_data_flag = 2;
+	bool screen_data_flag = 3;
+	bool audio_data_flag = 4;
 }
 
 message SpectatorGameState {
 	GrpcFlag state_flag = 1;
-	GrpcFrameData frame_data = 2;
-	GrpcScreenData screen_data = 3;
-	GrpcAudioData audio_data = 4;
-	GrpcRoundResult round_result = 5;
+	GrpcGameData game_data = 2;
+	GrpcFrameData frame_data = 3;
+	GrpcScreenData screen_data = 4;
+	GrpcAudioData audio_data = 5;
+	GrpcRoundResult round_result = 6;
 }
 
 message InitializeRequest {

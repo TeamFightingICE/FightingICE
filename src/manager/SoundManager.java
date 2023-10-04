@@ -1,6 +1,15 @@
 package manager;
 
-import static org.lwjgl.openal.AL10.*;
+import static org.lwjgl.openal.AL10.AL_ORIENTATION;
+import static org.lwjgl.openal.AL10.AL_POSITION;
+import static org.lwjgl.openal.AL10.AL_ROLLOFF_FACTOR;
+import static org.lwjgl.openal.AL10.AL_VELOCITY;
+import static org.lwjgl.openal.AL10.alBufferData;
+import static org.lwjgl.openal.AL10.alGenBuffers;
+import static org.lwjgl.openal.AL10.alGenSources;
+import static org.lwjgl.openal.AL10.alSource3f;
+import static org.lwjgl.openal.AL10.alSourcePlay;
+import static org.lwjgl.openal.AL10.alSourcef;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -17,6 +26,7 @@ import java.util.logging.Logger;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.WaveData;
+
 import render.audio.SoundRender;
 import setting.FlagSetting;
 import struct.AudioBuffer;
@@ -41,7 +51,7 @@ public class SoundManager {
      * 音溝㝮速度．
      */
     private float[] sourceVel;
-
+    
     /**
      * リスナー㝮佝置．
      */
@@ -71,6 +81,9 @@ public class SoundManager {
      * 音溝を格紝㝙るリスト．
      */
     private ArrayList<AudioSource> audioSources;
+    // BGM Source
+    private static final String[] INSTRUMENT_NAMES = { "string", "drum", "other" };
+    private HashMap<String, AudioSource> bgmSources;
     /**
      * Sound rendering devices.
      */
@@ -97,6 +110,7 @@ public class SoundManager {
         this.loadedFiles = new ArrayList<String>();
         this.audioBuffers = new ArrayList<>();
         this.audioSources = new ArrayList<>();
+        this.bgmSources = new HashMap<>();
 
         // 音溝㝨リスナー㝮デフォルトパラメータをセット
         this.sourcePos = new float[]{0.0F, 0.0F, 0.0F};
@@ -137,7 +151,7 @@ public class SoundManager {
         // OpenAL㝮デフォルトデポイス㝫接続㝙る
         // sound renderers
         this.soundRenderers = new ArrayList<>();
-        if (!FlagSetting.fastModeFlag && !FlagSetting.muteFlag && FlagSetting.enableWindow) {
+        if (!FlagSetting.muteFlag && FlagSetting.enableWindow) {
             this.soundRenderers.add(SoundRender.createDefaultRenderer());
         }
         virtualRenderer = SoundRender.createVirtualRenderer();
@@ -300,29 +314,32 @@ public class SoundManager {
             soundRenderers.get(i).stop(audioSource.getSourceIds()[i]);
         }
     }
-
-    /**
-     * 音声ファイルをクローズ㝙る．
-     */
-    public void close() {
-        if (!this.closeFlag) {
-            for (AudioSource source : this.audioSources) {
-                this.stop(source);
-                deleteSource(source);
-            }
-            for (AudioBuffer buffer : this.audioBuffers) {
-                deleteBuffer(buffer);
-            }
-            this.loadedFiles.clear();
-            this.audioBuffers.clear();
-            this.audioSources.clear();
-            this.closeRenderers();
-            this.closeFlag = true;
-        }
+    
+    public void stopAll() {
+    	for (AudioSource audioSource: getAudioSources())
+			stop(audioSource);
     }
 
     public AudioBuffer getBackGroundMusicBuffer() {
         return backGroundMusicBuffer;
+    }
+    
+    /**
+     * Set the gain of a source. For changing the volume of the source
+     * @param source
+     * @param val
+     */
+    public void setSourceGain(AudioSource source, float gain) {
+		for (int i = 0; i < soundRenderers.size(); i++) {
+	        int sourceId = source.getSourceIds()[i];
+	        soundRenderers.get(i).setSourceGain(sourceId, Math.min(1.0f, Math.max(0.0f, gain)));
+	    }
+    }
+    
+    public void setBGMAudioGains(float[] audioGains) {
+    	for (int i = 0; i < INSTRUMENT_NAMES.length; i++) {
+    		setSourceGain(getBGMSource(INSTRUMENT_NAMES[i]), audioGains[i]);
+    	}
     }
 
     /**
@@ -401,5 +418,60 @@ public class SoundManager {
      */
     public ArrayList<AudioSource> getAudioSources() {
         return audioSources;
+    }
+    
+    public void initializeBGM() {
+    	for (int i = 0; i < INSTRUMENT_NAMES.length; i++) {
+    		this.bgmSources.put(INSTRUMENT_NAMES[i], SoundManager.getInstance().createAudioSource());
+    	}
+    }
+    
+    public void closeBGM() {
+    	this.bgmSources.values().forEach(x -> x.close());
+    	this.bgmSources.clear();
+    }
+    
+    public AudioSource getBGMSource(String instrument) {
+    	return this.bgmSources.get(instrument);
+    }
+
+    private void setSourceGainAndPlay(String instrument, String soundFile, float gain) {
+        AudioSource source = getBGMSource(instrument);
+        setSourceGain(source, gain);
+        play2(source, getSoundBuffers().get(soundFile), 350, 0, true);
+    }
+    
+    public void playBGM() {
+        setSourceGainAndPlay("string", "Strings.wav", 0.852f);
+        setSourceGainAndPlay("drum", "Drums.wav", 0.432f);
+        setSourceGainAndPlay("other", "Others.wav", 0.853f);
+    }
+    
+    public void closeSources() {
+    	for (AudioSource source: getAudioSources()) {
+    		source.close();
+    	}
+    }
+
+    /**
+     * 音声ファイルをクローズ㝙る．
+     */
+    public void close() {
+        if (!this.closeFlag) {
+            for (AudioSource source : this.audioSources) {
+                this.stop(source);
+                deleteSource(source);
+            }
+            for (AudioBuffer buffer : this.audioBuffers) {
+                deleteBuffer(buffer);
+            }
+            this.loadedFiles.clear();
+            this.audioBuffers.clear();
+            this.audioSources.clear();
+            this.bgmSources.clear();
+            this.closeRenderers();
+            this.closeSources();
+            this.closeFlag = true;
+        }
     }
 }

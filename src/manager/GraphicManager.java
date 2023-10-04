@@ -231,9 +231,7 @@ public class GraphicManager {
 	 *            画像の左右の向き(右がtrue)
 	 */
 	public void drawImage(Image img, int x, int y, boolean direction) {
-		ImageTask task = new ImageTask(img, x, y, direction);
-		this.renderTaskList.add(task);
-		screenGraphic.drawImage(img.getBufferedImage(), x, y, null);
+		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, -img.getWidth(), 0);
 	}
 
 	/**
@@ -252,25 +250,22 @@ public class GraphicManager {
 	 * @param direction
 	 *            画像の左右の向き(右がtrue)
 	 */
-	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction) {
+	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty) {
 		ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
 		this.renderTaskList.add(task);
+		
+		this.drawImageinScreenData(img, x, y, sizeX, sizeY, direction, tx, ty);
 	}
 
-	public void drawImageinScreenData(Image img, int x, int y, int sizeX, int sizeY, boolean direction){
-		if(direction){
+	public void drawImageinScreenData(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty) {
+		if (direction) {
 			screenGraphic.drawImage(img.getBufferedImage(), x, y, sizeX, sizeY, null);
-		}else{
-			AffineTransform tx = AffineTransform.getScaleInstance(-1d, 1d);
-			tx.translate(-sizeX/2, 0);
-			AffineTransformOp flip = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			screenGraphic.drawImage(flip.filter(img.getBufferedImage(),null), x, y, sizeX, sizeY, null);
+		} else {
+			AffineTransform transform = AffineTransform.getScaleInstance(-1d, 1d);
+			transform.translate(tx, ty);
+			AffineTransformOp flip = new AffineTransformOp(transform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			screenGraphic.drawImage(flip.filter(img.getBufferedImage(), null), x, y, sizeX, sizeY, null);
 		}
-	}
-
-	public void drawLineQuadinScreenData(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha){
-		screenGraphic.setColor(new Color(red,green,blue));
-		screenGraphic.drawRect(x, y, sizeX, sizeY);
 	}
 
 	/**
@@ -286,6 +281,19 @@ public class GraphicManager {
 	public void drawString(String string, int x, int y) {
 		StringTask task = new StringTask(letterImage, string, x, y);
 		this.renderTaskList.add(task);
+		
+		this.drawStringInScreenData(string, x, y);
+	}
+	
+	public void drawStringInScreenData(String string, int x, int y) {
+		int nowPositionX = x;
+
+		for (int i = 0; i < string.length(); i++) {
+			Image img = letterImage.getLetterImage(string.charAt(i));
+			screenGraphic.drawImage(img.getBufferedImage(), nowPositionX, y, img.getWidth(), img.getHeight(), null);
+
+			nowPositionX += img.getBufferedImage().getWidth();
+		}
 	}
 
 	/**
@@ -312,6 +320,24 @@ public class GraphicManager {
 	public void drawQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
 		QuadTask task = new QuadTask(QuadTask.FILLED_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 		this.renderTaskList.add(task);
+		
+		this.drawQuadInScreenData(x, y, sizeX, sizeY, red, green, blue, alpha);
+	}
+	
+	public void drawQuadInScreenData(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
+		screenGraphic.setColor(new Color(red, green, blue));
+		
+		if (sizeX < 0) {
+			x += sizeX;
+			sizeX *= -1;
+		}
+		
+		if (sizeY < 0) {
+			y += sizeY;
+			sizeY *= -1;
+		}
+		
+		screenGraphic.fillRect(x, y, sizeX, sizeY);
 	}
 
 	/**
@@ -338,6 +364,13 @@ public class GraphicManager {
 	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
 		QuadTask task = new QuadTask(QuadTask.LINE_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 		this.renderTaskList.add(task);
+		
+		this.drawLineQuadinScreenData(x, y, sizeX, sizeY, red, green, blue, alpha);
+	}
+
+	public void drawLineQuadinScreenData(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha){
+		screenGraphic.setColor(new Color(red, green, blue));
+		screenGraphic.drawRect(x, y, sizeX, sizeY);
 	}
 
 	/**
@@ -353,7 +386,7 @@ public class GraphicManager {
 	public void resetScreen(){
 		screen = new BufferedImage(screen.getWidth(), screen.getHeight(), BufferedImage.TYPE_INT_RGB);
 		screenGraphic = screen.createGraphics();
-		screenGraphic.setColor(new Color (128,128,128));
+		screenGraphic.setColor(new Color (128, 128, 128));
 	}
 
 	public void disposeScreenGraphic(){

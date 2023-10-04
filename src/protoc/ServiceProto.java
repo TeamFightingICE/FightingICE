@@ -98,11 +98,6 @@ public final class ServiceProto {
       return new RunGameRequest();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return protoc.ServiceProto.internal_static_service_RunGameRequest_descriptor;
@@ -117,7 +112,8 @@ public final class ServiceProto {
     }
 
     public static final int CHARACTER_1_FIELD_NUMBER = 1;
-    private volatile java.lang.Object character1_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object character1_ = "";
     /**
      * <code>string character_1 = 1;</code>
      * @return The character1.
@@ -155,7 +151,8 @@ public final class ServiceProto {
     }
 
     public static final int CHARACTER_2_FIELD_NUMBER = 2;
-    private volatile java.lang.Object character2_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object character2_ = "";
     /**
      * <code>string character_2 = 2;</code>
      * @return The character2.
@@ -193,7 +190,8 @@ public final class ServiceProto {
     }
 
     public static final int PLAYER_1_FIELD_NUMBER = 3;
-    private volatile java.lang.Object player1_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object player1_ = "";
     /**
      * <code>string player_1 = 3;</code>
      * @return The player1.
@@ -231,7 +229,8 @@ public final class ServiceProto {
     }
 
     public static final int PLAYER_2_FIELD_NUMBER = 4;
-    private volatile java.lang.Object player2_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object player2_ = "";
     /**
      * <code>string player_2 = 4;</code>
      * @return The player2.
@@ -269,7 +268,7 @@ public final class ServiceProto {
     }
 
     public static final int GAME_NUMBER_FIELD_NUMBER = 5;
-    private int gameNumber_;
+    private int gameNumber_ = 0;
     /**
      * <code>int32 game_number = 5;</code>
      * @return The gameNumber.
@@ -428,11 +427,13 @@ public final class ServiceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static protoc.ServiceProto.RunGameRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static protoc.ServiceProto.RunGameRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -507,16 +508,12 @@ public final class ServiceProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         character1_ = "";
-
         character2_ = "";
-
         player1_ = "";
-
         player2_ = "";
-
         gameNumber_ = 0;
-
         return this;
       }
 
@@ -543,13 +540,28 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.RunGameRequest buildPartial() {
         protoc.ServiceProto.RunGameRequest result = new protoc.ServiceProto.RunGameRequest(this);
-        result.character1_ = character1_;
-        result.character2_ = character2_;
-        result.player1_ = player1_;
-        result.player2_ = player2_;
-        result.gameNumber_ = gameNumber_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.RunGameRequest result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.character1_ = character1_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.character2_ = character2_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.player1_ = player1_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.player2_ = player2_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.gameNumber_ = gameNumber_;
+        }
       }
 
       @java.lang.Override
@@ -598,18 +610,22 @@ public final class ServiceProto {
         if (other == protoc.ServiceProto.RunGameRequest.getDefaultInstance()) return this;
         if (!other.getCharacter1().isEmpty()) {
           character1_ = other.character1_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (!other.getCharacter2().isEmpty()) {
           character2_ = other.character2_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (!other.getPlayer1().isEmpty()) {
           player1_ = other.player1_;
+          bitField0_ |= 0x00000004;
           onChanged();
         }
         if (!other.getPlayer2().isEmpty()) {
           player2_ = other.player2_;
+          bitField0_ |= 0x00000008;
           onChanged();
         }
         if (other.getGameNumber() != 0) {
@@ -643,27 +659,27 @@ public final class ServiceProto {
                 break;
               case 10: {
                 character1_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
                 character2_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 26: {
                 player1_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 34: {
                 player2_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 34
               case 40: {
                 gameNumber_ = input.readInt32();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 40
               default: {
@@ -681,6 +697,7 @@ public final class ServiceProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object character1_ = "";
       /**
@@ -723,11 +740,9 @@ public final class ServiceProto {
        */
       public Builder setCharacter1(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         character1_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -736,8 +751,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearCharacter1() {
-        
         character1_ = getDefaultInstance().getCharacter1();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -748,12 +763,10 @@ public final class ServiceProto {
        */
       public Builder setCharacter1Bytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         character1_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -799,11 +812,9 @@ public final class ServiceProto {
        */
       public Builder setCharacter2(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         character2_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -812,8 +823,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearCharacter2() {
-        
         character2_ = getDefaultInstance().getCharacter2();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -824,12 +835,10 @@ public final class ServiceProto {
        */
       public Builder setCharacter2Bytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         character2_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -875,11 +884,9 @@ public final class ServiceProto {
        */
       public Builder setPlayer1(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         player1_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -888,8 +895,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearPlayer1() {
-        
         player1_ = getDefaultInstance().getPlayer1();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -900,12 +907,10 @@ public final class ServiceProto {
        */
       public Builder setPlayer1Bytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         player1_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -951,11 +956,9 @@ public final class ServiceProto {
        */
       public Builder setPlayer2(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         player2_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -964,8 +967,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearPlayer2() {
-        
         player2_ = getDefaultInstance().getPlayer2();
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
@@ -976,12 +979,10 @@ public final class ServiceProto {
        */
       public Builder setPlayer2Bytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         player2_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1001,8 +1002,9 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder setGameNumber(int value) {
-        
+
         gameNumber_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1011,7 +1013,7 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearGameNumber() {
-        
+        bitField0_ = (bitField0_ & ~0x00000010);
         gameNumber_ = 0;
         onChanged();
         return this;
@@ -1083,6 +1085,30 @@ public final class ServiceProto {
   public interface SpectateRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:service.SpectateRequest)
       com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 interval = 1;</code>
+     * @return The interval.
+     */
+    int getInterval();
+
+    /**
+     * <code>bool frame_data_flag = 2;</code>
+     * @return The frameDataFlag.
+     */
+    boolean getFrameDataFlag();
+
+    /**
+     * <code>bool screen_data_flag = 3;</code>
+     * @return The screenDataFlag.
+     */
+    boolean getScreenDataFlag();
+
+    /**
+     * <code>bool audio_data_flag = 4;</code>
+     * @return The audioDataFlag.
+     */
+    boolean getAudioDataFlag();
   }
   /**
    * Protobuf type {@code service.SpectateRequest}
@@ -1106,11 +1132,6 @@ public final class ServiceProto {
       return new SpectateRequest();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return protoc.ServiceProto.internal_static_service_SpectateRequest_descriptor;
@@ -1122,6 +1143,50 @@ public final class ServiceProto {
       return protoc.ServiceProto.internal_static_service_SpectateRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               protoc.ServiceProto.SpectateRequest.class, protoc.ServiceProto.SpectateRequest.Builder.class);
+    }
+
+    public static final int INTERVAL_FIELD_NUMBER = 1;
+    private int interval_ = 0;
+    /**
+     * <code>int32 interval = 1;</code>
+     * @return The interval.
+     */
+    @java.lang.Override
+    public int getInterval() {
+      return interval_;
+    }
+
+    public static final int FRAME_DATA_FLAG_FIELD_NUMBER = 2;
+    private boolean frameDataFlag_ = false;
+    /**
+     * <code>bool frame_data_flag = 2;</code>
+     * @return The frameDataFlag.
+     */
+    @java.lang.Override
+    public boolean getFrameDataFlag() {
+      return frameDataFlag_;
+    }
+
+    public static final int SCREEN_DATA_FLAG_FIELD_NUMBER = 3;
+    private boolean screenDataFlag_ = false;
+    /**
+     * <code>bool screen_data_flag = 3;</code>
+     * @return The screenDataFlag.
+     */
+    @java.lang.Override
+    public boolean getScreenDataFlag() {
+      return screenDataFlag_;
+    }
+
+    public static final int AUDIO_DATA_FLAG_FIELD_NUMBER = 4;
+    private boolean audioDataFlag_ = false;
+    /**
+     * <code>bool audio_data_flag = 4;</code>
+     * @return The audioDataFlag.
+     */
+    @java.lang.Override
+    public boolean getAudioDataFlag() {
+      return audioDataFlag_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1138,6 +1203,18 @@ public final class ServiceProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (interval_ != 0) {
+        output.writeInt32(1, interval_);
+      }
+      if (frameDataFlag_ != false) {
+        output.writeBool(2, frameDataFlag_);
+      }
+      if (screenDataFlag_ != false) {
+        output.writeBool(3, screenDataFlag_);
+      }
+      if (audioDataFlag_ != false) {
+        output.writeBool(4, audioDataFlag_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1147,6 +1224,22 @@ public final class ServiceProto {
       if (size != -1) return size;
 
       size = 0;
+      if (interval_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, interval_);
+      }
+      if (frameDataFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, frameDataFlag_);
+      }
+      if (screenDataFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, screenDataFlag_);
+      }
+      if (audioDataFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, audioDataFlag_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1162,6 +1255,14 @@ public final class ServiceProto {
       }
       protoc.ServiceProto.SpectateRequest other = (protoc.ServiceProto.SpectateRequest) obj;
 
+      if (getInterval()
+          != other.getInterval()) return false;
+      if (getFrameDataFlag()
+          != other.getFrameDataFlag()) return false;
+      if (getScreenDataFlag()
+          != other.getScreenDataFlag()) return false;
+      if (getAudioDataFlag()
+          != other.getAudioDataFlag()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1173,6 +1274,17 @@ public final class ServiceProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + INTERVAL_FIELD_NUMBER;
+      hash = (53 * hash) + getInterval();
+      hash = (37 * hash) + FRAME_DATA_FLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getFrameDataFlag());
+      hash = (37 * hash) + SCREEN_DATA_FLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getScreenDataFlag());
+      hash = (37 * hash) + AUDIO_DATA_FLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAudioDataFlag());
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1222,11 +1334,13 @@ public final class ServiceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static protoc.ServiceProto.SpectateRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static protoc.ServiceProto.SpectateRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1301,6 +1415,11 @@ public final class ServiceProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
+        interval_ = 0;
+        frameDataFlag_ = false;
+        screenDataFlag_ = false;
+        audioDataFlag_ = false;
         return this;
       }
 
@@ -1327,8 +1446,25 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.SpectateRequest buildPartial() {
         protoc.ServiceProto.SpectateRequest result = new protoc.ServiceProto.SpectateRequest(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.SpectateRequest result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.interval_ = interval_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.frameDataFlag_ = frameDataFlag_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.screenDataFlag_ = screenDataFlag_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.audioDataFlag_ = audioDataFlag_;
+        }
       }
 
       @java.lang.Override
@@ -1375,6 +1511,18 @@ public final class ServiceProto {
 
       public Builder mergeFrom(protoc.ServiceProto.SpectateRequest other) {
         if (other == protoc.ServiceProto.SpectateRequest.getDefaultInstance()) return this;
+        if (other.getInterval() != 0) {
+          setInterval(other.getInterval());
+        }
+        if (other.getFrameDataFlag() != false) {
+          setFrameDataFlag(other.getFrameDataFlag());
+        }
+        if (other.getScreenDataFlag() != false) {
+          setScreenDataFlag(other.getScreenDataFlag());
+        }
+        if (other.getAudioDataFlag() != false) {
+          setAudioDataFlag(other.getAudioDataFlag());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -1401,6 +1549,26 @@ public final class ServiceProto {
               case 0:
                 done = true;
                 break;
+              case 8: {
+                interval_ = input.readInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                frameDataFlag_ = input.readBool();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                screenDataFlag_ = input.readBool();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                audioDataFlag_ = input.readBool();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1414,6 +1582,135 @@ public final class ServiceProto {
         } finally {
           onChanged();
         } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int interval_ ;
+      /**
+       * <code>int32 interval = 1;</code>
+       * @return The interval.
+       */
+      @java.lang.Override
+      public int getInterval() {
+        return interval_;
+      }
+      /**
+       * <code>int32 interval = 1;</code>
+       * @param value The interval to set.
+       * @return This builder for chaining.
+       */
+      public Builder setInterval(int value) {
+
+        interval_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 interval = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearInterval() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        interval_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean frameDataFlag_ ;
+      /**
+       * <code>bool frame_data_flag = 2;</code>
+       * @return The frameDataFlag.
+       */
+      @java.lang.Override
+      public boolean getFrameDataFlag() {
+        return frameDataFlag_;
+      }
+      /**
+       * <code>bool frame_data_flag = 2;</code>
+       * @param value The frameDataFlag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFrameDataFlag(boolean value) {
+
+        frameDataFlag_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool frame_data_flag = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFrameDataFlag() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        frameDataFlag_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean screenDataFlag_ ;
+      /**
+       * <code>bool screen_data_flag = 3;</code>
+       * @return The screenDataFlag.
+       */
+      @java.lang.Override
+      public boolean getScreenDataFlag() {
+        return screenDataFlag_;
+      }
+      /**
+       * <code>bool screen_data_flag = 3;</code>
+       * @param value The screenDataFlag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setScreenDataFlag(boolean value) {
+
+        screenDataFlag_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool screen_data_flag = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearScreenDataFlag() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        screenDataFlag_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean audioDataFlag_ ;
+      /**
+       * <code>bool audio_data_flag = 4;</code>
+       * @return The audioDataFlag.
+       */
+      @java.lang.Override
+      public boolean getAudioDataFlag() {
+        return audioDataFlag_;
+      }
+      /**
+       * <code>bool audio_data_flag = 4;</code>
+       * @param value The audioDataFlag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAudioDataFlag(boolean value) {
+
+        audioDataFlag_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool audio_data_flag = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAudioDataFlag() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        audioDataFlag_ = false;
+        onChanged();
         return this;
       }
       @java.lang.Override
@@ -1496,62 +1793,77 @@ public final class ServiceProto {
     protoc.EnumProto.GrpcFlag getStateFlag();
 
     /**
-     * <code>.service.GrpcFrameData frame_data = 2;</code>
+     * <code>.service.GrpcGameData game_data = 2;</code>
+     * @return Whether the gameData field is set.
+     */
+    boolean hasGameData();
+    /**
+     * <code>.service.GrpcGameData game_data = 2;</code>
+     * @return The gameData.
+     */
+    protoc.MessageProto.GrpcGameData getGameData();
+    /**
+     * <code>.service.GrpcGameData game_data = 2;</code>
+     */
+    protoc.MessageProto.GrpcGameDataOrBuilder getGameDataOrBuilder();
+
+    /**
+     * <code>.service.GrpcFrameData frame_data = 3;</code>
      * @return Whether the frameData field is set.
      */
     boolean hasFrameData();
     /**
-     * <code>.service.GrpcFrameData frame_data = 2;</code>
+     * <code>.service.GrpcFrameData frame_data = 3;</code>
      * @return The frameData.
      */
     protoc.MessageProto.GrpcFrameData getFrameData();
     /**
-     * <code>.service.GrpcFrameData frame_data = 2;</code>
+     * <code>.service.GrpcFrameData frame_data = 3;</code>
      */
     protoc.MessageProto.GrpcFrameDataOrBuilder getFrameDataOrBuilder();
 
     /**
-     * <code>.service.GrpcScreenData screen_data = 3;</code>
+     * <code>.service.GrpcScreenData screen_data = 4;</code>
      * @return Whether the screenData field is set.
      */
     boolean hasScreenData();
     /**
-     * <code>.service.GrpcScreenData screen_data = 3;</code>
+     * <code>.service.GrpcScreenData screen_data = 4;</code>
      * @return The screenData.
      */
     protoc.MessageProto.GrpcScreenData getScreenData();
     /**
-     * <code>.service.GrpcScreenData screen_data = 3;</code>
+     * <code>.service.GrpcScreenData screen_data = 4;</code>
      */
     protoc.MessageProto.GrpcScreenDataOrBuilder getScreenDataOrBuilder();
 
     /**
-     * <code>.service.GrpcAudioData audio_data = 4;</code>
+     * <code>.service.GrpcAudioData audio_data = 5;</code>
      * @return Whether the audioData field is set.
      */
     boolean hasAudioData();
     /**
-     * <code>.service.GrpcAudioData audio_data = 4;</code>
+     * <code>.service.GrpcAudioData audio_data = 5;</code>
      * @return The audioData.
      */
     protoc.MessageProto.GrpcAudioData getAudioData();
     /**
-     * <code>.service.GrpcAudioData audio_data = 4;</code>
+     * <code>.service.GrpcAudioData audio_data = 5;</code>
      */
     protoc.MessageProto.GrpcAudioDataOrBuilder getAudioDataOrBuilder();
 
     /**
-     * <code>.service.GrpcRoundResult round_result = 5;</code>
+     * <code>.service.GrpcRoundResult round_result = 6;</code>
      * @return Whether the roundResult field is set.
      */
     boolean hasRoundResult();
     /**
-     * <code>.service.GrpcRoundResult round_result = 5;</code>
+     * <code>.service.GrpcRoundResult round_result = 6;</code>
      * @return The roundResult.
      */
     protoc.MessageProto.GrpcRoundResult getRoundResult();
     /**
-     * <code>.service.GrpcRoundResult round_result = 5;</code>
+     * <code>.service.GrpcRoundResult round_result = 6;</code>
      */
     protoc.MessageProto.GrpcRoundResultOrBuilder getRoundResultOrBuilder();
   }
@@ -1578,11 +1890,6 @@ public final class ServiceProto {
       return new SpectatorGameState();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return protoc.ServiceProto.internal_static_service_SpectatorGameState_descriptor;
@@ -1596,8 +1903,9 @@ public final class ServiceProto {
               protoc.ServiceProto.SpectatorGameState.class, protoc.ServiceProto.SpectatorGameState.Builder.class);
     }
 
+    private int bitField0_;
     public static final int STATE_FLAG_FIELD_NUMBER = 1;
-    private int stateFlag_;
+    private int stateFlag_ = 0;
     /**
      * <code>.service.GrpcFlag state_flag = 1;</code>
      * @return The enum numeric value on the wire for stateFlag.
@@ -1610,23 +1918,48 @@ public final class ServiceProto {
      * @return The stateFlag.
      */
     @java.lang.Override public protoc.EnumProto.GrpcFlag getStateFlag() {
-      @SuppressWarnings("deprecation")
-      protoc.EnumProto.GrpcFlag result = protoc.EnumProto.GrpcFlag.valueOf(stateFlag_);
+      protoc.EnumProto.GrpcFlag result = protoc.EnumProto.GrpcFlag.forNumber(stateFlag_);
       return result == null ? protoc.EnumProto.GrpcFlag.UNRECOGNIZED : result;
     }
 
-    public static final int FRAME_DATA_FIELD_NUMBER = 2;
+    public static final int GAME_DATA_FIELD_NUMBER = 2;
+    private protoc.MessageProto.GrpcGameData gameData_;
+    /**
+     * <code>.service.GrpcGameData game_data = 2;</code>
+     * @return Whether the gameData field is set.
+     */
+    @java.lang.Override
+    public boolean hasGameData() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>.service.GrpcGameData game_data = 2;</code>
+     * @return The gameData.
+     */
+    @java.lang.Override
+    public protoc.MessageProto.GrpcGameData getGameData() {
+      return gameData_ == null ? protoc.MessageProto.GrpcGameData.getDefaultInstance() : gameData_;
+    }
+    /**
+     * <code>.service.GrpcGameData game_data = 2;</code>
+     */
+    @java.lang.Override
+    public protoc.MessageProto.GrpcGameDataOrBuilder getGameDataOrBuilder() {
+      return gameData_ == null ? protoc.MessageProto.GrpcGameData.getDefaultInstance() : gameData_;
+    }
+
+    public static final int FRAME_DATA_FIELD_NUMBER = 3;
     private protoc.MessageProto.GrpcFrameData frameData_;
     /**
-     * <code>.service.GrpcFrameData frame_data = 2;</code>
+     * <code>.service.GrpcFrameData frame_data = 3;</code>
      * @return Whether the frameData field is set.
      */
     @java.lang.Override
     public boolean hasFrameData() {
-      return frameData_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>.service.GrpcFrameData frame_data = 2;</code>
+     * <code>.service.GrpcFrameData frame_data = 3;</code>
      * @return The frameData.
      */
     @java.lang.Override
@@ -1634,25 +1967,25 @@ public final class ServiceProto {
       return frameData_ == null ? protoc.MessageProto.GrpcFrameData.getDefaultInstance() : frameData_;
     }
     /**
-     * <code>.service.GrpcFrameData frame_data = 2;</code>
+     * <code>.service.GrpcFrameData frame_data = 3;</code>
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcFrameDataOrBuilder getFrameDataOrBuilder() {
-      return getFrameData();
+      return frameData_ == null ? protoc.MessageProto.GrpcFrameData.getDefaultInstance() : frameData_;
     }
 
-    public static final int SCREEN_DATA_FIELD_NUMBER = 3;
+    public static final int SCREEN_DATA_FIELD_NUMBER = 4;
     private protoc.MessageProto.GrpcScreenData screenData_;
     /**
-     * <code>.service.GrpcScreenData screen_data = 3;</code>
+     * <code>.service.GrpcScreenData screen_data = 4;</code>
      * @return Whether the screenData field is set.
      */
     @java.lang.Override
     public boolean hasScreenData() {
-      return screenData_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>.service.GrpcScreenData screen_data = 3;</code>
+     * <code>.service.GrpcScreenData screen_data = 4;</code>
      * @return The screenData.
      */
     @java.lang.Override
@@ -1660,25 +1993,25 @@ public final class ServiceProto {
       return screenData_ == null ? protoc.MessageProto.GrpcScreenData.getDefaultInstance() : screenData_;
     }
     /**
-     * <code>.service.GrpcScreenData screen_data = 3;</code>
+     * <code>.service.GrpcScreenData screen_data = 4;</code>
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcScreenDataOrBuilder getScreenDataOrBuilder() {
-      return getScreenData();
+      return screenData_ == null ? protoc.MessageProto.GrpcScreenData.getDefaultInstance() : screenData_;
     }
 
-    public static final int AUDIO_DATA_FIELD_NUMBER = 4;
+    public static final int AUDIO_DATA_FIELD_NUMBER = 5;
     private protoc.MessageProto.GrpcAudioData audioData_;
     /**
-     * <code>.service.GrpcAudioData audio_data = 4;</code>
+     * <code>.service.GrpcAudioData audio_data = 5;</code>
      * @return Whether the audioData field is set.
      */
     @java.lang.Override
     public boolean hasAudioData() {
-      return audioData_ != null;
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>.service.GrpcAudioData audio_data = 4;</code>
+     * <code>.service.GrpcAudioData audio_data = 5;</code>
      * @return The audioData.
      */
     @java.lang.Override
@@ -1686,25 +2019,25 @@ public final class ServiceProto {
       return audioData_ == null ? protoc.MessageProto.GrpcAudioData.getDefaultInstance() : audioData_;
     }
     /**
-     * <code>.service.GrpcAudioData audio_data = 4;</code>
+     * <code>.service.GrpcAudioData audio_data = 5;</code>
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcAudioDataOrBuilder getAudioDataOrBuilder() {
-      return getAudioData();
+      return audioData_ == null ? protoc.MessageProto.GrpcAudioData.getDefaultInstance() : audioData_;
     }
 
-    public static final int ROUND_RESULT_FIELD_NUMBER = 5;
+    public static final int ROUND_RESULT_FIELD_NUMBER = 6;
     private protoc.MessageProto.GrpcRoundResult roundResult_;
     /**
-     * <code>.service.GrpcRoundResult round_result = 5;</code>
+     * <code>.service.GrpcRoundResult round_result = 6;</code>
      * @return Whether the roundResult field is set.
      */
     @java.lang.Override
     public boolean hasRoundResult() {
-      return roundResult_ != null;
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>.service.GrpcRoundResult round_result = 5;</code>
+     * <code>.service.GrpcRoundResult round_result = 6;</code>
      * @return The roundResult.
      */
     @java.lang.Override
@@ -1712,11 +2045,11 @@ public final class ServiceProto {
       return roundResult_ == null ? protoc.MessageProto.GrpcRoundResult.getDefaultInstance() : roundResult_;
     }
     /**
-     * <code>.service.GrpcRoundResult round_result = 5;</code>
+     * <code>.service.GrpcRoundResult round_result = 6;</code>
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcRoundResultOrBuilder getRoundResultOrBuilder() {
-      return getRoundResult();
+      return roundResult_ == null ? protoc.MessageProto.GrpcRoundResult.getDefaultInstance() : roundResult_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1736,17 +2069,20 @@ public final class ServiceProto {
       if (stateFlag_ != protoc.EnumProto.GrpcFlag.EMPTY.getNumber()) {
         output.writeEnum(1, stateFlag_);
       }
-      if (frameData_ != null) {
-        output.writeMessage(2, getFrameData());
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeMessage(2, getGameData());
       }
-      if (screenData_ != null) {
-        output.writeMessage(3, getScreenData());
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeMessage(3, getFrameData());
       }
-      if (audioData_ != null) {
-        output.writeMessage(4, getAudioData());
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeMessage(4, getScreenData());
       }
-      if (roundResult_ != null) {
-        output.writeMessage(5, getRoundResult());
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeMessage(5, getAudioData());
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeMessage(6, getRoundResult());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1761,21 +2097,25 @@ public final class ServiceProto {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, stateFlag_);
       }
-      if (frameData_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getFrameData());
+          .computeMessageSize(2, getGameData());
       }
-      if (screenData_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getScreenData());
+          .computeMessageSize(3, getFrameData());
       }
-      if (audioData_ != null) {
+      if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getAudioData());
+          .computeMessageSize(4, getScreenData());
       }
-      if (roundResult_ != null) {
+      if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getRoundResult());
+          .computeMessageSize(5, getAudioData());
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, getRoundResult());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -1793,6 +2133,11 @@ public final class ServiceProto {
       protoc.ServiceProto.SpectatorGameState other = (protoc.ServiceProto.SpectatorGameState) obj;
 
       if (stateFlag_ != other.stateFlag_) return false;
+      if (hasGameData() != other.hasGameData()) return false;
+      if (hasGameData()) {
+        if (!getGameData()
+            .equals(other.getGameData())) return false;
+      }
       if (hasFrameData() != other.hasFrameData()) return false;
       if (hasFrameData()) {
         if (!getFrameData()
@@ -1826,6 +2171,10 @@ public final class ServiceProto {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + STATE_FLAG_FIELD_NUMBER;
       hash = (53 * hash) + stateFlag_;
+      if (hasGameData()) {
+        hash = (37 * hash) + GAME_DATA_FIELD_NUMBER;
+        hash = (53 * hash) + getGameData().hashCode();
+      }
       if (hasFrameData()) {
         hash = (37 * hash) + FRAME_DATA_FIELD_NUMBER;
         hash = (53 * hash) + getFrameData().hashCode();
@@ -1891,11 +2240,13 @@ public final class ServiceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static protoc.ServiceProto.SpectatorGameState parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static protoc.ServiceProto.SpectatorGameState parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1959,41 +2310,52 @@ public final class ServiceProto {
 
       // Construct using protoc.ServiceProto.SpectatorGameState.newBuilder()
       private Builder() {
-
+        maybeForceBuilderInitialization();
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getGameDataFieldBuilder();
+          getFrameDataFieldBuilder();
+          getScreenDataFieldBuilder();
+          getAudioDataFieldBuilder();
+          getRoundResultFieldBuilder();
+        }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         stateFlag_ = 0;
-
-        if (frameDataBuilder_ == null) {
-          frameData_ = null;
-        } else {
-          frameData_ = null;
+        gameData_ = null;
+        if (gameDataBuilder_ != null) {
+          gameDataBuilder_.dispose();
+          gameDataBuilder_ = null;
+        }
+        frameData_ = null;
+        if (frameDataBuilder_ != null) {
+          frameDataBuilder_.dispose();
           frameDataBuilder_ = null;
         }
-        if (screenDataBuilder_ == null) {
-          screenData_ = null;
-        } else {
-          screenData_ = null;
+        screenData_ = null;
+        if (screenDataBuilder_ != null) {
+          screenDataBuilder_.dispose();
           screenDataBuilder_ = null;
         }
-        if (audioDataBuilder_ == null) {
-          audioData_ = null;
-        } else {
-          audioData_ = null;
+        audioData_ = null;
+        if (audioDataBuilder_ != null) {
+          audioDataBuilder_.dispose();
           audioDataBuilder_ = null;
         }
-        if (roundResultBuilder_ == null) {
-          roundResult_ = null;
-        } else {
-          roundResult_ = null;
+        roundResult_ = null;
+        if (roundResultBuilder_ != null) {
+          roundResultBuilder_.dispose();
           roundResultBuilder_ = null;
         }
         return this;
@@ -2022,29 +2384,48 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.SpectatorGameState buildPartial() {
         protoc.ServiceProto.SpectatorGameState result = new protoc.ServiceProto.SpectatorGameState(this);
-        result.stateFlag_ = stateFlag_;
-        if (frameDataBuilder_ == null) {
-          result.frameData_ = frameData_;
-        } else {
-          result.frameData_ = frameDataBuilder_.build();
-        }
-        if (screenDataBuilder_ == null) {
-          result.screenData_ = screenData_;
-        } else {
-          result.screenData_ = screenDataBuilder_.build();
-        }
-        if (audioDataBuilder_ == null) {
-          result.audioData_ = audioData_;
-        } else {
-          result.audioData_ = audioDataBuilder_.build();
-        }
-        if (roundResultBuilder_ == null) {
-          result.roundResult_ = roundResult_;
-        } else {
-          result.roundResult_ = roundResultBuilder_.build();
-        }
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.SpectatorGameState result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.stateFlag_ = stateFlag_;
+        }
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.gameData_ = gameDataBuilder_ == null
+              ? gameData_
+              : gameDataBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.frameData_ = frameDataBuilder_ == null
+              ? frameData_
+              : frameDataBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.screenData_ = screenDataBuilder_ == null
+              ? screenData_
+              : screenDataBuilder_.build();
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.audioData_ = audioDataBuilder_ == null
+              ? audioData_
+              : audioDataBuilder_.build();
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.roundResult_ = roundResultBuilder_ == null
+              ? roundResult_
+              : roundResultBuilder_.build();
+          to_bitField0_ |= 0x00000010;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
 
       @java.lang.Override
@@ -2094,6 +2475,9 @@ public final class ServiceProto {
         if (other.stateFlag_ != 0) {
           setStateFlagValue(other.getStateFlagValue());
         }
+        if (other.hasGameData()) {
+          mergeGameData(other.getGameData());
+        }
         if (other.hasFrameData()) {
           mergeFrameData(other.getFrameData());
         }
@@ -2134,37 +2518,44 @@ public final class ServiceProto {
                 break;
               case 8: {
                 stateFlag_ = input.readEnum();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 18: {
                 input.readMessage(
-                    getFrameDataFieldBuilder().getBuilder(),
+                    getGameDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 26: {
                 input.readMessage(
-                    getScreenDataFieldBuilder().getBuilder(),
+                    getFrameDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 34: {
                 input.readMessage(
-                    getAudioDataFieldBuilder().getBuilder(),
+                    getScreenDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 34
               case 42: {
                 input.readMessage(
-                    getRoundResultFieldBuilder().getBuilder(),
+                    getAudioDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 42
+              case 50: {
+                input.readMessage(
+                    getRoundResultFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 50
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -2180,6 +2571,7 @@ public final class ServiceProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private int stateFlag_ = 0;
       /**
@@ -2195,8 +2587,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder setStateFlagValue(int value) {
-        
         stateFlag_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2206,8 +2598,7 @@ public final class ServiceProto {
        */
       @java.lang.Override
       public protoc.EnumProto.GrpcFlag getStateFlag() {
-        @SuppressWarnings("deprecation")
-        protoc.EnumProto.GrpcFlag result = protoc.EnumProto.GrpcFlag.valueOf(stateFlag_);
+        protoc.EnumProto.GrpcFlag result = protoc.EnumProto.GrpcFlag.forNumber(stateFlag_);
         return result == null ? protoc.EnumProto.GrpcFlag.UNRECOGNIZED : result;
       }
       /**
@@ -2219,7 +2610,7 @@ public final class ServiceProto {
         if (value == null) {
           throw new NullPointerException();
         }
-        
+        bitField0_ |= 0x00000001;
         stateFlag_ = value.getNumber();
         onChanged();
         return this;
@@ -2229,24 +2620,145 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearStateFlag() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         stateFlag_ = 0;
         onChanged();
         return this;
+      }
+
+      private protoc.MessageProto.GrpcGameData gameData_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protoc.MessageProto.GrpcGameData, protoc.MessageProto.GrpcGameData.Builder, protoc.MessageProto.GrpcGameDataOrBuilder> gameDataBuilder_;
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       * @return Whether the gameData field is set.
+       */
+      public boolean hasGameData() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       * @return The gameData.
+       */
+      public protoc.MessageProto.GrpcGameData getGameData() {
+        if (gameDataBuilder_ == null) {
+          return gameData_ == null ? protoc.MessageProto.GrpcGameData.getDefaultInstance() : gameData_;
+        } else {
+          return gameDataBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       */
+      public Builder setGameData(protoc.MessageProto.GrpcGameData value) {
+        if (gameDataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          gameData_ = value;
+        } else {
+          gameDataBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       */
+      public Builder setGameData(
+          protoc.MessageProto.GrpcGameData.Builder builderForValue) {
+        if (gameDataBuilder_ == null) {
+          gameData_ = builderForValue.build();
+        } else {
+          gameDataBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       */
+      public Builder mergeGameData(protoc.MessageProto.GrpcGameData value) {
+        if (gameDataBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) != 0) &&
+            gameData_ != null &&
+            gameData_ != protoc.MessageProto.GrpcGameData.getDefaultInstance()) {
+            getGameDataBuilder().mergeFrom(value);
+          } else {
+            gameData_ = value;
+          }
+        } else {
+          gameDataBuilder_.mergeFrom(value);
+        }
+        if (gameData_ != null) {
+          bitField0_ |= 0x00000002;
+          onChanged();
+        }
+        return this;
+      }
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       */
+      public Builder clearGameData() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        gameData_ = null;
+        if (gameDataBuilder_ != null) {
+          gameDataBuilder_.dispose();
+          gameDataBuilder_ = null;
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       */
+      public protoc.MessageProto.GrpcGameData.Builder getGameDataBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getGameDataFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       */
+      public protoc.MessageProto.GrpcGameDataOrBuilder getGameDataOrBuilder() {
+        if (gameDataBuilder_ != null) {
+          return gameDataBuilder_.getMessageOrBuilder();
+        } else {
+          return gameData_ == null ?
+              protoc.MessageProto.GrpcGameData.getDefaultInstance() : gameData_;
+        }
+      }
+      /**
+       * <code>.service.GrpcGameData game_data = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          protoc.MessageProto.GrpcGameData, protoc.MessageProto.GrpcGameData.Builder, protoc.MessageProto.GrpcGameDataOrBuilder> 
+          getGameDataFieldBuilder() {
+        if (gameDataBuilder_ == null) {
+          gameDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              protoc.MessageProto.GrpcGameData, protoc.MessageProto.GrpcGameData.Builder, protoc.MessageProto.GrpcGameDataOrBuilder>(
+                  getGameData(),
+                  getParentForChildren(),
+                  isClean());
+          gameData_ = null;
+        }
+        return gameDataBuilder_;
       }
 
       private protoc.MessageProto.GrpcFrameData frameData_;
       private com.google.protobuf.SingleFieldBuilderV3<
           protoc.MessageProto.GrpcFrameData, protoc.MessageProto.GrpcFrameData.Builder, protoc.MessageProto.GrpcFrameDataOrBuilder> frameDataBuilder_;
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        * @return Whether the frameData field is set.
        */
       public boolean hasFrameData() {
-        return frameDataBuilder_ != null || frameData_ != null;
+        return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        * @return The frameData.
        */
       public protoc.MessageProto.GrpcFrameData getFrameData() {
@@ -2257,7 +2769,7 @@ public final class ServiceProto {
         }
       }
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       public Builder setFrameData(protoc.MessageProto.GrpcFrameData value) {
         if (frameDataBuilder_ == null) {
@@ -2265,69 +2777,71 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           frameData_ = value;
-          onChanged();
         } else {
           frameDataBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       public Builder setFrameData(
           protoc.MessageProto.GrpcFrameData.Builder builderForValue) {
         if (frameDataBuilder_ == null) {
           frameData_ = builderForValue.build();
-          onChanged();
         } else {
           frameDataBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       public Builder mergeFrameData(protoc.MessageProto.GrpcFrameData value) {
         if (frameDataBuilder_ == null) {
-          if (frameData_ != null) {
-            frameData_ =
-              protoc.MessageProto.GrpcFrameData.newBuilder(frameData_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000004) != 0) &&
+            frameData_ != null &&
+            frameData_ != protoc.MessageProto.GrpcFrameData.getDefaultInstance()) {
+            getFrameDataBuilder().mergeFrom(value);
           } else {
             frameData_ = value;
           }
-          onChanged();
         } else {
           frameDataBuilder_.mergeFrom(value);
         }
-
+        if (frameData_ != null) {
+          bitField0_ |= 0x00000004;
+          onChanged();
+        }
         return this;
       }
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       public Builder clearFrameData() {
-        if (frameDataBuilder_ == null) {
-          frameData_ = null;
-          onChanged();
-        } else {
-          frameData_ = null;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        frameData_ = null;
+        if (frameDataBuilder_ != null) {
+          frameDataBuilder_.dispose();
           frameDataBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       public protoc.MessageProto.GrpcFrameData.Builder getFrameDataBuilder() {
-        
+        bitField0_ |= 0x00000004;
         onChanged();
         return getFrameDataFieldBuilder().getBuilder();
       }
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       public protoc.MessageProto.GrpcFrameDataOrBuilder getFrameDataOrBuilder() {
         if (frameDataBuilder_ != null) {
@@ -2338,7 +2852,7 @@ public final class ServiceProto {
         }
       }
       /**
-       * <code>.service.GrpcFrameData frame_data = 2;</code>
+       * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           protoc.MessageProto.GrpcFrameData, protoc.MessageProto.GrpcFrameData.Builder, protoc.MessageProto.GrpcFrameDataOrBuilder> 
@@ -2358,14 +2872,14 @@ public final class ServiceProto {
       private com.google.protobuf.SingleFieldBuilderV3<
           protoc.MessageProto.GrpcScreenData, protoc.MessageProto.GrpcScreenData.Builder, protoc.MessageProto.GrpcScreenDataOrBuilder> screenDataBuilder_;
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        * @return Whether the screenData field is set.
        */
       public boolean hasScreenData() {
-        return screenDataBuilder_ != null || screenData_ != null;
+        return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        * @return The screenData.
        */
       public protoc.MessageProto.GrpcScreenData getScreenData() {
@@ -2376,7 +2890,7 @@ public final class ServiceProto {
         }
       }
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        */
       public Builder setScreenData(protoc.MessageProto.GrpcScreenData value) {
         if (screenDataBuilder_ == null) {
@@ -2384,69 +2898,71 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           screenData_ = value;
-          onChanged();
         } else {
           screenDataBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        */
       public Builder setScreenData(
           protoc.MessageProto.GrpcScreenData.Builder builderForValue) {
         if (screenDataBuilder_ == null) {
           screenData_ = builderForValue.build();
-          onChanged();
         } else {
           screenDataBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        */
       public Builder mergeScreenData(protoc.MessageProto.GrpcScreenData value) {
         if (screenDataBuilder_ == null) {
-          if (screenData_ != null) {
-            screenData_ =
-              protoc.MessageProto.GrpcScreenData.newBuilder(screenData_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000008) != 0) &&
+            screenData_ != null &&
+            screenData_ != protoc.MessageProto.GrpcScreenData.getDefaultInstance()) {
+            getScreenDataBuilder().mergeFrom(value);
           } else {
             screenData_ = value;
           }
-          onChanged();
         } else {
           screenDataBuilder_.mergeFrom(value);
         }
-
+        if (screenData_ != null) {
+          bitField0_ |= 0x00000008;
+          onChanged();
+        }
         return this;
       }
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        */
       public Builder clearScreenData() {
-        if (screenDataBuilder_ == null) {
-          screenData_ = null;
-          onChanged();
-        } else {
-          screenData_ = null;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        screenData_ = null;
+        if (screenDataBuilder_ != null) {
+          screenDataBuilder_.dispose();
           screenDataBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        */
       public protoc.MessageProto.GrpcScreenData.Builder getScreenDataBuilder() {
-        
+        bitField0_ |= 0x00000008;
         onChanged();
         return getScreenDataFieldBuilder().getBuilder();
       }
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        */
       public protoc.MessageProto.GrpcScreenDataOrBuilder getScreenDataOrBuilder() {
         if (screenDataBuilder_ != null) {
@@ -2457,7 +2973,7 @@ public final class ServiceProto {
         }
       }
       /**
-       * <code>.service.GrpcScreenData screen_data = 3;</code>
+       * <code>.service.GrpcScreenData screen_data = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           protoc.MessageProto.GrpcScreenData, protoc.MessageProto.GrpcScreenData.Builder, protoc.MessageProto.GrpcScreenDataOrBuilder> 
@@ -2477,14 +2993,14 @@ public final class ServiceProto {
       private com.google.protobuf.SingleFieldBuilderV3<
           protoc.MessageProto.GrpcAudioData, protoc.MessageProto.GrpcAudioData.Builder, protoc.MessageProto.GrpcAudioDataOrBuilder> audioDataBuilder_;
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        * @return Whether the audioData field is set.
        */
       public boolean hasAudioData() {
-        return audioDataBuilder_ != null || audioData_ != null;
+        return ((bitField0_ & 0x00000010) != 0);
       }
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        * @return The audioData.
        */
       public protoc.MessageProto.GrpcAudioData getAudioData() {
@@ -2495,7 +3011,7 @@ public final class ServiceProto {
         }
       }
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        */
       public Builder setAudioData(protoc.MessageProto.GrpcAudioData value) {
         if (audioDataBuilder_ == null) {
@@ -2503,69 +3019,71 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           audioData_ = value;
-          onChanged();
         } else {
           audioDataBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        */
       public Builder setAudioData(
           protoc.MessageProto.GrpcAudioData.Builder builderForValue) {
         if (audioDataBuilder_ == null) {
           audioData_ = builderForValue.build();
-          onChanged();
         } else {
           audioDataBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        */
       public Builder mergeAudioData(protoc.MessageProto.GrpcAudioData value) {
         if (audioDataBuilder_ == null) {
-          if (audioData_ != null) {
-            audioData_ =
-              protoc.MessageProto.GrpcAudioData.newBuilder(audioData_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000010) != 0) &&
+            audioData_ != null &&
+            audioData_ != protoc.MessageProto.GrpcAudioData.getDefaultInstance()) {
+            getAudioDataBuilder().mergeFrom(value);
           } else {
             audioData_ = value;
           }
-          onChanged();
         } else {
           audioDataBuilder_.mergeFrom(value);
         }
-
+        if (audioData_ != null) {
+          bitField0_ |= 0x00000010;
+          onChanged();
+        }
         return this;
       }
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        */
       public Builder clearAudioData() {
-        if (audioDataBuilder_ == null) {
-          audioData_ = null;
-          onChanged();
-        } else {
-          audioData_ = null;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        audioData_ = null;
+        if (audioDataBuilder_ != null) {
+          audioDataBuilder_.dispose();
           audioDataBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        */
       public protoc.MessageProto.GrpcAudioData.Builder getAudioDataBuilder() {
-        
+        bitField0_ |= 0x00000010;
         onChanged();
         return getAudioDataFieldBuilder().getBuilder();
       }
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        */
       public protoc.MessageProto.GrpcAudioDataOrBuilder getAudioDataOrBuilder() {
         if (audioDataBuilder_ != null) {
@@ -2576,7 +3094,7 @@ public final class ServiceProto {
         }
       }
       /**
-       * <code>.service.GrpcAudioData audio_data = 4;</code>
+       * <code>.service.GrpcAudioData audio_data = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           protoc.MessageProto.GrpcAudioData, protoc.MessageProto.GrpcAudioData.Builder, protoc.MessageProto.GrpcAudioDataOrBuilder> 
@@ -2596,14 +3114,14 @@ public final class ServiceProto {
       private com.google.protobuf.SingleFieldBuilderV3<
           protoc.MessageProto.GrpcRoundResult, protoc.MessageProto.GrpcRoundResult.Builder, protoc.MessageProto.GrpcRoundResultOrBuilder> roundResultBuilder_;
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        * @return Whether the roundResult field is set.
        */
       public boolean hasRoundResult() {
-        return roundResultBuilder_ != null || roundResult_ != null;
+        return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        * @return The roundResult.
        */
       public protoc.MessageProto.GrpcRoundResult getRoundResult() {
@@ -2614,7 +3132,7 @@ public final class ServiceProto {
         }
       }
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        */
       public Builder setRoundResult(protoc.MessageProto.GrpcRoundResult value) {
         if (roundResultBuilder_ == null) {
@@ -2622,69 +3140,71 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           roundResult_ = value;
-          onChanged();
         } else {
           roundResultBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        */
       public Builder setRoundResult(
           protoc.MessageProto.GrpcRoundResult.Builder builderForValue) {
         if (roundResultBuilder_ == null) {
           roundResult_ = builderForValue.build();
-          onChanged();
         } else {
           roundResultBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        */
       public Builder mergeRoundResult(protoc.MessageProto.GrpcRoundResult value) {
         if (roundResultBuilder_ == null) {
-          if (roundResult_ != null) {
-            roundResult_ =
-              protoc.MessageProto.GrpcRoundResult.newBuilder(roundResult_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000020) != 0) &&
+            roundResult_ != null &&
+            roundResult_ != protoc.MessageProto.GrpcRoundResult.getDefaultInstance()) {
+            getRoundResultBuilder().mergeFrom(value);
           } else {
             roundResult_ = value;
           }
-          onChanged();
         } else {
           roundResultBuilder_.mergeFrom(value);
         }
-
+        if (roundResult_ != null) {
+          bitField0_ |= 0x00000020;
+          onChanged();
+        }
         return this;
       }
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        */
       public Builder clearRoundResult() {
-        if (roundResultBuilder_ == null) {
-          roundResult_ = null;
-          onChanged();
-        } else {
-          roundResult_ = null;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        roundResult_ = null;
+        if (roundResultBuilder_ != null) {
+          roundResultBuilder_.dispose();
           roundResultBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        */
       public protoc.MessageProto.GrpcRoundResult.Builder getRoundResultBuilder() {
-        
+        bitField0_ |= 0x00000020;
         onChanged();
         return getRoundResultFieldBuilder().getBuilder();
       }
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        */
       public protoc.MessageProto.GrpcRoundResultOrBuilder getRoundResultOrBuilder() {
         if (roundResultBuilder_ != null) {
@@ -2695,7 +3215,7 @@ public final class ServiceProto {
         }
       }
       /**
-       * <code>.service.GrpcRoundResult round_result = 5;</code>
+       * <code>.service.GrpcRoundResult round_result = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           protoc.MessageProto.GrpcRoundResult, protoc.MessageProto.GrpcRoundResult.Builder, protoc.MessageProto.GrpcRoundResultOrBuilder> 
@@ -2825,11 +3345,6 @@ public final class ServiceProto {
       return new InitializeRequest();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return protoc.ServiceProto.internal_static_service_InitializeRequest_descriptor;
@@ -2844,7 +3359,7 @@ public final class ServiceProto {
     }
 
     public static final int PLAYER_NUMBER_FIELD_NUMBER = 1;
-    private boolean playerNumber_;
+    private boolean playerNumber_ = false;
     /**
      * <code>bool player_number = 1;</code>
      * @return The playerNumber.
@@ -2855,7 +3370,8 @@ public final class ServiceProto {
     }
 
     public static final int PLAYER_NAME_FIELD_NUMBER = 2;
-    private volatile java.lang.Object playerName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object playerName_ = "";
     /**
      * <code>string player_name = 2;</code>
      * @return The playerName.
@@ -2893,7 +3409,7 @@ public final class ServiceProto {
     }
 
     public static final int IS_BLIND_FIELD_NUMBER = 3;
-    private boolean isBlind_;
+    private boolean isBlind_ = false;
     /**
      * <code>bool is_blind = 3;</code>
      * @return The isBlind.
@@ -3035,11 +3551,13 @@ public final class ServiceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static protoc.ServiceProto.InitializeRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static protoc.ServiceProto.InitializeRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3114,12 +3632,10 @@ public final class ServiceProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         playerNumber_ = false;
-
         playerName_ = "";
-
         isBlind_ = false;
-
         return this;
       }
 
@@ -3146,11 +3662,22 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.InitializeRequest buildPartial() {
         protoc.ServiceProto.InitializeRequest result = new protoc.ServiceProto.InitializeRequest(this);
-        result.playerNumber_ = playerNumber_;
-        result.playerName_ = playerName_;
-        result.isBlind_ = isBlind_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.InitializeRequest result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.playerNumber_ = playerNumber_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.playerName_ = playerName_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.isBlind_ = isBlind_;
+        }
       }
 
       @java.lang.Override
@@ -3202,6 +3729,7 @@ public final class ServiceProto {
         }
         if (!other.getPlayerName().isEmpty()) {
           playerName_ = other.playerName_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.getIsBlind() != false) {
@@ -3235,17 +3763,17 @@ public final class ServiceProto {
                 break;
               case 8: {
                 playerNumber_ = input.readBool();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 18: {
                 playerName_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 24: {
                 isBlind_ = input.readBool();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 24
               default: {
@@ -3263,6 +3791,7 @@ public final class ServiceProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private boolean playerNumber_ ;
       /**
@@ -3279,8 +3808,9 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder setPlayerNumber(boolean value) {
-        
+
         playerNumber_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3289,7 +3819,7 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearPlayerNumber() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         playerNumber_ = false;
         onChanged();
         return this;
@@ -3336,11 +3866,9 @@ public final class ServiceProto {
        */
       public Builder setPlayerName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         playerName_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -3349,8 +3877,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearPlayerName() {
-        
         playerName_ = getDefaultInstance().getPlayerName();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -3361,12 +3889,10 @@ public final class ServiceProto {
        */
       public Builder setPlayerNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         playerName_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -3386,8 +3912,9 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder setIsBlind(boolean value) {
-        
+
         isBlind_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3396,7 +3923,7 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearIsBlind() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         isBlind_ = false;
         onChanged();
         return this;
@@ -3504,11 +4031,6 @@ public final class ServiceProto {
       return new InitializeResponse();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return protoc.ServiceProto.internal_static_service_InitializeResponse_descriptor;
@@ -3523,7 +4045,8 @@ public final class ServiceProto {
     }
 
     public static final int PLAYER_UUID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object playerUuid_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object playerUuid_ = "";
     /**
      * <code>string player_uuid = 1;</code>
      * @return The playerUuid.
@@ -3668,11 +4191,13 @@ public final class ServiceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static protoc.ServiceProto.InitializeResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static protoc.ServiceProto.InitializeResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3747,8 +4272,8 @@ public final class ServiceProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         playerUuid_ = "";
-
         return this;
       }
 
@@ -3775,9 +4300,16 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.InitializeResponse buildPartial() {
         protoc.ServiceProto.InitializeResponse result = new protoc.ServiceProto.InitializeResponse(this);
-        result.playerUuid_ = playerUuid_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.InitializeResponse result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.playerUuid_ = playerUuid_;
+        }
       }
 
       @java.lang.Override
@@ -3826,6 +4358,7 @@ public final class ServiceProto {
         if (other == protoc.ServiceProto.InitializeResponse.getDefaultInstance()) return this;
         if (!other.getPlayerUuid().isEmpty()) {
           playerUuid_ = other.playerUuid_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -3856,7 +4389,7 @@ public final class ServiceProto {
                 break;
               case 10: {
                 playerUuid_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               default: {
@@ -3874,6 +4407,7 @@ public final class ServiceProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object playerUuid_ = "";
       /**
@@ -3916,11 +4450,9 @@ public final class ServiceProto {
        */
       public Builder setPlayerUuid(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         playerUuid_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3929,8 +4461,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearPlayerUuid() {
-        
         playerUuid_ = getDefaultInstance().getPlayerUuid();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -3941,12 +4473,10 @@ public final class ServiceProto {
        */
       public Builder setPlayerUuidBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         playerUuid_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -4053,11 +4583,6 @@ public final class ServiceProto {
       return new ParticipateRequest();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return protoc.ServiceProto.internal_static_service_ParticipateRequest_descriptor;
@@ -4072,7 +4597,8 @@ public final class ServiceProto {
     }
 
     public static final int PLAYER_UUID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object playerUuid_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object playerUuid_ = "";
     /**
      * <code>string player_uuid = 1;</code>
      * @return The playerUuid.
@@ -4217,11 +4743,13 @@ public final class ServiceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static protoc.ServiceProto.ParticipateRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static protoc.ServiceProto.ParticipateRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -4296,8 +4824,8 @@ public final class ServiceProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         playerUuid_ = "";
-
         return this;
       }
 
@@ -4324,9 +4852,16 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.ParticipateRequest buildPartial() {
         protoc.ServiceProto.ParticipateRequest result = new protoc.ServiceProto.ParticipateRequest(this);
-        result.playerUuid_ = playerUuid_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.ParticipateRequest result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.playerUuid_ = playerUuid_;
+        }
       }
 
       @java.lang.Override
@@ -4375,6 +4910,7 @@ public final class ServiceProto {
         if (other == protoc.ServiceProto.ParticipateRequest.getDefaultInstance()) return this;
         if (!other.getPlayerUuid().isEmpty()) {
           playerUuid_ = other.playerUuid_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -4405,7 +4941,7 @@ public final class ServiceProto {
                 break;
               case 10: {
                 playerUuid_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               default: {
@@ -4423,6 +4959,7 @@ public final class ServiceProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object playerUuid_ = "";
       /**
@@ -4465,11 +5002,9 @@ public final class ServiceProto {
        */
       public Builder setPlayerUuid(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         playerUuid_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -4478,8 +5013,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearPlayerUuid() {
-        
         playerUuid_ = getDefaultInstance().getPlayerUuid();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -4490,12 +5025,10 @@ public final class ServiceProto {
        */
       public Builder setPlayerUuidBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         playerUuid_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -4697,11 +5230,6 @@ public final class ServiceProto {
       return new PlayerGameState();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return protoc.ServiceProto.internal_static_service_PlayerGameState_descriptor;
@@ -4715,8 +5243,9 @@ public final class ServiceProto {
               protoc.ServiceProto.PlayerGameState.class, protoc.ServiceProto.PlayerGameState.Builder.class);
     }
 
+    private int bitField0_;
     public static final int STATE_FLAG_FIELD_NUMBER = 1;
-    private int stateFlag_;
+    private int stateFlag_ = 0;
     /**
      * <code>.service.GrpcFlag state_flag = 1;</code>
      * @return The enum numeric value on the wire for stateFlag.
@@ -4729,13 +5258,12 @@ public final class ServiceProto {
      * @return The stateFlag.
      */
     @java.lang.Override public protoc.EnumProto.GrpcFlag getStateFlag() {
-      @SuppressWarnings("deprecation")
-      protoc.EnumProto.GrpcFlag result = protoc.EnumProto.GrpcFlag.valueOf(stateFlag_);
+      protoc.EnumProto.GrpcFlag result = protoc.EnumProto.GrpcFlag.forNumber(stateFlag_);
       return result == null ? protoc.EnumProto.GrpcFlag.UNRECOGNIZED : result;
     }
 
     public static final int IS_CONTROL_FIELD_NUMBER = 2;
-    private boolean isControl_;
+    private boolean isControl_ = false;
     /**
      * <code>bool is_control = 2;</code>
      * @return The isControl.
@@ -4753,7 +5281,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public boolean hasFrameData() {
-      return frameData_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>.service.GrpcFrameData frame_data = 3;</code>
@@ -4768,7 +5296,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcFrameDataOrBuilder getFrameDataOrBuilder() {
-      return getFrameData();
+      return frameData_ == null ? protoc.MessageProto.GrpcFrameData.getDefaultInstance() : frameData_;
     }
 
     public static final int NON_DELAY_FRAME_DATA_FIELD_NUMBER = 4;
@@ -4779,7 +5307,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public boolean hasNonDelayFrameData() {
-      return nonDelayFrameData_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <code>.service.GrpcFrameData non_delay_frame_data = 4;</code>
@@ -4794,7 +5322,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcFrameDataOrBuilder getNonDelayFrameDataOrBuilder() {
-      return getNonDelayFrameData();
+      return nonDelayFrameData_ == null ? protoc.MessageProto.GrpcFrameData.getDefaultInstance() : nonDelayFrameData_;
     }
 
     public static final int SCREEN_DATA_FIELD_NUMBER = 5;
@@ -4805,7 +5333,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public boolean hasScreenData() {
-      return screenData_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <code>.service.GrpcScreenData screen_data = 5;</code>
@@ -4820,7 +5348,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcScreenDataOrBuilder getScreenDataOrBuilder() {
-      return getScreenData();
+      return screenData_ == null ? protoc.MessageProto.GrpcScreenData.getDefaultInstance() : screenData_;
     }
 
     public static final int AUDIO_DATA_FIELD_NUMBER = 6;
@@ -4831,7 +5359,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public boolean hasAudioData() {
-      return audioData_ != null;
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
      * <code>.service.GrpcAudioData audio_data = 6;</code>
@@ -4846,7 +5374,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcAudioDataOrBuilder getAudioDataOrBuilder() {
-      return getAudioData();
+      return audioData_ == null ? protoc.MessageProto.GrpcAudioData.getDefaultInstance() : audioData_;
     }
 
     public static final int GAME_DATA_FIELD_NUMBER = 7;
@@ -4857,7 +5385,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public boolean hasGameData() {
-      return gameData_ != null;
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <code>.service.GrpcGameData game_data = 7;</code>
@@ -4872,7 +5400,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcGameDataOrBuilder getGameDataOrBuilder() {
-      return getGameData();
+      return gameData_ == null ? protoc.MessageProto.GrpcGameData.getDefaultInstance() : gameData_;
     }
 
     public static final int ROUND_RESULT_FIELD_NUMBER = 8;
@@ -4883,7 +5411,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public boolean hasRoundResult() {
-      return roundResult_ != null;
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
      * <code>.service.GrpcRoundResult round_result = 8;</code>
@@ -4898,7 +5426,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcRoundResultOrBuilder getRoundResultOrBuilder() {
-      return getRoundResult();
+      return roundResult_ == null ? protoc.MessageProto.GrpcRoundResult.getDefaultInstance() : roundResult_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4921,22 +5449,22 @@ public final class ServiceProto {
       if (isControl_ != false) {
         output.writeBool(2, isControl_);
       }
-      if (frameData_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(3, getFrameData());
       }
-      if (nonDelayFrameData_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         output.writeMessage(4, getNonDelayFrameData());
       }
-      if (screenData_ != null) {
+      if (((bitField0_ & 0x00000004) != 0)) {
         output.writeMessage(5, getScreenData());
       }
-      if (audioData_ != null) {
+      if (((bitField0_ & 0x00000008) != 0)) {
         output.writeMessage(6, getAudioData());
       }
-      if (gameData_ != null) {
+      if (((bitField0_ & 0x00000010) != 0)) {
         output.writeMessage(7, getGameData());
       }
-      if (roundResult_ != null) {
+      if (((bitField0_ & 0x00000020) != 0)) {
         output.writeMessage(8, getRoundResult());
       }
       getUnknownFields().writeTo(output);
@@ -4956,27 +5484,27 @@ public final class ServiceProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, isControl_);
       }
-      if (frameData_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, getFrameData());
       }
-      if (nonDelayFrameData_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, getNonDelayFrameData());
       }
-      if (screenData_ != null) {
+      if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, getScreenData());
       }
-      if (audioData_ != null) {
+      if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, getAudioData());
       }
-      if (gameData_ != null) {
+      if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(7, getGameData());
       }
-      if (roundResult_ != null) {
+      if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(8, getRoundResult());
       }
@@ -5117,11 +5645,13 @@ public final class ServiceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static protoc.ServiceProto.PlayerGameState parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static protoc.ServiceProto.PlayerGameState parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -5185,55 +5715,59 @@ public final class ServiceProto {
 
       // Construct using protoc.ServiceProto.PlayerGameState.newBuilder()
       private Builder() {
-
+        maybeForceBuilderInitialization();
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getFrameDataFieldBuilder();
+          getNonDelayFrameDataFieldBuilder();
+          getScreenDataFieldBuilder();
+          getAudioDataFieldBuilder();
+          getGameDataFieldBuilder();
+          getRoundResultFieldBuilder();
+        }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         stateFlag_ = 0;
-
         isControl_ = false;
-
-        if (frameDataBuilder_ == null) {
-          frameData_ = null;
-        } else {
-          frameData_ = null;
+        frameData_ = null;
+        if (frameDataBuilder_ != null) {
+          frameDataBuilder_.dispose();
           frameDataBuilder_ = null;
         }
-        if (nonDelayFrameDataBuilder_ == null) {
-          nonDelayFrameData_ = null;
-        } else {
-          nonDelayFrameData_ = null;
+        nonDelayFrameData_ = null;
+        if (nonDelayFrameDataBuilder_ != null) {
+          nonDelayFrameDataBuilder_.dispose();
           nonDelayFrameDataBuilder_ = null;
         }
-        if (screenDataBuilder_ == null) {
-          screenData_ = null;
-        } else {
-          screenData_ = null;
+        screenData_ = null;
+        if (screenDataBuilder_ != null) {
+          screenDataBuilder_.dispose();
           screenDataBuilder_ = null;
         }
-        if (audioDataBuilder_ == null) {
-          audioData_ = null;
-        } else {
-          audioData_ = null;
+        audioData_ = null;
+        if (audioDataBuilder_ != null) {
+          audioDataBuilder_.dispose();
           audioDataBuilder_ = null;
         }
-        if (gameDataBuilder_ == null) {
-          gameData_ = null;
-        } else {
-          gameData_ = null;
+        gameData_ = null;
+        if (gameDataBuilder_ != null) {
+          gameDataBuilder_.dispose();
           gameDataBuilder_ = null;
         }
-        if (roundResultBuilder_ == null) {
-          roundResult_ = null;
-        } else {
-          roundResult_ = null;
+        roundResult_ = null;
+        if (roundResultBuilder_ != null) {
+          roundResultBuilder_.dispose();
           roundResultBuilder_ = null;
         }
         return this;
@@ -5262,40 +5796,57 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.PlayerGameState buildPartial() {
         protoc.ServiceProto.PlayerGameState result = new protoc.ServiceProto.PlayerGameState(this);
-        result.stateFlag_ = stateFlag_;
-        result.isControl_ = isControl_;
-        if (frameDataBuilder_ == null) {
-          result.frameData_ = frameData_;
-        } else {
-          result.frameData_ = frameDataBuilder_.build();
-        }
-        if (nonDelayFrameDataBuilder_ == null) {
-          result.nonDelayFrameData_ = nonDelayFrameData_;
-        } else {
-          result.nonDelayFrameData_ = nonDelayFrameDataBuilder_.build();
-        }
-        if (screenDataBuilder_ == null) {
-          result.screenData_ = screenData_;
-        } else {
-          result.screenData_ = screenDataBuilder_.build();
-        }
-        if (audioDataBuilder_ == null) {
-          result.audioData_ = audioData_;
-        } else {
-          result.audioData_ = audioDataBuilder_.build();
-        }
-        if (gameDataBuilder_ == null) {
-          result.gameData_ = gameData_;
-        } else {
-          result.gameData_ = gameDataBuilder_.build();
-        }
-        if (roundResultBuilder_ == null) {
-          result.roundResult_ = roundResult_;
-        } else {
-          result.roundResult_ = roundResultBuilder_.build();
-        }
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.PlayerGameState result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.stateFlag_ = stateFlag_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.isControl_ = isControl_;
+        }
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.frameData_ = frameDataBuilder_ == null
+              ? frameData_
+              : frameDataBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.nonDelayFrameData_ = nonDelayFrameDataBuilder_ == null
+              ? nonDelayFrameData_
+              : nonDelayFrameDataBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.screenData_ = screenDataBuilder_ == null
+              ? screenData_
+              : screenDataBuilder_.build();
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.audioData_ = audioDataBuilder_ == null
+              ? audioData_
+              : audioDataBuilder_.build();
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.gameData_ = gameDataBuilder_ == null
+              ? gameData_
+              : gameDataBuilder_.build();
+          to_bitField0_ |= 0x00000010;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.roundResult_ = roundResultBuilder_ == null
+              ? roundResult_
+              : roundResultBuilder_.build();
+          to_bitField0_ |= 0x00000020;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
 
       @java.lang.Override
@@ -5394,54 +5945,54 @@ public final class ServiceProto {
                 break;
               case 8: {
                 stateFlag_ = input.readEnum();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 16: {
                 isControl_ = input.readBool();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 16
               case 26: {
                 input.readMessage(
                     getFrameDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 34: {
                 input.readMessage(
                     getNonDelayFrameDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 34
               case 42: {
                 input.readMessage(
                     getScreenDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 42
               case 50: {
                 input.readMessage(
                     getAudioDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000020;
                 break;
               } // case 50
               case 58: {
                 input.readMessage(
                     getGameDataFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000040;
                 break;
               } // case 58
               case 66: {
                 input.readMessage(
                     getRoundResultFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000080;
                 break;
               } // case 66
               default: {
@@ -5459,6 +6010,7 @@ public final class ServiceProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private int stateFlag_ = 0;
       /**
@@ -5474,8 +6026,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder setStateFlagValue(int value) {
-        
         stateFlag_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -5485,8 +6037,7 @@ public final class ServiceProto {
        */
       @java.lang.Override
       public protoc.EnumProto.GrpcFlag getStateFlag() {
-        @SuppressWarnings("deprecation")
-        protoc.EnumProto.GrpcFlag result = protoc.EnumProto.GrpcFlag.valueOf(stateFlag_);
+        protoc.EnumProto.GrpcFlag result = protoc.EnumProto.GrpcFlag.forNumber(stateFlag_);
         return result == null ? protoc.EnumProto.GrpcFlag.UNRECOGNIZED : result;
       }
       /**
@@ -5498,7 +6049,7 @@ public final class ServiceProto {
         if (value == null) {
           throw new NullPointerException();
         }
-        
+        bitField0_ |= 0x00000001;
         stateFlag_ = value.getNumber();
         onChanged();
         return this;
@@ -5508,7 +6059,7 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearStateFlag() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         stateFlag_ = 0;
         onChanged();
         return this;
@@ -5529,8 +6080,9 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder setIsControl(boolean value) {
-        
+
         isControl_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -5539,7 +6091,7 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearIsControl() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         isControl_ = false;
         onChanged();
         return this;
@@ -5553,7 +6105,7 @@ public final class ServiceProto {
        * @return Whether the frameData field is set.
        */
       public boolean hasFrameData() {
-        return frameDataBuilder_ != null || frameData_ != null;
+        return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <code>.service.GrpcFrameData frame_data = 3;</code>
@@ -5575,11 +6127,11 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           frameData_ = value;
-          onChanged();
         } else {
           frameDataBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -5589,11 +6141,11 @@ public final class ServiceProto {
           protoc.MessageProto.GrpcFrameData.Builder builderForValue) {
         if (frameDataBuilder_ == null) {
           frameData_ = builderForValue.build();
-          onChanged();
         } else {
           frameDataBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -5601,38 +6153,40 @@ public final class ServiceProto {
        */
       public Builder mergeFrameData(protoc.MessageProto.GrpcFrameData value) {
         if (frameDataBuilder_ == null) {
-          if (frameData_ != null) {
-            frameData_ =
-              protoc.MessageProto.GrpcFrameData.newBuilder(frameData_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000004) != 0) &&
+            frameData_ != null &&
+            frameData_ != protoc.MessageProto.GrpcFrameData.getDefaultInstance()) {
+            getFrameDataBuilder().mergeFrom(value);
           } else {
             frameData_ = value;
           }
-          onChanged();
         } else {
           frameDataBuilder_.mergeFrom(value);
         }
-
+        if (frameData_ != null) {
+          bitField0_ |= 0x00000004;
+          onChanged();
+        }
         return this;
       }
       /**
        * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       public Builder clearFrameData() {
-        if (frameDataBuilder_ == null) {
-          frameData_ = null;
-          onChanged();
-        } else {
-          frameData_ = null;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        frameData_ = null;
+        if (frameDataBuilder_ != null) {
+          frameDataBuilder_.dispose();
           frameDataBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
        * <code>.service.GrpcFrameData frame_data = 3;</code>
        */
       public protoc.MessageProto.GrpcFrameData.Builder getFrameDataBuilder() {
-        
+        bitField0_ |= 0x00000004;
         onChanged();
         return getFrameDataFieldBuilder().getBuilder();
       }
@@ -5672,7 +6226,7 @@ public final class ServiceProto {
        * @return Whether the nonDelayFrameData field is set.
        */
       public boolean hasNonDelayFrameData() {
-        return nonDelayFrameDataBuilder_ != null || nonDelayFrameData_ != null;
+        return ((bitField0_ & 0x00000008) != 0);
       }
       /**
        * <code>.service.GrpcFrameData non_delay_frame_data = 4;</code>
@@ -5694,11 +6248,11 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           nonDelayFrameData_ = value;
-          onChanged();
         } else {
           nonDelayFrameDataBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -5708,11 +6262,11 @@ public final class ServiceProto {
           protoc.MessageProto.GrpcFrameData.Builder builderForValue) {
         if (nonDelayFrameDataBuilder_ == null) {
           nonDelayFrameData_ = builderForValue.build();
-          onChanged();
         } else {
           nonDelayFrameDataBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -5720,38 +6274,40 @@ public final class ServiceProto {
        */
       public Builder mergeNonDelayFrameData(protoc.MessageProto.GrpcFrameData value) {
         if (nonDelayFrameDataBuilder_ == null) {
-          if (nonDelayFrameData_ != null) {
-            nonDelayFrameData_ =
-              protoc.MessageProto.GrpcFrameData.newBuilder(nonDelayFrameData_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000008) != 0) &&
+            nonDelayFrameData_ != null &&
+            nonDelayFrameData_ != protoc.MessageProto.GrpcFrameData.getDefaultInstance()) {
+            getNonDelayFrameDataBuilder().mergeFrom(value);
           } else {
             nonDelayFrameData_ = value;
           }
-          onChanged();
         } else {
           nonDelayFrameDataBuilder_.mergeFrom(value);
         }
-
+        if (nonDelayFrameData_ != null) {
+          bitField0_ |= 0x00000008;
+          onChanged();
+        }
         return this;
       }
       /**
        * <code>.service.GrpcFrameData non_delay_frame_data = 4;</code>
        */
       public Builder clearNonDelayFrameData() {
-        if (nonDelayFrameDataBuilder_ == null) {
-          nonDelayFrameData_ = null;
-          onChanged();
-        } else {
-          nonDelayFrameData_ = null;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        nonDelayFrameData_ = null;
+        if (nonDelayFrameDataBuilder_ != null) {
+          nonDelayFrameDataBuilder_.dispose();
           nonDelayFrameDataBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
        * <code>.service.GrpcFrameData non_delay_frame_data = 4;</code>
        */
       public protoc.MessageProto.GrpcFrameData.Builder getNonDelayFrameDataBuilder() {
-        
+        bitField0_ |= 0x00000008;
         onChanged();
         return getNonDelayFrameDataFieldBuilder().getBuilder();
       }
@@ -5791,7 +6347,7 @@ public final class ServiceProto {
        * @return Whether the screenData field is set.
        */
       public boolean hasScreenData() {
-        return screenDataBuilder_ != null || screenData_ != null;
+        return ((bitField0_ & 0x00000010) != 0);
       }
       /**
        * <code>.service.GrpcScreenData screen_data = 5;</code>
@@ -5813,11 +6369,11 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           screenData_ = value;
-          onChanged();
         } else {
           screenDataBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -5827,11 +6383,11 @@ public final class ServiceProto {
           protoc.MessageProto.GrpcScreenData.Builder builderForValue) {
         if (screenDataBuilder_ == null) {
           screenData_ = builderForValue.build();
-          onChanged();
         } else {
           screenDataBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -5839,38 +6395,40 @@ public final class ServiceProto {
        */
       public Builder mergeScreenData(protoc.MessageProto.GrpcScreenData value) {
         if (screenDataBuilder_ == null) {
-          if (screenData_ != null) {
-            screenData_ =
-              protoc.MessageProto.GrpcScreenData.newBuilder(screenData_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000010) != 0) &&
+            screenData_ != null &&
+            screenData_ != protoc.MessageProto.GrpcScreenData.getDefaultInstance()) {
+            getScreenDataBuilder().mergeFrom(value);
           } else {
             screenData_ = value;
           }
-          onChanged();
         } else {
           screenDataBuilder_.mergeFrom(value);
         }
-
+        if (screenData_ != null) {
+          bitField0_ |= 0x00000010;
+          onChanged();
+        }
         return this;
       }
       /**
        * <code>.service.GrpcScreenData screen_data = 5;</code>
        */
       public Builder clearScreenData() {
-        if (screenDataBuilder_ == null) {
-          screenData_ = null;
-          onChanged();
-        } else {
-          screenData_ = null;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        screenData_ = null;
+        if (screenDataBuilder_ != null) {
+          screenDataBuilder_.dispose();
           screenDataBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
        * <code>.service.GrpcScreenData screen_data = 5;</code>
        */
       public protoc.MessageProto.GrpcScreenData.Builder getScreenDataBuilder() {
-        
+        bitField0_ |= 0x00000010;
         onChanged();
         return getScreenDataFieldBuilder().getBuilder();
       }
@@ -5910,7 +6468,7 @@ public final class ServiceProto {
        * @return Whether the audioData field is set.
        */
       public boolean hasAudioData() {
-        return audioDataBuilder_ != null || audioData_ != null;
+        return ((bitField0_ & 0x00000020) != 0);
       }
       /**
        * <code>.service.GrpcAudioData audio_data = 6;</code>
@@ -5932,11 +6490,11 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           audioData_ = value;
-          onChanged();
         } else {
           audioDataBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -5946,11 +6504,11 @@ public final class ServiceProto {
           protoc.MessageProto.GrpcAudioData.Builder builderForValue) {
         if (audioDataBuilder_ == null) {
           audioData_ = builderForValue.build();
-          onChanged();
         } else {
           audioDataBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -5958,38 +6516,40 @@ public final class ServiceProto {
        */
       public Builder mergeAudioData(protoc.MessageProto.GrpcAudioData value) {
         if (audioDataBuilder_ == null) {
-          if (audioData_ != null) {
-            audioData_ =
-              protoc.MessageProto.GrpcAudioData.newBuilder(audioData_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000020) != 0) &&
+            audioData_ != null &&
+            audioData_ != protoc.MessageProto.GrpcAudioData.getDefaultInstance()) {
+            getAudioDataBuilder().mergeFrom(value);
           } else {
             audioData_ = value;
           }
-          onChanged();
         } else {
           audioDataBuilder_.mergeFrom(value);
         }
-
+        if (audioData_ != null) {
+          bitField0_ |= 0x00000020;
+          onChanged();
+        }
         return this;
       }
       /**
        * <code>.service.GrpcAudioData audio_data = 6;</code>
        */
       public Builder clearAudioData() {
-        if (audioDataBuilder_ == null) {
-          audioData_ = null;
-          onChanged();
-        } else {
-          audioData_ = null;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        audioData_ = null;
+        if (audioDataBuilder_ != null) {
+          audioDataBuilder_.dispose();
           audioDataBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
        * <code>.service.GrpcAudioData audio_data = 6;</code>
        */
       public protoc.MessageProto.GrpcAudioData.Builder getAudioDataBuilder() {
-        
+        bitField0_ |= 0x00000020;
         onChanged();
         return getAudioDataFieldBuilder().getBuilder();
       }
@@ -6029,7 +6589,7 @@ public final class ServiceProto {
        * @return Whether the gameData field is set.
        */
       public boolean hasGameData() {
-        return gameDataBuilder_ != null || gameData_ != null;
+        return ((bitField0_ & 0x00000040) != 0);
       }
       /**
        * <code>.service.GrpcGameData game_data = 7;</code>
@@ -6051,11 +6611,11 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           gameData_ = value;
-          onChanged();
         } else {
           gameDataBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000040;
+        onChanged();
         return this;
       }
       /**
@@ -6065,11 +6625,11 @@ public final class ServiceProto {
           protoc.MessageProto.GrpcGameData.Builder builderForValue) {
         if (gameDataBuilder_ == null) {
           gameData_ = builderForValue.build();
-          onChanged();
         } else {
           gameDataBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000040;
+        onChanged();
         return this;
       }
       /**
@@ -6077,38 +6637,40 @@ public final class ServiceProto {
        */
       public Builder mergeGameData(protoc.MessageProto.GrpcGameData value) {
         if (gameDataBuilder_ == null) {
-          if (gameData_ != null) {
-            gameData_ =
-              protoc.MessageProto.GrpcGameData.newBuilder(gameData_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000040) != 0) &&
+            gameData_ != null &&
+            gameData_ != protoc.MessageProto.GrpcGameData.getDefaultInstance()) {
+            getGameDataBuilder().mergeFrom(value);
           } else {
             gameData_ = value;
           }
-          onChanged();
         } else {
           gameDataBuilder_.mergeFrom(value);
         }
-
+        if (gameData_ != null) {
+          bitField0_ |= 0x00000040;
+          onChanged();
+        }
         return this;
       }
       /**
        * <code>.service.GrpcGameData game_data = 7;</code>
        */
       public Builder clearGameData() {
-        if (gameDataBuilder_ == null) {
-          gameData_ = null;
-          onChanged();
-        } else {
-          gameData_ = null;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        gameData_ = null;
+        if (gameDataBuilder_ != null) {
+          gameDataBuilder_.dispose();
           gameDataBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
        * <code>.service.GrpcGameData game_data = 7;</code>
        */
       public protoc.MessageProto.GrpcGameData.Builder getGameDataBuilder() {
-        
+        bitField0_ |= 0x00000040;
         onChanged();
         return getGameDataFieldBuilder().getBuilder();
       }
@@ -6148,7 +6710,7 @@ public final class ServiceProto {
        * @return Whether the roundResult field is set.
        */
       public boolean hasRoundResult() {
-        return roundResultBuilder_ != null || roundResult_ != null;
+        return ((bitField0_ & 0x00000080) != 0);
       }
       /**
        * <code>.service.GrpcRoundResult round_result = 8;</code>
@@ -6170,11 +6732,11 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           roundResult_ = value;
-          onChanged();
         } else {
           roundResultBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000080;
+        onChanged();
         return this;
       }
       /**
@@ -6184,11 +6746,11 @@ public final class ServiceProto {
           protoc.MessageProto.GrpcRoundResult.Builder builderForValue) {
         if (roundResultBuilder_ == null) {
           roundResult_ = builderForValue.build();
-          onChanged();
         } else {
           roundResultBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000080;
+        onChanged();
         return this;
       }
       /**
@@ -6196,38 +6758,40 @@ public final class ServiceProto {
        */
       public Builder mergeRoundResult(protoc.MessageProto.GrpcRoundResult value) {
         if (roundResultBuilder_ == null) {
-          if (roundResult_ != null) {
-            roundResult_ =
-              protoc.MessageProto.GrpcRoundResult.newBuilder(roundResult_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000080) != 0) &&
+            roundResult_ != null &&
+            roundResult_ != protoc.MessageProto.GrpcRoundResult.getDefaultInstance()) {
+            getRoundResultBuilder().mergeFrom(value);
           } else {
             roundResult_ = value;
           }
-          onChanged();
         } else {
           roundResultBuilder_.mergeFrom(value);
         }
-
+        if (roundResult_ != null) {
+          bitField0_ |= 0x00000080;
+          onChanged();
+        }
         return this;
       }
       /**
        * <code>.service.GrpcRoundResult round_result = 8;</code>
        */
       public Builder clearRoundResult() {
-        if (roundResultBuilder_ == null) {
-          roundResult_ = null;
-          onChanged();
-        } else {
-          roundResult_ = null;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        roundResult_ = null;
+        if (roundResultBuilder_ != null) {
+          roundResultBuilder_.dispose();
           roundResultBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
        * <code>.service.GrpcRoundResult round_result = 8;</code>
        */
       public protoc.MessageProto.GrpcRoundResult.Builder getRoundResultBuilder() {
-        
+        bitField0_ |= 0x00000080;
         onChanged();
         return getRoundResultFieldBuilder().getBuilder();
       }
@@ -6376,11 +6940,6 @@ public final class ServiceProto {
       return new PlayerInput();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return protoc.ServiceProto.internal_static_service_PlayerInput_descriptor;
@@ -6394,8 +6953,10 @@ public final class ServiceProto {
               protoc.ServiceProto.PlayerInput.class, protoc.ServiceProto.PlayerInput.Builder.class);
     }
 
+    private int bitField0_;
     public static final int PLAYER_UUID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object playerUuid_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object playerUuid_ = "";
     /**
      * <code>string player_uuid = 1;</code>
      * @return The playerUuid.
@@ -6440,7 +7001,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public boolean hasInputKey() {
-      return inputKey_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>.service.GrpcKey input_key = 2;</code>
@@ -6455,7 +7016,7 @@ public final class ServiceProto {
      */
     @java.lang.Override
     public protoc.MessageProto.GrpcKeyOrBuilder getInputKeyOrBuilder() {
-      return getInputKey();
+      return inputKey_ == null ? protoc.MessageProto.GrpcKey.getDefaultInstance() : inputKey_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -6475,7 +7036,7 @@ public final class ServiceProto {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(playerUuid_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, playerUuid_);
       }
-      if (inputKey_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(2, getInputKey());
       }
       getUnknownFields().writeTo(output);
@@ -6490,7 +7051,7 @@ public final class ServiceProto {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(playerUuid_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, playerUuid_);
       }
-      if (inputKey_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getInputKey());
       }
@@ -6582,11 +7143,13 @@ public final class ServiceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static protoc.ServiceProto.PlayerInput parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static protoc.ServiceProto.PlayerInput parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -6650,23 +7213,28 @@ public final class ServiceProto {
 
       // Construct using protoc.ServiceProto.PlayerInput.newBuilder()
       private Builder() {
-
+        maybeForceBuilderInitialization();
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getInputKeyFieldBuilder();
+        }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         playerUuid_ = "";
-
-        if (inputKeyBuilder_ == null) {
-          inputKey_ = null;
-        } else {
-          inputKey_ = null;
+        inputKey_ = null;
+        if (inputKeyBuilder_ != null) {
+          inputKeyBuilder_.dispose();
           inputKeyBuilder_ = null;
         }
         return this;
@@ -6695,14 +7263,24 @@ public final class ServiceProto {
       @java.lang.Override
       public protoc.ServiceProto.PlayerInput buildPartial() {
         protoc.ServiceProto.PlayerInput result = new protoc.ServiceProto.PlayerInput(this);
-        result.playerUuid_ = playerUuid_;
-        if (inputKeyBuilder_ == null) {
-          result.inputKey_ = inputKey_;
-        } else {
-          result.inputKey_ = inputKeyBuilder_.build();
-        }
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(protoc.ServiceProto.PlayerInput result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.playerUuid_ = playerUuid_;
+        }
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.inputKey_ = inputKeyBuilder_ == null
+              ? inputKey_
+              : inputKeyBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
 
       @java.lang.Override
@@ -6751,6 +7329,7 @@ public final class ServiceProto {
         if (other == protoc.ServiceProto.PlayerInput.getDefaultInstance()) return this;
         if (!other.getPlayerUuid().isEmpty()) {
           playerUuid_ = other.playerUuid_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasInputKey()) {
@@ -6784,14 +7363,14 @@ public final class ServiceProto {
                 break;
               case 10: {
                 playerUuid_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
                 input.readMessage(
                     getInputKeyFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               default: {
@@ -6809,6 +7388,7 @@ public final class ServiceProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object playerUuid_ = "";
       /**
@@ -6851,11 +7431,9 @@ public final class ServiceProto {
        */
       public Builder setPlayerUuid(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         playerUuid_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -6864,8 +7442,8 @@ public final class ServiceProto {
        * @return This builder for chaining.
        */
       public Builder clearPlayerUuid() {
-        
         playerUuid_ = getDefaultInstance().getPlayerUuid();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -6876,12 +7454,10 @@ public final class ServiceProto {
        */
       public Builder setPlayerUuidBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         playerUuid_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -6894,7 +7470,7 @@ public final class ServiceProto {
        * @return Whether the inputKey field is set.
        */
       public boolean hasInputKey() {
-        return inputKeyBuilder_ != null || inputKey_ != null;
+        return ((bitField0_ & 0x00000002) != 0);
       }
       /**
        * <code>.service.GrpcKey input_key = 2;</code>
@@ -6916,11 +7492,11 @@ public final class ServiceProto {
             throw new NullPointerException();
           }
           inputKey_ = value;
-          onChanged();
         } else {
           inputKeyBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -6930,11 +7506,11 @@ public final class ServiceProto {
           protoc.MessageProto.GrpcKey.Builder builderForValue) {
         if (inputKeyBuilder_ == null) {
           inputKey_ = builderForValue.build();
-          onChanged();
         } else {
           inputKeyBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -6942,38 +7518,40 @@ public final class ServiceProto {
        */
       public Builder mergeInputKey(protoc.MessageProto.GrpcKey value) {
         if (inputKeyBuilder_ == null) {
-          if (inputKey_ != null) {
-            inputKey_ =
-              protoc.MessageProto.GrpcKey.newBuilder(inputKey_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000002) != 0) &&
+            inputKey_ != null &&
+            inputKey_ != protoc.MessageProto.GrpcKey.getDefaultInstance()) {
+            getInputKeyBuilder().mergeFrom(value);
           } else {
             inputKey_ = value;
           }
-          onChanged();
         } else {
           inputKeyBuilder_.mergeFrom(value);
         }
-
+        if (inputKey_ != null) {
+          bitField0_ |= 0x00000002;
+          onChanged();
+        }
         return this;
       }
       /**
        * <code>.service.GrpcKey input_key = 2;</code>
        */
       public Builder clearInputKey() {
-        if (inputKeyBuilder_ == null) {
-          inputKey_ = null;
-          onChanged();
-        } else {
-          inputKey_ = null;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        inputKey_ = null;
+        if (inputKeyBuilder_ != null) {
+          inputKeyBuilder_.dispose();
           inputKeyBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
        * <code>.service.GrpcKey input_key = 2;</code>
        */
       public protoc.MessageProto.GrpcKey.Builder getInputKeyBuilder() {
-        
+        bitField0_ |= 0x00000002;
         onChanged();
         return getInputKeyFieldBuilder().getBuilder();
       }
@@ -7121,39 +7699,42 @@ public final class ServiceProto {
       "f/empty.proto\032\nenum.proto\032\rmessage.proto" +
       "\"s\n\016RunGameRequest\022\023\n\013character_1\030\001 \001(\t\022" +
       "\023\n\013character_2\030\002 \001(\t\022\020\n\010player_1\030\003 \001(\t\022\020" +
-      "\n\010player_2\030\004 \001(\t\022\023\n\013game_number\030\005 \001(\005\"\021\n" +
-      "\017SpectateRequest\"\361\001\n\022SpectatorGameState\022" +
-      "%\n\nstate_flag\030\001 \001(\0162\021.service.GrpcFlag\022*" +
-      "\n\nframe_data\030\002 \001(\0132\026.service.GrpcFrameDa" +
-      "ta\022,\n\013screen_data\030\003 \001(\0132\027.service.GrpcSc" +
-      "reenData\022*\n\naudio_data\030\004 \001(\0132\026.service.G" +
-      "rpcAudioData\022.\n\014round_result\030\005 \001(\0132\030.ser" +
-      "vice.GrpcRoundResult\"Q\n\021InitializeReques" +
-      "t\022\025\n\rplayer_number\030\001 \001(\010\022\023\n\013player_name\030" +
-      "\002 \001(\t\022\020\n\010is_blind\030\003 \001(\010\")\n\022InitializeRes" +
-      "ponse\022\023\n\013player_uuid\030\001 \001(\t\")\n\022Participat" +
-      "eRequest\022\023\n\013player_uuid\030\001 \001(\t\"\342\002\n\017Player" +
-      "GameState\022%\n\nstate_flag\030\001 \001(\0162\021.service." +
-      "GrpcFlag\022\022\n\nis_control\030\002 \001(\010\022*\n\nframe_da" +
-      "ta\030\003 \001(\0132\026.service.GrpcFrameData\0224\n\024non_" +
-      "delay_frame_data\030\004 \001(\0132\026.service.GrpcFra" +
-      "meData\022,\n\013screen_data\030\005 \001(\0132\027.service.Gr" +
-      "pcScreenData\022*\n\naudio_data\030\006 \001(\0132\026.servi" +
-      "ce.GrpcAudioData\022(\n\tgame_data\030\007 \001(\0132\025.se" +
-      "rvice.GrpcGameData\022.\n\014round_result\030\010 \001(\013" +
-      "2\030.service.GrpcRoundResult\"G\n\013PlayerInpu" +
-      "t\022\023\n\013player_uuid\030\001 \001(\t\022#\n\tinput_key\030\002 \001(" +
-      "\0132\020.service.GrpcKey2\332\002\n\007Service\022<\n\007RunGa" +
-      "me\022\027.service.RunGameRequest\032\026.google.pro" +
-      "tobuf.Empty\"\000\022E\n\010Spectate\022\030.service.Spec" +
-      "tateRequest\032\033.service.SpectatorGameState" +
-      "\"\0000\001\022G\n\nInitialize\022\032.service.InitializeR" +
-      "equest\032\033.service.InitializeResponse\"\000\022H\n" +
-      "\013Participate\022\033.service.ParticipateReques" +
-      "t\032\030.service.PlayerGameState\"\0000\001\0227\n\005Input" +
-      "\022\024.service.PlayerInput\032\026.google.protobuf" +
-      ".Empty\"\000B\036\n\006protocB\014ServiceProtoP\000\242\002\003HLW" +
-      "b\006proto3"
+      "\n\010player_2\030\004 \001(\t\022\023\n\013game_number\030\005 \001(\005\"o\n" +
+      "\017SpectateRequest\022\020\n\010interval\030\001 \001(\005\022\027\n\017fr" +
+      "ame_data_flag\030\002 \001(\010\022\030\n\020screen_data_flag\030" +
+      "\003 \001(\010\022\027\n\017audio_data_flag\030\004 \001(\010\"\233\002\n\022Spect" +
+      "atorGameState\022%\n\nstate_flag\030\001 \001(\0162\021.serv" +
+      "ice.GrpcFlag\022(\n\tgame_data\030\002 \001(\0132\025.servic" +
+      "e.GrpcGameData\022*\n\nframe_data\030\003 \001(\0132\026.ser" +
+      "vice.GrpcFrameData\022,\n\013screen_data\030\004 \001(\0132" +
+      "\027.service.GrpcScreenData\022*\n\naudio_data\030\005" +
+      " \001(\0132\026.service.GrpcAudioData\022.\n\014round_re" +
+      "sult\030\006 \001(\0132\030.service.GrpcRoundResult\"Q\n\021" +
+      "InitializeRequest\022\025\n\rplayer_number\030\001 \001(\010" +
+      "\022\023\n\013player_name\030\002 \001(\t\022\020\n\010is_blind\030\003 \001(\010\"" +
+      ")\n\022InitializeResponse\022\023\n\013player_uuid\030\001 \001" +
+      "(\t\")\n\022ParticipateRequest\022\023\n\013player_uuid\030" +
+      "\001 \001(\t\"\342\002\n\017PlayerGameState\022%\n\nstate_flag\030" +
+      "\001 \001(\0162\021.service.GrpcFlag\022\022\n\nis_control\030\002" +
+      " \001(\010\022*\n\nframe_data\030\003 \001(\0132\026.service.GrpcF" +
+      "rameData\0224\n\024non_delay_frame_data\030\004 \001(\0132\026" +
+      ".service.GrpcFrameData\022,\n\013screen_data\030\005 " +
+      "\001(\0132\027.service.GrpcScreenData\022*\n\naudio_da" +
+      "ta\030\006 \001(\0132\026.service.GrpcAudioData\022(\n\tgame" +
+      "_data\030\007 \001(\0132\025.service.GrpcGameData\022.\n\014ro" +
+      "und_result\030\010 \001(\0132\030.service.GrpcRoundResu" +
+      "lt\"G\n\013PlayerInput\022\023\n\013player_uuid\030\001 \001(\t\022#" +
+      "\n\tinput_key\030\002 \001(\0132\020.service.GrpcKey2\332\002\n\007" +
+      "Service\022<\n\007RunGame\022\027.service.RunGameRequ" +
+      "est\032\026.google.protobuf.Empty\"\000\022E\n\010Spectat" +
+      "e\022\030.service.SpectateRequest\032\033.service.Sp" +
+      "ectatorGameState\"\0000\001\022G\n\nInitialize\022\032.ser" +
+      "vice.InitializeRequest\032\033.service.Initial" +
+      "izeResponse\"\000\022H\n\013Participate\022\033.service.P" +
+      "articipateRequest\032\030.service.PlayerGameSt" +
+      "ate\"\0000\001\0227\n\005Input\022\024.service.PlayerInput\032\026" +
+      ".google.protobuf.Empty\"\000B\036\n\006protocB\014Serv" +
+      "iceProtoP\000\242\002\003HLWb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -7173,13 +7754,13 @@ public final class ServiceProto {
     internal_static_service_SpectateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service_SpectateRequest_descriptor,
-        new java.lang.String[] { });
+        new java.lang.String[] { "Interval", "FrameDataFlag", "ScreenDataFlag", "AudioDataFlag", });
     internal_static_service_SpectatorGameState_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_service_SpectatorGameState_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service_SpectatorGameState_descriptor,
-        new java.lang.String[] { "StateFlag", "FrameData", "ScreenData", "AudioData", "RoundResult", });
+        new java.lang.String[] { "StateFlag", "GameData", "FrameData", "ScreenData", "AudioData", "RoundResult", });
     internal_static_service_InitializeRequest_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_service_InitializeRequest_fieldAccessorTable = new

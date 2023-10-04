@@ -27,10 +27,10 @@ import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
-import struct.AudioSource;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
+import util.BGMUtil;
 import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
@@ -97,9 +97,8 @@ public class Play extends GameScene {
 
 	private int endFrame;
 
-	private AudioSource sourceBackground;
-
 	private AudioData audioData;
+	
 	/**
 	 * クラスコンストラクタ．
 	 */
@@ -124,8 +123,6 @@ public class Play extends GameScene {
 		this.currentRound = 1;
 		this.roundStartFlag = true;
 		this.endFrame = -1;
-		this.sourceBackground = SoundManager.getInstance().createAudioSource();
-
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
 		this.audioData = new AudioData();
@@ -149,7 +146,7 @@ public class Play extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		if (FlagSetting.grpc) {
-			LaunchSetting.grpcServer.getObserver().initialize(gameData);
+			LaunchSetting.grpcServer.getObserver().onInitialize(gameData);
 		}
 
 		try {
@@ -170,7 +167,8 @@ public class Play extends GameScene {
 			this.setTransitionFlag(true);
 			this.setNextGameScene(launch);
 		}
-		SoundManager.getInstance().play2(sourceBackground, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+		
+		SoundManager.getInstance().initializeBGM();
 	}
 
 	@Override
@@ -194,14 +192,6 @@ public class Play extends GameScene {
 				} else if (this.endFrame % 30 == 0) {
 					this.nowFrame++;
 				}
-				
-//				if (FlagSetting.grpcMode) {
-//					try {
-//						GrpcServer.instance().enqueueGameData(frameData, audioData);
-//					} catch (InterruptedException e) {
-//						Logger.getAnonymousLogger().log(Level.SEVERE, "Fail to publish game data to gRPC channel");
-//					}
-//				}
 			}
 
 		} else {
@@ -223,8 +213,6 @@ public class Play extends GameScene {
 		}
 
 		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			SoundManager.getInstance().stop(sourceBackground);
-
 			HomeMenu homeMenu = new HomeMenu();
 			this.setTransitionFlag(true);
 			this.setNextGameScene(homeMenu);
@@ -243,7 +231,7 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 
 		InputManager.getInstance().clear();
-		SoundManager.getInstance().play2(sourceBackground,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
+		SoundManager.getInstance().playBGM();
 	}
 
 	/**
@@ -284,6 +272,11 @@ public class Play extends GameScene {
 		}
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		
+		if (!this.frameData.getEmptyFlag()) {
+			float[] audioGains = BGMUtil.getAudioGains(this.frameData);
+			SoundManager.getInstance().setBGMAudioGains(audioGains);
+		}
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {
@@ -306,18 +299,19 @@ public class Play extends GameScene {
 		}
 
 		this.screenData = new ScreenData();
+		
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();
 		} else {
             this.audioData = new AudioData(SoundManager.getInstance().getVirtualRenderer().sampleAudio());
         }
+		
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
 		
 		if (FlagSetting.grpc) {
 			ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
-			observer.setInformation(this.frameData, this.audioData, this.screenData);
-			observer.onGameUpdate();
+			observer.onGameUpdate(this.frameData, this.audioData, this.screenData);
 		}
 
 		// 体力が0orタイムオーバーならラウンド終了処理
@@ -330,8 +324,7 @@ public class Play extends GameScene {
 	 * ラウンド終了時の処理を行う.
 	 */
 	private void processingRoundEnd() {
-		for (AudioSource audioSource: SoundManager.getInstance().getAudioSources())
-			SoundManager.getInstance().stop(audioSource);
+		SoundManager.getInstance().stopAll();
 
 		if (FlagSetting.slowmotion) {
 			if (this.endFrame > GameSetting.ROUND_EXTRAFRAME_NUMBER) {
@@ -341,6 +334,12 @@ public class Play extends GameScene {
 
 				// AIに結果を渡す
 				InputManager.getInstance().sendRoundResult(roundResult);
+				
+				if (FlagSetting.grpc) {
+					ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
+					observer.onRoundEnd(roundResult);
+				}
+				
 				this.currentRound++;
 				this.roundStartFlag = true;
 				this.endFrame = -1;
@@ -361,6 +360,12 @@ public class Play extends GameScene {
 
 			// AIに結果を渡す
 			InputManager.getInstance().sendRoundResult(roundResult);
+			
+			if (FlagSetting.grpc) {
+				ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
+				observer.onRoundEnd(roundResult);
+			}
+			
 			this.currentRound++;
 			this.roundStartFlag = true;
 			this.endFrame = -1;
@@ -374,7 +379,7 @@ public class Play extends GameScene {
 	
 	private void processingGameEnd() {
 		InputManager.getInstance().gameEnd();
-		SoundManager.getInstance().stop(sourceBackground);
+		SoundManager.getInstance().closeBGM();
 	}
 
 	/**
@@ -414,17 +419,14 @@ public class Play extends GameScene {
 
 	@Override
 	public void close() {
-		// close fight
 		this.fighting.close();
-		this.sourceBackground.close();
-
 		this.fighting = null;
 		this.frameData = null;
 		this.screenData = null;
 		this.keyData = null;
-		// AIの実行を終了する
-		InputManager.getInstance().closeAI();
 		this.roundResults.clear();
+		
+		InputManager.getInstance().closeAI();
 
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().closeAllWriters();

@@ -1,8 +1,5 @@
 package util;
 
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -96,9 +93,7 @@ public class ResourceDrawer {
 	 */
 	public void drawBackGroundImage() {
 		Image bg = GraphicManager.getInstance().getBackgroundImage().get(0);
-
-		GraphicManager.getInstance().drawImage(bg, 0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT,
-				Image.DIRECTION_RIGHT);
+		GraphicManager.getInstance().drawImage(bg, 0, 0, Image.DIRECTION_RIGHT);
 	}
 
 	/**
@@ -108,7 +103,6 @@ public class ResourceDrawer {
 	 *            P1とP2のキャラクターデータを格納した配列
 	 */
 	public void drawCharacterImage(Character[] playerCharacters) {
-
 		String[] names = { "P1", "P2" };
 
 		// draw players name
@@ -123,14 +117,10 @@ public class ResourceDrawer {
 			int positionY = playerCharacters[i].getHitAreaTop() - 50;
 
 			GraphicManager.getInstance().drawString(names[i], positionX, positionY);
-
 			GraphicManager.getInstance().drawImage(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
 					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
-					playerCharacters[i].getGraphicSizeY(), playerCharacters[i].isFront());
-
-			GraphicManager.getInstance().drawImageinScreenData(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
-					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
-					playerCharacters[i].getGraphicSizeY(), playerCharacters[i].isFront());
+					playerCharacters[i].getGraphicSizeY(), playerCharacters[i].isFront(),
+					-playerCharacters[i].getGraphicSizeX()/2, 0);
 		}
 	}
 
@@ -143,7 +133,6 @@ public class ResourceDrawer {
 	 *            P1とP2のキャラクターデータを格納した配列
 	 */
 	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters) {
-
 		// Is displayed according to the orientation image attack.
 		for (LoopEffect projectile : projectiles) {
 			Attack attack = projectile.getAttack();
@@ -160,14 +149,7 @@ public class ResourceDrawer {
 				}
 				int positionY = area.getTop() - ((image.getHeight() - (area.getBottom() - area.getTop())) / 2);
 
-				BufferedImage tmpImage = image.getBufferedImage();
-				tmpImage = flipImage(tmpImage, attack.getSpeedX() >= 0);
-
-				GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(), image.getHeight(),
-						attack.getSpeedX() >= 0);
-
-				GraphicManager.getInstance().drawImageinScreenData(image, positionX, positionY, image.getWidth(), image.getHeight(),
-						attack.getSpeedX() >= 0);
+				GraphicManager.getInstance().drawImage(image, positionX, positionY, attack.getSpeedX() >= 0);
 			}
 		}
 	}
@@ -280,7 +262,6 @@ public class ResourceDrawer {
 
 				Image hitTextImage = GraphicManager.getInstance().getHitTextImageContainer().get(0);
 				GraphicManager.getInstance().drawImage(hitTextImage, i == 0 ? 170 : 830, 150, Image.DIRECTION_RIGHT);
-
 			}
 		}
 	}
@@ -304,19 +285,11 @@ public class ResourceDrawer {
 					playerCharacters[i].getHitAreaBottom() - playerCharacters[i].getHitAreaTop(), 0.0f + i,
 					1.0f - i * 0.35f, 0.0f, 0.0f);
 
-			GraphicManager.getInstance().drawLineQuadinScreenData(playerCharacters[i].getHitAreaLeft(),
-					playerCharacters[i].getHitAreaTop(),
-					playerCharacters[i].getHitAreaRight() - playerCharacters[i].getHitAreaLeft(),
-					playerCharacters[i].getHitAreaBottom() - playerCharacters[i].getHitAreaTop(), 0.0f + i,
-					1.0f - i * 0.35f, 0.0f, 0.0f);
-
 			// 攻撃の当たり判定ボックスの描画
 			if (playerCharacters[i].getAttack() != null) {
 				HitArea area = playerCharacters[i].getAttack().getCurrentHitArea();
 
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),
-						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
-				GraphicManager.getInstance().drawLineQuadinScreenData(area.getLeft(), area.getTop(),
 						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
 			}
 		}
@@ -329,9 +302,6 @@ public class ResourceDrawer {
 				HitArea area = temp.getCurrentHitArea();
 
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),
-						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
-
-				GraphicManager.getInstance().drawLineQuadinScreenData(area.getLeft(), area.getTop(),
 						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f);
 			}
 		}
@@ -353,9 +323,6 @@ public class ResourceDrawer {
 					HitArea area = hitEffect.getAttack().getCurrentHitArea();
 					Image image = hitEffect.getImage();
 
-					BufferedImage tmpImage = image.getBufferedImage();
-					tmpImage = flipImage(tmpImage, i != 0);
-
 					int positionX = area.getLeft() - (image.getWidth() - area.getRight() + area.getLeft()) / 2
 							+ hitEffect.getVariationX();
 					int positionY = area.getTop() - (image.getHeight() - area.getBottom() + area.getTop()) / 2
@@ -364,38 +331,10 @@ public class ResourceDrawer {
 					if (hitEffect.getVariationX() == 0 && hitEffect.getVariationY() == 0) {
 						positionX += 30;
 					}
-					GraphicManager.getInstance().drawImage(image, positionX, positionY, image.getWidth(),
-							image.getHeight(), i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT);
+					GraphicManager.getInstance().drawImage(image, positionX, positionY, i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT);
 				}
 			}
 		}
-	}
-
-	/**
-	 * 画像を左右反転させる．<br>
-	 * 画像データは右向きで用意されているため，引数の右向きかどうかを表す変数がfalseなら画像を左右反転させる．
-	 *
-	 * @param image
-	 *            画像
-	 * @param isFront
-	 *            キャラクターが右向きかどうかを表す変数
-	 *
-	 * @return 左右反転画像(isFrontがfalse)か，元の画像(isFrontがtrue)
-	 */
-	private BufferedImage flipImage(BufferedImage image, boolean isFront) {
-		BufferedImage tempImage = new BufferedImage(image.getWidth(), image.getHeight(),BufferedImage.TYPE_INT_ARGB);
-		// Flip the image if we need to
-		if (!isFront) {
-			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			tx.translate(-image.getWidth(null), 0);
-
-			AffineTransformOp flip = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			flip.filter(image, tempImage);
-		}else{
-			return image;
-		}
-
-		return tempImage;
 	}
 
 }

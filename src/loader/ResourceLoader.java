@@ -12,8 +12,8 @@ import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -372,25 +372,30 @@ public class ResourceLoader {
 	 *            背景画像ディレクトリのパス
 	 */
 	public void loadBackgroundImage(ArrayList<Image> container, String path) {
-		BufferedImage bg = null;
-
 		switch (LaunchSetting.backgroundType) {
 		case BLACK:
-			bg = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_BYTE_BINARY,
-					new IndexColorModel(1, 1, new byte[] { 0 }, new byte[] { 0 }, new byte[] { 0 }));
-			container.add(loadTextureFromBufferedImage(bg));
+			container.add(loadTextureFromBufferedImage(createBackgroundImage(0, 0, 0)));
 			break;
-
+			
 		case GREY:
-			bg = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_BYTE_BINARY,
-					new IndexColorModel(1, 1, new byte[] { (byte) 128 }, new byte[] { (byte) 128 },
-							new byte[] { (byte) 128 }));
-			container.add(loadTextureFromBufferedImage(bg));
-
+			container.add(loadTextureFromBufferedImage(createBackgroundImage(128, 128, 128)));
+			break;
+			
 		default:
 			loadImages(container, path);
 			break;
 		}
+	}
+	
+	private BufferedImage createBackgroundImage(int r, int g, int b) {
+		Color color = new Color(r, g, b);
+		BufferedImage bg = new BufferedImage(GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		for (int x = 0; x < bg.getWidth(); x++) {
+			for (int y = 0; y < bg.getHeight(); y++) {
+				bg.setRGB(x, y, color.getRGB());
+			}
+		}
+		return bg;
 	}
 
 	/**
