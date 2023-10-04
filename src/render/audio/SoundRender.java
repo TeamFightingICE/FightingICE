@@ -125,6 +125,11 @@ public class SoundRender {
         AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
     }
     
+    public float getSourceGain(int sourceId) {
+    	set();
+    	return alGetSourcef(sourceId, AL10.AL_GAIN);
+    }
+    
     public void setSourceGain(int sourceId, float gain) {
     	set();
     	alSourcef(sourceId, AL10.AL_GAIN, gain);

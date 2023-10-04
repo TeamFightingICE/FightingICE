@@ -1,6 +1,15 @@
 package manager;
 
-import static org.lwjgl.openal.AL10.*;
+import static org.lwjgl.openal.AL10.AL_ORIENTATION;
+import static org.lwjgl.openal.AL10.AL_POSITION;
+import static org.lwjgl.openal.AL10.AL_ROLLOFF_FACTOR;
+import static org.lwjgl.openal.AL10.AL_VELOCITY;
+import static org.lwjgl.openal.AL10.alBufferData;
+import static org.lwjgl.openal.AL10.alGenBuffers;
+import static org.lwjgl.openal.AL10.alGenSources;
+import static org.lwjgl.openal.AL10.alSource3f;
+import static org.lwjgl.openal.AL10.alSourcePlay;
+import static org.lwjgl.openal.AL10.alSourcef;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -9,7 +18,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +26,7 @@ import java.util.logging.Logger;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.WaveData;
+
 import render.audio.SoundRender;
 import setting.FlagSetting;
 import struct.AudioBuffer;
@@ -73,7 +82,7 @@ public class SoundManager {
      */
     private ArrayList<AudioSource> audioSources;
     // BGM Source
-    private static final String[] INSTRUMENT_NAMES = { "violin", "piano", "flute", "ukulele", "cello" };
+    private static final String[] INSTRUMENT_NAMES = { "string", "drum", "other" };
     private HashMap<String, AudioSource> bgmSources;
     /**
      * Sound rendering devices.
@@ -433,11 +442,9 @@ public class SoundManager {
     }
     
     public void playBGM() {
-        setSourceGainAndPlay("violin", "bach_V.wav", 0.75f);
-        setSourceGainAndPlay("piano", "bach_P.wav", 0.10f);
-        setSourceGainAndPlay("flute", "bach_F.wav", 0.75f);
-        setSourceGainAndPlay("ukulele", "bach_U.wav", 0.10f);
-        setSourceGainAndPlay("cello", "bach_C.wav", 0.75f);
+        setSourceGainAndPlay("string", "Strings.wav", 0.852f);
+        setSourceGainAndPlay("drum", "Drums.wav", 0.432f);
+        setSourceGainAndPlay("other", "Others.wav", 0.853f);
     }
     
     public void closeSources() {
