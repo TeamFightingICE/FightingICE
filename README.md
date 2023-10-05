@@ -8,7 +8,7 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 
 ### How to start development ###
 - Clone the project into your local workspace.
-- Download resources required for development from [here](https://github.com/TeamFightingICE/FightingICE/releases/download/v6.0.1/resources-6.0.1.zip) and extract into the root directory.
+- Download resources required for development from [here](https://github.com/TeamFightingICE/FightingICE/releases/download/v6.1/resources-6.1.zip) and extract into the root directory.
 - Add all libraries from `lib` into your project. (for LWJGL, please add only one native match with your OS)
 
 ### Important contents ###
