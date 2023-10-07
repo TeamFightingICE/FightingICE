@@ -30,7 +30,8 @@ public class ObserverRunnable implements Runnable {
 	}
 	
 	public void enqueue(ObserverGameState data) {
-		if (!this.stateQueue.isEmpty() && data.compareTo(this.stateQueue.peek()) >= 0) {
+		ObserverGameState peek = this.stateQueue.peek();
+		if (peek != null && data.compareTo(peek) >= 0) {
 			this.stateQueue.clear();
 		}
 		
