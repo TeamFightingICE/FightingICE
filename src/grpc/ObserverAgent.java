@@ -75,7 +75,7 @@ public class ObserverAgent {
 			return;
 		}
 
-		this.runnable.setInitializeData(gameData);
+		this.runnable.enqueue(new ObserverDataPack(gameData));
 	}
 	
 	public void onGameUpdate(FrameData frameData, ScreenData screenData, AudioData audioData) {
@@ -88,7 +88,7 @@ public class ObserverAgent {
 			if (!this.screenDataFlag) screenData = null;
 			if (!this.audioDataFlag) audioData = null;
 			
-			this.runnable.setProcessingData(frameData, screenData, audioData);
+			this.runnable.enqueue(new ObserverDataPack(frameData, screenData, audioData));
 		}
 	}
 	
@@ -97,7 +97,7 @@ public class ObserverAgent {
 			return;
 		}
 		
-		this.runnable.setRoundEndData(roundResult);
+		this.runnable.enqueue(new ObserverDataPack(roundResult));
 	}
 
 }
