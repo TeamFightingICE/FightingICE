@@ -29,6 +29,10 @@ import struct.ScreenData;
 public class GrpcUtil {
 
 	public static GrpcHitArea convertHitArea(HitArea hitArea) {
+		if (hitArea == null) {
+			return GrpcHitArea.getDefaultInstance();
+		}
+		
 		return GrpcHitArea.newBuilder()
 				.setLeft(hitArea.getLeft())
 				.setRight(hitArea.getRight())
@@ -38,6 +42,10 @@ public class GrpcUtil {
 	}
 	
 	public static GrpcAttackData convertAttackData(AttackData attackData) {
+		if (attackData == null) {
+			return GrpcAttackData.getDefaultInstance();
+		}
+		
   		return GrpcAttackData.newBuilder()
   				.setSettingHitArea(convertHitArea(attackData.getSettingHitArea()))
   				.setSettingSpeedX(attackData.getSettingSpeedX())
@@ -65,6 +73,10 @@ public class GrpcUtil {
   	}
   	
   	public static GrpcCharacterData convertCharacterData(CharacterData characterData) {
+  		if (characterData == null) {
+  			return GrpcCharacterData.getDefaultInstance();
+  		}
+  		
   		return GrpcCharacterData.newBuilder()
   				.setPlayerNumber(characterData.isPlayerNumber())
   				.setHp(characterData.getHp())
@@ -93,6 +105,10 @@ public class GrpcUtil {
   	}
   	
   	public static GrpcFrameData convertFrameData(FrameData frameData) {
+  		if (frameData == null) {
+  			return GrpcFrameData.getDefaultInstance();
+  		}
+  		
   		GrpcFrameData.Builder builder = GrpcFrameData.newBuilder();
   		builder = builder.addCharacterData(GrpcCharacterData.getDefaultInstance())
   				.addCharacterData(GrpcCharacterData.getDefaultInstance())
@@ -116,6 +132,10 @@ public class GrpcUtil {
   	}
   	
   	public static GrpcFftData convertFftData(FFTData fftData) {
+  		if (fftData == null) {
+  			return GrpcFftData.getDefaultInstance();
+  		}
+  		
   		return GrpcFftData.newBuilder()
   				.setRealDataAsBytes(ByteString.copyFrom(fftData.getRealAsBytes()))
   				.setImaginaryDataAsBytes(ByteString.copyFrom(fftData.getImagAsBytes()))
@@ -176,6 +196,10 @@ public class GrpcUtil {
     }
     
     public static GrpcGameData convertGameData(GameData gameData) {
+    	if (gameData == null) {
+    		return GrpcGameData.getDefaultInstance();
+    	}
+    	
     	return GrpcGameData.newBuilder()
     			.addMaxHps(gameData.getMaxHP(true))
     			.addMaxHps(gameData.getMaxHP(false))
@@ -189,6 +213,10 @@ public class GrpcUtil {
     }
     
     public static GrpcRoundResult convertRoundResult(RoundResult roundResult) {
+    	if (roundResult == null) {
+    		return GrpcRoundResult.getDefaultInstance();
+    	}
+    	
     	return GrpcRoundResult.newBuilder()
     			.setCurrentRound(roundResult.getRound())
     			.addRemainingHps(roundResult.getRemainingHPs()[0])

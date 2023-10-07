@@ -64,6 +64,12 @@ public class ObserverRunnable implements Runnable {
 		}
 	}
 	
+	private void send(SpectatorGameState state) {
+		if (!this.cancelled) {
+			this.observer.onNext(state);
+		}
+	}
+	
 	@Override
 	public void run() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Observer thread is started.");
@@ -82,26 +88,18 @@ public class ObserverRunnable implements Runnable {
 		  				.setStateFlag(GrpcFlag.INITIALIZE)
 		  				.setGameData(GrpcUtil.convertGameData(gameData))
 		  				.build();
-				this.observer.onNext(response);
+				this.send(response);
 				
 				this.gameData = null;
 			} else if (this.grpcFlag == GrpcFlag.PROCESSING) {
-				SpectatorGameState.Builder response = SpectatorGameState.newBuilder()
-						.setStateFlag(GrpcFlag.PROCESSING);
-				
-				if (this.frameData != null) {
-					response.setFrameData(GrpcUtil.convertFrameData(frameData));
-				}
-				
-				if (this.screenData != null) {
-					response.setScreenData(GrpcUtil.convertScreenData(screenData));
-				}
-				
-				if (this.audioData != null) {
-					response.setAudioData(GrpcUtil.convertAudioData(audioData));
-				}
+				SpectatorGameState response = SpectatorGameState.newBuilder()
+						.setStateFlag(GrpcFlag.PROCESSING)
+						.setFrameData(GrpcUtil.convertFrameData(frameData))
+						.setScreenData(GrpcUtil.convertScreenData(screenData))
+						.setAudioData(GrpcUtil.convertAudioData(audioData))
+						.build();
+				this.send(response);
 
-				this.observer.onNext(response.build());
 				
 				this.frameData = null;
 				this.screenData = null;
@@ -112,7 +110,7 @@ public class ObserverRunnable implements Runnable {
 						.setStateFlag(isGameEnd ? GrpcFlag.GAME_END : GrpcFlag.ROUND_END)
 						.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
 		  				.build();
-				this.observer.onNext(response);
+				this.send(response);
 				
 				this.roundResult = null;
 			}
