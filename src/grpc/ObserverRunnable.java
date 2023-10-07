@@ -29,6 +29,10 @@ public class ObserverRunnable implements Runnable {
 	}
 	
 	public void enqueue(ObserverDataPack data) {
+		if (data.getGrpcFlag() != GrpcFlag.PROCESSING || !this.stateQueue.isEmpty()) {
+			this.stateQueue.clear();
+		}
+		
 		this.stateQueue.offer(data);
 	}
 	
