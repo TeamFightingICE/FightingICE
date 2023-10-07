@@ -3,15 +3,12 @@ package grpc;
 import informationcontainer.RoundResult;
 import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
-import protoc.EnumProto.GrpcFlag;
 import protoc.ServiceProto.SpectateRequest;
 import protoc.ServiceProto.SpectatorGameState;
-import setting.GameSetting;
 import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
-import util.GrpcUtil;
 
 public class ObserverAgent {
 	
@@ -22,6 +19,9 @@ public class ObserverAgent {
 	
 	private boolean cancelled;
 	private StreamObserver<SpectatorGameState> responseObserver;
+	private ObserverRunnable runnable;
+	
+	private Thread currentThread;
 	
 	public ObserverAgent() {
 		this.cancelled = true;
@@ -47,6 +47,9 @@ public class ObserverAgent {
 		
 		this.cancelled = false;
 		this.responseObserver = responseObserver;
+		this.runnable = new ObserverRunnable(this.responseObserver);
+		this.currentThread = new Thread(this.runnable);
+		this.currentThread.start();
 	}
 	
 	public boolean isCancelled() {
@@ -56,11 +59,14 @@ public class ObserverAgent {
 	public void cancel() {
 		this.responseObserver = null;
 		this.cancelled = true;
+		this.runnable.cancel();
+		this.currentThread = null;
 	}
 	
 	public void notifyOnCompleted() {
 		if (!this.isCancelled()) {
 			this.responseObserver.onCompleted();
+			this.cancel();
 		}
 	}
 	
@@ -68,36 +74,21 @@ public class ObserverAgent {
 		if (this.isCancelled()) {
 			return;
 		}
-		
-		SpectatorGameState response = SpectatorGameState.newBuilder()
-  				.setStateFlag(GrpcFlag.INITIALIZE)
-  				.setGameData(GrpcUtil.convertGameData(gameData))
-  				.build();
-		this.onNext(response);
+
+		this.runnable.setInitializeData(gameData);
 	}
 	
-	public void onGameUpdate(FrameData frameData, AudioData audioData, ScreenData screenData) {
+	public void onGameUpdate(FrameData frameData, ScreenData screenData, AudioData audioData) {
 		if (this.isCancelled()) {
 			return;
 		}
 		
 		if (frameData.getFramesNumber() % this.interval == 0) {
-			SpectatorGameState.Builder response = SpectatorGameState.newBuilder()
-					.setStateFlag(GrpcFlag.PROCESSING);
+			if (!this.frameDataFlag) frameData = null;
+			if (!this.screenDataFlag) screenData = null;
+			if (!this.audioDataFlag) audioData = null;
 			
-			if (this.frameDataFlag) {
-				response.setFrameData(GrpcUtil.convertFrameData(frameData));
-			}
-			
-			if (this.screenDataFlag) {
-				response.setScreenData(GrpcUtil.convertScreenData(screenData));
-			}
-			
-			if (this.audioDataFlag) {
-				response.setAudioData(GrpcUtil.convertAudioData(audioData));
-			}
-			
-			this.onNext(response.build());
+			this.runnable.setProcessingData(frameData, screenData, audioData);
 		}
 	}
 	
@@ -106,18 +97,7 @@ public class ObserverAgent {
 			return;
 		}
 		
-		boolean isGameEnd = roundResult.getRound() >= GameSetting.ROUND_MAX;
-		SpectatorGameState response = SpectatorGameState.newBuilder()
-				.setStateFlag(isGameEnd ? GrpcFlag.GAME_END : GrpcFlag.ROUND_END)
-				.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
-  				.build();
-		this.onNext(response);
-	}
-	
-	public void onNext(SpectatorGameState state) {
-		if (!this.isCancelled()) {
-			this.responseObserver.onNext(state);
-		}
+		this.runnable.setRoundEndData(roundResult);
 	}
 
 }

@@ -311,7 +311,7 @@ public class Play extends GameScene {
 		
 		if (FlagSetting.grpc) {
 			ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
-			observer.onGameUpdate(this.frameData, this.audioData, this.screenData);
+			observer.onGameUpdate(this.frameData, this.screenData, this.audioData);
 		}
 
 		// 体力が0orタイムオーバーならラウンド終了処理
