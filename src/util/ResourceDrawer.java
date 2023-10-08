@@ -167,8 +167,8 @@ public class ResourceDrawer {
 
 			GraphicManager.getInstance().drawQuad(480 - 50, 75, -300, 20, 0.2f, 0.2f, 0.2f, 0.0f);
 			GraphicManager.getInstance().drawQuad(480 + 50, 75, 300, 20, 0.2f, 0.2f, 0.2f, 0.0f);
-			GraphicManager.getInstance().drawQuad(480 - 50, 75, p1Hp, 20, 0, 1.0f, 0, 0.0f);
-			GraphicManager.getInstance().drawQuad(480 + 50, 75, p2Hp, 20, 1.0f, 0.65f, 0, 0.0f);
+			GraphicManager.getInstance().drawQuad(480 - 50, 75, Math.max(-300, Math.min(0, p1Hp)), 20, 0, 1.0f, 0, 0.0f);
+			GraphicManager.getInstance().drawQuad(480 + 50, 75, Math.min(300, Math.max(0, p2Hp)), 20, 1.0f, 0.65f, 0, 0.0f);
 		}
 	}
 
@@ -222,10 +222,10 @@ public class ResourceDrawer {
 
 	private void drawPlayerDetail(Character[] playerCharacters) {
 		if (FlagSetting.limitHpFlag) {
-			GraphicManager.getInstance().drawString("P1 HP: " + playerCharacters[0].getHp(), 130 + 30, 45);
+			GraphicManager.getInstance().drawString("P1 HP: " + Math.max(0, playerCharacters[0].getHp()), 130 + 30, 45);
 			GraphicManager.getInstance().drawString("Energy: " + playerCharacters[0].getEnergy(), 260 + 30, 45);
 			
-			GraphicManager.getInstance().drawString("P2 HP: " + playerCharacters[1].getHp(), 590 - 30, 45);
+			GraphicManager.getInstance().drawString("P2 HP: " + Math.max(0, playerCharacters[1].getHp()), 590 - 30, 45);
 			GraphicManager.getInstance().drawString("Energy: " + playerCharacters[1].getEnergy(), 720 - 30, 45);
 		} else {
 			GraphicManager.getInstance().drawString("P1 HP: " + playerCharacters[0].getHp(), 100, 50);

@@ -21,24 +21,24 @@ public class ObserverRunnable implements Runnable {
 	public ObserverRunnable(StreamObserver<SpectatorGameState> observer) {
 		this.cancelled = false;
 		this.observer = observer;
-		this.stateQueue = new LinkedBlockingQueue<>(1);
+		this.stateQueue = new LinkedBlockingQueue<>();
 	}
 	
 	public void cancel() {
-		this.enqueue(new ObserverGameState());
+		this.enqueue(ObserverGameState.newCancelledState());
 		this.cancelled = true;
+		this.observer = null;
 	}
 	
 	public void enqueue(ObserverGameState data) {
-		ObserverGameState peek = this.stateQueue.peek();
-		if (peek != null && data.compareTo(peek) >= 0) {
-			this.stateQueue.clear();
-		}
-		
 		try {
+			if (!this.stateQueue.isEmpty() && data.compareTo(this.stateQueue.peek()) >= 0) {
+				this.stateQueue.clear();
+			}
+			
 			this.stateQueue.put(data);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			Logger.getAnonymousLogger().log(Level.INFO, "Error producing game state: " + e.getMessage());
 		}
 	}
 	
@@ -79,10 +79,12 @@ public class ObserverRunnable implements Runnable {
 			  				.build();
 					this.send(response);
 				} else if (data.getStateFlag() == StateFlag.CANCELLED) {
+					this.stateQueue.clear();
+					this.stateQueue = null;
 					break;
 				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				Logger.getAnonymousLogger().log(Level.INFO, "Error consuming game state: " + e.getMessage());
 			}
 		}
 		

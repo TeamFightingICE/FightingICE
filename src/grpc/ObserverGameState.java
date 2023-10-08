@@ -16,23 +16,23 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 	private AudioData audioData;
 	private RoundResult roundResult;
 	
-	public ObserverGameState() {
+	private ObserverGameState() {
 		this.stateFlag = StateFlag.CANCELLED;
 	}
 	
-	public ObserverGameState(GameData gameData) {
+	private ObserverGameState(GameData gameData) {
 		this.stateFlag = StateFlag.INITIALIZE;
 		this.gameData = gameData;
 	}
 	
-	public ObserverGameState(FrameData frameData, ScreenData screenData, AudioData audioData) {
+	private ObserverGameState(FrameData frameData, ScreenData screenData, AudioData audioData) {
 		this.stateFlag = StateFlag.PROCESSING;
 		this.frameData = frameData;
 		this.screenData = screenData;
 		this.audioData = audioData;
 	}
 	
-	public ObserverGameState(RoundResult roundResult) {
+	private ObserverGameState(RoundResult roundResult) {
 		this.stateFlag = StateFlag.ROUND_END;
 		this.roundResult = roundResult;
 	}
@@ -64,6 +64,22 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 	@Override
 	public int compareTo(ObserverGameState o) {
 		return this.stateFlag.getPriority() - o.stateFlag.getPriority();
+	}
+	
+	public static ObserverGameState newCancelledState() {
+		return new ObserverGameState();
+	}
+	
+	public static ObserverGameState newInitializeState(GameData gameData) {
+		return new ObserverGameState(gameData);
+	}
+	
+	public static ObserverGameState newProcessingState(FrameData frameData, ScreenData screenData, AudioData audioData) {
+		return new ObserverGameState(frameData, screenData, audioData);
+	}
+	
+	public static ObserverGameState newRoundEndState(RoundResult roundResult) {
+		return new ObserverGameState(roundResult);
 	}
 	
 }
