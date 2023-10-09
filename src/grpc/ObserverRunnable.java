@@ -21,7 +21,7 @@ public class ObserverRunnable implements Runnable {
 	public ObserverRunnable(StreamObserver<SpectatorGameState> observer) {
 		this.cancelled = false;
 		this.observer = observer;
-		this.stateQueue = new LinkedBlockingQueue<>();
+		this.stateQueue = new LinkedBlockingQueue<>(1);
 	}
 	
 	public void cancel() {
