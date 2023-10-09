@@ -78,5 +78,5 @@ public class FlagSetting {
     public static boolean grpc = false;
     public static boolean grpcAuto = false;
     
-    public static boolean blind = false;
+    public static boolean visualVisibleOnRender = true;
 }

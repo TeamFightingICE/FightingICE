@@ -1,6 +1,10 @@
 package manager;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glFlush;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -231,7 +235,11 @@ public class GraphicManager {
 	 *            画像の左右の向き(右がtrue)
 	 */
 	public void drawImage(Image img, int x, int y, boolean direction) {
-		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, -img.getWidth(), 0);
+		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, -img.getWidth(), 0, true);
+	}
+	
+	public void drawImage(Image img, int x, int y, boolean direction, boolean render) {
+		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, -img.getWidth(), 0, render);
 	}
 
 	/**
@@ -250,14 +258,16 @@ public class GraphicManager {
 	 * @param direction
 	 *            画像の左右の向き(右がtrue)
 	 */
-	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty) {
-		ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
-		this.renderTaskList.add(task);
+	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty, boolean render) {
+		this.drawImageInScreenData(img, x, y, sizeX, sizeY, direction, tx, ty);
 		
-		this.drawImageinScreenData(img, x, y, sizeX, sizeY, direction, tx, ty);
+		if (render) {
+			ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
+			this.renderTaskList.add(task);
+		}
 	}
 
-	public void drawImageinScreenData(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty) {
+	public void drawImageInScreenData(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty) {
 		if (direction) {
 			screenGraphic.drawImage(img.getBufferedImage(), x, y, sizeX, sizeY, null);
 		} else {
@@ -279,10 +289,16 @@ public class GraphicManager {
 	 *            文字画像をレンダリングするy座標
 	 */
 	public void drawString(String string, int x, int y) {
-		StringTask task = new StringTask(letterImage, string, x, y);
-		this.renderTaskList.add(task);
-		
+		this.drawString(string, x, y, true);
+	}
+	
+	public void drawString(String string, int x, int y, boolean render) {
 		this.drawStringInScreenData(string, x, y);
+		
+		if (render) {
+			StringTask task = new StringTask(letterImage, string, x, y);
+			this.renderTaskList.add(task);
+		}
 	}
 	
 	public void drawStringInScreenData(String string, int x, int y) {
@@ -318,10 +334,16 @@ public class GraphicManager {
 	 *            塗りつぶし色の不透明度
 	 */
 	public void drawQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
-		QuadTask task = new QuadTask(QuadTask.FILLED_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
-		this.renderTaskList.add(task);
-		
+		this.drawQuad(x, y, sizeX, sizeY, red, green, blue, alpha, true);
+	}
+	
+	public void drawQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha, boolean render) {
 		this.drawQuadInScreenData(x, y, sizeX, sizeY, red, green, blue, alpha);
+		
+		if (render) {
+			QuadTask task = new QuadTask(QuadTask.FILLED_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
+			this.renderTaskList.add(task);
+		}
 	}
 	
 	public void drawQuadInScreenData(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
@@ -362,10 +384,16 @@ public class GraphicManager {
 	 *            線の色の不透明度
 	 */
 	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
-		QuadTask task = new QuadTask(QuadTask.LINE_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
-		this.renderTaskList.add(task);
-		
+		this.drawLineQuad(x, y, sizeX, sizeY, red, green, blue, alpha, true);
+	}
+	
+	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha, boolean render) {
 		this.drawLineQuadinScreenData(x, y, sizeX, sizeY, red, green, blue, alpha);
+		
+		if (render) {
+			QuadTask task = new QuadTask(QuadTask.LINE_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
+			this.renderTaskList.add(task);
+		}
 	}
 
 	public void drawLineQuadinScreenData(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha){
@@ -386,7 +414,7 @@ public class GraphicManager {
 	public void resetScreen(){
 		screen = new BufferedImage(screen.getWidth(), screen.getHeight(), BufferedImage.TYPE_INT_RGB);
 		screenGraphic = screen.createGraphics();
-		screenGraphic.setColor(new Color (128, 128, 128));
+		screenGraphic.setColor(new Color(128, 128, 128));
 	}
 
 	public void disposeScreenGraphic(){

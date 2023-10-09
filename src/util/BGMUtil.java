@@ -67,7 +67,7 @@ public class BGMUtil {
 	private static float calculateGainFromDistance(int distance) {
 		float gain;
 		// gain = (float) ((1 - (Math.min(distance, 750) / 750.0)) * 0.65 + 0.1);
-		if (distance < 750 && distance > 600) {
+		if (distance > 600) {
 			gain = 0.101f;
 		} else if (distance > 500) {
 			gain = 0.301f;

@@ -160,7 +160,7 @@ public class Game extends GameManager {
                 	FlagSetting.grpcAuto = true;
                 	break;
                 case "--blind":
-                	FlagSetting.blind = true;
+                	FlagSetting.visualVisibleOnRender = false;
                 	break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING, "Arguments error: unknown format is exist. -> " + options[i] + " ?");
