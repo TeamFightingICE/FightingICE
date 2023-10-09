@@ -79,4 +79,7 @@ public class FlagSetting {
     public static boolean grpcAuto = false;
     
     public static boolean visualVisibleOnRender = true;
+    
+    public static boolean enableAdaptiveBgm = true;
+    
 }

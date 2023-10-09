@@ -273,7 +273,7 @@ public class Play extends GameScene {
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 		
-		if (!this.frameData.getEmptyFlag()) {
+		if (!this.frameData.getEmptyFlag() && FlagSetting.enableAdaptiveBgm) {
 			float[] audioGains = BGMUtil.getAudioGains(this.frameData);
 			SoundManager.getInstance().setBGMAudioGains(audioGains);
 		}
