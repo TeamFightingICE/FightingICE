@@ -63,27 +63,31 @@ public class ResourceDrawer {
 
 		GraphicManager.getInstance().resetScreen();
 
-		drawBackGroundImage();
+		if (!FlagSetting.blind) {
+			
+			drawBackGroundImage();
 
-		drawCharacterImage(characters);
+			drawCharacterImage(characters);
 
-		drawAttackImage(projectiles, characters);
+			drawAttackImage(projectiles, characters);
 
-		drawHPGaugeImage(characters);
+			drawHPGaugeImage(characters);
 
-		drawEnergyGaugeImage(characters);
+			drawEnergyGaugeImage(characters);
 
-		drawTimeImage(remainingTime);
-		
-		drawPlayerDetail(characters);
+			drawTimeImage(remainingTime);
+			
+			drawPlayerDetail(characters);
 
-		drawRoundNumber(round);
+			drawRoundNumber(round);
 
-		drawHitCounter(characters);
+			drawHitCounter(characters);
 
-		drawHitArea(characters, projectiles);
+			drawHitArea(characters, projectiles);
 
-		drawHitEffects(hitEffects);
+			drawHitEffects(hitEffects);
+			
+		}
 
 		GraphicManager.getInstance().disposeScreenGraphic();
 	}

@@ -159,6 +159,9 @@ public class Game extends GameManager {
                 	FlagSetting.grpc = true;
                 	FlagSetting.grpcAuto = true;
                 	break;
+                case "--blind":
+                	FlagSetting.blind = true;
+                	break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING, "Arguments error: unknown format is exist. -> " + options[i] + " ?");
             }
