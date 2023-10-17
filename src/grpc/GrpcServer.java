@@ -31,7 +31,7 @@ public class GrpcServer {
     			.build();
     	
     	server.start();
-    	Logger.getAnonymousLogger().log(Level.INFO, "Server started, listening on " + port);
+    	Logger.getAnonymousLogger().log(Level.INFO, "gRPC server is started, listening on " + port);
   	}
 
   	public void stop() throws InterruptedException {
@@ -40,6 +40,7 @@ public class GrpcServer {
 	  		this.players[1].onCompleted();
 	  		this.observer.notifyOnCompleted();
 	  		server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
+	    	Logger.getAnonymousLogger().log(Level.INFO, "gRPC server is stopped");
     	}
   	}
   	

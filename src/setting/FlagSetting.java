@@ -75,7 +75,7 @@ public class FlagSetting {
      */
     public static boolean slowmotion = false;
     
-    public static boolean grpc = false;
+    public static boolean grpc = true;
     public static boolean grpcAuto = false;
     
     public static boolean visualVisibleOnRender = true;

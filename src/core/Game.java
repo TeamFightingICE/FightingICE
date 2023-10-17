@@ -152,12 +152,11 @@ public class Game extends GameManager {
                 	int port = Integer.parseInt(options[++i]);
                     LaunchSetting.py4jPort = LaunchSetting.grpcPort = port;
                     break;
-                case "--grpc":
-                	FlagSetting.grpc = true;
-                	break;
                 case "--grpc-auto":
-                	FlagSetting.grpc = true;
                 	FlagSetting.grpcAuto = true;
+                	break;
+                case "--disable-grpc":
+                	FlagSetting.grpc = false;
                 	break;
                 case "--disable-vision":
                 	FlagSetting.visualVisibleOnRender = false;
