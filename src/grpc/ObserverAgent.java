@@ -30,7 +30,6 @@ public class ObserverAgent {
 	public void register(SpectateRequest request, StreamObserver<SpectatorGameState> responseObserver) {
 		if (!this.isCancelled()) {
 			this.notifyOnCompleted();
-			this.cancel();
 		}
 		
 		((ServerCallStreamObserver<SpectatorGameState>) responseObserver).setOnCancelHandler(new Runnable() {

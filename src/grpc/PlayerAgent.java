@@ -56,7 +56,7 @@ public class PlayerAgent {
 	
 	public void participateRPC(StreamObserver<PlayerGameState> responseObserver) {
 		if (!this.isCancelled()) {
-			this.onCancel();
+			this.notifyOnCompleted();
 		}
 		
 		((ServerCallStreamObserver<PlayerGameState>) responseObserver).setOnCancelHandler(new Runnable() {
@@ -72,11 +72,6 @@ public class PlayerAgent {
 	public void initialize(GameData gameData, boolean playerNumber) {
 		this.playerNumber = playerNumber;
 		this.onInitialize(gameData);
-	}
-	
-	public void cancel() {
-		this.responseObserver = null;
-		this.cancelled = true;
 	}
 	
 	public UUID getPlayerUuid() {
@@ -101,6 +96,18 @@ public class PlayerAgent {
 	
 	public boolean isReady() {
 		return !this.waitFlag;
+	}
+	
+	public void cancel() {
+		this.responseObserver = null;
+		this.cancelled = true;
+	}
+	
+	public void notifyOnCompleted() {
+		if (!this.isCancelled()) {
+			this.responseObserver.onCompleted();
+			this.cancel();
+		}
 	}
 	
 	public void setInformation(boolean isControl, FrameData frameData, AudioData audioData, 
@@ -168,17 +175,6 @@ public class PlayerAgent {
 	public void onNext(PlayerGameState state) {
 		if (!this.isCancelled()) {
 			this.responseObserver.onNext(state);
-		}
-	}
-	
-	public void onCancel() {
-		this.responseObserver.onCompleted();
-		this.cancel();
-	}
-	
-	public void onCompleted() {
-		if (!this.isCancelled()) {
-			this.responseObserver.onCompleted();
 		}
 	}
 	

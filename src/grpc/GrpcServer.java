@@ -36,9 +36,7 @@ public class GrpcServer {
 
   	public void stop() throws InterruptedException {
 	  	if (server != null) {
-	  		this.players[0].onCompleted();
-	  		this.players[1].onCompleted();
-	  		this.observer.notifyOnCompleted();
+	  		this.close();
 	  		server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
 	    	Logger.getAnonymousLogger().log(Level.INFO, "gRPC server is stopped");
     	}
@@ -73,13 +71,14 @@ public class GrpcServer {
   		this.game.setRunFlag(true);
   	}
   	
-  	public void release() {
+  	public void close() {
   		for (int i = 0; i < 2; i++) {
   			if (!this.players[i].isCancelled()) {
-  				this.players[i].onCompleted();
-  				this.players[i].cancel();
+  				this.players[i].notifyOnCompleted();
   			}
   		}
+  		
+  		this.observer.notifyOnCompleted();
   	}
   	
 }
