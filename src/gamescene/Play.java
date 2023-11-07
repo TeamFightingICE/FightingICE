@@ -27,6 +27,7 @@ import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
+import struct.AudioSource;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
@@ -99,6 +100,8 @@ public class Play extends GameScene {
 
 	private AudioData audioData;
 	
+	private AudioSource sourceRoundEnd;
+	
 	/**
 	 * クラスコンストラクタ．
 	 */
@@ -128,6 +131,7 @@ public class Play extends GameScene {
 		this.audioData = new AudioData();
 		this.keyData = new KeyData();
 		this.roundResults = new ArrayList<RoundResult>();
+		this.sourceRoundEnd = SoundManager.getInstance().createAudioSource();
 
 		this.timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
 
@@ -273,9 +277,16 @@ public class Play extends GameScene {
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 		
-		if (!this.frameData.getEmptyFlag() && FlagSetting.enableAdaptiveBgm) {
-			float[] audioGains = BGMUtil.getAudioGains(this.frameData);
-			SoundManager.getInstance().setBGMAudioGains(audioGains);
+		if (!this.frameData.getEmptyFlag()) {
+			if (FlagSetting.enableAdaptiveBgm) {
+				float[] audioGains = BGMUtil.getAudioGains(this.frameData);
+				SoundManager.getInstance().setBGMAudioGains(audioGains);
+			}
+			
+			if (this.frameData.getRemainingFramesNumber() == 60) {
+				SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffers().get("RoundEnd.wav"), 
+						GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, false);
+			}
 		}
 
 		// リプレイログ吐き出し
