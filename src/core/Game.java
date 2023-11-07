@@ -189,7 +189,7 @@ public class Game extends GameManager {
 			}
         }
         
-        if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag) && !FlagSetting.py4j && !FlagSetting.grpc) {
+        if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag) && !FlagSetting.py4j && !FlagSetting.grpcAuto) {
             // -nまたは-aが指定されたときは, メニュー画面に行かず直接ゲームをLaunchする
             if (FlagSetting.allCombinationFlag) {
                 AIContainer.allAINameList = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
