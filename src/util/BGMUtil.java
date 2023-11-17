@@ -8,18 +8,20 @@ public class BGMUtil {
 	private static float calculateGainFromHpPlayer1(float hp) {
 		float gain;
 		// gain = (float) (hp / 400.0 * 0.65 + 0.1);
-		if (hp > 250) {
-        	gain = 0.852f;
+		if (hp > 300) {
+			gain = 0.102f;
+		} else if (hp > 250) {
+        	gain = 0.352f;
         } else if (hp > 200) {
-        	gain = 0.652f;
+        	gain = 0.452f;
         } else if (hp > 150) {
         	gain = 0.502f;
         } else if (hp > 100) {
-        	gain = 0.452f;
+        	gain = 0.652f;
         } else if (hp > 50) {
-        	gain = 0.352f;
+        	gain = 0.702f;
         } else {
-        	gain = 0.102f;
+        	gain = 0.852f;
         }
 		return gain;
 	}
@@ -27,18 +29,20 @@ public class BGMUtil {
 	private static float calculateGainFromHpPlayer2(float hp) {
 		float gain;
 		// gain = (float) (hp / 400.0 * 0.65 + 0.1);
-		if (hp > 250) {
-        	gain = 0.853f;
+		if (hp > 300) {
+			gain = 0.103f;
+		} else if (hp > 250) {
+        	gain = 0.353f;
         } else if (hp > 200) {
-        	gain = 0.653f;
+        	gain = 0.453f;
         } else if (hp > 150) {
         	gain = 0.503f;
         } else if (hp > 100) {
-        	gain = 0.453f;
+        	gain = 0.653f;
         } else if (hp > 50) {
-        	gain = 0.353f;
+        	gain = 0.703f;
         } else {
-        	gain = 0.103f;
+        	gain = 0.853f;
         }
 		return gain;
 	}
@@ -91,8 +95,8 @@ public class BGMUtil {
 		
 		float[] audioGains = new float[3];
 		audioGains[0] = calculateGainFromHpPlayer1(p1.getHp());
-		audioGains[1] = calculateGainFromHpPlayer2(p2.getHp());
-		audioGains[2] = calculateGainFromDistance(fd.getDistanceX());
+		audioGains[1] = calculateGainFromDistance(fd.getDistanceX());
+		audioGains[2] = calculateGainFromHpPlayer2(p2.getHp());
 		
 		return audioGains;
 	}

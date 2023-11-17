@@ -282,11 +282,6 @@ public class Play extends GameScene {
 				float[] audioGains = BGMUtil.getAudioGains(this.frameData);
 				SoundManager.getInstance().setBGMAudioGains(audioGains);
 			}
-			
-			if (this.frameData.getRemainingFramesNumber() == 60) {
-				SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffers().get("RoundEnd.wav"), 
-						GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, false);
-			}
 		}
 
 		// リプレイログ吐き出し
@@ -336,6 +331,9 @@ public class Play extends GameScene {
 	 */
 	private void processingRoundEnd() {
 		SoundManager.getInstance().stopAll();
+		
+		SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffers().get("RoundEnd.wav"), 
+				GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, false);
 
 		if (FlagSetting.slowmotion) {
 			if (this.endFrame > GameSetting.ROUND_EXTRAFRAME_NUMBER) {

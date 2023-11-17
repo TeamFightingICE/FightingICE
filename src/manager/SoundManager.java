@@ -45,12 +45,12 @@ public class SoundManager {
     /**
      * 音溝㝮佝置．
      */
-    private float[] sourcePos;
+    // private float[] sourcePos;
 
     /**
      * 音溝㝮速度．
      */
-    private float[] sourceVel;
+    // private float[] sourceVel;
     
     /**
      * リスナー㝮佝置．
@@ -82,6 +82,7 @@ public class SoundManager {
      */
     private ArrayList<AudioSource> audioSources;
     // BGM Source
+    private float[] initialBGMGains;
     private static final String[] INSTRUMENT_NAMES = { "string", "drum", "other" };
     private HashMap<String, AudioSource> bgmSources;
     /**
@@ -111,10 +112,21 @@ public class SoundManager {
         this.audioBuffers = new ArrayList<>();
         this.audioSources = new ArrayList<>();
         this.bgmSources = new HashMap<>();
+        
+        this.initialBGMGains = new float[3];
+        if (FlagSetting.enableAdaptiveBgm) {
+        	initialBGMGains[0] = 0.10f;
+        	initialBGMGains[1] = 0.43f;
+        	initialBGMGains[2] = 0.11f;
+		} else {
+        	initialBGMGains[0] = 0.431f;
+        	initialBGMGains[1] = 0.432f;
+        	initialBGMGains[2] = 0.433f;
+		}
 
         // 音溝㝨リスナー㝮デフォルトパラメータをセット
-        this.sourcePos = new float[]{0.0F, 0.0F, 0.0F};
-        this.sourceVel = new float[]{0.0F, 0.0F, 0.0F};
+        // this.sourcePos = new float[]{0.0F, 0.0F, 0.0F};
+        // this.sourceVel = new float[]{0.0F, 0.0F, 0.0F};
         this.listenerPos = new float[]{350F, 0.0F, 0.0F};
         this.listenerVel = new float[]{0.0F, 0.0F, 0.0F};
         // 坑㝝(0, 0, -1), 上方坑(0, 1, 0)
@@ -442,9 +454,9 @@ public class SoundManager {
     }
     
     public void playBGM() {
-        setSourceGainAndPlay("string", "Strings.wav", 0.852f);
-        setSourceGainAndPlay("drum", "Drums.wav", 0.432f);
-        setSourceGainAndPlay("other", "Others.wav", 0.853f);
+        setSourceGainAndPlay("string", "Strings.wav", initialBGMGains[0]);
+        setSourceGainAndPlay("drum", "Drums.wav", initialBGMGains[1]);
+        setSourceGainAndPlay("other", "Others.wav", initialBGMGains[2]);
     }
     
     public void closeSources() {

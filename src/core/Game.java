@@ -158,7 +158,7 @@ public class Game extends GameManager {
                 case "--disable-grpc":
                 	FlagSetting.grpc = false;
                 	break;
-                case "--disable-vision":
+                case "--no-vision":
                 	FlagSetting.visualVisibleOnRender = false;
                 	break;
                 case "--disable-adaptive-bgm":
