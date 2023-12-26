@@ -174,7 +174,7 @@ public class Fighting {
 				this.projectileDeque.addLast(projectile);
 			}
 		}
-
+		
 		// 通常攻撃の処理
 		for (int i = 0; i < 2; i++) {
 			int opponentIndex = i == 0 ? 1 : 0;

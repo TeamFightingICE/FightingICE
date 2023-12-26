@@ -396,7 +396,6 @@ public class Character {
             this.front = false;
             // 初期の立ち位置
             this.x = 460 + this.graphicAdjustInitialX[1];
-            ;
             this.y = 335;
         }
     }
@@ -415,8 +414,8 @@ public class Character {
         if (this.action != executeAction) {
             if (resetFlag) {
 
-                for(int a = 0 ; a < this.projectileAttack.length ; a++) {
-                    if(this.projectileAttack[a] == null && this.sourceProjectTiles[a] !=null) {
+                for(int a = 0; a < this.projectileAttack.length; a++) {
+                    if(this.projectileAttack[a] == null && this.sourceProjectTiles[a] != null) {
                         SoundManager.getInstance().stop(this.sourceProjectTiles[a]);
                     }
                 }
@@ -538,13 +537,11 @@ public class Character {
             if (this.attack.isProjectile()) {
                 for(int a = 0 ; a < this.projectileAttack.length ; a++) {
                     if(this.projectileAttack[a] == null) {
-                        this.projectileAttack[a] =  new Attack (this.attack);
+                        this.projectileAttack[a] = new Attack(this.attack);
                         this.projectileAttack2[a] = this.attack;
-
                         break;
                     }
                 }
-
             }
         }
 
@@ -581,18 +578,21 @@ public class Character {
             if(FlagSetting.limitHpFlag) {
             	if(this.hp < 50) {
             		if(!SoundManager.getInstance().isPlaying(sourceHeartBeat)) {
-            			if(this.playerNumber)SoundManager.getInstance().play2(sourceHeartBeat,SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"),0,0,false);
-            			else SoundManager.getInstance().play2(sourceHeartBeat,SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"),GameSetting.STAGE_WIDTH,0,false);
+            			if (this.playerNumber) {
+                            SoundManager.getInstance().play2(sourceEnergyChange, SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"), 0, 0, false);
+                        } else {
+                            SoundManager.getInstance().play2(sourceEnergyChange, SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"), GameSetting.STAGE_WIDTH, 0, false);
+                        }
             		}
             	}  
             }
 
             // This is to make sure crouch sound does not loop while the character is crouching.
-            if (!this.state.toString().equals("CROUCH")) {
+            if (this.state != State.CROUCH) {
                 TempName = " ";
             }
             // This is to make sure Character footsteps sound does not play when character is in air.
-            if (this.speedX == 0 || this.state.toString().equals("AIR")) {
+            if (this.speedX == 0 || this.state == State.AIR) {
                 TempName2 = " ";
                 SoundManager.getInstance().stop(sourceWalking);
             } else {
@@ -630,17 +630,15 @@ public class Character {
      * @param currentFrame 現在のラウンドのフレーム数
      */
     public void hitAttack(Character opponent, Attack attack, int currentFrame) {
-
         if (attack.isProjectile()) {
-            for(int a = 0 ; a < this.projectileAttack.length ; a++) {
-                if(opponent.projectileAttack[a] != null) {
-                    if(attack == opponent.projectileAttack2[a]) {
+            for (int a = 0; a < this.projectileAttack.length; a++) {
+                if (opponent.projectileAttack[a] != null) {
+                    if (attack == opponent.projectileAttack2[a]) {
                         opponent.ProjectileHit[a] = true;
                         break;
                     }
                 }
             }
-
         }
 
         int direction = opponent.getHitAreaCenterX() <= getHitAreaCenterX() ? 1 : -1;
