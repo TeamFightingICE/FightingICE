@@ -104,12 +104,12 @@ public class Game extends GameManager {
                     break;
                 case "--disable-window":
                     FlagSetting.enableWindow = false;
-//                    FlagSetting.muteFlag = true;
+                    // FlagSetting.muteFlag = true;
                     FlagSetting.automationFlag = true;
                     break;
                 case "--fastmode":
                     FlagSetting.fastModeFlag = true;
-                    FlagSetting.automationFlag = true;
+                    // FlagSetting.automationFlag = true;
                     break;
                 case "--json":
                     FlagSetting.jsonFlag = true;
@@ -189,7 +189,7 @@ public class Game extends GameManager {
 			}
         }
         
-        if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag) && !FlagSetting.py4j && !FlagSetting.grpc) {
+        if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag) && !FlagSetting.py4j && !FlagSetting.grpcAuto) {
             // -nまたは-aが指定されたときは, メニュー画面に行かず直接ゲームをLaunchする
             if (FlagSetting.allCombinationFlag) {
                 AIContainer.allAINameList = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
