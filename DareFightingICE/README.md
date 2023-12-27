@@ -32,11 +32,13 @@ To install DareFightingICE please follow the instructions on this [link](https:/
 A money prize of $500 from IEEE CIS will be equally split and awarded to the qualified winner of each track (i.e., $250 each). However, if there is only one qualified winner, that winner will be awarded with $500. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### <b>Results:</b>
-The 2022 competition results are avialable on this <a href="https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-R.html" target="_blank">page</a>.
+The 2023 competition results are avialable on this <a href="https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-R.html" target="_blank">page</a>.
 
 ### <b>Papers:</b>
 Read also:<br>
-<a href="http://arxiv.org/abs/2303.15734" target="_blank">the document</a> about adaptive BGM (@our paper's reviewers: this is a longer non-peer-reviewed version of the paper you are reviewing, please do not click the link because the author information is shown therein)</a><br> 
+<a href="https://arxiv.org/abs/2312.16010" target="_blank">the document</a> about achieving fairness in DareFightingICE agents evaluation through a delay mechanism (an updated version of our <a href="https://ieeexplore.ieee.org/document/10333247" target="_blank">IEEE CoG 2023 paper with the same title</a>)<br> 
+<a href="http://arxiv.org/abs/2303.15734" target="_blank">the document</a> about adaptive BGM (a longer version of our <a href="https://ieeexplore.ieee.org/document/10333245" target="_blank">IEEE CoG 2023 paper</a>)<br> 
+<a href="https://ieeexplore.ieee.org/document/10333256" target="_blank">the document</a> about a cross-modality transfer reinforcement learning blind agent on DareFightingICE</a><br> (an IEEE CoG 2023 paper)<br>
 <a href="http://arxiv.org/abs/2303.10001" target="_blank">the paper</a> about the introduced gRPC framework at <a href="https://icbir.tni.ac.th/" target="_blank">ICBIR 2023</a><br> 
 <a href="https://ieeexplore.ieee.org/document/9893624" target="_blank">the paper</a> about the competition at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a> <br>
 <a href="https://ieeexplore.ieee.org/document/9893718" target="_blank">the paper</a> about our blind sample AI at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a> 
