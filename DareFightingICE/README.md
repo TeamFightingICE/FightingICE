@@ -1,5 +1,6 @@
 # <div align="center" ><b>DareFightingICE </b></div>
-# <div align="center" >*2023 Competition @ CoG 2023*</div>
+# <div align="center" >*2024 Competition @ CoG 2024 (TBD)*</div>
+# <div align="center" >*We are moving from the Java platform to a Unity platform. In addition, we are applying to run our two tracks as two independent competitions. Please stay tuned for new updates and details!!!*</div>
 ## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games, targeting visually impaired players</b></div>
 **We hope research findings from this competition could contribute to Sustainable Development Goals:**
 <p align="center">
