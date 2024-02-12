@@ -1,4 +1,4 @@
-# <div align="center" ><b>DareFightingICE Project (since 2022) </b></div>
+# <div align="center" ><b>DareFightingICE Project</b> (since 2022) </div>
 # <div align="center" >*We are moving from the Java platform to a Unity platform. In addition, we are applying to run our two tracks as two independent competitions. Please stay tuned for new updates and details!!!*</div>
 ## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games, targeting visually impaired players</b></div>
 **We hope research findings from this competition could contribute to Sustainable Development Goals:**
@@ -8,7 +8,7 @@
 <a href="https://sdgs.un.org/goals/goal10" target="_blank"><img src="E_GIF_10.gif" width="150" ></a>
 </p>
 
-Welcome to the <b>DareFightingICE project</b>. This project is our way of including one of the most ignored group of players when it comes to video games. As a part of this project, there are two competitions where you are invited to develop an AI and/or design a sound design for Java-based DareFightingICE, FightingICE with an enhanced sound design where we define a sound design as a set of sound
+Welcome to the <b>DareFightingICE</b> project. This project is our way of including one of the most ignored group of players when it comes to video games. As a part of this project, there are two associated competitions where you are invited to develop an AI and/or design a sound design for Java-based DareFightingICE, FightingICE with an enhanced sound design where we define a sound design as a set of sound
 effects combined with the source code that implements their timing-control algorithm. FightingICE itself had been successfully used in a fighting game AI competition launched in 2013 and from 2014 to 2021 as an official competition at IEEE CIG/CoG. In <a href="https://ieee-cog.org/2022/" target="_blank">CoG 2022</a> and <a href="https://2023.ieee-cog.org/" target="_blank">CoG 2023</a>, there were two tracks under one competition, but starting from <a href="https://2024.ieee-cog.org/" target="_blank">CoG 2024</a>, those tracks have become two independent competitions. Again, you are invited to submit an AI capable of operating with only sound input information or/and a sound design for visually impaired players. 
 <div align="center">
 
@@ -33,7 +33,7 @@ This following information is subject to approval!<br>
 A money prize of $500 from IEEE CIS will be awarded to the qualified winner of each competition. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### <b>Results:</b>
-The 2023 competition results are avialable on this <a href="https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-R.html" target="_blank">page</a>.
+Previous competition results are avialable on this <a href="https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-R.html" target="_blank">page</a>.
 
 ### <b>Papers:</b>
 Read also:<br>
