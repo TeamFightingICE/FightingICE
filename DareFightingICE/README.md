@@ -22,7 +22,7 @@ To know more about FightingICE, visit the website of <a href="https://www.ice.ci
 ### <b>DareFightingICE AI Competition:</b>
 See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</a> for the details of this competition.<br>
 
-### <b>DareFightingICE Sound Design Track:</b>
+### <b>DareFightingICE Sound Design Competition:</b>
 See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this page</a> for the details of this competition.<br>
 
 ### Installation Guide:
