@@ -1,6 +1,6 @@
 
 
-# <div align ="center"> DareFightingICE Sound Design Competition (2024) </div>
+# <div align ="center"> 2024 DareFightingICE Sound-Design Competition </div>
 ----
 <div align = "center"> Welcome to the DareFightingICE sound design competition. Here you will be provided all the necessary information needed to participate in the sound design competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
@@ -87,9 +87,9 @@ To install DareFightingICE please download the unity project from this [link](Li
   
 1. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
-1. Kantinan Plupattanakit, Graduate School of Information Science and Engineering, Ritsumeikan University
-1. Chuang boyu, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Kantinan Plupattanakit, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Boyu Chuang, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
 
 </details>
