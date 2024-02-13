@@ -4,8 +4,11 @@
 ----
 <div align = "center"> Welcome to the DareFightingICE sound design competition. Here you will be provided all the necessary information needed to participate in the sound design competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
+<div align = "center">
 
 [![Watch the video](https://img.youtube.com/vi/IojUrlXibvk/0.jpg)](https://www.youtube.com/watch?v=IojUrlXibvk) 
+
+</div>
 
 ### What is Sound Design Competition:
 ----
