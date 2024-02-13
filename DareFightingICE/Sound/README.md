@@ -78,7 +78,7 @@ Screening:
 
 ### Installation Guide:
 ---
-To install DareFightingICE please download the unity project from this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0.2)
+To install DareFightingICE please download the unity project from this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 7.0)
 
 
 ### Submission:
