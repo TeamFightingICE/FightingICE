@@ -14,6 +14,8 @@
 ----
 As you can already tell from the name, you have to make a sound design for the DareFightingICE. Here, we define a sound design as a set of sound effects combined with the source code that implements their timing-control algorithm. Keep in mind that DareFightingICE is targeting visually impaired players, so the sound design you come up with should be made for visually impaired players. You will be provided with a sample sound design and all the sound effects used in the sample. 
 
+![Alt text](https://drive.google.com/file/d/1xQzYyC6W8H6rLx0PYxdsC4-4UhJCRSZv/view?usp=sharing)
+
 
 ### What To Submit:
 ---
@@ -73,12 +75,23 @@ Screening:
 
 ### Instructions About Sound Design:
 ---
-- To understand the working of our sample sound design please read this [guide]([https://github.com/TeamFightingICE/FightingICE/blob/e5e132d055675472700ca101470c14ea2742735d/DareFightingICE/Sound/Guides/Instructions%20on%20Sound%20Design.pdf](https://github.com/TeamFightingICE/FightingICE/blob/e78eea05825faad83051b0e3b2b92251d0633a33/DareFightingICE/Sound/Guide/Instructions%20and%20tips%20about%20Sample%20Sound%20Design.pdf)).
+- To understand the working of our sample sound design please read this [guide](Link available soon).
 
 ### Installation Guide:
 ---
-To install DareFightingICE please download the unity project from this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 7.0)
+To install DareFightingICE please download the unity project from this [link](Link available soon). (latest version 7.0)
 
+### Organizers:
+---
+<details><summary>Organizers:</summary>
+1. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Kantinan Plupattanakit, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Chuang boyu, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
+
+</details>
 
 ### Submission:
 ---
