@@ -84,6 +84,7 @@ To install DareFightingICE please download the unity project from this [link](Li
 ### Organizers:
 ---
 <details><summary>Organizers:</summary>
+  
 1. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Kantinan Plupattanakit, Graduate School of Information Science and Engineering, Ritsumeikan University
