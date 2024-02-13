@@ -96,7 +96,7 @@ To install DareFightingICE please download the unity project from this [link](Li
 
 ### Submission:
 ---
-Please submit your entry via email to ftg dot aic at gmail dot com with an email subject of "2023_Sound". In case the attached file's size is larger than 5.0 MB, please add a link in the email for us to download it. Below are the deadlines.<br>
+Please submit your entry via email to ftg dot aic at gmail dot com with an email subject of "2024_Sound". In case the attached file's size is larger than 5.0 MB, please add a link in the email for us to download it. Below are the deadlines.<br>
 <br>
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your sound design to us by the final deadline.) <br>
 - May 17, 2024 (AoE)
