@@ -75,6 +75,10 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
 ---
 To install DareFightingICE please follow the instructions on this (TBA).
 
+### <b>Prizes: (updated on February 12, 2024) </b>
+This following information is subject to approval!<br>
+A money prize of $500 from IEEE CIS will be awarded to the qualified winner of the competition. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
+
 ### Submission:
 ---
 
