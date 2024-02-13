@@ -14,7 +14,7 @@
 ----
 As you can already tell from the name, you have to make a sound design for the DareFightingICE. Here, we define a sound design as a set of sound effects combined with the source code that implements their timing-control algorithm. Keep in mind that DareFightingICE is targeting visually impaired players, so the sound design you come up with should be made for visually impaired players. You will be provided with a sample sound design and all the sound effects used in the sample. 
 
-![Alt text](https://github.com/TeamFightingICE/FightingICE/blob/8e6724496b76deb321b6b9e7978bbbcb365277a6/DareFightingICE/Sound/Images/Competition%20Img.png?raw=true)
+![Alt text](https://github.com/TeamFightingICE/FightingICE/blob/8d4fe5e832e46a092da8e037499d8f38876b4e7e/DareFightingICE/Sound/Images/Competition%20Image.png?raw=true)
 
 
 ### What To Submit:
