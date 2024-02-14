@@ -6,7 +6,7 @@
 ### What is DareFightingICE AI Competition:
 ----
 On this competition, you will be asked to make an AI that plays DareFightingICE using only in-game sound data as input. You will be provided with a gRPC interface that allows access to sound data and a sample AI.
-
+![Alt text](Logo.png)
 ### What To Submit:
 ---
 For submission, please create a zip file containing:
