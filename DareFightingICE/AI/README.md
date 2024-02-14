@@ -33,7 +33,7 @@ See also the sample AI:
 ---
 One game has three rounds. The maximum fighting time of a round is 60s. After one round, the character's positions and HPs will be reset, and a new round is started. All games in the competition are conducted with the options "--limithp 400 400" (limit HP of both players to be 400) and "--blind-player 2" (limit access only to sound data for both players) of DareFightingICE.
 
-Even if the game will boot with `--blind-player` option, it is still recommended to notify the game that your AI will process only audio data by modifying [`isBlind`](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/aiinterface/AIInterface.html#isBlind()) method to be as follows:
+Even if the game will boot with `--blind-player` option, it is still recommended to notify the game that your AI will process only audio data by modifying `isBlind` method to be as follows:
 - For Python,
 ``` python
 def is_blind(self):
