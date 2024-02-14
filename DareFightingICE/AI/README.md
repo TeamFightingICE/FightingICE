@@ -3,12 +3,14 @@
 <div align = "center"> Welcome to the 2024 DareFightingICE AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
 
-[![Watch the video](./video_preview.jpg)](https://www.youtube.com/watch?v=89PfdLxtG4k)
+
 
 ### What is the DareFightingICE AI Competition:
 ----
 In this competition, you are tasked with making an AI that plays DareFightingICE using only in-game sound data as the input. You will be provided with a gRPC interface that allows access to sound data and a sample AI.
-![Alt text](Logo.png)
+
+[![Watch the video](./Logo.png)](https://www.youtube.com/watch?v=89PfdLxtG4k)
+
 ### What To Submit:
 ---
 For submission, please create a zip file containing:
