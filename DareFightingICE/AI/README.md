@@ -6,6 +6,7 @@
 ### What is the DareFightingICE AI Competition:
 ----
 In this competition, you are tasked with making an AI that plays DareFightingICE using only in-game sound data as the input. You will be provided with a gRPC interface that allows access to sound data and a sample AI.
+An introductory video about the competition is available [here](https://www.youtube.com/watch?v=89PfdLxtG4k).
 ![Alt text](Logo.png)
 ### What To Submit:
 ---
@@ -93,7 +94,7 @@ A money prize of $500 from IEEE CIS will be awarded to the qualified winner of t
 ### Submission:
 ---
 
-Please submit your entry via email to ftg dot aic at gmail dot com with an email subject of "2024_AI". In case the attached file's size is larger than 5.0 MB, please add a link in the email for us to download it. Below are the deadlines.
+Please submit your entry via this [page](https://forms.gle/fCRiRUPvVxYjaT5b9). Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your AI to us by the final deadline.)
 - May 24, 2024 (AoE)
