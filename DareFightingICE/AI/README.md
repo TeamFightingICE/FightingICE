@@ -79,6 +79,16 @@ To install DareFightingICE please follow the instructions on this (TBA).
 This following information is subject to approval!<br>
 A money prize of $500 from IEEE CIS will be awarded to the qualified winner of the competition. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
+### Organizers:
+
+
+1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
+2. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
+3. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
+4. Kantinan Plupattanakit, Graduate School of Information Science and Engineering, Ritsumeikan University
+5. Boyu Chuang, Graduate School of Information Science and Engineering, Ritsumeikan University
+6. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
+
 ### Submission:
 ---
 
