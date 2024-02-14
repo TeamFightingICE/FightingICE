@@ -2,7 +2,7 @@
 ----
 <div align = "center"> Welcome to the 2024 DareFightingICE AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
-![![Watch the video](video_preview.png)](https://www.youtube.com/watch?v=89PfdLxtG4k)
+[![Watch the video](https://img.youtube.com/vi/89PfdLxtG4k/0.jpg)](https://www.youtube.com/watch?v=89PfdLxtG4k)
 
 ### What is the DareFightingICE AI Competition:
 ----
