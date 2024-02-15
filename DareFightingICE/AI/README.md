@@ -7,7 +7,7 @@
 
 ### What is the DareFightingICE AI Competition:
 ----
-In this competition, you are tasked with making an AI that plays DareFightingICE using only in-game sound data as the input. You will be provided with a gRPC interface that allows access to sound data and a sample AI. Click the image below to watch our promotional video.
+In this competition, you are tasked with making an AI that plays DareFightingICE using only in-game sound data as the input. You will be provided with a gRPC interface that allows access to sound data and a sample AI. **Click the image below to watch our promotional video.**
 
 [![Watch the video](./Logo.png)](https://www.youtube.com/watch?v=89PfdLxtG4k)
 
@@ -102,7 +102,7 @@ Please submit your entry via this [page](https://forms.gle/fCRiRUPvVxYjaT5b9). B
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your AI to us by the final deadline.)
 - May 24, 2024 (AoE)
 
-Final deadline (**closed**)
+Final deadline
 - July 29, 2024 (AoE)(no extension!!)
 
 #### Note that all the submissions will be made publicly available after the competition.
