@@ -73,8 +73,8 @@ Screening:
 
 ### Instructions About Sound Design:
 ---
-- To understand the working of our sample sound design please read this [guide](https://github.com/TeamFightingICE/FightingICE/blob/a746f8800954afbb4148f940f9495bf3b353d8cc/DareFightingICE/Sound/Guides/Instructions%20and%20Tips.pdf).
-- For tips on how to change the sample sound design or create a new one, follow this [guide](https://github.com/TeamFightingICE/FightingICE/blob/a746f8800954afbb4148f940f9495bf3b353d8cc/DareFightingICE/Sound/Guides/Instructions%20on%20Sound%20Design.pdf).
+- To understand the working of our sample sound design please read this [guide](https://github.com/TeamFightingICE/FightingICE/blob/fe92d5dd5bfdd9e503a2fc111fb9457fa292d0a5/DareFightingICE/Sound/2023/Guides/Instructions%20and%20Tips.pdf?raw=true).
+- For tips on how to change the sample sound design or create a new one, follow this [guide](https://github.com/TeamFightingICE/FightingICE/blob/fe92d5dd5bfdd9e503a2fc111fb9457fa292d0a5/DareFightingICE/Sound/2023/Guides/Instructions%20on%20Sound%20Design.pdf?raw=true).
 
 ### Installation Guide:
 ---
