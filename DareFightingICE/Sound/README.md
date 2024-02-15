@@ -75,7 +75,7 @@ Screening:
 
 ### Instructions About Sound Design:
 ---
-- To understand the working of our sample sound design please read this [guide](Link available soon).
+- To understand the working of our sample sound design please read this [guide](https://github.com/TeamFightingICE/FightingICE/blob/a42144ac20d468a81a3f7b68e3cfd03028393f4d/DareFightingICE/Sound/Guide/Instructions%20and%20tips%20about%20Sample%20Sound%20Design.pdf).
 
 ### Installation Guide:
 ---
