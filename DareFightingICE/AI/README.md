@@ -78,7 +78,7 @@ In the 2024 Competition, we are transitioning from the Java platform to Unity. W
 
 ### Installation Guide:
 ---
-To install DareFightingICE please download/clone the unity project from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity). (latest version 0.1-beta). The Unity version for this project is "2022.3.16f1". Plesse make sure to use this version of Unity to run the project.
+To install DareFightingICE please download/clone the unity project from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity) (latest version 0.1-beta). The Unity version for this project is "2022.3.16f1". Plesse make sure to use this version of Unity to run the project.
 
 ### <b>Prizes: (updated on February 12, 2024) </b>
 This following information is subject to approval!<br>
