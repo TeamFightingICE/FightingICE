@@ -12,7 +12,7 @@
 ### What is the Sound Design Competition:
 ----
 As you can already tell from the name, you have to make a sound design for
-DareFightingICE. Here, we define a sound design as a set of sound effects combined with the source code that implements their timing-control algorithm. Keep in mind that DareFightingICE is targeting visually impaired players, so the sound design you come up with should be made for visually impaired players. You will be provided with a sample sound design and all the sound effects used in the sample. Click the image below to watch our promotional video.
+DareFightingICE. Here, we define a sound design as a set of sound effects combined with the source code that implements their timing-control algorithm. Keep in mind that DareFightingICE is targeting visually impaired players, so the sound design you come up with should be made for visually impaired players. You will be provided with a sample sound design and all the sound effects used in the sample. **Click the image below to watch our promotional video.**
 
 [![Watch the video](./Images/Logo.png)](https://youtu.be/ncPhFNTFmGE)
 
@@ -99,7 +99,7 @@ Please submit your entry via this [page](https://forms.gle/UY929AVVS2xq2t9z8). B
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your sound design to us by the final deadline.)
 - May 17, 2024 (AoE)
 
-Final deadline (**closed**)
+Final deadline
 - July 22, 2024 (AoE)(no extension!!)
 
 #### Note that all the submissions will be made publicly available after the competition.
