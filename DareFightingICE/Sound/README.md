@@ -104,6 +104,8 @@ Final deadline
 
 #### Note that all the submissions will be made publicly available after the competition.
 
+### <b>Contact Us:</b>
+d-ice-sdc at ice dot ci dot ritsumei dot ac dot jp
 
 
 
