@@ -80,7 +80,7 @@ In the 2024 Competition, we are transitioning from the Java platform to Unity. W
 ---
 1. Download the DareFightingICE-Unity-v0.1-beta.rar
 file from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity/releases/tag/v0.1-beta) (latest version 0.1-beta).
-2. Clone the Python AI samples using the following command: ``` git clone https://github.com/TeamFightingICE/PythonAISamples```.
+2. Clone the Python AI samples using the following command: ``` git clone https://github.com/TeamFightingICE/PythonAISamples```, and follow the instruction in ```PythonAISamples```'s README file to setup python environment.
 3. Extract DareFightingICE-Unity-v0.1-beta.rar and run ```DareFightingICE-Unity.exe``` file.
 4. Once the game screen opens, click "Launch" button.
 5. When the “Launch” screen appears, change "Player 2" to "GRPC" by clicking on it or ```Z``` button.
