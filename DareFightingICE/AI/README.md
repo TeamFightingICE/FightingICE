@@ -113,3 +113,6 @@ Final deadline
 - July 29, 2024 (AoE)(no extension!!)
 
 #### Note that all the submissions will be made publicly available after the competition.
+
+### <b>Contact Us:</b>
+d-ice-aic at ice dot ci dot ritsumei dot ac dot jp
