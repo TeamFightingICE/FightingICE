@@ -10,11 +10,6 @@
 
 Welcome to the <b>DareFightingICE</b> project. This project is our way of including one of the most ignored group of players when it comes to video games. As a part of this project, there are two associated competitions where you are invited to develop an AI and/or design a sound design for Java-based DareFightingICE, FightingICE with an enhanced sound design where we define a sound design as a set of sound
 effects combined with the source code that implements their timing-control algorithm. FightingICE itself had been successfully used in a fighting game AI competition launched in 2013 and from 2014 to 2021 as an official competition at IEEE CIG/CoG. In <a href="https://ieee-cog.org/2022/" target="_blank">CoG 2022</a> and <a href="https://2023.ieee-cog.org/" target="_blank">CoG 2023</a>, there were two tracks under one competition, but starting from <a href="https://2024.ieee-cog.org/" target="_blank">CoG 2024</a>, those tracks have become two independent competitions. Again, you are invited to submit an AI capable of operating with only sound input information or/and a sound design for visually impaired players. 
-<div align="center">
-
-[![Watch the video](https://img.youtube.com/vi/IojUrlXibvk/0.jpg)](https://www.youtube.com/watch?v=IojUrlXibvk)
-
-</div>
 
 To know more about FightingICE, visit the website of <a href="https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index.htm" target="_blank">FightingICE.</a>
 <br>
