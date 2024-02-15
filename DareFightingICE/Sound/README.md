@@ -2,19 +2,19 @@
 
 # <div align ="center"> 2024 DareFightingICE Sound-Design Competition </div>
 ----
-<div align = "center"> Welcome to the DareFightingICE sound design competition. Here you will be provided all the necessary information needed to participate in the sound design competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
+<div align = "center"> Welcome to the DareFightingICE sound design competition. Here, you will be provided all the necessary information needed to participate in the sound design competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
 <div align = "center">
 
-[![Watch the video](https://img.youtube.com/vi/IojUrlXibvk/0.jpg)](https://www.youtube.com/watch?v=IojUrlXibvk) 
 
 </div>
 
-### What is Sound Design Competition:
+### What is the Sound Design Competition:
 ----
-As you can already tell from the name, you have to make a sound design for the DareFightingICE. Here, we define a sound design as a set of sound effects combined with the source code that implements their timing-control algorithm. Keep in mind that DareFightingICE is targeting visually impaired players, so the sound design you come up with should be made for visually impaired players. You will be provided with a sample sound design and all the sound effects used in the sample. 
+As you can already tell from the name, you have to make a sound design for
+DareFightingICE. Here, we define a sound design as a set of sound effects combined with the source code that implements their timing-control algorithm. Keep in mind that DareFightingICE is targeting visually impaired players, so the sound design you come up with should be made for visually impaired players. You will be provided with a sample sound design and all the sound effects used in the sample. Click the image below to watch our promotional video.
 
-![Alt text](https://github.com/TeamFightingICE/FightingICE/blob/8d4fe5e832e46a092da8e037499d8f38876b4e7e/DareFightingICE/Sound/Images/Competition%20Image.png?raw=true)
+[![Watch the video](./Images/Logo.png)](https://youtu.be/ncPhFNTFmGE)
 
 
 ### What To Submit:
@@ -39,7 +39,7 @@ For this competition, you will only need to come up with the sound design for a 
 
 ### Sample Sound Design:
 ---
-The sample sound design (available in the data\sounds folder [here]([link available soon])) is the winner sound design from 2023 competition. There is a total of 51 sound effects in the sounds folder including the background music. For the sample sound design, some sound effects are the same for similar moves. To know in detail what the moves look like visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/ZEN_action_animations.htm).<br>
+The sample sound design (available in the DareFightingICE-Unity/Assets/data/sounds [here](https://github.com/TeamFightingICE/DareFightingICE-Unity)) is the winner sound design from 2023 competition. There is a total of 51 sound effects in the sounds folder including the background music. For the sample sound design, some sound effects are the same for similar moves. To know in detail what the moves look like visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/ZEN_action_animations.htm).<br>
 There are a few special sound effects added into the DareFightingICE.
 -	<b>Heartbeat:</b> This sound effect is played when the player’s health is below 50. For player 1 the sound effect is played on the left speaker and for player 2 on the right.
 -	<b>Energy Increase:</b> This sound effect is played when the player’s energy goes +50 from the previous value. For player 1 the sound effect is played on the left speaker and for player 2 on the right.
@@ -66,7 +66,7 @@ Pre-screening:
 - Two most capable test players (players with vision) will play against each other for one round using the default sound design. The replay of the same round will be played using all the submitted sound designs – all videos will be of the same match but different sound designs. Then a sound aesthetic survey of those replay videos will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
 
 Screening:
-- The blindfolded players will play against a [weak AI](../SampleAI/MctsAi23i) (a weak form of [MCTS AI](http://www.ice.ci.ritsumei.ac.jp/~ftgaic/Downloadfiles/2018_Sample_AIs.zip)), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
+- The blindfolded players will play against a weak AI (a weak form of MCTS AI), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
 - Each player will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design, and the score will be calculated by health point (HP) difference between the player and the AI, in relative to the HP difference when playing without being blindfolded.
 - After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
 -  In addition, [our deep reinforcement learning blind AI](../SampleAI/BlindAI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
@@ -79,11 +79,10 @@ Screening:
 
 ### Installation Guide:
 ---
-To install DareFightingICE please download the unity project from this [link](Link available soon). (latest version 7.0)
+To install DareFightingICE please download/clone the unity project from this [link]([Link available soon](https://github.com/TeamFightingICE/DareFightingICE-Unity)). (latest version 0.1-beta). The Unity version for this project is "2022.3.16f1". Plesse make sure to use this version of Unity to run the project.
 
 ### Organizers:
 ---
-<details><summary>Organizers:</summary>
   
 1. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
@@ -92,13 +91,12 @@ To install DareFightingICE please download the unity project from this [link](Li
 1. Boyu Chuang, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
 
-</details>
 
 ### Submission:
 ---
-Please submit your entry via email to ftg dot aic at gmail dot com with an email subject of "2024_Sound". In case the attached file's size is larger than 5.0 MB, please add a link in the email for us to download it. Below are the deadlines.<br>
-<br>
-Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your sound design to us by the final deadline.) <br>
+Please submit your entry via this [page](https://forms.gle/UY929AVVS2xq2t9z8). Below are the deadlines.
+
+Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your sound design to us by the final deadline.)
 - May 17, 2024 (AoE)
 
 Final deadline (**closed**)
