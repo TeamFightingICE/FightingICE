@@ -16,28 +16,28 @@ public final class ServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<protoc.ServiceProto.RunGameRequest,
-      com.google.protobuf.Empty> getRunGameMethod;
+      protoc.ServiceProto.RunGameResponse> getRunGameMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "RunGame",
       requestType = protoc.ServiceProto.RunGameRequest.class,
-      responseType = com.google.protobuf.Empty.class,
+      responseType = protoc.ServiceProto.RunGameResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<protoc.ServiceProto.RunGameRequest,
-      com.google.protobuf.Empty> getRunGameMethod() {
-    io.grpc.MethodDescriptor<protoc.ServiceProto.RunGameRequest, com.google.protobuf.Empty> getRunGameMethod;
+      protoc.ServiceProto.RunGameResponse> getRunGameMethod() {
+    io.grpc.MethodDescriptor<protoc.ServiceProto.RunGameRequest, protoc.ServiceProto.RunGameResponse> getRunGameMethod;
     if ((getRunGameMethod = ServiceGrpc.getRunGameMethod) == null) {
       synchronized (ServiceGrpc.class) {
         if ((getRunGameMethod = ServiceGrpc.getRunGameMethod) == null) {
           ServiceGrpc.getRunGameMethod = getRunGameMethod =
-              io.grpc.MethodDescriptor.<protoc.ServiceProto.RunGameRequest, com.google.protobuf.Empty>newBuilder()
+              io.grpc.MethodDescriptor.<protoc.ServiceProto.RunGameRequest, protoc.ServiceProto.RunGameResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "RunGame"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   protoc.ServiceProto.RunGameRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.protobuf.Empty.getDefaultInstance()))
+                  protoc.ServiceProto.RunGameResponse.getDefaultInstance()))
               .setSchemaDescriptor(new ServiceMethodDescriptorSupplier("RunGame"))
               .build();
         }
@@ -221,7 +221,7 @@ public final class ServiceGrpc {
     /**
      */
     default void runGame(protoc.ServiceProto.RunGameRequest request,
-        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+        io.grpc.stub.StreamObserver<protoc.ServiceProto.RunGameResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRunGameMethod(), responseObserver);
     }
 
@@ -284,7 +284,7 @@ public final class ServiceGrpc {
     /**
      */
     public void runGame(protoc.ServiceProto.RunGameRequest request,
-        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+        io.grpc.stub.StreamObserver<protoc.ServiceProto.RunGameResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getRunGameMethod(), getCallOptions()), request, responseObserver);
     }
@@ -340,7 +340,7 @@ public final class ServiceGrpc {
 
     /**
      */
-    public com.google.protobuf.Empty runGame(protoc.ServiceProto.RunGameRequest request) {
+    public protoc.ServiceProto.RunGameResponse runGame(protoc.ServiceProto.RunGameRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getRunGameMethod(), getCallOptions(), request);
     }
@@ -394,7 +394,7 @@ public final class ServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> runGame(
+    public com.google.common.util.concurrent.ListenableFuture<protoc.ServiceProto.RunGameResponse> runGame(
         protoc.ServiceProto.RunGameRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getRunGameMethod(), getCallOptions()), request);
@@ -442,7 +442,7 @@ public final class ServiceGrpc {
       switch (methodId) {
         case METHODID_RUN_GAME:
           serviceImpl.runGame((protoc.ServiceProto.RunGameRequest) request,
-              (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
+              (io.grpc.stub.StreamObserver<protoc.ServiceProto.RunGameResponse>) responseObserver);
           break;
         case METHODID_SPECTATE:
           serviceImpl.spectate((protoc.ServiceProto.SpectateRequest) request,
@@ -483,7 +483,7 @@ public final class ServiceGrpc {
           io.grpc.stub.ServerCalls.asyncUnaryCall(
             new MethodHandlers<
               protoc.ServiceProto.RunGameRequest,
-              com.google.protobuf.Empty>(
+              protoc.ServiceProto.RunGameResponse>(
                 service, METHODID_RUN_GAME)))
         .addMethod(
           getSpectateMethod(),

@@ -32,6 +32,7 @@ public class Grpc extends GameScene {
 	@Override
 	public void initialize() {
 		this.game = LaunchSetting.grpcServer.getGame();
+		FlagSetting.isGrpcAutoReady = true;
 	}
 
 	@Override
@@ -41,6 +42,7 @@ public class Grpc extends GameScene {
 		}
 		if (this.game.getRunFlag()) {
 			this.game.setRunFlag(false);
+			FlagSetting.isGrpcAutoReady = false;
 
 			List<String> allAiNames = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
 			for (int i = 0; i < 2; i++) {

@@ -1,0 +1,78 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "enum.proto";
+import "message.proto";
+package service;
+
+option java_multiple_files = false;
+option java_package = "protoc";
+option java_outer_classname = "ServiceProto";
+option csharp_namespace = "DareFightingICE.Grpc.Proto";
+
+message RunGameRequest {
+	string character_1 = 1;
+	string character_2 = 2;
+	string player_1 = 3;
+	string player_2 = 4;
+	int32 game_number = 5;
+}
+
+message RunGameResponse {
+	GrpcStatusCode status_code = 1;
+	string response_message = 2;
+}
+
+message SpectateRequest {
+	int32 interval = 1;
+	bool frame_data_flag = 2;
+	bool screen_data_flag = 3;
+	bool audio_data_flag = 4;
+}
+
+message SpectatorGameState {
+	GrpcFlag state_flag = 1;
+	GrpcGameData game_data = 2;
+	GrpcFrameData frame_data = 3;
+	GrpcScreenData screen_data = 4;
+	GrpcAudioData audio_data = 5;
+	GrpcRoundResult round_result = 6;
+}
+
+message InitializeRequest {
+	bool player_number = 1;
+	string player_name = 2;
+	bool is_blind = 3;
+}
+
+message InitializeResponse {
+	string player_uuid = 1;
+}
+
+message ParticipateRequest {
+	string player_uuid = 1;
+}
+
+message PlayerGameState {
+	GrpcFlag state_flag = 1;
+	bool is_control = 2;
+	GrpcFrameData frame_data = 3;
+	GrpcFrameData non_delay_frame_data = 4;
+	GrpcScreenData screen_data = 5;
+	GrpcAudioData audio_data = 6;
+	GrpcGameData game_data = 7;
+	GrpcRoundResult round_result = 8;
+}
+
+message PlayerInput {
+	string player_uuid = 1;
+	GrpcKey input_key = 2;
+}
+
+service Service {
+	rpc RunGame (RunGameRequest) returns (RunGameResponse) {}
+	rpc Spectate (SpectateRequest) returns (stream SpectatorGameState) {}
+
+	rpc Initialize (InitializeRequest) returns (InitializeResponse) {}
+	rpc Participate (ParticipateRequest) returns (stream PlayerGameState) {}
+	rpc Input (PlayerInput) returns (google.protobuf.Empty) {}
+}

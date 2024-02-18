@@ -1,1 +1,1 @@
-protoc -I.\proto --plugin=protoc-gen-grpc-java=.\protoc-gen\protoc-gen-grpc-java-1.58.0-windows-x86_64.exe --java_out=.\src --grpc-java_out=.\src .\proto\*.proto
+tools\protoc.exe -I protos --plugin=protoc-gen-grpc-java=tools\protoc-gen-grpc-java.exe --java_out=src --grpc-java_out=src protos\*.proto
