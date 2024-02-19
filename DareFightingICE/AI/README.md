@@ -44,7 +44,7 @@ def is_blind(self):
    return True
 ```
 
-The FrameData sent to AIs will have a delay of 15 frames, but AudioData and ScreenData have no delay. Please keep in mind that although [FrameData](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/struct/FrameData.html) and [ScreenData](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/struct/ScreenData.html) are accessible during AI training phase, in the competition, only [AudioData](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/FTG-JavaAI-doc/struct/AudioData.html) is provided to all the participating AIs.
+The FrameData sent to AIs will have a delay of 15 frames, but AudioData and ScreenData have no delay. Please keep in mind that although FrameData and ScreenData are accessible during AI training phase, in the competition, only **AudioData** is provided to all the participating AIs.
 
 Your AI will be made publicly available and by submitting you will have agreed to this.
 
@@ -67,10 +67,10 @@ In the 2024 Competition, we are transitioning from the Java platform to Unity. W
 1. Software:
    - OS: Windows 10
    - Python: 3.10
-   - CUDA: 11.8
-   - PyTorch: 2.0.0
-   - TorchAudio: 2.0.0
-   - TorchVision: 0.15.0
+   - PyTorch-CUDA: 12.1
+   - PyTorch: 2.2.0
+   - TorchAudio: 2.2.0
+   - TorchVision: 0.17.0
 2. Hardware:
    - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz
    - RAM: 16 GB
@@ -78,13 +78,12 @@ In the 2024 Competition, we are transitioning from the Java platform to Unity. W
 
 ### Installation:
 ---
-1. Download the DareFightingICE-Unity-v0.1-beta.rar
-file from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity/releases/tag/v0.1-beta) (latest version 0.1-beta).
-2. Clone the Python AI samples using the following command: ``` git clone https://github.com/TeamFightingICE/PythonAISamples```, and follow the instruction in ```PythonAISamples```'s README file to setup python environment.
-3. Extract DareFightingICE-Unity-v0.1-beta.rar and run ```DareFightingICE-Unity.exe``` file.
+1. Download DareFightingICE-Unity file from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity/releases/tag/v1.0-a.1) (latest version 1.0-alpha1).
+2. Clone the Python AI samples using the following command: `git clone https://github.com/TeamFightingICE/PythonAISamples`, and follow the instruction in `PythonAISamples`'s README file to setup python environment.
+3. Extract the downloaded file and run `DareFightingICE-Unity.exe` for Windows (x64) or `DareFightingICE-Unity.x86_64` for Linux (x64).
 4. Once the game screen opens, click "Launch" button.
-5. When the “Launch” screen appears, change "Player 2" to "GRPC" by clicking on it or ```Z``` button.
-6. In the Python AI sample folder, run the following command: ```python Main_SinglePyAI.py --a2 KickAI```.
+5. When the “Launch” screen appears, change "Player 2" to "gRPC" by `left` or `right` button.
+6. In the Python AI sample folder, run the following command: `python Main_SinglePyAI.py --a2 KickAI`.
 7. Click "Play" on the game screen to start the fight.
 
 ### <b>Prizes: (updated on February 12, 2024) </b>
