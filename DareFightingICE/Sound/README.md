@@ -39,7 +39,7 @@ For this competition, you will only need to come up with the sound design for a 
 
 ### Sample Sound Design:
 ---
-The sample sound design (available in the DareFightingICE-Unity/Assets/data/sounds [here](https://github.com/TeamFightingICE/DareFightingICE-Unity)) is the winner sound design from 2023 competition. There is a total of 51 sound effects in the sounds folder including the background music. For the sample sound design, some sound effects are the same for similar moves. To know in detail what the moves look like visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/ZEN_action_animations.htm).<br>
+The sample sound design (available in the DareFightingICE-Unity/Assets/data/sounds [here](https://github.com/TeamFightingICE/DareFightingICE-Unity/tree/main/DareFightingICE-Unity/Assets/data/sounds)) is the winner sound design from 2023 competition. There is a total of 51 sound effects in the sounds folder including the background music. For the sample sound design, some sound effects are the same for similar moves. To know in detail what the moves look like visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/ZEN_action_animations.htm).<br>
 There are a few special sound effects added into the DareFightingICE.
 -	<b>Heartbeat:</b> This sound effect is played when the player’s health is below 50. For player 1 the sound effect is played on the left speaker and for player 2 on the right.
 -	<b>Energy Increase:</b> This sound effect is played when the player’s energy goes +50 from the previous value. For player 1 the sound effect is played on the left speaker and for player 2 on the right.
@@ -69,7 +69,7 @@ Screening:
 - The blindfolded players will play against a weak AI (a weak form of MCTS AI), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
 - Each player will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design, and the score will be calculated by health point (HP) difference between the player and the AI, in relative to the HP difference when playing without being blindfolded.
 - After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
--  In addition, [our deep reinforcement learning blind AI](../SampleAI/BlindAI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
+-  In addition, [our deep reinforcement learning blind AI](https://github.com/TeamFightingICE/BlindAI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
 -  The sample blind AI's win-lose ratio and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
 
 
