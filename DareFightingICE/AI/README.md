@@ -11,6 +11,8 @@ In this competition, you are tasked with making an AI that plays DareFightingICE
 
 [![Watch the video](./Logo.png)](https://youtu.be/CHaf0vfYkvM)
 
+
+<em>We’re aware that our current platform does not support ARM architecture. However, we’re actively working on this and aim to include ARM support in DareFightingICE as soon as possible. In the meantime, we recommend using devices with x86 architecture for the best experience. We appreciate your patience and thank you for your continued support!</em>
 ### What To Submit:
 ---
 For submission, please create a zip file containing:
