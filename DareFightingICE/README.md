@@ -1,5 +1,5 @@
 # <div align="center" ><b>DareFightingICE Project</b> (since 2022) </div>
-## <div align="center"><b>A fighting game competition for promoting the sound design of fighting games, targeting visually impaired players</b></div>
+## <div align="center"><b>A game research project for promoting the sound design of fighting games, targeting visually impaired players</b></div>
 **We hope research findings from this competition could contribute to Sustainable Development Goals:**
 <p align="center">
 <a href="https://sdgs.un.org/goals/goal9" target="_blank"><img src="E_GIF_09.gif" width="150" ></a> 
@@ -19,9 +19,6 @@ See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</
 ### <b>DareFightingICE Sound Design Competition:</b>
 See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this page</a> for the details of this competition.<br>
 
-### Installation Guide:
-To install DareFightingICE please follow the instructions on this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html). (latest version 6.0.2)
-
 ### <b>Prizes: (updated on February 12, 2024) </b>
 This following information is subject to approval!<br>
 A money prize of $500 from IEEE CIS will be awarded to the qualified winner of each competition. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
@@ -31,8 +28,9 @@ Previous competition results are avialable on this <a href="https://www.ice.ci.r
 
 ### <b>Papers:</b>
 Read also:<br>
+<a href="https://arxiv.org/abs/2403.02687" target="_blank">the paper</a> about the 2024 competitions using the Unity platform at <a href="https://2024.ieee-cog.org/" target="_blank">IEEE CoG 2024</a> <br>
 <a href="https://arxiv.org/abs/2312.16010" target="_blank">the document</a> about achieving fairness in DareFightingICE agents evaluation through a delay mechanism (an updated version of our <a href="https://ieeexplore.ieee.org/document/10333247" target="_blank">IEEE CoG 2023 paper with the same title</a>)<br> 
-<a href="http://arxiv.org/abs/2303.15734" target="_blank">the document</a> about adaptive BGM (a longer version of our <a href="https://ieeexplore.ieee.org/document/10333245" target="_blank">IEEE CoG 2023 paper</a>)<br> 
+<a href="http://arxiv.org/abs/2303.15734" target="_blank">the document</a> about adaptive BGM (a longer version of our <a href="https://ieeexplore.ieee.org/document/10333245" target="_blank">IEEE CoG 2023 paper</a>, which has an updated version <a href="https://arxiv.org/abs/2403.02701" target="_blank">here</a>)<br> 
 <a href="https://ieeexplore.ieee.org/document/10333256" target="_blank">the document</a> about a cross-modality transfer reinforcement learning blind agent on DareFightingICE</a><br> (an IEEE CoG 2023 paper)<br>
 <a href="http://arxiv.org/abs/2303.10001" target="_blank">the paper</a> about the introduced gRPC framework at <a href="https://icbir.tni.ac.th/" target="_blank">ICBIR 2023</a><br> 
 <a href="https://ieeexplore.ieee.org/document/9893624" target="_blank">the paper</a> about the competition at <a href="https://ieee-cog.org/2022/" target="_blank">IEEE CoG 2022</a> <br>
