@@ -12,7 +12,7 @@ In this competition, you are tasked with making an AI that plays DareFightingICE
 [![Watch the video](./Logo.png)](https://youtu.be/CHaf0vfYkvM)
 
 
-<em>We’re aware that our current platform does not support ARM architecture. However, we’re actively working on this and aim to include ARM support in DareFightingICE as soon as possible. In the meantime, we recommend using devices with x86 architecture for the best experience. If ARM compatibility is essential, participants can continue using DareFightingICE-java. However, while the AI Interface remains consistent across both versions, please be aware that performance may vary (DareFightingICE-java can be downloaded from [here](https://github.com/TeamFightingICE/FightingICE/tags)). We appreciate your patience and thank you for your continued support!</em>
+<em>We’re aware that our current platform does not support ARM architecture. However, we’re actively working on this and aim to include ARM support in DareFightingICE as soon as possible. In the meantime, we recommend using devices with x86 architecture for the best experience. If ARM compatibility is essential, participants can continue using DareFightingICE-java (DareFightingICE-java can be downloaded from [here](https://github.com/TeamFightingICE/FightingICE/tags)). However, while the AI Interface remains consistent across both versions, please be aware that performance may vary. We appreciate your patience and thank you for your continued support!</em>
 ### What To Submit:
 ---
 For submission, please create a zip file containing:
