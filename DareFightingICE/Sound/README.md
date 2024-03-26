@@ -81,6 +81,10 @@ Screening:
 ---
 To install DareFightingICE please download/clone the unity project from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity). (latest version 0.1-beta). The Unity version for this project is "2022.3.16f1". Plesse make sure to use this version of Unity to run the project.
 
+### <b>Prizes: (updated on March 26, 2024) </b>
+---
+IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
+
 ### Organizers:
 ---
   
@@ -105,7 +109,12 @@ Final deadline
 #### Note that all the submissions will be made publicly available after the competition.
 
 ### <b>Contact Us:</b>
+---
 d-ice-sdc at ice dot ci dot ritsumei dot ac dot jp
+
+### <b>DareFightingICE Project Page:</b>
+---
+Visit this [page](https://tinyurl.com/DareFightingICE). 
 
 
 
