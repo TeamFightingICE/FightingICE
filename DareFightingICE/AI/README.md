@@ -89,9 +89,11 @@ In the 2024 Competition, we are transitioning from the Java platform to Unity. W
 7. Click "Play" on the game screen to start the fight.
 
 ### <b>Prizes: (updated on March 26, 2024) </b>
+---
 IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### Organizers:
+---
 1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
 2. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
 3. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
@@ -113,4 +115,5 @@ Final deadline
 #### Note that all the submissions will be made publicly available after the competition.
 
 ### <b>Contact Us:</b>
+---
 d-ice-aic at ice dot ci dot ritsumei dot ac dot jp
