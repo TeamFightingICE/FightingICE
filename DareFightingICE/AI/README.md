@@ -117,3 +117,7 @@ Final deadline
 ### <b>Contact Us:</b>
 ---
 d-ice-aic at ice dot ci dot ritsumei dot ac dot jp
+
+### <b>DareFightingICE Project Page:</b>
+---
+Visit this [page](https://tinyurl.com/DareFightingICE). 
