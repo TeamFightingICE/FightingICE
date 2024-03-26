@@ -88,13 +88,10 @@ In the 2024 Competition, we are transitioning from the Java platform to Unity. W
 6. In the Python AI sample folder, run the following command: `python Main_SinglePyAI.py --a2 KickAI`.
 7. Click "Play" on the game screen to start the fight.
 
-### <b>Prizes: (updated on February 12, 2024) </b>
-This following information is subject to approval!<br>
-A money prize of $500 from IEEE CIS will be awarded to the qualified winner of the competition. For more details of the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
+### <b>Prizes: (updated on March 26, 2024) </b>
+IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### Organizers:
-
-
 1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
 2. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
 3. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
