@@ -1,6 +1,7 @@
 
 
 # <div align ="center"> 2024 DareFightingICE Sound-Design Competition </div>
+# Owing to a few setbacks with Unity, we have decided to revert to our Java version and augment its capabilities to foster sound design research. We anticipate launching this platform on May 8, 2024. We extend our sincere apologies for any inconvenience.
 ----
 <div align = "center"> Welcome to the DareFightingICE sound design competition. Here, you will be provided all the necessary information needed to participate in the sound design competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
