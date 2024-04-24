@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,19 +85,32 @@ public class SocketServer {
     	Logger.getAnonymousLogger().log(Level.INFO, "Socket server is stopped");
 	}
 	
+	private void removeCancelledClients() {
+		Iterator<SocketClientHandler> iter = clientList.iterator();
+		while (iter.hasNext()) {
+			SocketClientHandler client = iter.next();
+			if (client.isCancelled()) {
+				iter.remove();
+			}
+		}
+	}
+	
 	public void initialize(GameData gameData) {
+		removeCancelledClients();
 		for (SocketClientHandler client: clientList) {
 			client.initialize(gameData);
 		}
 	}
 	
 	public void processingGame(FrameData frameData) {
+		removeCancelledClients();
 		for (SocketClientHandler client: clientList) {
 			client.processingGame(frameData);
 		}
 	}
 	
 	public void roundEnd(RoundResult roundResult) {
+		removeCancelledClients();
 		for (SocketClientHandler client: clientList) {
 			client.roundEnd(roundResult);
 		}

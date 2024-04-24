@@ -52,16 +52,25 @@ public class SocketClientHandler implements Runnable {
 		this.cancelled = cancelled;
 	}
 	
+	private void addNewState(ObserverGameState gameState) {
+		if (stateQueue.size() > 0) {
+			stateQueue.clear();
+			Logger.getAnonymousLogger().log(Level.WARNING, "Consumer unable to consume game state. Clear game state queue...");
+		}
+		
+		this.stateQueue.add(gameState);
+	}
+	
 	public void initialize(GameData gameData) {
-		this.stateQueue.add(ObserverGameState.newInitializeState(gameData));
+		addNewState(ObserverGameState.newInitializeState(gameData));
 	}
 	
 	public void processingGame(FrameData frameData) {
-		this.stateQueue.add(ObserverGameState.newProcessingState(frameData, null, null));
+		addNewState(ObserverGameState.newProcessingState(frameData, null, null));
 	}
 	
 	public void roundEnd(RoundResult roundResult) {
-		this.stateQueue.add(ObserverGameState.newRoundEndState(roundResult));
+		addNewState(ObserverGameState.newRoundEndState(roundResult));
 	}
 	
 	public void startThread() {
@@ -110,7 +119,7 @@ public class SocketClientHandler implements Runnable {
 			}
 			
 	        InputManager.getInstance().setAudioData(new AudioData(byteArray));
-		} catch (IOException | InterruptedException e) {
+		} catch (Exception e) {
 			setCancelled(true);
 		}
 	}
