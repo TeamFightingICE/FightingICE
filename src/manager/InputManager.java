@@ -93,6 +93,8 @@ public class InputManager {
 	 * 1フレーム分のゲームの処理が終わったことを示すオブジェクト．
 	 */
 	private Object endFrame;
+	
+	private AudioData audioData;
 
 	/**
 	 * InputManagerクラスのクラスコンストラクタ．<br>
@@ -279,6 +281,10 @@ public class InputManager {
 			return new Key();
 		return new Key(ai.getInput());
 	}
+	
+	public void setAudioData(AudioData audioData) {
+		this.audioData = audioData;
+	}
 
 	/**
 	 * 引数のフレームデータ及びScreenDataを各AIコントローラにセットする．
@@ -302,7 +308,7 @@ public class InputManager {
 					ai.setFrameData(new FrameData());
 				}
 				ai.setScreenData(new ScreenData(screenData));
-				ai.setAudioData(new AudioData(audioData));
+				ai.setAudioData(new AudioData(this.audioData != null ? this.audioData : audioData));
 			}
 		}
 

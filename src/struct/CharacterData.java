@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import enumerate.Action;
 import enumerate.State;
 import fighting.Character;
+import protoc.MessageProto.GrpcCharacterData;
 import setting.LaunchSetting;
 
 /**
@@ -758,5 +759,33 @@ public class CharacterData {
 	public void setProcessedCommand(Deque<Key> inputCommand) {
 		this.processedCommands = new LinkedList<Key>(inputCommand);
 	}
+	
+	public GrpcCharacterData toProto() {
+  		return GrpcCharacterData.newBuilder()
+  				.setPlayerNumber(this.isPlayerNumber())
+  				.setHp(this.getHp())
+  				.setEnergy(this.getEnergy())
+  				.setX(this.getCenterX())
+  				.setY(this.getCenterY())
+  				.setLeft(this.getLeft())
+  				.setRight(this.getRight())
+  				.setTop(this.getTop())
+  				.setBottom(this.getBottom())
+  				.setSpeedX(this.getSpeedX())
+  				.setSpeedY(this.getSpeedY())
+  				.setStateValue(this.getState().ordinal())
+  				.setActionValue(this.getAction().ordinal())
+  				.setFront(this.isFront())
+  				.setControl(this.isControl())
+  				.setAttackData(this.getAttack().toProto())
+  				.setRemainingFrame(this.getRemainingFrame())
+  				.setHitConfirm(this.isHitConfirm())
+  				.setGraphicSizeX(this.getGraphicSizeX())
+  				.setGraphicSizeY(this.getGraphicSizeY())
+  				.setGraphicAdjustX(this.getGraphicAdjustX())
+  				.setHitCount(this.getHitCount())
+  				.setLastHitFrame(this.getLastHitFrame())
+  				.build();
+  	}
 
 }

@@ -4,6 +4,8 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import input.KeyData;
+import protoc.MessageProto.GrpcCharacterData;
+import protoc.MessageProto.GrpcFrameData;
 import setting.FlagSetting;
 import setting.GameSetting;
 
@@ -283,6 +285,33 @@ public class FrameData {
 
     public boolean isFront(boolean player) {
         return this.front[player ? 0 : 1];
+    }
+    
+    public GrpcFrameData toProto() {
+  		GrpcFrameData.Builder builder = GrpcFrameData.newBuilder();
+  		builder = builder.addCharacterData(GrpcCharacterData.getDefaultInstance())
+  				.addCharacterData(GrpcCharacterData.getDefaultInstance())
+  				.addFront(false)
+  				.addFront(false);
+  		
+  		if (this.getCharacter(true) != null) {
+  			builder = builder.setCharacterData(0, this.getCharacter(true).toProto());
+  		}
+  		
+  		if (this.getCharacter(false) != null) {
+  			builder = builder.setCharacterData(1, this.getCharacter(false).toProto());
+  		}
+  		
+  		for (AttackData proj : this.getProjectiles()) {
+  			builder.addProjectileData(proj.toProto());
+  		}
+  		
+  		builder.setFront(0, this.isFront(true));
+  		builder.setFront(1, this.isFront(false));
+  		return builder.setCurrentFrameNumber(this.getFramesNumber())
+  				.setCurrentRound(this.getRound())
+  				.setEmptyFlag(this.getEmptyFlag())
+  				.build();
     }
     
 }

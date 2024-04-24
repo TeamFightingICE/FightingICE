@@ -19,6 +19,7 @@ import loader.ResourceLoader;
 import manager.GameManager;
 import manager.GraphicManager;
 import manager.InputManager;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -183,6 +184,8 @@ public class Game extends GameManager {
         	try {
         		LaunchSetting.grpcServer = new GrpcServer();
         		LaunchSetting.grpcServer.start(LaunchSetting.grpcPort);
+        		
+    			SocketServer.getInstance().startServer();
 			} catch (IOException e) {
                 Logger.getAnonymousLogger().log(Level.INFO, "Fail to start gRPC server");
                 FlagSetting.grpc = false;

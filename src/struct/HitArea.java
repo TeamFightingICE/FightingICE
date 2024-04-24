@@ -1,5 +1,7 @@
 package struct;
 
+import protoc.MessageProto.GrpcHitArea;
+
 /**
  * The class dealing with information on the area of the character and the
  * attack hit box.
@@ -127,6 +129,15 @@ public class HitArea {
 	 */
 	public int getBottom() {
 		return this.bottom;
+	}
+	
+	public GrpcHitArea toProto() {
+		return GrpcHitArea.newBuilder()
+				.setLeft(this.getLeft())
+				.setRight(this.getRight())
+				.setTop(this.getTop())
+				.setBottom(this.getBottom())
+				.build();
 	}
 
 }

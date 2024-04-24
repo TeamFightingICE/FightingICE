@@ -1,6 +1,7 @@
 package struct;
 
 import fighting.Attack;
+import protoc.MessageProto.GrpcAttackData;
 
 /**
  * The class dealing with data on the attack such as damage amount and required
@@ -716,5 +717,32 @@ public class AttackData {
 	public void setIsProjectile(boolean isProjectile) {
 		this.isProjectile = isProjectile;
 	}
+	
+	public GrpcAttackData toProto() {
+  		return GrpcAttackData.newBuilder()
+  				.setSettingHitArea(this.getSettingHitArea().toProto())
+  				.setSettingSpeedX(this.getSettingSpeedX())
+  				.setSettingSpeedY(this.getSettingSpeedY())
+  				.setCurrentHitArea(this.getCurrentHitArea().toProto())
+  				.setCurrentFrame(this.getCurrentFrame())
+  				.setPlayerNumber(this.getPlayerNumber() == 0)
+  				.setSpeedX(this.getSpeedX())
+  				.setSpeedY(this.getSpeedY())
+  				.setStartUp(this.getStartUp())
+  				.setActive(this.getActive())
+  				.setHitDamage(this.getHitDamage())
+  				.setGuardDamage(this.getGuardDamage())
+  				.setStartAddEnergy(this.getStartAddEnergy())
+  				.setHitAddEnergy(this.getHitAddEnergy())
+  				.setGuardAddEnergy(this.getGuardAddEnergy())
+  				.setGiveEnergy(this.getGiveEnergy())
+  				.setImpactX(this.getImpactX())
+  				.setImpactY(this.getImpactY())
+  				.setGiveGuardRecov(this.getGiveGuardRecov())
+  				.setAttackType(this.getAttackType())
+  				.setDownProp(this.isDownProp())
+  				.setIsProjectile(this.isProjectile())
+  				.build();
+  	}
 
 }

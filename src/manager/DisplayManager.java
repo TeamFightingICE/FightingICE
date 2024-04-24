@@ -39,6 +39,7 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +49,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -224,7 +226,8 @@ public class DisplayManager {
 		if (FlagSetting.grpc) {
 			try {
 				LaunchSetting.grpcServer.stop();
-			} catch (InterruptedException e) {
+				SocketServer.getInstance().stopServer();
+			} catch (IOException | InterruptedException e) {
 				Logger.getAnonymousLogger().log(Level.INFO, "Fail to stop gRPC server");
 			}
 		}

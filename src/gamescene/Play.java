@@ -23,6 +23,7 @@ import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
 import py4j.Py4JException;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -149,6 +150,8 @@ public class Play extends GameScene {
 		}
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
+		
+		SocketServer.getInstance().initialize(gameData);
 		if (FlagSetting.grpc) {
 			LaunchSetting.grpcServer.getObserver().onInitialize(gameData);
 		}
@@ -314,6 +317,7 @@ public class Play extends GameScene {
 		
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
+		SocketServer.getInstance().processingGame(this.frameData);
 		
 		if (FlagSetting.grpc) {
 			ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
@@ -343,6 +347,7 @@ public class Play extends GameScene {
 
 				// AIに結果を渡す
 				InputManager.getInstance().sendRoundResult(roundResult);
+				SocketServer.getInstance().roundEnd(roundResult);
 				
 				if (FlagSetting.grpc) {
 					ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
@@ -369,6 +374,7 @@ public class Play extends GameScene {
 
 			// AIに結果を渡す
 			InputManager.getInstance().sendRoundResult(roundResult);
+			SocketServer.getInstance().roundEnd(roundResult);
 			
 			if (FlagSetting.grpc) {
 				ObserverAgent observer = LaunchSetting.grpcServer.getObserver();

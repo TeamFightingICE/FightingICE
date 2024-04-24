@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,6 +203,11 @@ public class SoundManager {
         return audioBuffer;
     }
 
+    public AudioBuffer createAudioBufferFromSampleAudio() {
+    	AudioBuffer audioBuffer = null;
+    	
+    	return audioBuffer;
+    }
 
     /**
      * Create audio source at the current OpenAL context.

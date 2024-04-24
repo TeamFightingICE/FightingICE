@@ -1,10 +1,14 @@
 package grpc;
 
 import informationcontainer.RoundResult;
+import protoc.EnumProto.GrpcFlag;
+import protoc.ServiceProto.SpectatorGameState;
+import setting.GameSetting;
 import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
+import util.GrpcUtil;
 
 public class ObserverGameState implements Comparable<ObserverGameState> {
 
@@ -59,6 +63,32 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 	
 	public RoundResult getRoundResult() {
 		return this.roundResult;
+	}
+	
+	public SpectatorGameState toProto() {
+		if (this.getStateFlag() == StateFlag.INITIALIZE) {
+			SpectatorGameState response = SpectatorGameState.newBuilder()
+	  				.setStateFlag(GrpcFlag.INITIALIZE)
+	  				.setGameData(GrpcUtil.convertGameData(this.getGameData()))
+	  				.build();
+			return response;
+		} else if (this.getStateFlag() == StateFlag.PROCESSING) {
+			SpectatorGameState response = SpectatorGameState.newBuilder()
+					.setStateFlag(GrpcFlag.PROCESSING)
+					.setFrameData(this.getFrameData().toProto())
+					.build();
+			return response;
+		} else if (this.getStateFlag() == StateFlag.ROUND_END) {
+			RoundResult roundResult = this.getRoundResult();
+			boolean isGameEnd = roundResult.getRound() >= GameSetting.ROUND_MAX;
+			SpectatorGameState response = SpectatorGameState.newBuilder()
+					.setStateFlag(isGameEnd ? GrpcFlag.GAME_END : GrpcFlag.ROUND_END)
+					.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
+	  				.build();
+			return response;
+		}
+		
+		return null;
 	}
 
 	@Override

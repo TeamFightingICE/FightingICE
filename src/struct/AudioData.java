@@ -1,5 +1,6 @@
 package struct;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import setting.GameSetting;
@@ -65,9 +66,13 @@ public class AudioData {
         this.fftData[0] = new FFTData(fft.getReal(), fft.getImag());
         fft.process(Arrays.copyOf(this.rawData[1], this.rawData[1].length));
         this.fftData[1] = new FFTData(fft.getReal(), fft.getImag());
-        this.rawDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawData);
+        
+        if (this.rawDataAsBytes == null)
+        	this.rawDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawData);
+        
         this.spectrogramData[0] = mfcc.melSpectrogram(Arrays.copyOf(this.rawData[0], this.rawData[0].length));
         this.spectrogramData[1] = mfcc.melSpectrogram(Arrays.copyOf(this.rawData[1], this.rawData[1].length));
+        
         this.spectrogramDataAsBytes = NumberConverter.getInstance().getByteArray(this.spectrogramData);
     }
 
@@ -95,6 +100,23 @@ public class AudioData {
         this.init();
         this.rawData = rawData;
 
+        this.tranformRawData();
+    }
+    
+    public AudioData(byte[] rawDataAsBytes) {
+    	this.init();
+    	this.rawData = new float[2][1024];
+    	this.rawDataAsBytes = rawDataAsBytes;
+    	
+        for (int i = 0; i < 8192; i += 4) {
+            float value = ByteBuffer.wrap(rawDataAsBytes, i, 4).getFloat();
+
+            int rowIndex = (i / 4) / 1024;
+            int colIndex = (i / 4) % 1024;
+
+            this.rawData[rowIndex][colIndex] = value;
+        }
+        
         this.tranformRawData();
     }
 
