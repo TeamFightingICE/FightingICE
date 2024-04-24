@@ -204,6 +204,11 @@ public class AIController extends Thread {
      * @see FrameData
      */
     public synchronized void setFrameData(FrameData fd) {
+    	for (int i = 0; i < 2; i++) {
+    		if (fd.getCharacter(i == 0) != null)
+    			fd.getCharacter(i == 0).removeExtraData();
+    	}
+    	
         if (fd != null) {
             this.framesData.addLast(fd);
         } else {

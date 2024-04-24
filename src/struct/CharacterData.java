@@ -149,6 +149,8 @@ public class CharacterData {
 	 * simulator.
 	 */
 	private Deque<Key> processedCommands;
+	
+	private CharacterExtraData extraData;
 
 	/**
 	 * The class constructor that acquires information on the character from an
@@ -184,6 +186,7 @@ public class CharacterData {
 		this.lastHitFrame = character.getLastHitFrame();
 		this.inputCommands = character.getInputCommand();
 		this.processedCommands = character.getProcessedCommand();
+		this.extraData = new CharacterExtraData(character);
 	}
 
 	/**
@@ -219,6 +222,7 @@ public class CharacterData {
 		this.lastHitFrame = characterData.getLastHitFrame();
 		this.inputCommands = characterData.getInputCommand();
 		this.processedCommands = characterData.getProcessedCommand();
+		this.extraData = characterData.getExtraData();
 	}
 
 	/**
@@ -523,6 +527,10 @@ public class CharacterData {
 
 		return temp;
 	}
+	
+	public CharacterExtraData getExtraData() {
+		return this.extraData;
+	}
 
 	/**
 	 * Sets the character's HP.
@@ -760,10 +768,14 @@ public class CharacterData {
 		this.processedCommands = new LinkedList<Key>(inputCommand);
 	}
 	
+	public void removeExtraData() {
+		this.extraData = null;
+	}
+	
 	public GrpcCharacterData toProto() {
-  		return GrpcCharacterData.newBuilder()
-  				.setPlayerNumber(this.isPlayerNumber())
-  				.setHp(this.getHp())
+		GrpcCharacterData.Builder builder = GrpcCharacterData.newBuilder();
+		builder = builder.setPlayerNumber(this.isPlayerNumber())
+				.setHp(this.getHp())
   				.setEnergy(this.getEnergy())
   				.setX(this.getCenterX())
   				.setY(this.getCenterY())
@@ -784,8 +796,13 @@ public class CharacterData {
   				.setGraphicSizeY(this.getGraphicSizeY())
   				.setGraphicAdjustX(this.getGraphicAdjustX())
   				.setHitCount(this.getHitCount())
-  				.setLastHitFrame(this.getLastHitFrame())
-  				.build();
+  				.setLastHitFrame(this.getLastHitFrame());
+		
+		if (this.getExtraData() != null) {
+			// TODO: add extra data
+		}
+		
+		return builder.build();
   	}
 
 }

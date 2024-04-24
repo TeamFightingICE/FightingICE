@@ -201,6 +201,8 @@ public class Character {
 
     // same as projecttileAttack (for attack hit detection)
     private Attack[] projectileAttack2 =  new Attack[3];
+    
+    private HitArea preprocessedHitArea = new HitArea();
 
     /**
      * Class constructorï¼Ž
@@ -493,6 +495,8 @@ public class Character {
         moveY(this.speedY);
         frictionEffect();
         gravityEffect();
+        
+    	preprocessedHitArea = new HitArea(getHitAreaLeft(), getHitAreaRight(), getHitAreaTop(), getHitAreaBottom());
 
         if (FlagSetting.trainingModeFlag) {
             this.energy = LaunchSetting.maxEnergy[this.playerNumber ? 0 : 1];
@@ -579,9 +583,9 @@ public class Character {
             	if(this.hp < 50) {
             		if(!SoundManager.getInstance().isPlaying(sourceHeartBeat)) {
             			if (this.playerNumber) {
-                            SoundManager.getInstance().play2(sourceEnergyChange, SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"), 0, 0, false);
+                            SoundManager.getInstance().play2(sourceHeartBeat, SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"), 0, 0, false);
                         } else {
-                            SoundManager.getInstance().play2(sourceEnergyChange, SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"), GameSetting.STAGE_WIDTH, 0, false);
+                            SoundManager.getInstance().play2(sourceHeartBeat, SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"), GameSetting.STAGE_WIDTH, 0, false);
                         }
             		}
             	}  
@@ -1200,6 +1204,18 @@ public class Character {
         int damage = 5; // ボーナスダメージ
 
         return this.hitCount < requireHit ? 0 : damage * requireHit / this.hitCount;
+    }
+    
+    public Attack[] getProjectileAttack() {
+    	return this.projectileAttack;
+    }
+    
+    public boolean[] getIsProjectileLive() {
+    	return this.isProjectileLive;
+    }
+    
+    public HitArea getPreprocessedHitArea() {
+    	return this.preprocessedHitArea;
     }
 
     /**

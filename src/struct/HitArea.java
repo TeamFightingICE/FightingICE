@@ -139,5 +139,9 @@ public class HitArea {
 				.setBottom(this.getBottom())
 				.build();
 	}
+	
+	public String toString() {
+		return String.format("HitArea(left=%d, right=%d, top=%d, bottom=%d)", left, right, top, bottom);
+	}
 
 }
