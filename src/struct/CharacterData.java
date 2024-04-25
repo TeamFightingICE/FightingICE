@@ -180,7 +180,7 @@ public class CharacterData {
 		this.action = character.getAction();
 		this.front = character.isFront();
 		this.control = character.isControl();
-		this.attackData = new AttackData(character.getAttack());
+		this.attackData = new AttackData(character.getAttack2());
 		this.remainingFrame = character.getRemainingFrame();
 		this.hitConfirm = character.isHitConfirm();
 		this.hitCount = character.getHitCount();

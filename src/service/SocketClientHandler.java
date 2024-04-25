@@ -52,7 +52,7 @@ public class SocketClientHandler implements Runnable {
 		this.cancelled = cancelled;
 	}
 	
-	private void enqueueState(ObserverGameState gameState) {
+	private synchronized void enqueueState(ObserverGameState gameState) {
 		if (stateQueue.remainingCapacity() < 1) {
 			stateQueue.clear();
 			Logger.getAnonymousLogger().log(Level.WARNING, "Consumer unable to consume game state. Clear game state queue...");
@@ -61,15 +61,15 @@ public class SocketClientHandler implements Runnable {
 		this.stateQueue.add(gameState);
 	}
 	
-	public void initialize(GameData gameData) {
+	public synchronized void initialize(GameData gameData) {
 		enqueueState(ObserverGameState.newInitializeState(gameData));
 	}
 	
-	public void processingGame(FrameData frameData) {
+	public synchronized void processingGame(FrameData frameData) {
 		enqueueState(ObserverGameState.newProcessingState(frameData, null, null));
 	}
 	
-	public void roundEnd(RoundResult roundResult) {
+	public synchronized void roundEnd(RoundResult roundResult) {
 		enqueueState(ObserverGameState.newRoundEndState(roundResult));
 	}
 	

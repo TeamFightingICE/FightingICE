@@ -103,6 +103,7 @@ public class Character {
      * The attack data that the character is using.
      */
     private Attack attack;
+    private Attack attack2;
 
     /**
      * The number of frames that the character needs to resume to its normal
@@ -786,6 +787,8 @@ public class Character {
                     motion.isAttackDownProp());
 
             this.attack.initialize(this.playerNumber, this.x, this.y, this.graphicSizeX, this.front);
+            
+            this.attack2 = attack;
         }
     }
 
@@ -1076,6 +1079,10 @@ public class Character {
      */
     public Attack getAttack() {
         return this.attack;
+    }
+    
+    public Attack getAttack2() {
+    	return this.attack2;
     }
 
     /**
