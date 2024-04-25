@@ -139,7 +139,7 @@ public class PlayerAgent {
 		PlayerGameState.Builder response = PlayerGameState.newBuilder()
 				.setStateFlag(GrpcFlag.PROCESSING)
 				.setIsControl(isControl)
-  				.setFrameData(GrpcUtil.convertFrameData(frameData))
+  				.setFrameData(frameData.toProto())
   				.setScreenData(GrpcUtil.convertScreenData(screenData, 96, 64, true))
   				.setAudioData(GrpcUtil.convertAudioData(audioData));
 		if (LaunchSetting.nonDelay[playerNumber ? 0 : 1]) {

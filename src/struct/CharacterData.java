@@ -2,6 +2,7 @@ package struct;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Optional;
 
 import enumerate.Action;
 import enumerate.State;
@@ -150,7 +151,7 @@ public class CharacterData {
 	 */
 	private Deque<Key> processedCommands;
 	
-	private CharacterExtraData extraData;
+	private Optional<CharacterExtraData> extraData;
 
 	/**
 	 * The class constructor that acquires information on the character from an
@@ -186,7 +187,7 @@ public class CharacterData {
 		this.lastHitFrame = character.getLastHitFrame();
 		this.inputCommands = character.getInputCommand();
 		this.processedCommands = character.getProcessedCommand();
-		this.extraData = new CharacterExtraData(character);
+		this.extraData = Optional.of(new CharacterExtraData(character));
 	}
 
 	/**
@@ -222,7 +223,7 @@ public class CharacterData {
 		this.lastHitFrame = characterData.getLastHitFrame();
 		this.inputCommands = characterData.getInputCommand();
 		this.processedCommands = characterData.getProcessedCommand();
-		this.extraData = characterData.getExtraData();
+		this.extraData = Optional.of(new CharacterExtraData(characterData.getExtraData()));
 	}
 
 	/**
@@ -529,7 +530,11 @@ public class CharacterData {
 	}
 	
 	public CharacterExtraData getExtraData() {
-		return this.extraData;
+		if (this.extraData.isPresent()) {
+			return this.extraData.get();
+		}
+		
+		return null;
 	}
 
 	/**
@@ -769,7 +774,7 @@ public class CharacterData {
 	}
 	
 	public void removeExtraData() {
-		this.extraData = null;
+		this.extraData = Optional.empty();
 	}
 	
 	public GrpcCharacterData toProto() {
@@ -798,7 +803,7 @@ public class CharacterData {
   				.setHitCount(this.getHitCount())
   				.setLastHitFrame(this.getLastHitFrame());
 		
-		if (this.getExtraData() != null) {
+		if (this.extraData.isPresent()) {
 			// TODO: add extra data
 		}
 		

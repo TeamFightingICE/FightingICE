@@ -81,4 +81,5 @@ public class GameSetting {
     public static final int SOUND_SAMPLING_RATE = 48000;
     public static final int SOUND_RENDER_SIZE = GameSetting.SOUND_SAMPLING_RATE / GameSetting.FPS;
     public static final int SOUND_BUFFER_SIZE = (int) Math.pow(2, Math.ceil(Math.log(SOUND_RENDER_SIZE) / Math.log(2)));
+    
 }

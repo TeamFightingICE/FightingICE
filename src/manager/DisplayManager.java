@@ -202,7 +202,7 @@ public class DisplayManager {
 			gm.update();
 
 		   	if(!FlagSetting.fastModeFlag){
-		   		syncFrameRate(60, lastNanos);
+		   		syncFrameRate(GameSetting.FPS, lastNanos);
 		   		lastNanos = System.nanoTime();
 		   	}
 			// バックバッファに描画する

@@ -11,8 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import informationcontainer.RoundResult;
+import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
+import struct.ScreenData;
 
 public class SocketServer {
 
@@ -59,7 +61,7 @@ public class SocketServer {
 							SocketClientHandler clientHandler = new SocketClientHandler(client, SocketClientType.GENERATIVE_SOUND_AGENT);
 							clientHandler.startThread();
 							clientList.add(clientHandler);
-							Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Generative Sound Agent");
+							Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
 						}
 					} catch (IOException e) {
 						if (!Thread.currentThread().isInterrupted()) Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
@@ -102,7 +104,7 @@ public class SocketServer {
 		}
 	}
 	
-	public void processingGame(FrameData frameData) {
+	public void processingGame(FrameData frameData, ScreenData screenData, AudioData audioData) {
 		removeCancelledClients();
 		for (SocketClientHandler client: clientList) {
 			client.processingGame(frameData);

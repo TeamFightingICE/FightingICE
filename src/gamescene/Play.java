@@ -317,7 +317,7 @@ public class Play extends GameScene {
 		
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
-		SocketServer.getInstance().processingGame(this.frameData);
+		SocketServer.getInstance().processingGame(this.frameData, this.screenData, this.audioData);
 		
 		if (FlagSetting.grpc) {
 			ObserverAgent observer = LaunchSetting.grpcServer.getObserver();

@@ -209,6 +209,36 @@ public class MotionData {
 		this.control = motion.isControl();
 		this.landingFlag = motion.isLandingFlag();
 	}
+	
+	public MotionData(MotionData motionData) {
+		this.actionName = motionData.getActionName();
+		this.frameNumber = motionData.getFrameNumber();
+		this.speedX = motionData.getSpeedX();
+		this.speedY = motionData.getSpeedY();
+		this.characterHitArea = motionData.getCharacterHitArea();
+		this.state = motionData.getState();
+		this.attackHitArea = motionData.getAttackHitArea();
+		this.attackSpeedX = motionData.getAttackSpeedX();
+		this.attackSpeedY = motionData.getAttackSpeedY();
+		this.attackStartUp = motionData.getAttackStartUp();
+		this.attackActive = motionData.getAttackActive();
+		this.attackHitDamage = motionData.getAttackHitDamage();
+		this.attackGuardDamage = motionData.getAttackGuardDamage();
+		this.attackStartAddEnergy = motionData.getAttackStartAddEnergy();
+		this.attackHitAddEnergy = motionData.getAttackHitAddEnergy();
+		this.attackGuardAddEnergy = motionData.getAttackGuardAddEnergy();
+		this.attackGiveEnergy = motionData.getAttackGiveEnergy();
+		this.attackImpactX = motionData.getAttackImpactX();
+		this.attackImpactY = motionData.getAttackImpactY();
+		this.attackGiveGuardRecov = motionData.getAttackGiveGuardRecov();
+		this.attackType = motionData.getAttackType();
+		this.attackDownProp = motionData.isAttackDownProp();
+		this.cancelAbleFrame = motionData.getCancelAbleFrame();
+		this.cancelAbleMotionLevel = motionData.getCancelAbleMotionLevel();
+		this.motionLevel = motionData.getMotionLevel();
+		this.control = motionData.isControl();
+		this.landingFlag = motionData.isLandingFlag();
+	}
 
 	/**
 	 * Returns the name of this motion.

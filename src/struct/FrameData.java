@@ -4,7 +4,6 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import input.KeyData;
-import protoc.MessageProto.GrpcCharacterData;
 import protoc.MessageProto.GrpcFrameData;
 import setting.FlagSetting;
 import setting.GameSetting;
@@ -125,7 +124,6 @@ public class FrameData {
 
     public void removeVisualData() {
         this.characterData = new CharacterData[2];
-//        this.currentFrameNumber = -1;
         this.currentRound = -1;
         this.projectileData = new LinkedList<AttackData>();
     }
@@ -289,28 +287,21 @@ public class FrameData {
     
     public GrpcFrameData toProto() {
   		GrpcFrameData.Builder builder = GrpcFrameData.newBuilder();
-  		builder = builder.addCharacterData(GrpcCharacterData.getDefaultInstance())
-  				.addCharacterData(GrpcCharacterData.getDefaultInstance())
-  				.addFront(false)
-  				.addFront(false);
-  		
-  		if (this.getCharacter(true) != null) {
-  			builder = builder.setCharacterData(0, this.getCharacter(true).toProto());
-  		}
-  		
-  		if (this.getCharacter(false) != null) {
-  			builder = builder.setCharacterData(1, this.getCharacter(false).toProto());
-  		}
   		
   		for (AttackData proj : this.getProjectiles()) {
   			builder.addProjectileData(proj.toProto());
   		}
   		
-  		builder.setFront(0, this.isFront(true));
-  		builder.setFront(1, this.isFront(false));
+  		if (this.getCharacter(true) != null && this.getCharacter(false) != null) {	
+  			builder = builder.addCharacterData(this.getCharacter(true).toProto());
+  			builder = builder.addCharacterData(this.getCharacter(false).toProto());
+  		}
+  		
   		return builder.setCurrentFrameNumber(this.getFramesNumber())
   				.setCurrentRound(this.getRound())
   				.setEmptyFlag(this.getEmptyFlag())
+  				.addFront(this.isFront(true))
+  				.addFront(this.isFront(false))
   				.build();
     }
     

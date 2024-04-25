@@ -569,6 +569,7 @@ public class Character {
                 }
 
             }
+            
             if (this.getHitAreaLeft() < 0 || this.getHitAreaRight() > GameSetting.STAGE_WIDTH) {
                 if (!SoundManager.getInstance().isPlaying(sourceBorderAlert)) {
                     if (this.getHitAreaLeft() < 0) {
@@ -576,10 +577,10 @@ public class Character {
                     } else {
                         SoundManager.getInstance().play2(sourceBorderAlert, SoundManager.getInstance().getSoundBuffers().get("BorderAlert.wav"), GameSetting.STAGE_WIDTH, 0, false);
                     }
-
                 }
             }
-            if(FlagSetting.limitHpFlag) {
+            
+            if (FlagSetting.limitHpFlag) {
             	if(this.hp < 50) {
             		if(!SoundManager.getInstance().isPlaying(sourceHeartBeat)) {
             			if (this.playerNumber) {
@@ -595,6 +596,7 @@ public class Character {
             if (this.state != State.CROUCH) {
                 TempName = " ";
             }
+            
             // This is to make sure Character footsteps sound does not play when character is in air.
             if (this.speedX == 0 || this.state == State.AIR) {
                 TempName2 = " ";
@@ -603,10 +605,9 @@ public class Character {
                 SoundManager.getInstance().setSourcePos(sourceWalking, this.x, this.y);
             }
 
-
-            for(int a  = 0 ; a < this.projectileAttack.length ; a++) {
-                if(this.projectileAttack[a] != null) {
-                    if(this.isProjectileLive[a]) {
+            for (int a  = 0 ; a < this.projectileAttack.length ; a++) {
+                if (this.projectileAttack[a] != null) {
+                    if (this.isProjectileLive[a]) {
                         if (this.projectileAttack[a].updateProjectileAttack() && !this.ProjectileHit[a]) {
 
                             this.sX[a] = this.sX[a] + (this.projectileAttack[a].getSpeedX());
@@ -618,11 +619,9 @@ public class Character {
                             this.projectileAttack[a] = null;
                             this.ProjectileHit[a] = false;
                         }
-
                     }
                 }
             }
-
         }
     }
 
@@ -656,7 +655,7 @@ public class Character {
             setRemainingFrame(attack.getGiveGuardRecov());
             opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
-            if (!this.isSimulateProcess) {
+            if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
                 SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("WeakGuard.wav"), this.x, this.y, false);
             }
         } else {
@@ -689,9 +688,7 @@ public class Character {
 
                     if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
                         SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("HitB.wav"), this.x, this.y, false);
-
                     }
-
                 } else {
                     switch (this.state) {
                         case STAND:
@@ -1206,12 +1203,16 @@ public class Character {
         return this.hitCount < requireHit ? 0 : damage * requireHit / this.hitCount;
     }
     
-    public Attack[] getProjectileAttack() {
-    	return this.projectileAttack;
+    public Attack getProjectileAttack(int index) {
+    	return this.projectileAttack[index];
     }
     
-    public boolean[] getIsProjectileLive() {
-    	return this.isProjectileLive;
+    public boolean getProjectileLive(int index) {
+    	return this.isProjectileLive[index];
+    }
+    
+    public boolean getProjectileHit(int index) {
+    	return this.ProjectileHit[index];
     }
     
     public HitArea getPreprocessedHitArea() {
