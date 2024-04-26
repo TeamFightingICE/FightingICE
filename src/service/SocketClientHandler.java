@@ -108,7 +108,7 @@ public class SocketClientHandler implements Runnable {
 		try {
 			ObserverGameState state = stateQueue.take();
 			
-			socketSend(HexFormat.of().parseHex("01"), false);
+			socketSend(new byte[] { 1 }, false);
 			socketSend(state.toProto().toByteArray(), true);
 			
 			byte[] byteArray = socketRecv(-1);
