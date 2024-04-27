@@ -663,7 +663,7 @@ public class Character {
             setRemainingFrame(attack.getGiveGuardRecov());
             opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
-            if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
+            if (!this.isSimulateProcess) {
                 SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("WeakGuard.wav"), this.x, this.y, false);
             }
         } else {
@@ -694,7 +694,7 @@ public class Character {
                     runAction(Action.CHANGE_DOWN, false);
                     setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
 
-                    if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
+                    if (!this.isSimulateProcess) {
                         SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("HitB.wav"), this.x, this.y, false);
                     }
                 } else {
@@ -715,7 +715,7 @@ public class Character {
                             break;
                     }
 
-                    if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
+                    if (!this.isSimulateProcess) {
                         SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("HitA.wav"), this.x, this.y, false);
                     }
                 }
