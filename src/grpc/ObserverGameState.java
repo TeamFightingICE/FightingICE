@@ -20,8 +20,8 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 	private AudioData audioData;
 	private RoundResult roundResult;
 	
-	private ObserverGameState() {
-		this.stateFlag = StateFlag.CANCELLED;
+	private ObserverGameState(StateFlag stateFlag) {
+		this.stateFlag = stateFlag;
 	}
 	
 	private ObserverGameState(GameData gameData) {
@@ -97,11 +97,15 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 	}
 	
 	public static ObserverGameState newCancelledState() {
-		return new ObserverGameState();
+		return new ObserverGameState(StateFlag.CANCELLED);
 	}
 	
 	public static ObserverGameState newInitializeState(GameData gameData) {
 		return new ObserverGameState(gameData);
+	}
+	
+	public static ObserverGameState newInitRoundState() {
+		return new ObserverGameState(StateFlag.INIT_ROUND);
 	}
 	
 	public static ObserverGameState newProcessingState(FrameData frameData, ScreenData screenData, AudioData audioData) {

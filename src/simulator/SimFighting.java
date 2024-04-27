@@ -97,6 +97,9 @@ public class SimFighting extends Fighting {
 	 *            現在のフレーム
 	 */
 	public void processingFight(int currentFrame) {
+		for (int i = 0; i < 2; i++) {
+			this.playerCharacters[i].setCurrentFrame(currentFrame);
+		}
 		// 1. コマンドの実行・対戦処理
 		processingCommands();
 		// 2. 当たり判定の処理

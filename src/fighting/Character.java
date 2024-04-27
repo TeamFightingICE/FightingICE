@@ -204,6 +204,8 @@ public class Character {
     private Attack[] projectileAttack2 =  new Attack[3];
     
     private HitArea preprocessedHitArea = new HitArea();
+    
+    private int currentFrame;
 
     /**
      * Class constructorï¼Ž
@@ -401,6 +403,12 @@ public class Character {
             this.x = 460 + this.graphicAdjustInitialX[1];
             this.y = 335;
         }
+        
+        for (int i = 0; i < 3; i++) {
+        	this.projectileAttack[i] = null;
+        	this.isProjectileLive[i] = false;
+        	this.ProjectileHit[i] = false;
+        }
     }
 
     /**
@@ -447,7 +455,6 @@ public class Character {
                 Name = Name + ".wav";
 
                 SoundManager.getInstance().play2(sourceDefault, SoundManager.getInstance().getSoundBuffers().get(Name), this.x, this.y, false);
-
             } else if (Arrays.asList("CROUCH").contains(Name)) {
                 Name = Name + ".wav";
                 if (!TempName.equals(Name)) {
@@ -1457,6 +1464,10 @@ public class Character {
      */
     public boolean isSimulateProcess() {
         return this.isSimulateProcess;
+    }
+    
+    public void setCurrentFrame(int currentFrame) {
+    	this.currentFrame = currentFrame;
     }
 
     public void close(){

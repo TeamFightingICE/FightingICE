@@ -104,6 +104,13 @@ public class SocketServer {
 		}
 	}
 	
+	public void initRound() {
+		removeCancelledClients();
+		for (SocketClientHandler client: clientList) {
+			client.initRound();
+		}
+	}
+	
 	public void processingGame(FrameData frameData, ScreenData screenData, AudioData audioData) {
 		removeCancelledClients();
 		for (SocketClientHandler client: clientList) {

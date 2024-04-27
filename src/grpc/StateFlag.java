@@ -6,6 +6,7 @@ public enum StateFlag {
 	PROCESSING("processing", 1),
 	ROUND_END("round_end", 3),
 	CANCELLED("cancelled", 4),
+	INIT_ROUND("init_round", 5)
 	;
 	
 	private String name;

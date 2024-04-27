@@ -139,6 +139,8 @@ public class AttackData {
 	 * {@code true} if this skill is projectile, {@code false} otherwise.
 	 */
 	private boolean isProjectile;
+	
+	private boolean emptyFlag;
 
 	/**
 	 * The class constructor.
@@ -166,6 +168,7 @@ public class AttackData {
 		this.attackType = 0;
 		this.downProp = false;
 		this.isProjectile = false;
+		this.emptyFlag = true;
 	}
 
 	/**
@@ -177,6 +180,8 @@ public class AttackData {
 	 *            an instance of the Attack class
 	 */
 	public AttackData(Attack attack) {
+		this();
+		
 		if (attack != null) {
 			this.settingHitArea = attack.getSettingHitArea();
 			this.settingSpeedX = attack.getSettingSpeedX();
@@ -200,6 +205,7 @@ public class AttackData {
 			this.attackType = attack.getAttackType();
 			this.downProp = attack.isDownProp();
 			this.isProjectile = attack.isProjectile();
+			this.emptyFlag = false;
 		}
 	}
 
@@ -211,6 +217,8 @@ public class AttackData {
 	 *            an instance of the AttackData class
 	 */
 	public AttackData(AttackData attackData) {
+		this();
+		
 		if (attackData != null) {
 			this.settingHitArea = attackData.getSettingHitArea();
 			this.settingSpeedX = attackData.getSettingSpeedX();
@@ -234,7 +242,12 @@ public class AttackData {
 			this.attackType = attackData.getAttackType();
 			this.downProp = attackData.isDownProp();
 			this.isProjectile = attackData.isProjectile();
+			this.emptyFlag = attackData.isEmptyFlag();
 		}
+	}
+	
+	public boolean isEmptyFlag() {
+		return this.emptyFlag;
 	}
 
 	/**
@@ -718,30 +731,35 @@ public class AttackData {
 		this.isProjectile = isProjectile;
 	}
 	
+	public void setEmptyFlag(boolean emptyFlag) {
+		this.emptyFlag = emptyFlag;
+	}
+	
 	public GrpcAttackData toProto() {
   		return GrpcAttackData.newBuilder()
-  				.setSettingHitArea(this.getSettingHitArea().toProto())
-  				.setSettingSpeedX(this.getSettingSpeedX())
-  				.setSettingSpeedY(this.getSettingSpeedY())
-  				.setCurrentHitArea(this.getCurrentHitArea().toProto())
-  				.setCurrentFrame(this.getCurrentFrame())
-  				.setPlayerNumber(this.getPlayerNumber() == 0)
-  				.setSpeedX(this.getSpeedX())
-  				.setSpeedY(this.getSpeedY())
-  				.setStartUp(this.getStartUp())
-  				.setActive(this.getActive())
-  				.setHitDamage(this.getHitDamage())
-  				.setGuardDamage(this.getGuardDamage())
-  				.setStartAddEnergy(this.getStartAddEnergy())
-  				.setHitAddEnergy(this.getHitAddEnergy())
-  				.setGuardAddEnergy(this.getGuardAddEnergy())
-  				.setGiveEnergy(this.getGiveEnergy())
-  				.setImpactX(this.getImpactX())
-  				.setImpactY(this.getImpactY())
-  				.setGiveGuardRecov(this.getGiveGuardRecov())
-  				.setAttackType(this.getAttackType())
-  				.setDownProp(this.isDownProp())
-  				.setIsProjectile(this.isProjectile())
+  				.setSettingHitArea(this.settingHitArea.toProto())
+  				.setSettingSpeedX(this.settingSpeedX)
+  				.setSettingSpeedY(this.settingSpeedY)
+  				.setCurrentHitArea(this.currentHitArea.toProto())
+  				.setCurrentFrame(this.currentFrame)
+  				.setPlayerNumber(this.playerNumber)
+  				.setSpeedX(this.speedX)
+  				.setSpeedY(this.speedY)
+  				.setStartUp(this.startUp)
+  				.setActive(this.active)
+  				.setHitDamage(this.hitDamage)
+  				.setGuardDamage(this.guardDamage)
+  				.setStartAddEnergy(this.startAddEnergy)
+  				.setHitAddEnergy(this.hitAddEnergy)
+  				.setGuardAddEnergy(this.guardAddEnergy)
+  				.setGiveEnergy(this.giveEnergy)
+  				.setImpactX(this.impactX)
+  				.setImpactY(this.impactY)
+  				.setGiveGuardRecov(this.giveGuardRecov)
+  				.setAttackType(this.attackType)
+  				.setDownProp(this.downProp)
+  				.setIsProjectile(this.isProjectile)
+  				.setEmptyFlag(this.emptyFlag)
   				.build();
   	}
 

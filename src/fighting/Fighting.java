@@ -23,6 +23,7 @@ import struct.Key;
  */
 public class Fighting {
 
+	private int currentFrame;
 	/**
 	 * The character's data of both characters<br>
 	 * Index 0 is P1, index 1 is P2.
@@ -70,7 +71,6 @@ public class Fighting {
 		this.inputCommands = new LinkedList<KeyData>();
 		this.commandTable = new CommandTable();
 		this.hitEffects = new LinkedList<LinkedList<HitEffect>>();
-
 	}
 	
 	public void processingRoundEnd(){
@@ -110,9 +110,12 @@ public class Fighting {
 	 *            P1, P2のキー入力． Index 0 is P1, index 1 is P2.
 	 */
 	public void processingFight(int currentFrame, KeyData keyData) {
-
+		this.currentFrame = currentFrame;
+		for (int i = 0; i < 2; i++) {
+			this.playerCharacters[i].setCurrentFrame(currentFrame);
+		}
 		// 1. 入力されたキーを基に, アクションを実行
-		processingCommands(currentFrame, keyData);
+		processingCommands(keyData);
 		// 2. 当たり判定の処理
 		calculationHit(currentFrame);
 		// 3. 攻撃のパラメータの更新
@@ -131,7 +134,7 @@ public class Fighting {
 	 *            P1, P2のキー入力．<br>
 	 *            Index 0 is P1, index 1 is P2.
 	 */
-	protected void processingCommands(int currentFrame, KeyData keyData) {
+	protected void processingCommands(KeyData keyData) {
 		this.inputCommands.addLast(keyData);
 
 		// リストのサイズが上限(INPUT_LIMIT)を超えていたら, 最も古いデータを削除する

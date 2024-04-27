@@ -52,7 +52,7 @@ public class GrpcUtil {
   				.setSettingSpeedY(attackData.getSettingSpeedY())
   				.setCurrentHitArea(convertHitArea(attackData.getCurrentHitArea()))
   				.setCurrentFrame(attackData.getCurrentFrame())
-  				.setPlayerNumber(attackData.getPlayerNumber() == 0)
+  				.setPlayerNumber(attackData.isPlayerNumber())
   				.setSpeedX(attackData.getSpeedX())
   				.setSpeedY(attackData.getSpeedY())
   				.setStartUp(attackData.getStartUp())

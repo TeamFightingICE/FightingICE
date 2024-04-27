@@ -37,6 +37,7 @@ message GrpcAttackData {
 	int32 attack_type = 20;
 	bool down_prop = 21;
 	bool is_projectile = 22;
+	bool empty_flag = 23;
 }
 
 message GrpcCharacterData {
@@ -63,6 +64,9 @@ message GrpcCharacterData {
 	int32 graphic_adjust_x = 21;
 	int32 hit_count = 22;
 	int32 last_hit_frame = 23;
+	repeated GrpcAttackData projectile_attack = 24;
+	repeated bool projectile_live = 25;
+	repeated bool projectile_hit = 26;
 }
 
 message GrpcFrameData {

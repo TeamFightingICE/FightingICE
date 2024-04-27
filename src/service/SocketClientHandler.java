@@ -65,6 +65,10 @@ public class SocketClientHandler implements Runnable {
 		enqueueState(ObserverGameState.newInitializeState(gameData));
 	}
 	
+	public synchronized void initRound() {
+		enqueueState(ObserverGameState.newInitRoundState());
+	}
+	
 	public synchronized void processingGame(FrameData frameData) {
 		enqueueState(ObserverGameState.newProcessingState(frameData, null, null));
 	}

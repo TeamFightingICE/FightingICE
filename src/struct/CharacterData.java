@@ -151,7 +151,15 @@ public class CharacterData {
 	 */
 	private Deque<Key> processedCommands;
 	
-	private Optional<CharacterExtraData> extraData;
+	private AttackData[] projectileAttack;
+	private boolean[] projectileLive;
+	private boolean[] projectileHit;
+	
+	private void initialize() {
+		this.projectileAttack = new AttackData[3];
+		this.projectileLive = new boolean[3];
+		this.projectileHit = new boolean[3];
+	}
 
 	/**
 	 * The class constructor that acquires information on the character from an
@@ -162,6 +170,8 @@ public class CharacterData {
 	 *            an instance of Character class
 	 */
 	public CharacterData(Character character) {
+		initialize();
+		
 		this.playerNumber = character.isPlayerNumber();
 		this.hp = character.getHp();
 		this.energy = character.getEnergy();
@@ -187,7 +197,12 @@ public class CharacterData {
 		this.lastHitFrame = character.getLastHitFrame();
 		this.inputCommands = character.getInputCommand();
 		this.processedCommands = character.getProcessedCommand();
-		this.extraData = Optional.of(new CharacterExtraData(character));
+		
+		for (int i = 0; i < 3; i++) {
+			this.projectileAttack[i] = new AttackData(character.getProjectileAttack(i));
+			this.projectileLive[i] = character.getProjectileLive(i);
+			this.projectileHit[i] = character.getProjectileHit(i);
+		}
 	}
 
 	/**
@@ -198,6 +213,8 @@ public class CharacterData {
 	 *            an instance of CharacterData class
 	 */
 	public CharacterData(CharacterData characterData) {
+		initialize();
+		
 		this.playerNumber = characterData.isPlayerNumber();
 		this.hp = characterData.getHp();
 		this.energy = characterData.getEnergy();
@@ -223,7 +240,12 @@ public class CharacterData {
 		this.lastHitFrame = characterData.getLastHitFrame();
 		this.inputCommands = characterData.getInputCommand();
 		this.processedCommands = characterData.getProcessedCommand();
-		this.extraData = Optional.of(new CharacterExtraData(characterData.getExtraData()));
+		
+		for (int i = 0; i < 3; i++) {
+			this.projectileAttack[i] = new AttackData(characterData.getProjectileAttack(i));
+			this.projectileLive[i] = characterData.getProjectileLive(i);
+			this.projectileHit[i] = characterData.getProjectileHit(i);
+		}
 	}
 
 	/**
@@ -529,12 +551,16 @@ public class CharacterData {
 		return temp;
 	}
 	
-	public CharacterExtraData getExtraData() {
-		if (this.extraData.isPresent()) {
-			return this.extraData.get();
-		}
-		
-		return null;
+	public AttackData getProjectileAttack(int index) {
+		return this.projectileAttack[index];
+	}
+	
+	public boolean getProjectileLive(int index) {
+		return this.projectileLive[index];
+	}
+	
+	public boolean getProjectileHit(int index) {
+		return this.projectileHit[index];
 	}
 
 	/**
@@ -773,38 +799,36 @@ public class CharacterData {
 		this.processedCommands = new LinkedList<Key>(inputCommand);
 	}
 	
-	public void removeExtraData() {
-		this.extraData = Optional.empty();
-	}
-	
 	public GrpcCharacterData toProto() {
 		GrpcCharacterData.Builder builder = GrpcCharacterData.newBuilder();
-		builder = builder.setPlayerNumber(this.isPlayerNumber())
-				.setHp(this.getHp())
-  				.setEnergy(this.getEnergy())
-  				.setX(this.getCenterX())
-  				.setY(this.getCenterY())
-  				.setLeft(this.getLeft())
-  				.setRight(this.getRight())
-  				.setTop(this.getTop())
-  				.setBottom(this.getBottom())
-  				.setSpeedX(this.getSpeedX())
-  				.setSpeedY(this.getSpeedY())
-  				.setStateValue(this.getState().ordinal())
-  				.setActionValue(this.getAction().ordinal())
-  				.setFront(this.isFront())
-  				.setControl(this.isControl())
-  				.setAttackData(this.getAttack().toProto())
-  				.setRemainingFrame(this.getRemainingFrame())
-  				.setHitConfirm(this.isHitConfirm())
-  				.setGraphicSizeX(this.getGraphicSizeX())
-  				.setGraphicSizeY(this.getGraphicSizeY())
-  				.setGraphicAdjustX(this.getGraphicAdjustX())
-  				.setHitCount(this.getHitCount())
-  				.setLastHitFrame(this.getLastHitFrame());
+		builder = builder.setPlayerNumber(this.playerNumber)
+				.setHp(this.hp)
+  				.setEnergy(this.energy)
+  				.setX(this.x)
+  				.setY(this.y)
+  				.setLeft(this.left)
+  				.setRight(this.right)
+  				.setTop(this.top)
+  				.setBottom(this.bottom)
+  				.setSpeedX(this.speedX)
+  				.setSpeedY(this.speedY)
+  				.setStateValue(this.state.ordinal())
+  				.setActionValue(this.action.ordinal())
+  				.setFront(this.front)
+  				.setControl(this.control)
+  				.setAttackData(this.attackData.toProto())
+  				.setRemainingFrame(this.remainingFrame)
+  				.setHitConfirm(this.hitConfirm)
+  				.setGraphicSizeX(this.graphicSizeX)
+  				.setGraphicSizeY(this.graphicSizeY)
+  				.setGraphicAdjustX(this.graphicAdjustX)
+  				.setHitCount(this.hitCount)
+  				.setLastHitFrame(this.lastHitFrame);
 		
-		if (this.extraData.isPresent()) {
-			// TODO: add extra data
+		for (int i = 0; i < 3; i++) {
+			builder.addProjectileAttack(projectileAttack[i].toProto());
+			builder.addProjectileLive(projectileLive[i]);
+			builder.addProjectileHit(projectileHit[i]);
 		}
 		
 		return builder.build();

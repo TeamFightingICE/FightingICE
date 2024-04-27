@@ -133,10 +133,10 @@ public class HitArea {
 	
 	public GrpcHitArea toProto() {
 		return GrpcHitArea.newBuilder()
-				.setLeft(this.getLeft())
-				.setRight(this.getRight())
-				.setTop(this.getTop())
-				.setBottom(this.getBottom())
+				.setLeft(this.left)
+				.setRight(this.right)
+				.setTop(this.top)
+				.setBottom(this.bottom)
 				.build();
 	}
 	
