@@ -567,7 +567,7 @@ public class Character {
             this.processedCommands.removeFirst();
 
         // Different Conditions for the sound effects
-        if (!FlagSetting.muteFlag && !this.isSimulateProcess) {
+        if (!this.isSimulateProcess) {
             if (this.energy > this.preEnergy + 50) {
                 this.preEnergy = this.energy;
                 if (this.playerNumber) {
@@ -623,8 +623,8 @@ public class Character {
                             SoundManager.getInstance().setSourcePos(sourceProjectTiles[a], this.sX[a], this.sY[a]);
                         } else {
                             SoundManager.getInstance().stop(sourceProjectTiles[a]);
-                            this.isProjectileLive[a] = false;
                             this.projectileAttack[a] = null;
+                            this.isProjectileLive[a] = false;
                             this.ProjectileHit[a] = false;
                         }
                     }
