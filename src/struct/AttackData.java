@@ -1,5 +1,7 @@
 package struct;
 
+import java.util.UUID;
+
 import fighting.Attack;
 import protoc.MessageProto.GrpcAttackData;
 
@@ -141,6 +143,8 @@ public class AttackData {
 	private boolean isProjectile;
 	
 	private boolean emptyFlag;
+	
+	private UUID identifier;
 
 	/**
 	 * The class constructor.
@@ -169,6 +173,7 @@ public class AttackData {
 		this.downProp = false;
 		this.isProjectile = false;
 		this.emptyFlag = true;
+		this.identifier = UUID.randomUUID();
 	}
 
 	/**
@@ -206,6 +211,7 @@ public class AttackData {
 			this.downProp = attack.isDownProp();
 			this.isProjectile = attack.isProjectile();
 			this.emptyFlag = false;
+			this.identifier = attack.getIdentifier();
 		}
 	}
 
@@ -243,7 +249,12 @@ public class AttackData {
 			this.downProp = attackData.isDownProp();
 			this.isProjectile = attackData.isProjectile();
 			this.emptyFlag = attackData.isEmptyFlag();
+			this.identifier = attackData.getIdentifier();
 		}
+	}
+	
+	public UUID getIdentifier() {
+		return this.identifier;
 	}
 	
 	public boolean isEmptyFlag() {
@@ -731,10 +742,6 @@ public class AttackData {
 		this.isProjectile = isProjectile;
 	}
 	
-	public void setEmptyFlag(boolean emptyFlag) {
-		this.emptyFlag = emptyFlag;
-	}
-	
 	public GrpcAttackData toProto() {
   		return GrpcAttackData.newBuilder()
   				.setSettingHitArea(this.settingHitArea.toProto())
@@ -760,6 +767,7 @@ public class AttackData {
   				.setDownProp(this.downProp)
   				.setIsProjectile(this.isProjectile)
   				.setEmptyFlag(this.emptyFlag)
+  				.setIdentifier(this.identifier.toString())
   				.build();
   	}
 

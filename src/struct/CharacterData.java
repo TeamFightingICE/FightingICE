@@ -2,7 +2,6 @@ package struct;
 
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Optional;
 
 import enumerate.Action;
 import enumerate.State;
@@ -155,7 +154,7 @@ public class CharacterData {
 	private boolean[] projectileLive;
 	private boolean[] projectileHit;
 	
-	private void initialize() {
+	private void initializeArray() {
 		this.projectileAttack = new AttackData[3];
 		this.projectileLive = new boolean[3];
 		this.projectileHit = new boolean[3];
@@ -170,7 +169,7 @@ public class CharacterData {
 	 *            an instance of Character class
 	 */
 	public CharacterData(Character character) {
-		initialize();
+		initializeArray();
 		
 		this.playerNumber = character.isPlayerNumber();
 		this.hp = character.getHp();
@@ -213,7 +212,7 @@ public class CharacterData {
 	 *            an instance of CharacterData class
 	 */
 	public CharacterData(CharacterData characterData) {
-		initialize();
+		initializeArray();
 		
 		this.playerNumber = characterData.isPlayerNumber();
 		this.hp = characterData.getHp();

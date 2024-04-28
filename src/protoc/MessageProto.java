@@ -866,6 +866,18 @@ public final class MessageProto {
      * @return The emptyFlag.
      */
     boolean getEmptyFlag();
+
+    /**
+     * <code>string identifier = 24;</code>
+     * @return The identifier.
+     */
+    java.lang.String getIdentifier();
+    /**
+     * <code>string identifier = 24;</code>
+     * @return The bytes for identifier.
+     */
+    com.google.protobuf.ByteString
+        getIdentifierBytes();
   }
   /**
    * Protobuf type {@code service.GrpcAttackData}
@@ -880,6 +892,7 @@ public final class MessageProto {
       super(builder);
     }
     private GrpcAttackData() {
+      identifier_ = "";
     }
 
     @java.lang.Override
@@ -1186,6 +1199,45 @@ public final class MessageProto {
       return emptyFlag_;
     }
 
+    public static final int IDENTIFIER_FIELD_NUMBER = 24;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object identifier_ = "";
+    /**
+     * <code>string identifier = 24;</code>
+     * @return The identifier.
+     */
+    @java.lang.Override
+    public java.lang.String getIdentifier() {
+      java.lang.Object ref = identifier_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        identifier_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string identifier = 24;</code>
+     * @return The bytes for identifier.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdentifierBytes() {
+      java.lang.Object ref = identifier_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        identifier_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1268,6 +1320,9 @@ public final class MessageProto {
       }
       if (emptyFlag_ != false) {
         output.writeBool(23, emptyFlag_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(identifier_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 24, identifier_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1370,6 +1425,9 @@ public final class MessageProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(23, emptyFlag_);
       }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(identifier_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(24, identifier_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1437,6 +1495,8 @@ public final class MessageProto {
           != other.getIsProjectile()) return false;
       if (getEmptyFlag()
           != other.getEmptyFlag()) return false;
+      if (!getIdentifier()
+          .equals(other.getIdentifier())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1502,6 +1562,8 @@ public final class MessageProto {
       hash = (37 * hash) + EMPTY_FLAG_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getEmptyFlag());
+      hash = (37 * hash) + IDENTIFIER_FIELD_NUMBER;
+      hash = (53 * hash) + getIdentifier().hashCode();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1671,6 +1733,7 @@ public final class MessageProto {
         downProp_ = false;
         isProjectile_ = false;
         emptyFlag_ = false;
+        identifier_ = "";
         return this;
       }
 
@@ -1779,6 +1842,9 @@ public final class MessageProto {
         }
         if (((from_bitField0_ & 0x00400000) != 0)) {
           result.emptyFlag_ = emptyFlag_;
+        }
+        if (((from_bitField0_ & 0x00800000) != 0)) {
+          result.identifier_ = identifier_;
         }
         result.bitField0_ |= to_bitField0_;
       }
@@ -1895,6 +1961,11 @@ public final class MessageProto {
         }
         if (other.getEmptyFlag() != false) {
           setEmptyFlag(other.getEmptyFlag());
+        }
+        if (!other.getIdentifier().isEmpty()) {
+          identifier_ = other.identifier_;
+          bitField0_ |= 0x00800000;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -2041,6 +2112,11 @@ public final class MessageProto {
                 bitField0_ |= 0x00400000;
                 break;
               } // case 184
+              case 194: {
+                identifier_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00800000;
+                break;
+              } // case 194
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -2968,6 +3044,78 @@ public final class MessageProto {
       public Builder clearEmptyFlag() {
         bitField0_ = (bitField0_ & ~0x00400000);
         emptyFlag_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object identifier_ = "";
+      /**
+       * <code>string identifier = 24;</code>
+       * @return The identifier.
+       */
+      public java.lang.String getIdentifier() {
+        java.lang.Object ref = identifier_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          identifier_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string identifier = 24;</code>
+       * @return The bytes for identifier.
+       */
+      public com.google.protobuf.ByteString
+          getIdentifierBytes() {
+        java.lang.Object ref = identifier_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          identifier_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string identifier = 24;</code>
+       * @param value The identifier to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdentifier(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        identifier_ = value;
+        bitField0_ |= 0x00800000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string identifier = 24;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIdentifier() {
+        identifier_ = getDefaultInstance().getIdentifier();
+        bitField0_ = (bitField0_ & ~0x00800000);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string identifier = 24;</code>
+       * @param value The bytes for identifier to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdentifierBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        identifier_ = value;
+        bitField0_ |= 0x00800000;
         onChanged();
         return this;
       }
@@ -12526,7 +12674,7 @@ public final class MessageProto {
     java.lang.String[] descriptorData = {
       "\n\rmessage.proto\022\007service\032\nenum.proto\"G\n\013" +
       "GrpcHitArea\022\014\n\004left\030\001 \001(\005\022\r\n\005right\030\002 \001(\005" +
-      "\022\013\n\003top\030\003 \001(\005\022\016\n\006bottom\030\004 \001(\005\"\260\004\n\016GrpcAt" +
+      "\022\013\n\003top\030\003 \001(\005\022\016\n\006bottom\030\004 \001(\005\"\304\004\n\016GrpcAt" +
       "tackData\022.\n\020setting_hit_area\030\001 \001(\0132\024.ser" +
       "vice.GrpcHitArea\022\027\n\017setting_speed_x\030\002 \001(" +
       "\005\022\027\n\017setting_speed_y\030\003 \001(\005\022.\n\020current_hi" +
@@ -12540,42 +12688,42 @@ public final class MessageProto {
       "y\030\020 \001(\005\022\020\n\010impact_x\030\021 \001(\005\022\020\n\010impact_y\030\022 " +
       "\001(\005\022\030\n\020give_guard_recov\030\023 \001(\005\022\023\n\013attack_" +
       "type\030\024 \001(\005\022\021\n\tdown_prop\030\025 \001(\010\022\025\n\ris_proj" +
-      "ectile\030\026 \001(\010\022\022\n\nempty_flag\030\027 \001(\010\"\326\004\n\021Grp" +
-      "cCharacterData\022\025\n\rplayer_number\030\001 \001(\010\022\n\n" +
-      "\002hp\030\002 \001(\005\022\016\n\006energy\030\003 \001(\005\022\t\n\001x\030\004 \001(\005\022\t\n\001" +
-      "y\030\005 \001(\005\022\014\n\004left\030\006 \001(\005\022\r\n\005right\030\007 \001(\005\022\013\n\003" +
-      "top\030\010 \001(\005\022\016\n\006bottom\030\t \001(\005\022\017\n\007speed_x\030\n \001" +
-      "(\005\022\017\n\007speed_y\030\013 \001(\005\022!\n\005state\030\014 \001(\0162\022.ser" +
-      "vice.GrpcState\022#\n\006action\030\r \001(\0162\023.service" +
-      ".GrpcAction\022\r\n\005front\030\016 \001(\010\022\017\n\007control\030\017 " +
-      "\001(\010\022,\n\013attack_data\030\020 \001(\0132\027.service.GrpcA" +
-      "ttackData\022\027\n\017remaining_frame\030\021 \001(\005\022\023\n\013hi" +
-      "t_confirm\030\022 \001(\010\022\026\n\016graphic_size_x\030\023 \001(\005\022" +
-      "\026\n\016graphic_size_y\030\024 \001(\005\022\030\n\020graphic_adjus" +
-      "t_x\030\025 \001(\005\022\021\n\thit_count\030\026 \001(\005\022\026\n\016last_hit" +
-      "_frame\030\027 \001(\005\0222\n\021projectile_attack\030\030 \003(\0132" +
-      "\027.service.GrpcAttackData\022\027\n\017projectile_l" +
-      "ive\030\031 \003(\010\022\026\n\016projectile_hit\030\032 \003(\010\"\315\001\n\rGr" +
-      "pcFrameData\0222\n\016character_data\030\001 \003(\0132\032.se" +
-      "rvice.GrpcCharacterData\022\034\n\024current_frame" +
-      "_number\030\002 \001(\005\022\025\n\rcurrent_round\030\003 \001(\005\0220\n\017" +
-      "projectile_data\030\004 \003(\0132\027.service.GrpcAtta" +
-      "ckData\022\022\n\nempty_flag\030\005 \001(\010\022\r\n\005front\030\006 \003(" +
-      "\010\"J\n\013GrpcFftData\022\032\n\022real_data_as_bytes\030\001" +
-      " \001(\014\022\037\n\027imaginary_data_as_bytes\030\002 \001(\014\"\'\n" +
-      "\016GrpcScreenData\022\025\n\rdisplay_bytes\030\001 \001(\014\"u" +
-      "\n\rGrpcAudioData\022\031\n\021raw_data_as_bytes\030\001 \001" +
-      "(\014\022&\n\010fft_data\030\002 \003(\0132\024.service.GrpcFftDa" +
-      "ta\022!\n\031spectrogram_data_as_bytes\030\003 \001(\014\"`\n" +
-      "\014GrpcGameData\022\017\n\007max_hps\030\001 \003(\005\022\024\n\014max_en" +
-      "ergies\030\002 \003(\005\022\027\n\017character_names\030\003 \003(\t\022\020\n" +
-      "\010ai_names\030\004 \003(\t\"V\n\017GrpcRoundResult\022\025\n\rcu" +
-      "rrent_round\030\001 \001(\005\022\025\n\rremaining_hps\030\002 \003(\005" +
-      "\022\025\n\relapsed_frame\030\003 \001(\005\"V\n\007GrpcKey\022\t\n\001A\030" +
-      "\001 \001(\010\022\t\n\001B\030\002 \001(\010\022\t\n\001C\030\003 \001(\010\022\t\n\001U\030\004 \001(\010\022\t" +
-      "\n\001R\030\005 \001(\010\022\t\n\001D\030\006 \001(\010\022\t\n\001L\030\007 \001(\010B5\n\006proto" +
-      "cB\014MessageProtoP\000\252\002\032DareFightingICE.Grpc" +
-      ".Protob\006proto3"
+      "ectile\030\026 \001(\010\022\022\n\nempty_flag\030\027 \001(\010\022\022\n\niden" +
+      "tifier\030\030 \001(\t\"\326\004\n\021GrpcCharacterData\022\025\n\rpl" +
+      "ayer_number\030\001 \001(\010\022\n\n\002hp\030\002 \001(\005\022\016\n\006energy\030" +
+      "\003 \001(\005\022\t\n\001x\030\004 \001(\005\022\t\n\001y\030\005 \001(\005\022\014\n\004left\030\006 \001(" +
+      "\005\022\r\n\005right\030\007 \001(\005\022\013\n\003top\030\010 \001(\005\022\016\n\006bottom\030" +
+      "\t \001(\005\022\017\n\007speed_x\030\n \001(\005\022\017\n\007speed_y\030\013 \001(\005\022" +
+      "!\n\005state\030\014 \001(\0162\022.service.GrpcState\022#\n\006ac" +
+      "tion\030\r \001(\0162\023.service.GrpcAction\022\r\n\005front" +
+      "\030\016 \001(\010\022\017\n\007control\030\017 \001(\010\022,\n\013attack_data\030\020" +
+      " \001(\0132\027.service.GrpcAttackData\022\027\n\017remaini" +
+      "ng_frame\030\021 \001(\005\022\023\n\013hit_confirm\030\022 \001(\010\022\026\n\016g" +
+      "raphic_size_x\030\023 \001(\005\022\026\n\016graphic_size_y\030\024 " +
+      "\001(\005\022\030\n\020graphic_adjust_x\030\025 \001(\005\022\021\n\thit_cou" +
+      "nt\030\026 \001(\005\022\026\n\016last_hit_frame\030\027 \001(\005\0222\n\021proj" +
+      "ectile_attack\030\030 \003(\0132\027.service.GrpcAttack" +
+      "Data\022\027\n\017projectile_live\030\031 \003(\010\022\026\n\016project" +
+      "ile_hit\030\032 \003(\010\"\315\001\n\rGrpcFrameData\0222\n\016chara" +
+      "cter_data\030\001 \003(\0132\032.service.GrpcCharacterD" +
+      "ata\022\034\n\024current_frame_number\030\002 \001(\005\022\025\n\rcur" +
+      "rent_round\030\003 \001(\005\0220\n\017projectile_data\030\004 \003(" +
+      "\0132\027.service.GrpcAttackData\022\022\n\nempty_flag" +
+      "\030\005 \001(\010\022\r\n\005front\030\006 \003(\010\"J\n\013GrpcFftData\022\032\n\022" +
+      "real_data_as_bytes\030\001 \001(\014\022\037\n\027imaginary_da" +
+      "ta_as_bytes\030\002 \001(\014\"\'\n\016GrpcScreenData\022\025\n\rd" +
+      "isplay_bytes\030\001 \001(\014\"u\n\rGrpcAudioData\022\031\n\021r" +
+      "aw_data_as_bytes\030\001 \001(\014\022&\n\010fft_data\030\002 \003(\013" +
+      "2\024.service.GrpcFftData\022!\n\031spectrogram_da" +
+      "ta_as_bytes\030\003 \001(\014\"`\n\014GrpcGameData\022\017\n\007max" +
+      "_hps\030\001 \003(\005\022\024\n\014max_energies\030\002 \003(\005\022\027\n\017char" +
+      "acter_names\030\003 \003(\t\022\020\n\010ai_names\030\004 \003(\t\"V\n\017G" +
+      "rpcRoundResult\022\025\n\rcurrent_round\030\001 \001(\005\022\025\n" +
+      "\rremaining_hps\030\002 \003(\005\022\025\n\relapsed_frame\030\003 " +
+      "\001(\005\"V\n\007GrpcKey\022\t\n\001A\030\001 \001(\010\022\t\n\001B\030\002 \001(\010\022\t\n\001" +
+      "C\030\003 \001(\010\022\t\n\001U\030\004 \001(\010\022\t\n\001R\030\005 \001(\010\022\t\n\001D\030\006 \001(\010" +
+      "\022\t\n\001L\030\007 \001(\010B5\n\006protocB\014MessageProtoP\000\252\002\032" +
+      "DareFightingICE.Grpc.Protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -12593,7 +12741,7 @@ public final class MessageProto {
     internal_static_service_GrpcAttackData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service_GrpcAttackData_descriptor,
-        new java.lang.String[] { "SettingHitArea", "SettingSpeedX", "SettingSpeedY", "CurrentHitArea", "CurrentFrame", "PlayerNumber", "SpeedX", "SpeedY", "StartUp", "Active", "HitDamage", "GuardDamage", "StartAddEnergy", "HitAddEnergy", "GuardAddEnergy", "GiveEnergy", "ImpactX", "ImpactY", "GiveGuardRecov", "AttackType", "DownProp", "IsProjectile", "EmptyFlag", });
+        new java.lang.String[] { "SettingHitArea", "SettingSpeedX", "SettingSpeedY", "CurrentHitArea", "CurrentFrame", "PlayerNumber", "SpeedX", "SpeedY", "StartUp", "Active", "HitDamage", "GuardDamage", "StartAddEnergy", "HitAddEnergy", "GuardAddEnergy", "GiveEnergy", "ImpactX", "ImpactY", "GiveGuardRecov", "AttackType", "DownProp", "IsProjectile", "EmptyFlag", "Identifier", });
     internal_static_service_GrpcCharacterData_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_service_GrpcCharacterData_fieldAccessorTable = new

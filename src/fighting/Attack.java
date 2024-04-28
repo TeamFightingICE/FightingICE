@@ -1,5 +1,7 @@
 package fighting;
 
+import java.util.UUID;
+
 import struct.AttackData;
 import struct.HitArea;
 import struct.MotionData;
@@ -134,6 +136,8 @@ public class Attack {
 	 * {@code true} if this skill can push down, {@code false} otherwise.
 	 */
 	private boolean downProp;
+	
+	private UUID identifier;
 
 	/**
 	 * Class constructor．
@@ -163,6 +167,8 @@ public class Attack {
 		this.giveGuardRecov = 0;
 		this.attackType = 0;
 		this.downProp = false;
+
+		this.identifier = UUID.randomUUID();
 	}
 
 	/**
@@ -172,6 +178,8 @@ public class Attack {
 	 *            Attackクラスのインスタンス
 	 */
 	public Attack(Attack attack) {
+		this();
+		
 		if (attack != null) {
 			this.settingHitArea = attack.getSettingHitArea();
 			this.settingSpeedX = attack.getSettingSpeedX();
@@ -198,6 +206,8 @@ public class Attack {
 			this.giveGuardRecov = attack.getGiveGuardRecov();
 			this.attackType = attack.getAttackType();
 			this.downProp = attack.isDownProp();
+			
+			this.identifier = attack.getIdentifier();
 		}
 	}
 
@@ -209,6 +219,8 @@ public class Attack {
 	 *            AttackDataのインスタンス
 	 */
 	public Attack(AttackData attackData) {
+		this();
+		
 		if (attackData != null) {
 			this.settingHitArea = attackData.getSettingHitArea();
 			this.settingSpeedX = attackData.getSettingSpeedX();
@@ -235,6 +247,8 @@ public class Attack {
 			this.giveGuardRecov = attackData.getGiveGuardRecov();
 			this.attackType = attackData.getAttackType();
 			this.downProp = attackData.isDownProp();
+			
+			this.identifier = attackData.getIdentifier();
 		}
 	}
 
@@ -289,7 +303,7 @@ public class Attack {
 	public Attack(HitArea hitArea, int settingSpeedX, int settingSpeedY, int startUp, int active, int hitDamage,
 			int guardDamage, int startAddEnergy, int hitAddEnergy, int guardAddEnergy, int giveEnergy, int impactX,
 			int impactY, int giveGuardRecov, int attackType, boolean downProp) {
-
+		
 		this.settingHitArea = hitArea;
 		this.settingSpeedX = settingSpeedX;
 		this.settingSpeedY = settingSpeedY;
@@ -311,6 +325,8 @@ public class Attack {
 		this.giveGuardRecov = giveGuardRecov;
 		this.attackType = attackType;
 		this.downProp = downProp;
+		
+		this.identifier = UUID.randomUUID();
 	}
 
 	/**
@@ -397,6 +413,10 @@ public class Attack {
 		bottom = y + this.settingHitArea.getBottom();
 
 		this.currentHitArea = new HitArea(left, right, top, bottom);
+	}
+	
+	public UUID getIdentifier() {
+		return this.identifier;
 	}
 
 	/**

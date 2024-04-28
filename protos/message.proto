@@ -38,6 +38,7 @@ message GrpcAttackData {
 	bool down_prop = 21;
 	bool is_projectile = 22;
 	bool empty_flag = 23;
+	string identifier = 24;
 }
 
 message GrpcCharacterData {
