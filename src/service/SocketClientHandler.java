@@ -97,10 +97,10 @@ public class SocketClientHandler {
 					if (byteArray.length != 8192) {
 				        InputManager.getInstance().setAudioData(null);
 						Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
-						return;
+					} else {
+				        InputManager.getInstance().setAudioData(new AudioData(byteArray));
 					}
 					
-			        InputManager.getInstance().setAudioData(new AudioData(byteArray));
 			        waitForInput = false;
 				} catch (Exception ex) {
 					setCancelled(true);
