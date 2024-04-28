@@ -94,13 +94,13 @@ public class SocketClientHandler {
 			public void run() {
 				try {
 					byte[] byteArray = socketRecv(-1);
-					if (byteArray.length != 8192) {
-				        InputManager.getInstance().setAudioData(null);
-						Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
-					} else {
-				        InputManager.getInstance().setAudioData(new AudioData(byteArray));
-					}
 					
+					if (byteArray.length != 8192) {
+				        byteArray = new byte[8192];
+						Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
+					}
+
+			        InputManager.getInstance().setAudioData(new AudioData(byteArray));
 			        waitForInput = false;
 				} catch (Exception ex) {
 					setCancelled(true);
