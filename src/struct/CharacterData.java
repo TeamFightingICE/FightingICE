@@ -151,13 +151,9 @@ public class CharacterData {
 	private Deque<Key> processedCommands;
 	
 	private AttackData[] projectileAttack;
-	private boolean[] projectileLive;
-	private boolean[] projectileHit;
 	
 	private void initializeArray() {
 		this.projectileAttack = new AttackData[3];
-		this.projectileLive = new boolean[3];
-		this.projectileHit = new boolean[3];
 	}
 
 	/**
@@ -199,8 +195,6 @@ public class CharacterData {
 		
 		for (int i = 0; i < 3; i++) {
 			this.projectileAttack[i] = new AttackData(character.getProjectileAttack(i));
-			this.projectileLive[i] = character.getProjectileLive(i);
-			this.projectileHit[i] = character.getProjectileHit(i);
 		}
 	}
 
@@ -242,8 +236,6 @@ public class CharacterData {
 		
 		for (int i = 0; i < 3; i++) {
 			this.projectileAttack[i] = new AttackData(characterData.getProjectileAttack(i));
-			this.projectileLive[i] = characterData.getProjectileLive(i);
-			this.projectileHit[i] = characterData.getProjectileHit(i);
 		}
 	}
 
@@ -553,14 +545,6 @@ public class CharacterData {
 	public AttackData getProjectileAttack(int index) {
 		return this.projectileAttack[index];
 	}
-	
-	public boolean getProjectileLive(int index) {
-		return this.projectileLive[index];
-	}
-	
-	public boolean getProjectileHit(int index) {
-		return this.projectileHit[index];
-	}
 
 	/**
 	 * Sets the character's HP.
@@ -803,8 +787,8 @@ public class CharacterData {
 		builder = builder.setPlayerNumber(this.playerNumber)
 				.setHp(this.hp)
   				.setEnergy(this.energy)
-  				.setX(this.x)
-  				.setY(this.y)
+  				.setX(this.getCenterX())
+  				.setY(this.getCenterY())
   				.setLeft(this.left)
   				.setRight(this.right)
   				.setTop(this.top)
@@ -826,8 +810,6 @@ public class CharacterData {
 		
 		for (int i = 0; i < 3; i++) {
 			builder.addProjectileAttack(projectileAttack[i].toProto());
-			builder.addProjectileLive(projectileLive[i]);
-			builder.addProjectileHit(projectileHit[i]);
 		}
 		
 		return builder.build();

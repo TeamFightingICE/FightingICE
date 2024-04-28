@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import grpc.ObserverGameState;
 import informationcontainer.RoundResult;
 import struct.AudioData;
 import struct.FrameData;
@@ -59,7 +60,6 @@ public class SocketServer {
 						} else if (data[0] == 3) {
 							// Generative Sound Gateway
 							SocketClientHandler clientHandler = new SocketClientHandler(client, SocketClientType.GENERATIVE_SOUND_AGENT);
-							clientHandler.startThread();
 							clientList.add(clientHandler);
 							Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
 						}
@@ -99,29 +99,33 @@ public class SocketServer {
 	
 	public void initialize(GameData gameData) {
 		removeCancelledClients();
+		byte[] byteArray = ObserverGameState.newInitializeState(gameData).toProto().toByteArray();
 		for (SocketClientHandler client: clientList) {
-			client.initialize(gameData);
+			client.produce(byteArray, false);
 		}
 	}
 	
 	public void initRound() {
 		removeCancelledClients();
+		byte[] byteArray = ObserverGameState.newInitRoundState().toProto().toByteArray();
 		for (SocketClientHandler client: clientList) {
-			client.initRound();
+			client.produce(byteArray, true);
 		}
 	}
 	
 	public void processingGame(FrameData frameData, ScreenData screenData, AudioData audioData) {
 		removeCancelledClients();
+		byte[] byteArray = ObserverGameState.newProcessingState(frameData, screenData, audioData).toProto().toByteArray();
 		for (SocketClientHandler client: clientList) {
-			client.processingGame(frameData);
+			client.produce(byteArray, true);
 		}
 	}
 	
 	public void roundEnd(RoundResult roundResult) {
 		removeCancelledClients();
+		byte[] byteArray = ObserverGameState.newRoundEndState(roundResult).toProto().toByteArray();
 		for (SocketClientHandler client: clientList) {
-			client.roundEnd(roundResult);
+			client.produce(byteArray, false);
 		}
 	}
 	

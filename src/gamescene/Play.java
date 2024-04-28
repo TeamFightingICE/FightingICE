@@ -151,7 +151,7 @@ public class Play extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		
-		//SocketServer.getInstance().initialize(gameData);
+		SocketServer.getInstance().initialize(gameData);
 		if (FlagSetting.grpc) {
 			LaunchSetting.grpcServer.getObserver().onInitialize(gameData);
 		}

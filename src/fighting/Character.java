@@ -549,7 +549,7 @@ public class Character {
             if (this.attack.isProjectile()) {
                 for(int a = 0 ; a < this.projectileAttack.length ; a++) {
                     if(this.projectileAttack[a] == null) {
-                        this.projectileAttack[a] = new Attack(this.attack);
+                        this.projectileAttack[a] = new Attack(this.attack, this.isProjectileLive[a]);
                         this.projectileAttack2[a] = this.attack;
                         break;
                     }

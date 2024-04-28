@@ -281,7 +281,7 @@ public class Fighting {
 					} else {
 						temp = null;
 					}
-					this.projectileDeque.addLast(new LoopEffect(attack, temp));
+					this.projectileDeque.addLast(new LoopEffect(new Attack(attack, true), temp));
 					this.playerCharacters[i].destroyAttackInstance();
 				}
 			}

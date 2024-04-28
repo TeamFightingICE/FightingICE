@@ -137,7 +137,9 @@ public class Attack {
 	 */
 	private boolean downProp;
 	
-	private UUID identifier;
+	private boolean isLive;
+	
+	private String identifier;
 
 	/**
 	 * Class constructor．
@@ -168,7 +170,8 @@ public class Attack {
 		this.attackType = 0;
 		this.downProp = false;
 
-		this.identifier = UUID.randomUUID();
+		this.isLive = false;
+		this.identifier = "";
 	}
 
 	/**
@@ -207,8 +210,15 @@ public class Attack {
 			this.attackType = attack.getAttackType();
 			this.downProp = attack.isDownProp();
 			
+			this.isLive = attack.isLive();
 			this.identifier = attack.getIdentifier();
 		}
+	}
+	
+	public Attack(Attack attack, boolean isLive) {
+		this(attack);
+		
+		this.isLive = isLive;
 	}
 
 	/**
@@ -248,7 +258,8 @@ public class Attack {
 			this.attackType = attackData.getAttackType();
 			this.downProp = attackData.isDownProp();
 			
-			this.identifier = attackData.getIdentifier();
+			this.isLive = attackData.isLive();
+			this.identifier = attackData.getIdentifier().toString();
 		}
 	}
 
@@ -326,7 +337,8 @@ public class Attack {
 		this.attackType = attackType;
 		this.downProp = downProp;
 		
-		this.identifier = UUID.randomUUID();
+		this.isLive = false;
+		this.identifier = UUID.randomUUID().toString();
 	}
 
 	/**
@@ -415,8 +427,12 @@ public class Attack {
 		this.currentHitArea = new HitArea(left, right, top, bottom);
 	}
 	
-	public UUID getIdentifier() {
+	public String getIdentifier() {
 		return this.identifier;
+	}
+	
+	public boolean isLive() {
+		return this.isLive;
 	}
 
 	/**
@@ -876,6 +892,10 @@ public class Attack {
 	 */
 	public void setSettingSpeedY(int settingSpeedY) {
 		this.settingSpeedY = settingSpeedY;
+	}
+	
+	public void setIsLive(boolean isLive) {
+		this.isLive = isLive;
 	}
 
 }

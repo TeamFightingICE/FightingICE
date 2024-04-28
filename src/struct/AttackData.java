@@ -1,7 +1,5 @@
 package struct;
 
-import java.util.UUID;
-
 import fighting.Attack;
 import protoc.MessageProto.GrpcAttackData;
 
@@ -142,9 +140,11 @@ public class AttackData {
 	 */
 	private boolean isProjectile;
 	
+	private boolean isLive;
+	
 	private boolean emptyFlag;
 	
-	private UUID identifier;
+	private String identifier;
 
 	/**
 	 * The class constructor.
@@ -172,8 +172,9 @@ public class AttackData {
 		this.attackType = 0;
 		this.downProp = false;
 		this.isProjectile = false;
+		this.isLive = false;
 		this.emptyFlag = true;
-		this.identifier = UUID.randomUUID();
+		this.identifier = "";
 	}
 
 	/**
@@ -210,6 +211,7 @@ public class AttackData {
 			this.attackType = attack.getAttackType();
 			this.downProp = attack.isDownProp();
 			this.isProjectile = attack.isProjectile();
+			this.isLive = attack.isLive();
 			this.emptyFlag = false;
 			this.identifier = attack.getIdentifier();
 		}
@@ -248,17 +250,22 @@ public class AttackData {
 			this.attackType = attackData.getAttackType();
 			this.downProp = attackData.isDownProp();
 			this.isProjectile = attackData.isProjectile();
+			this.isLive = attackData.isLive();
 			this.emptyFlag = attackData.isEmptyFlag();
 			this.identifier = attackData.getIdentifier();
 		}
 	}
 	
-	public UUID getIdentifier() {
+	public String getIdentifier() {
 		return this.identifier;
 	}
 	
 	public boolean isEmptyFlag() {
 		return this.emptyFlag;
+	}
+	
+	public boolean isLive() {
+		return this.isLive;
 	}
 
 	/**
@@ -766,8 +773,9 @@ public class AttackData {
   				.setAttackType(this.attackType)
   				.setDownProp(this.downProp)
   				.setIsProjectile(this.isProjectile)
+  				.setIsLive(this.isLive)
   				.setEmptyFlag(this.emptyFlag)
-  				.setIdentifier(this.identifier.toString())
+  				.setIdentifier(this.identifier)
   				.build();
   	}
 

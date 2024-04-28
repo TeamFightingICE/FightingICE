@@ -6,34 +6,27 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.HexFormat;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import grpc.ObserverGameState;
-import informationcontainer.RoundResult;
 import manager.InputManager;
 import struct.AudioData;
-import struct.FrameData;
-import struct.GameData;
 
-public class SocketClientHandler implements Runnable {
+public class SocketClientHandler {
 	
 	private SocketClientType clientType;
 	private DataInputStream din;
 	private DataOutputStream dout;
 	private Thread thread;
-	private BlockingQueue<ObserverGameState> stateQueue;
 	private boolean cancelled;
+	private boolean waitForInput;
 	
 	public SocketClientHandler(Socket client, SocketClientType clientType) throws IOException {
 		this.clientType = clientType;
 		this.din = new DataInputStream(client.getInputStream());
 		this.dout = new DataOutputStream(client.getOutputStream());
-		this.stateQueue = new LinkedBlockingQueue<>(1);
 		this.cancelled = false;
+		this.waitForInput = false;
 	}
 	
 	public SocketClientType getClientType() {
@@ -52,46 +45,36 @@ public class SocketClientHandler implements Runnable {
 		this.cancelled = cancelled;
 	}
 	
-	private synchronized void enqueueState(ObserverGameState gameState) {
-		if (stateQueue.remainingCapacity() < 1) {
-			stateQueue.clear();
-			Logger.getAnonymousLogger().log(Level.WARNING, "Consumer unable to consume game state. Clear game state queue...");
+	public void produce(byte[] byteArray, boolean spawnWaitThread) {
+		try {
+			if (waitForInput) {
+				Logger.getAnonymousLogger().log(Level.WARNING, "Data skipping... Still waiting for input from client");
+				return;
+			}
+			
+			socketSend(new byte[] { 1 }, false);
+			socketSend(byteArray, true);
+			
+			if (spawnWaitThread) {
+				waitForInput = true;
+				new Thread(waitForInput()).start();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			setCancelled(true);
 		}
-		
-		this.stateQueue.add(gameState);
 	}
 	
-	public synchronized void initialize(GameData gameData) {
-		enqueueState(ObserverGameState.newInitializeState(gameData));
-	}
-	
-	public synchronized void initRound() {
-		enqueueState(ObserverGameState.newInitRoundState());
-	}
-	
-	public synchronized void processingGame(FrameData frameData) {
-		enqueueState(ObserverGameState.newProcessingState(frameData, null, null));
-	}
-	
-	public synchronized void roundEnd(RoundResult roundResult) {
-		enqueueState(ObserverGameState.newRoundEndState(roundResult));
-	}
-	
-	public void startThread() {
-		thread = new Thread(this);
-		thread.start();
-	}
-	
-	private void socketSend(byte[] dataBytes, boolean withHeader) throws IOException {
+	private void socketSend(byte[] byteArray, boolean withHeader) throws IOException {
 		if (withHeader) {
-			int dataLength = dataBytes.length;
+			int dataLength = byteArray.length;
 			byte[] lengthBytes = ByteBuffer.allocate(4)
 					.order(ByteOrder.LITTLE_ENDIAN)
 					.putInt(dataLength)
 					.array();
 			dout.write(lengthBytes);
 		}
-		dout.write(dataBytes);
+		dout.write(byteArray);
 	}
 	
 	private byte[] socketRecv(int dataLength) throws IOException {
@@ -104,54 +87,38 @@ public class SocketClientHandler implements Runnable {
 		return din.readNBytes(dataLength);
 	}
 	
-	private void playAgentProcess() {
-		
-	}
-	
-	private void generativeSoundAgentProcess() {
-		try {
-			ObserverGameState state = stateQueue.take();
-			
-			socketSend(new byte[] { 1 }, false);
-			socketSend(state.toProto().toByteArray(), true);
-			
-			byte[] byteArray = socketRecv(-1);
-			if (byteArray.length != 8192) {
-		        InputManager.getInstance().setAudioData(null);
-				Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
-				return;
+	private Runnable waitForInput() {
+		return new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					byte[] byteArray = socketRecv(-1);
+					if (byteArray.length != 8192) {
+				        InputManager.getInstance().setAudioData(null);
+						Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
+						return;
+					}
+					
+			        InputManager.getInstance().setAudioData(new AudioData(byteArray));
+			        waitForInput = false;
+				} catch (Exception ex) {
+					setCancelled(true);
+				}
 			}
 			
-	        InputManager.getInstance().setAudioData(new AudioData(byteArray));
-		} catch (Exception e) {
-			setCancelled(true);
-		}
-	}
-	
-	@Override
-	public void run() {
-		while (!isCancelled() && !Thread.currentThread().isInterrupted()) {
-			if (clientType == SocketClientType.PLAY_AGENT) {
-				playAgentProcess();
-			} else if (clientType == SocketClientType.GENERATIVE_SOUND_AGENT) {
-				generativeSoundAgentProcess();
-			}
-		}
+		};
 	}
 	
 	public void close() throws IOException {
 		if (!isCancelled()) {
-			socketSend(HexFormat.of().parseHex("00"), false);
+			socketSend(new byte[] { 0 }, false);
 			setCancelled(true);
 		}
-		
-		this.thread.interrupt();
-		this.stateQueue.clear();
 		
 		this.din = null;
 		this.dout = null;
 		this.thread = null;
-		this.stateQueue = null;
 	}
 	
 }
