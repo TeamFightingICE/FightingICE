@@ -18,6 +18,7 @@ public class LoopEffect extends Effect {
 	 */
 	public LoopEffect(Attack attack, Image[] hitImages) {
 		super(attack, hitImages);
+		attack.setIsLive(true);
 	}
 
 	/**

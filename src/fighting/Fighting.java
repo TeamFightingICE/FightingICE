@@ -262,7 +262,6 @@ public class Fighting {
 
 			if (this.playerCharacters[i].getAttack() != null) {
 				if (this.playerCharacters[i].getAttack().isProjectile()) {
-
 					Attack attack = this.playerCharacters[i].getAttack();
 					ArrayList<Image> projectileImage = FlagSetting.enableWindow
 							? GraphicManager.getInstance().getProjectileImageContainer() : null;
@@ -281,7 +280,8 @@ public class Fighting {
 					} else {
 						temp = null;
 					}
-					this.projectileDeque.addLast(new LoopEffect(new Attack(attack, true), temp));
+					
+					this.projectileDeque.addLast(new LoopEffect(attack, temp));
 					this.playerCharacters[i].destroyAttackInstance();
 				}
 			}

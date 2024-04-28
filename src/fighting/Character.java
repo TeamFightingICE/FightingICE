@@ -360,7 +360,6 @@ public class Character {
             this.sourceEnergyChange = SoundManager.getInstance().createAudioSource();
             this.sourceBorderAlert = SoundManager.getInstance().createAudioSource();
             this.sourceHeartBeat = SoundManager.getInstance().createAudioSource();
-
         }
     }
 
@@ -420,7 +419,6 @@ public class Character {
     public void runAction(Action executeAction, boolean resetFlag) {
         Motion exeMotion = this.motionList.get(executeAction.ordinal());
         String Name;
-
 
         if (this.action != executeAction) {
             if (resetFlag) {
@@ -547,8 +545,8 @@ public class Character {
         createAttackInstance();
         if (this.attack != null) {
             if (this.attack.isProjectile()) {
-                for(int a = 0 ; a < this.projectileAttack.length ; a++) {
-                    if(this.projectileAttack[a] == null) {
+                for (int a = 0 ; a < this.projectileAttack.length ; a++) {
+                    if (this.projectileAttack[a] == null) {
                         this.projectileAttack[a] = new Attack(this.attack, this.isProjectileLive[a]);
                         this.projectileAttack2[a] = this.attack;
                         break;
@@ -617,7 +615,6 @@ public class Character {
                 if (this.projectileAttack[a] != null) {
                     if (this.isProjectileLive[a]) {
                         if (this.projectileAttack[a].updateProjectileAttack() && !this.ProjectileHit[a]) {
-
                             this.sX[a] = this.sX[a] + (this.projectileAttack[a].getSpeedX());
                             this.sY[a] = this.sX[a] + (this.projectileAttack[a].getSpeedY());
                             SoundManager.getInstance().setSourcePos(sourceProjectTiles[a], this.sX[a], this.sY[a]);
