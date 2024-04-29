@@ -47,10 +47,12 @@ public class SocketClientHandler {
 	
 	public void produce(byte[] byteArray, boolean spawnWaitThread) {
 		try {
-			if (waitForInput) {
+			if (waitForInput && spawnWaitThread) {
 				Logger.getAnonymousLogger().log(Level.WARNING, "Data skipping... Still waiting for input from client");
 				return;
 			}
+			
+			waitForInput = false;
 			
 			socketSend(new byte[] { 1 }, false);
 			socketSend(byteArray, true);
