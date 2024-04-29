@@ -239,7 +239,7 @@ public class Play extends GameScene {
 
 		InputManager.getInstance().clear();
 		SoundManager.getInstance().playBGM();
-		//SocketServer.getInstance().initRound();
+		SocketServer.getInstance().initRound();
 	}
 
 	/**

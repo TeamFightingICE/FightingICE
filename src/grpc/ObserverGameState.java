@@ -72,6 +72,11 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 	  				.setGameData(GrpcUtil.convertGameData(this.getGameData()))
 	  				.build();
 			return response;
+		} else if (this.getStateFlag() == StateFlag.INIT_ROUND) {
+			SpectatorGameState response = SpectatorGameState.newBuilder()
+					.setStateFlag(GrpcFlag.INIT_ROUND)
+					.build();
+			return response;
 		} else if (this.getStateFlag() == StateFlag.PROCESSING) {
 			SpectatorGameState response = SpectatorGameState.newBuilder()
 					.setStateFlag(GrpcFlag.PROCESSING)

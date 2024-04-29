@@ -204,8 +204,6 @@ public class Character {
     private Attack[] projectileAttack2 =  new Attack[3];
     
     private HitArea preprocessedHitArea = new HitArea();
-    
-    private int currentFrame;
 
     /**
      * Class constructorï¼Ž
@@ -1229,7 +1227,7 @@ public class Character {
     public HitArea getPreprocessedHitArea() {
     	return this.preprocessedHitArea;
     }
-
+    
     /**
      * Sets the character's HP.
      *
@@ -1461,10 +1459,6 @@ public class Character {
      */
     public boolean isSimulateProcess() {
         return this.isSimulateProcess;
-    }
-    
-    public void setCurrentFrame(int currentFrame) {
-    	this.currentFrame = currentFrame;
     }
 
     public void close(){

@@ -109,7 +109,7 @@ public class SocketServer {
 		removeCancelledClients();
 		byte[] byteArray = ObserverGameState.newInitRoundState().toProto().toByteArray();
 		for (SocketClientHandler client: clientList) {
-			client.produce(byteArray, true);
+			client.produce(byteArray, false);
 		}
 	}
 	

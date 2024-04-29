@@ -110,10 +110,6 @@ public class Fighting {
 	 *            P1, P2のキー入力． Index 0 is P1, index 1 is P2.
 	 */
 	public void processingFight(int currentFrame, KeyData keyData) {
-		this.currentFrame = currentFrame;
-		for (int i = 0; i < 2; i++) {
-			this.playerCharacters[i].setCurrentFrame(currentFrame);
-		}
 		// 1. 入力されたキーを基に, アクションを実行
 		processingCommands(keyData);
 		// 2. 当たり判定の処理
@@ -468,6 +464,8 @@ public class Fighting {
 		CharacterData[] characterData = new CharacterData[] { new CharacterData(playerCharacters[0]),
 				new CharacterData(playerCharacters[1]) };
 
+		//System.out.println(playerCharacters[0].getExecuteAction());
+		
 		Deque<AttackData> newAttackDeque = new LinkedList<AttackData>();
 		for (LoopEffect loopEffect : this.projectileDeque) {
 			newAttackDeque.addLast(new AttackData(loopEffect.getAttack()));
