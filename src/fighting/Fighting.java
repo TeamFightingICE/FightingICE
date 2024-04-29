@@ -23,7 +23,6 @@ import struct.Key;
  */
 public class Fighting {
 
-	private int currentFrame;
 	/**
 	 * The character's data of both characters<br>
 	 * Index 0 is P1, index 1 is P2.
@@ -463,8 +462,6 @@ public class Fighting {
 	public FrameData createFrameData(int nowFrame, int round) {
 		CharacterData[] characterData = new CharacterData[] { new CharacterData(playerCharacters[0]),
 				new CharacterData(playerCharacters[1]) };
-
-		//System.out.println(playerCharacters[0].getExecuteAction());
 		
 		Deque<AttackData> newAttackDeque = new LinkedList<AttackData>();
 		for (LoopEffect loopEffect : this.projectileDeque) {
