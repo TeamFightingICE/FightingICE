@@ -137,21 +137,21 @@ public final class EnumProto {
      */
     INITIALIZE(1),
     /**
-     * <code>PROCESSING = 2;</code>
+     * <code>INIT_ROUND = 2;</code>
      */
-    PROCESSING(2),
+    INIT_ROUND(2),
     /**
-     * <code>ROUND_END = 3;</code>
+     * <code>PROCESSING = 3;</code>
      */
-    ROUND_END(3),
+    PROCESSING(3),
     /**
-     * <code>GAME_END = 4;</code>
+     * <code>ROUND_END = 4;</code>
      */
-    GAME_END(4),
+    ROUND_END(4),
     /**
-     * <code>INIT_ROUND = 5;</code>
+     * <code>GAME_END = 5;</code>
      */
-    INIT_ROUND(5),
+    GAME_END(5),
     UNRECOGNIZED(-1),
     ;
 
@@ -164,21 +164,21 @@ public final class EnumProto {
      */
     public static final int INITIALIZE_VALUE = 1;
     /**
-     * <code>PROCESSING = 2;</code>
+     * <code>INIT_ROUND = 2;</code>
      */
-    public static final int PROCESSING_VALUE = 2;
+    public static final int INIT_ROUND_VALUE = 2;
     /**
-     * <code>ROUND_END = 3;</code>
+     * <code>PROCESSING = 3;</code>
      */
-    public static final int ROUND_END_VALUE = 3;
+    public static final int PROCESSING_VALUE = 3;
     /**
-     * <code>GAME_END = 4;</code>
+     * <code>ROUND_END = 4;</code>
      */
-    public static final int GAME_END_VALUE = 4;
+    public static final int ROUND_END_VALUE = 4;
     /**
-     * <code>INIT_ROUND = 5;</code>
+     * <code>GAME_END = 5;</code>
      */
-    public static final int INIT_ROUND_VALUE = 5;
+    public static final int GAME_END_VALUE = 5;
 
 
     public final int getNumber() {
@@ -207,10 +207,10 @@ public final class EnumProto {
       switch (value) {
         case 0: return EMPTY;
         case 1: return INITIALIZE;
-        case 2: return PROCESSING;
-        case 3: return ROUND_END;
-        case 4: return GAME_END;
-        case 5: return INIT_ROUND;
+        case 2: return INIT_ROUND;
+        case 3: return PROCESSING;
+        case 4: return ROUND_END;
+        case 5: return GAME_END;
         default: return null;
       }
     }
@@ -998,8 +998,8 @@ public final class EnumProto {
     java.lang.String[] descriptorData = {
       "\n\nenum.proto\022\007service*)\n\016GrpcStatusCode\022" +
       "\013\n\007SUCCESS\020\000\022\n\n\006FAILED\020\001*b\n\010GrpcFlag\022\t\n\005" +
-      "EMPTY\020\000\022\016\n\nINITIALIZE\020\001\022\016\n\nPROCESSING\020\002\022" +
-      "\r\n\tROUND_END\020\003\022\014\n\010GAME_END\020\004\022\016\n\nINIT_ROU" +
+      "EMPTY\020\000\022\016\n\nINITIALIZE\020\001\022\016\n\nINIT_ROUND\020\002\022" +
+      "\016\n\nPROCESSING\020\003\022\r\n\tROUND_END\020\004\022\014\n\010GAME_E" +
       "ND\020\005*M\n\tGrpcState\022\017\n\013STAND_STATE\020\000\022\020\n\014CR" +
       "OUCH_STATE\020\001\022\r\n\tAIR_STATE\020\002\022\016\n\nDOWN_STAT" +
       "E\020\003*\331\006\n\nGrpcAction\022\013\n\007NEUTRAL\020\000\022\t\n\005STAND" +
