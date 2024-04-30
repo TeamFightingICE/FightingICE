@@ -65,38 +65,35 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 	}
 	
 	public SpectatorGameState toProto() {
+		SpectatorGameState response = null;
+		
 		if (this.getStateFlag() == StateFlag.INITIALIZE) {
-			SpectatorGameState response = SpectatorGameState.newBuilder()
+			response = SpectatorGameState.newBuilder()
 	  				.setStateFlag(GrpcFlag.INITIALIZE)
 	  				.setGameData(GrpcUtil.convertGameData(this.getGameData()))
 	  				.build();
-			return response;
 		} else if (this.getStateFlag() == StateFlag.INIT_ROUND) {
-			SpectatorGameState response = SpectatorGameState.newBuilder()
+			response = SpectatorGameState.newBuilder()
 					.setStateFlag(GrpcFlag.INIT_ROUND)
 					.build();
-			return response;
 		} else if (this.getStateFlag() == StateFlag.PROCESSING) {
-			SpectatorGameState response = SpectatorGameState.newBuilder()
+			response = SpectatorGameState.newBuilder()
 					.setStateFlag(GrpcFlag.PROCESSING)
 					.setFrameData(this.getFrameData().toProto())
 					.build();
-			return response;
 		} else if (this.getStateFlag() == StateFlag.ROUND_END) {
 			RoundResult roundResult = this.getRoundResult();
-			SpectatorGameState response = SpectatorGameState.newBuilder()
+			response = SpectatorGameState.newBuilder()
 					.setStateFlag(GrpcFlag.ROUND_END)
 					.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
 	  				.build();
-			return response;
 		} else if (this.getStateFlag() == StateFlag.GAME_END) {
-			SpectatorGameState response = SpectatorGameState.newBuilder()
+			response = SpectatorGameState.newBuilder()
 					.setStateFlag(GrpcFlag.GAME_END)
 					.build();
-			return response;
 		}
 		
-		return null;
+		return response;
 	}
 
 	@Override
