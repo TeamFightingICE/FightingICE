@@ -3,7 +3,6 @@ package grpc;
 import informationcontainer.RoundResult;
 import protoc.EnumProto.GrpcFlag;
 import protoc.ServiceProto.SpectatorGameState;
-import setting.GameSetting;
 import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
@@ -85,11 +84,15 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 			return response;
 		} else if (this.getStateFlag() == StateFlag.ROUND_END) {
 			RoundResult roundResult = this.getRoundResult();
-			boolean isGameEnd = roundResult.getRound() >= GameSetting.ROUND_MAX;
 			SpectatorGameState response = SpectatorGameState.newBuilder()
-					.setStateFlag(isGameEnd ? GrpcFlag.GAME_END : GrpcFlag.ROUND_END)
+					.setStateFlag(GrpcFlag.ROUND_END)
 					.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
 	  				.build();
+			return response;
+		} else if (this.getStateFlag() == StateFlag.GAME_END) {
+			SpectatorGameState response = SpectatorGameState.newBuilder()
+					.setStateFlag(GrpcFlag.GAME_END)
+					.build();
 			return response;
 		}
 		
@@ -119,6 +122,10 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 	
 	public static ObserverGameState newRoundEndState(RoundResult roundResult) {
 		return new ObserverGameState(roundResult);
+	}
+	
+	public static ObserverGameState newGameEndState() {
+		return new ObserverGameState(StateFlag.GAME_END);
 	}
 	
 }

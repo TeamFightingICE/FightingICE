@@ -12,16 +12,19 @@ import java.util.logging.Logger;
 
 import enumerate.GameSceneName;
 import fighting.Fighting;
+import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.AudioSource;
 import struct.FrameData;
+import struct.GameData;
 import struct.Key;
 import struct.ScreenData;
 import util.ResourceDrawer;
@@ -135,6 +138,9 @@ public class Replay extends GameScene {
 		this.isFinished = false;
 
 		SoundManager.getInstance().play2(audioSource,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
+		
+		GameData gameData = new GameData(this.fighting.getCharacters());
+		SocketServer.getInstance().initialize(gameData);
 	}
 
 	@Override
@@ -177,8 +183,7 @@ public class Replay extends GameScene {
 			}
 
 		} else {
-			// BGMを止める
-			SoundManager.getInstance().stop(audioSource);
+			this.processingGameEnd();
 			transitionProcess();
 		}
 
@@ -222,9 +227,13 @@ public class Replay extends GameScene {
 	 */
 	private void processingGame() {
 		this.keyData = createKeyData();
+		
+		if (this.isFinished) return;
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		
+		SocketServer.getInstance().processingGame(frameData, null, null);
 	}
 
 	/**
@@ -234,6 +243,15 @@ public class Replay extends GameScene {
 		this.isFinished = true;
 		this.currentRound++;
 		this.roundStartFlag = true;
+		
+		RoundResult roundResult = new RoundResult(this.frameData);
+		SocketServer.getInstance().roundEnd(roundResult);
+	}
+	
+	private void processingGameEnd() {
+		// BGMを止める
+		SoundManager.getInstance().stop(audioSource);
+		SocketServer.getInstance().gameEnd();
 	}
 
 	/**
@@ -264,6 +282,7 @@ public class Replay extends GameScene {
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 		this.isFinished = false;
+		SocketServer.getInstance().initRound();
 	}
 
 	/**
@@ -296,8 +315,8 @@ public class Replay extends GameScene {
 					// TODO 自動生成された catch ブロック
 					e1.printStackTrace();
 				}
-				// BGMを止める
-				SoundManager.getInstance().stop(audioSource);
+				this.processingRoundEnd();
+				this.processingGameEnd();
 				transitionProcess();
 
 				break;

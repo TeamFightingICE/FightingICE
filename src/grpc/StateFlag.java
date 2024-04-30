@@ -3,10 +3,11 @@ package grpc;
 public enum StateFlag {
 	
 	INITIALIZE("initialize", 2),
+	INIT_ROUND("init_round", 3),
 	PROCESSING("processing", 1),
 	ROUND_END("round_end", 3),
+	GAME_END("game_end", 3),
 	CANCELLED("cancelled", 4),
-	INIT_ROUND("init_round", 5)
 	;
 	
 	private String name;

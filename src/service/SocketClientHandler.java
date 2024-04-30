@@ -47,10 +47,12 @@ public class SocketClientHandler {
 	
 	public void produce(byte[] byteArray, boolean spawnWaitThread) {
 		try {
+			if (waitForInput && spawnWaitThread) return;
+			
 			socketSend(new byte[] { 1 }, false);
 			socketSend(byteArray, true);
 			
-			if (!waitForInput && spawnWaitThread) {
+			if (spawnWaitThread) {
 				waitForInput = true;
 				new Thread(waitForInput()).start();
 			}

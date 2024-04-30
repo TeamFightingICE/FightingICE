@@ -129,4 +129,12 @@ public class SocketServer {
 		}
 	}
 	
+	public void gameEnd() {
+		removeCancelledClients();
+		byte[] byteArray = ObserverGameState.newGameEndState().toProto().toByteArray();
+		for (SocketClientHandler client: clientList) {
+			client.produce(byteArray, false);
+		}
+	}
+	
 }

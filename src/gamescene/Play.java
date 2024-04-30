@@ -396,6 +396,7 @@ public class Play extends GameScene {
 	private void processingGameEnd() {
 		InputManager.getInstance().gameEnd();
 		SoundManager.getInstance().closeBGM();
+		SocketServer.getInstance().gameEnd();
 	}
 
 	/**
