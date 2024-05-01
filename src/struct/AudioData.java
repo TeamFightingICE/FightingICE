@@ -1,6 +1,7 @@
 package struct;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 
 import setting.GameSetting;
@@ -109,7 +110,9 @@ public class AudioData {
     	this.rawDataAsBytes = rawDataAsBytes;
     	
         for (int i = 0; i < 8192; i += 4) {
-            float value = ByteBuffer.wrap(rawDataAsBytes, i, 4).getFloat();
+            float value = ByteBuffer.wrap(rawDataAsBytes, i, 4)
+            		.order(ByteOrder.LITTLE_ENDIAN)
+            		.getFloat();
 
             int rowIndex = (i / 4) / 1024;
             int colIndex = (i / 4) % 1024;
@@ -161,4 +164,18 @@ public class AudioData {
     public byte[] getSpectrogramDataAsBytes() {
         return spectrogramDataAsBytes;
     }
+    
+    public byte[] getWavFormatBytes() {
+    	int channels = 2;
+    	int sampleRate = GameSetting.SOUND_RENDER_SIZE;
+    	
+    	short[][] pcm = new short[channels][sampleRate];
+    	for (int channel = 0; channel < channels; channel++) {
+    		for (int sample = 0; sample < sampleRate; sample++) {
+    		}
+    	}
+    	
+    	return NumberConverter.getInstance().getByteArray(pcm);
+    }
+    
 }
