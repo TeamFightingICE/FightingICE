@@ -172,6 +172,7 @@ public class AudioData {
     	short[][] pcm = new short[channels][sampleRate];
     	for (int channel = 0; channel < channels; channel++) {
     		for (int sample = 0; sample < sampleRate; sample++) {
+    			pcm[channel][sample] = (short)(this.rawData[channel][sample] * 32767);
     		}
     	}
     	

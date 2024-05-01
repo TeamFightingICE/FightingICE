@@ -50,8 +50,6 @@ public class Play extends GameScene {
 	 * 現在のフレーム．
 	 */
 	private int nowFrame;
-	
-	private AudioSource audioSource;
 
 	/**
 	 * 各ラウンド前に行う初期化処理内における経過フレーム数．
@@ -102,6 +100,8 @@ public class Play extends GameScene {
 
 	private AudioData audioData;
 	
+	private AudioSource sourceBgm;
+	
 	private AudioSource sourceRoundEnd;
 	
 	/**
@@ -133,6 +133,8 @@ public class Play extends GameScene {
 		this.audioData = new AudioData();
 		this.keyData = new KeyData();
 		this.roundResults = new ArrayList<RoundResult>();
+		
+		this.sourceBgm = SoundManager.getInstance().createAudioSource();
 		this.sourceRoundEnd = SoundManager.getInstance().createAudioSource();
 
 		this.timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
@@ -180,7 +182,6 @@ public class Play extends GameScene {
 
 	@Override
 	public void update() {
-		
 		if (this.currentRound <= GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
@@ -240,7 +241,7 @@ public class Play extends GameScene {
 		InputManager.getInstance().clear();
 		SocketServer.getInstance().initRound();
 		
-		SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+		SoundManager.getInstance().play2(sourceBgm, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 	}
 
 	/**
@@ -308,7 +309,8 @@ public class Play extends GameScene {
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();
 		} else {
-            this.audioData = new AudioData(SoundManager.getInstance().getVirtualRenderer().sampleAudio());
+			this.audioData = InputManager.getInstance().getAudioData();
+    		SoundManager.getInstance().queueStreamBuffer(this.audioData.getWavFormatBytes());
         }
 		
 		// AIにFrameDataをセット

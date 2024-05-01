@@ -128,6 +128,7 @@ public class Replay extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
+		
 		this.audioSource = SoundManager.getInstance().createAudioSource();
 
 		this.frameData = new FrameData();

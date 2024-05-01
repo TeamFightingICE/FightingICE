@@ -19,6 +19,25 @@ public class NumberConverter {
         }
         return instance;
     }
+    
+    public byte[] getByteArray(short[][] shortArray){
+        // Set up a ByteBuffer called intBuffer
+        int iMax = shortArray.length;
+        int jMax = shortArray[0].length;
+        ByteBuffer shortBuffer = ByteBuffer.allocate(2*iMax*jMax); // 2 bytes in a short
+        shortBuffer.order(ByteOrder.LITTLE_ENDIAN); // Java's default is big-endian
+
+        // Copy ints from intArray into intBuffer as bytes
+        for (int i = 0; i < iMax; i++) {
+            for (int j = 0; j < jMax; j++){
+            	shortBuffer.putShort(shortArray[i][j]);
+            }
+        }
+
+        // Convert the ByteBuffer to a byte array and return it
+        byte[] byteArray = shortBuffer.array();
+        return byteArray;
+    }
 
     public byte[] getByteArray(int[][] intArray){
         // Set up a ByteBuffer called intBuffer

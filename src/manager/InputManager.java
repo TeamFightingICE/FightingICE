@@ -113,6 +113,7 @@ public class InputManager {
 		}
 
 		this.endFrame = ThreadController.getInstance().getEndFrame();
+		this.audioData = new AudioData();
 	}
 
 	/**
@@ -285,6 +286,10 @@ public class InputManager {
 	public void setAudioData(AudioData audioData) {
 		this.audioData = audioData;
 	}
+	
+	public AudioData getAudioData() {
+		return this.audioData;
+	}
 
 	/**
 	 * 引数のフレームデータ及びScreenDataを各AIコントローラにセットする．
@@ -308,7 +313,7 @@ public class InputManager {
 					ai.setFrameData(new FrameData());
 				}
 				ai.setScreenData(new ScreenData(screenData));
-				ai.setAudioData(new AudioData(this.audioData != null ? this.audioData : audioData));
+				ai.setAudioData(new AudioData(audioData));
 			}
 		}
 
