@@ -81,10 +81,7 @@ public class SoundManager {
      * 音溝を格紝㝙るリスト．
      */
     private ArrayList<AudioSource> audioSources;
-    // BGM Source
-    private float[] initialBGMGains;
-    private static final String[] INSTRUMENT_NAMES = { "string", "drum", "other" };
-    private HashMap<String, AudioSource> bgmSources;
+
     /**
      * Sound rendering devices.
      */
@@ -111,18 +108,6 @@ public class SoundManager {
         this.loadedFiles = new ArrayList<String>();
         this.audioBuffers = new ArrayList<>();
         this.audioSources = new ArrayList<>();
-        this.bgmSources = new HashMap<>();
-        
-        this.initialBGMGains = new float[3];
-        if (FlagSetting.enableAdaptiveBgm) {
-        	initialBGMGains[0] = 0.10f;
-        	initialBGMGains[1] = 0.43f;
-        	initialBGMGains[2] = 0.11f;
-		} else {
-        	initialBGMGains[0] = 0.431f;
-        	initialBGMGains[1] = 0.432f;
-        	initialBGMGains[2] = 0.433f;
-		}
 
         // 音溝㝨リスナー㝮デフォルトパラメータをセット
         // this.sourcePos = new float[]{0.0F, 0.0F, 0.0F};
@@ -215,11 +200,12 @@ public class SoundManager {
      */
     private int createSource() {
         // 音溝㝮生戝
-        IntBuffer source1 = IntBuffer.wrap(new int[]{alGenSources()});
+        IntBuffer source = BufferUtils.createIntBuffer(1);
+        alGenSources(source);
 
-        alSourcef(source1.get(0), AL_ROLLOFF_FACTOR, 0.01F);
+        alSourcef(source.get(0), AL_ROLLOFF_FACTOR, 0.01F);
 
-        return source1.get(0);
+        return source.get(0);
     }
 
     /**
@@ -300,6 +286,8 @@ public class SoundManager {
      * @param loop   looping.
      */
     public void play2(AudioSource source, AudioBuffer buffer, int x, int y, boolean loop) {
+    	if (!FlagSetting.enableBuiltinSoundDesign) return;
+    	
         for (int i = 0; i < soundRenderers.size(); i++) {
             int sourceId = source.getSourceIds()[i];
             int bufferId = buffer.getBuffers()[i];
@@ -352,12 +340,6 @@ public class SoundManager {
 	        soundRenderers.get(i).setSourceGain(sourceId, Math.min(1.0f, Math.max(0.0f, gain)));
 	    }
     }
-    
-    public void setBGMAudioGains(float[] audioGains) {
-    	for (int i = 0; i < INSTRUMENT_NAMES.length; i++) {
-    		setSourceGain(getBGMSource(INSTRUMENT_NAMES[i]), audioGains[i]);
-    	}
-    }
 
     /**
      * Sets background music buffer.
@@ -384,6 +366,10 @@ public class SoundManager {
      */
     public Map<String, AudioBuffer> getSoundBuffers() {
         return soundBuffer;
+    }
+    
+    public AudioBuffer getSoundBuffer(String soundName) {
+    	return soundBuffer.getOrDefault(soundName, null);
     }
 
     /**
@@ -437,33 +423,6 @@ public class SoundManager {
         return audioSources;
     }
     
-    public void initializeBGM() {
-    	for (int i = 0; i < INSTRUMENT_NAMES.length; i++) {
-    		this.bgmSources.put(INSTRUMENT_NAMES[i], SoundManager.getInstance().createAudioSource());
-    	}
-    }
-    
-    public void closeBGM() {
-    	this.bgmSources.values().forEach(x -> x.close());
-    	this.bgmSources.clear();
-    }
-    
-    public AudioSource getBGMSource(String instrument) {
-    	return this.bgmSources.get(instrument);
-    }
-
-    private void setSourceGainAndPlay(String instrument, String soundFile, float gain) {
-        AudioSource source = getBGMSource(instrument);
-        setSourceGain(source, gain);
-        play2(source, getSoundBuffers().get(soundFile), 350, 0, true);
-    }
-    
-    public void playBGM() {
-        setSourceGainAndPlay("string", "Strings.wav", initialBGMGains[0]);
-        setSourceGainAndPlay("drum", "Drums.wav", initialBGMGains[1]);
-        setSourceGainAndPlay("other", "Others.wav", initialBGMGains[2]);
-    }
-    
     public void closeSources() {
     	for (AudioSource source: getAudioSources()) {
     		source.close();
@@ -485,7 +444,6 @@ public class SoundManager {
             this.loadedFiles.clear();
             this.audioBuffers.clear();
             this.audioSources.clear();
-            this.bgmSources.clear();
             this.closeRenderers();
             this.closeSources();
             this.closeFlag = true;

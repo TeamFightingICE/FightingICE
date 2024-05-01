@@ -42,6 +42,7 @@ import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
 import manager.SoundManager;
+import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import setting.ResourceSetting;
@@ -150,7 +151,7 @@ public class ResourceLoader {
 		Logger.getAnonymousLogger().log(Level.INFO, "Character images have been loaded.");
 
 		// サウンドエフェクト読み込み
-		if (!isLoaded("soundEffect")) {
+		if (!isLoaded("soundEffect") && FlagSetting.enableBuiltinSoundDesign) {
 			loadSoundEffect();
 
 			addLoadedResource("soundEffect");
@@ -158,7 +159,7 @@ public class ResourceLoader {
 		}
 
 		// BGM読み込み
-		if (!isLoaded("BGM")) {
+		if (!isLoaded("BGM") && FlagSetting.enableBuiltinSoundDesign) {
 			loadBackGroundMusic();
 
 			addLoadedResource("BGM");

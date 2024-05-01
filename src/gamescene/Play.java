@@ -32,7 +32,6 @@ import struct.AudioSource;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
-import util.BGMUtil;
 import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
@@ -51,6 +50,8 @@ public class Play extends GameScene {
 	 * 現在のフレーム．
 	 */
 	private int nowFrame;
+	
+	private AudioSource audioSource;
 
 	/**
 	 * 各ラウンド前に行う初期化処理内における経過フレーム数．
@@ -151,7 +152,6 @@ public class Play extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		
-		SocketServer.getInstance().initialize(gameData);
 		if (FlagSetting.grpc) {
 			LaunchSetting.grpcServer.getObserver().onInitialize(gameData);
 		}
@@ -174,8 +174,8 @@ public class Play extends GameScene {
 			this.setTransitionFlag(true);
 			this.setNextGameScene(launch);
 		}
-		
-		SoundManager.getInstance().initializeBGM();
+
+		SocketServer.getInstance().initialize(gameData);
 	}
 
 	@Override
@@ -238,8 +238,9 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 
 		InputManager.getInstance().clear();
-		SoundManager.getInstance().playBGM();
 		SocketServer.getInstance().initRound();
+		
+		SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 	}
 
 	/**
@@ -253,6 +254,7 @@ public class Play extends GameScene {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 		}
+		
 		this.fighting.initRound();
 	}
 
@@ -280,13 +282,6 @@ public class Play extends GameScene {
 		}
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
-		
-		if (!this.frameData.getEmptyFlag()) {
-			if (FlagSetting.enableAdaptiveBgm) {
-				float[] audioGains = BGMUtil.getAudioGains(this.frameData);
-				SoundManager.getInstance().setBGMAudioGains(audioGains);
-			}
-		}
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {
@@ -337,7 +332,7 @@ public class Play extends GameScene {
 	private void processingRoundEnd() {
 		SoundManager.getInstance().stopAll();
 		
-		SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffers().get("RoundEnd.wav"), 
+		SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffer("RoundEnd.wav"), 
 				GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, false);
 
 		if (FlagSetting.slowmotion) {
@@ -395,7 +390,6 @@ public class Play extends GameScene {
 	
 	private void processingGameEnd() {
 		InputManager.getInstance().gameEnd();
-		SoundManager.getInstance().closeBGM();
 		SocketServer.getInstance().gameEnd();
 	}
 

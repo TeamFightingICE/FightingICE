@@ -162,8 +162,8 @@ public class Game extends GameManager {
                 case "--no-vision":
                 	FlagSetting.visualVisibleOnRender = false;
                 	break;
-                case "--disable-adaptive-bgm":
-                	FlagSetting.enableAdaptiveBgm = false;
+                case "--use-builtin-sound":
+                	FlagSetting.enableBuiltinSoundDesign = true;
                 	break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING, "Arguments error: unknown format is exist. -> " + options[i] + " ?");

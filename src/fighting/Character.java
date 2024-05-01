@@ -450,17 +450,17 @@ public class Character {
             if (Arrays.asList("JUMP", "FOR_JUMP", "BACK_JUMP", "THROW_A", "THROW_B", "THROW_HIT", "THROW_SUFFER", "STAND_A", "STAND_B", "CROUCH_A", "CROUCH_B", "AIR_A", "AIR_B", "AIR_DA", "AIR_DB", "STAND_FA", "STAND_FB", "CROUCH_FA", "CROUCH_FB", "AIR_FA", "AIR_FB", "AIR_UA", "AIR_UB", "STAND_F_D_DFA", "STAND_F_D_DFB", "STAND_D_DB_BA", "STAND_D_DB_BB", "AIR_F_D_DFA", "AIR_F_D_DFB", "AIR_D_DB_BA", "AIR_D_DB_BB").contains(Name)) {
                 Name = Name + ".wav";
 
-                SoundManager.getInstance().play2(sourceDefault, SoundManager.getInstance().getSoundBuffers().get(Name), this.x, this.y, false);
+                SoundManager.getInstance().play2(sourceDefault, SoundManager.getInstance().getSoundBuffer(Name), this.x, this.y, false);
             } else if (Arrays.asList("CROUCH").contains(Name)) {
                 Name = Name + ".wav";
                 if (!TempName.equals(Name)) {
-                    SoundManager.getInstance().play2(sourceDefault, SoundManager.getInstance().getSoundBuffers().get(Name), this.x, this.y, false);
+                    SoundManager.getInstance().play2(sourceDefault, SoundManager.getInstance().getSoundBuffer(Name), this.x, this.y, false);
                     TempName = Name;
                 }
             } else if (Arrays.asList("FORWARD_WALK", "DASH", "BACK_STEP").contains(Name)) {
                 Name = Name + ".wav";
                 if (!TempName2.equals(Name)) {
-                    SoundManager.getInstance().play2(sourceWalking, SoundManager.getInstance().getSoundBuffers().get(Name), this.x, this.y, true);
+                    SoundManager.getInstance().play2(sourceWalking, SoundManager.getInstance().getSoundBuffer(Name), this.x, this.y, true);
                     TempName2 = Name;
                 }
             } else if (Arrays.asList("STAND_D_DF_FA", "STAND_D_DF_FB", "AIR_D_DF_FA", "AIR_D_DF_FB", "STAND_D_DF_FC").contains(Name)) {
@@ -470,7 +470,7 @@ public class Character {
                         sY[a] = this.y;
                         sX[a] = this.x;
                         Name = Name + ".wav";
-                        SoundManager.getInstance().play2(sourceProjectTiles[a], SoundManager.getInstance().getSoundBuffers().get(Name), this.x, this.y, true);
+                        SoundManager.getInstance().play2(sourceProjectTiles[a], SoundManager.getInstance().getSoundBuffer(Name), this.x, this.y, true);
                         break;
                     }
                 }
@@ -517,7 +517,7 @@ public class Character {
                 setSpeedY(0);
 
                 if (!this.isSimulateProcess) {
-                    SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("LANDING.wav"), this.x, this.y, false);
+                    SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffer("LANDING.wav"), this.x, this.y, false);
                 }
             }
 
@@ -567,9 +567,9 @@ public class Character {
             if (this.energy > this.preEnergy + 50) {
                 this.preEnergy = this.energy;
                 if (this.playerNumber) {
-                    SoundManager.getInstance().play2(sourceEnergyChange, SoundManager.getInstance().getSoundBuffers().get("EnergyCharge.wav"), 0, 0, false);
+                    SoundManager.getInstance().play2(sourceEnergyChange, SoundManager.getInstance().getSoundBuffer("EnergyCharge.wav"), 0, 0, false);
                 } else {
-                    SoundManager.getInstance().play2(sourceEnergyChange, SoundManager.getInstance().getSoundBuffers().get("EnergyCharge.wav"), GameSetting.STAGE_WIDTH, 0, false);
+                    SoundManager.getInstance().play2(sourceEnergyChange, SoundManager.getInstance().getSoundBuffer("EnergyCharge.wav"), GameSetting.STAGE_WIDTH, 0, false);
                 }
 
             }
@@ -577,9 +577,9 @@ public class Character {
             if (this.getHitAreaLeft() < 0 || this.getHitAreaRight() > GameSetting.STAGE_WIDTH) {
                 if (!SoundManager.getInstance().isPlaying(sourceBorderAlert)) {
                     if (this.getHitAreaLeft() < 0) {
-                        SoundManager.getInstance().play2(sourceBorderAlert, SoundManager.getInstance().getSoundBuffers().get("BorderAlert.wav"), 0, 0, false);
+                        SoundManager.getInstance().play2(sourceBorderAlert, SoundManager.getInstance().getSoundBuffer("BorderAlert.wav"), 0, 0, false);
                     } else {
-                        SoundManager.getInstance().play2(sourceBorderAlert, SoundManager.getInstance().getSoundBuffers().get("BorderAlert.wav"), GameSetting.STAGE_WIDTH, 0, false);
+                        SoundManager.getInstance().play2(sourceBorderAlert, SoundManager.getInstance().getSoundBuffer("BorderAlert.wav"), GameSetting.STAGE_WIDTH, 0, false);
                     }
                 }
             }
@@ -588,9 +588,9 @@ public class Character {
             	if(this.hp < 50) {
             		if(!SoundManager.getInstance().isPlaying(sourceHeartBeat)) {
             			if (this.playerNumber) {
-                            SoundManager.getInstance().play2(sourceHeartBeat, SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"), 0, 0, false);
+                            SoundManager.getInstance().play2(sourceHeartBeat, SoundManager.getInstance().getSoundBuffer("Heartbeat.wav"), 0, 0, false);
                         } else {
-                            SoundManager.getInstance().play2(sourceHeartBeat, SoundManager.getInstance().getSoundBuffers().get("Heartbeat.wav"), GameSetting.STAGE_WIDTH, 0, false);
+                            SoundManager.getInstance().play2(sourceHeartBeat, SoundManager.getInstance().getSoundBuffer("Heartbeat.wav"), GameSetting.STAGE_WIDTH, 0, false);
                         }
             		}
             	}  
@@ -659,7 +659,7 @@ public class Character {
             opponent.setEnergy(opponent.getEnergy() + attack.getGuardAddEnergy());
 
             if (!this.isSimulateProcess) {
-                SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("WeakGuard.wav"), this.x, this.y, false);
+                SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffer("WeakGuard.wav"), this.x, this.y, false);
             }
         } else {
             // 投げ技のときの処理
@@ -690,7 +690,7 @@ public class Character {
                     setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
 
                     if (!this.isSimulateProcess) {
-                        SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("HitB.wav"), this.x, this.y, false);
+                        SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffer("HitB.wav"), this.x, this.y, false);
                     }
                 } else {
                     switch (this.state) {
@@ -711,7 +711,7 @@ public class Character {
                     }
 
                     if (!this.isSimulateProcess) {
-                        SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffers().get("HitA.wav"), this.x, this.y, false);
+                        SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffer("HitA.wav"), this.x, this.y, false);
                     }
                 }
             }

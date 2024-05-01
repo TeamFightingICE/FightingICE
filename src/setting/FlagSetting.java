@@ -80,7 +80,6 @@ public class FlagSetting {
     public static boolean isGrpcAutoReady = false;
     
     public static boolean visualVisibleOnRender = true;
-    
-    public static boolean enableAdaptiveBgm = true;
+    public static boolean enableBuiltinSoundDesign = false;
     
 }

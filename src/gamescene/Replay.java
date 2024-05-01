@@ -137,8 +137,6 @@ public class Replay extends GameScene {
 		this.playSpeedArray = new int[] { 0, 1, 2, 4 };
 		this.isFinished = false;
 
-		SoundManager.getInstance().play2(audioSource,SoundManager.getInstance().getBackGroundMusicBuffer(),350,0,true);
-		
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		SocketServer.getInstance().initialize(gameData);
 	}
@@ -170,16 +168,18 @@ public class Replay extends GameScene {
 					}
 					this.nowFrame++;
 				}
+				
+				if (!this.isFinished) {
+					// 画面をDrawerクラスで描画
+					ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(),
+							this.fighting.getProjectileDeque(), this.fighting.getHitEffectList(),
+							this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
 
-				// 画面をDrawerクラスで描画
-				ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(),
-						this.fighting.getProjectileDeque(), this.fighting.getHitEffectList(),
-						this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
+					GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50,
+							550);
 
-				GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50,
-						550);
-
-				this.screenData = new ScreenData();
+					this.screenData = new ScreenData();
+				}
 			}
 
 		} else {
@@ -246,11 +246,11 @@ public class Replay extends GameScene {
 		
 		RoundResult roundResult = new RoundResult(this.frameData);
 		SocketServer.getInstance().roundEnd(roundResult);
+		
+		SoundManager.getInstance().stopAll();
 	}
 	
 	private void processingGameEnd() {
-		// BGMを止める
-		SoundManager.getInstance().stop(audioSource);
 		SocketServer.getInstance().gameEnd();
 	}
 
@@ -283,6 +283,8 @@ public class Replay extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.isFinished = false;
 		SocketServer.getInstance().initRound();
+		
+		SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 	}
 
 	/**
