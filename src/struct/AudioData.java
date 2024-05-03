@@ -17,11 +17,13 @@ public class AudioData {
     /**
      * Raw audio data.
      */
-    private float[][] rawData = null;
+	private short[][] rawShortData = null;
+    private float[][] rawFloatData = null;
     /**
      * Raw audio data as byte sequence.
      */
-    private byte[] rawDataAsBytes = null;
+    private byte[] rawShortDataAsBytes = null;
+    private byte[] rawFloatDataAsBytes = null;
 
     /**
      * Fourier-transformed audio data.
@@ -57,22 +59,26 @@ public class AudioData {
      * Initialize data.
      */
     private void init() {
-        this.rawData = new float[2][GameSetting.SOUND_BUFFER_SIZE];
+        this.rawShortData = new short[2][GameSetting.SOUND_RENDER_SIZE];
+        this.rawFloatData = new float[2][GameSetting.SOUND_BUFFER_SIZE];
         this.fftData = new FFTData[2];
         this.spectrogramData = new float[2][][];
     }
     
     private void tranformRawData() {
-        fft.process(Arrays.copyOf(this.rawData[0], this.rawData[0].length));
+        fft.process(Arrays.copyOf(this.rawFloatData[0], this.rawFloatData[0].length));
         this.fftData[0] = new FFTData(fft.getReal(), fft.getImag());
-        fft.process(Arrays.copyOf(this.rawData[1], this.rawData[1].length));
+        fft.process(Arrays.copyOf(this.rawFloatData[1], this.rawFloatData[1].length));
         this.fftData[1] = new FFTData(fft.getReal(), fft.getImag());
         
-        if (this.rawDataAsBytes == null)
-        	this.rawDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawData);
+        if (this.rawShortDataAsBytes == null)
+        	this.rawShortDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawShortData);
         
-        this.spectrogramData[0] = mfcc.melSpectrogram(Arrays.copyOf(this.rawData[0], this.rawData[0].length));
-        this.spectrogramData[1] = mfcc.melSpectrogram(Arrays.copyOf(this.rawData[1], this.rawData[1].length));
+        if (this.rawFloatDataAsBytes == null)
+        	this.rawFloatDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawFloatData);
+        
+        this.spectrogramData[0] = mfcc.melSpectrogram(Arrays.copyOf(this.rawFloatData[0], this.rawFloatData[0].length));
+        this.spectrogramData[1] = mfcc.melSpectrogram(Arrays.copyOf(this.rawFloatData[1], this.rawFloatData[1].length));
         
         this.spectrogramDataAsBytes = NumberConverter.getInstance().getByteArray(this.spectrogramData);
     }
@@ -85,10 +91,10 @@ public class AudioData {
         int bufferSize = (audioData.getRawData() != null && audioData.getRawData()[0].length > 0) ? audioData.getRawData()[0].length : 0;
         this.init();
         if (bufferSize > 0) {
-            this.rawData = audioData.getRawData();
+            this.rawFloatData = audioData.getRawData();
             this.fftData = audioData.getFftData();
             this.spectrogramData = audioData.getSpectrogramData();
-            this.rawDataAsBytes = audioData.getRawDataAsBytes();
+            this.rawFloatDataAsBytes = audioData.getRawDataAsBytes();
             this.spectrogramDataAsBytes = audioData.getSpectrogramDataAsBytes();
         }
     }
@@ -99,26 +105,37 @@ public class AudioData {
      */
     public AudioData(float[][] rawData) {
         this.init();
-        this.rawData = rawData;
+        this.rawFloatData = rawData;
 
         this.tranformRawData();
     }
     
     public AudioData(byte[] rawDataAsBytes) {
     	this.init();
-    	this.rawData = new float[2][1024];
-    	this.rawDataAsBytes = rawDataAsBytes;
     	
-        for (int i = 0; i < 8192; i += 4) {
-            float value = ByteBuffer.wrap(rawDataAsBytes, i, 4)
-            		.order(ByteOrder.LITTLE_ENDIAN)
-            		.getFloat();
+    	if (rawDataAsBytes.length == 3200) {
+    		this.rawShortDataAsBytes = rawDataAsBytes;
+    		
+    		for (int i = 0; i < 3200; i += 2) {
+    			short value = ByteBuffer.wrap(rawDataAsBytes, i, 2).order(ByteOrder.LITTLE_ENDIAN).getShort();
+    			
+    			int rowIndex = (i / 2) / GameSetting.SOUND_RENDER_SIZE;
+    			int colIndex = (i / 2) % GameSetting.SOUND_RENDER_SIZE;
+    			
+    			this.rawShortData[rowIndex][colIndex] = value;
+    			this.rawFloatData[rowIndex][colIndex] = (float) (value / 32767.0);
+    		}
+    	} else if (rawDataAsBytes.length == 6400) {
+        	for (int i = 0; i < 6400; i += 4) {
+                float value = ByteBuffer.wrap(rawDataAsBytes, i, 4).order(ByteOrder.LITTLE_ENDIAN).getFloat();
 
-            int rowIndex = (i / 4) / 1024;
-            int colIndex = (i / 4) % 1024;
+                int rowIndex = (i / 4) / GameSetting.SOUND_RENDER_SIZE;
+                int colIndex = (i / 4) % GameSetting.SOUND_RENDER_SIZE;
 
-            this.rawData[rowIndex][colIndex] = value;
-        }
+                this.rawFloatData[rowIndex][colIndex] = value;
+            	this.rawShortData[rowIndex][colIndex] = (short) (value * 32767);
+            }
+    	}
         
         this.tranformRawData();
     }
@@ -128,7 +145,7 @@ public class AudioData {
      * @return raw audio data.
      */
     public float[][] getRawData() {
-        return rawData;
+        return rawFloatData;
     }
 
     /**
@@ -137,7 +154,7 @@ public class AudioData {
      * @return raw audio data as byte sequence.
      */
     public byte[] getRawDataAsBytes() {
-        return rawDataAsBytes;
+        return rawFloatDataAsBytes;
     }
 
     /**
@@ -165,18 +182,8 @@ public class AudioData {
         return spectrogramDataAsBytes;
     }
     
-    public byte[] getWavFormatBytes() {
-    	int channels = 2;
-    	int sampleRate = GameSetting.SOUND_RENDER_SIZE;
-    	
-    	short[][] pcm = new short[channels][sampleRate];
-    	for (int channel = 0; channel < channels; channel++) {
-    		for (int sample = 0; sample < sampleRate; sample++) {
-    			pcm[channel][sample] = (short)(this.rawData[channel][sample] * 32767);
-    		}
-    	}
-    	
-    	return NumberConverter.getInstance().getByteArray(pcm);
+    public byte[] getRawShortDataAsBytes() {
+    	return rawShortDataAsBytes;
     }
     
 }

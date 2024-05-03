@@ -92,8 +92,8 @@ public class SocketClientHandler {
 				try {
 					byte[] byteArray = socketRecv(-1);
 					
-					if (byteArray.length != 8192) {
-				        byteArray = new byte[8192];
+					if (byteArray.length != 3200 && byteArray.length != 6400) {
+				        byteArray = new byte[6400];
 						Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
 					}
 
