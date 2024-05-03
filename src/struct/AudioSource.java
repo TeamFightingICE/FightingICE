@@ -1,5 +1,9 @@
 package struct;
 
+import static org.lwjgl.openal.AL10.AL_BUFFER;
+import static org.lwjgl.openal.AL10.AL_NONE;
+import static org.lwjgl.openal.AL10.alSourcei;
+
 import manager.SoundManager;
 
 /**
@@ -25,6 +29,14 @@ public class AudioSource {
      */
     public int[] getSourceIds() {
         return sourceIds;
+    }
+    
+    public void clearBuffer() {
+    	for (int i = 0; i < sourceIds.length; i++) {
+    		int sourceId = sourceIds[i];
+    		
+    		alSourcei(sourceId, AL_BUFFER, AL_NONE);
+    	}
     }
 
     /**

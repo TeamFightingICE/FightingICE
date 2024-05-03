@@ -1,26 +1,27 @@
 package manager;
 
+import static org.lwjgl.openal.AL10.AL_BUFFERS_PROCESSED;
+import static org.lwjgl.openal.AL10.AL_BUFFERS_QUEUED;
+import static org.lwjgl.openal.AL10.AL_FALSE;
 import static org.lwjgl.openal.AL10.AL_FORMAT_STEREO16;
+import static org.lwjgl.openal.AL10.AL_LOOPING;
 import static org.lwjgl.openal.AL10.AL_ORIENTATION;
+import static org.lwjgl.openal.AL10.AL_PLAYING;
 import static org.lwjgl.openal.AL10.AL_POSITION;
 import static org.lwjgl.openal.AL10.AL_ROLLOFF_FACTOR;
+import static org.lwjgl.openal.AL10.AL_SOURCE_STATE;
 import static org.lwjgl.openal.AL10.AL_VELOCITY;
 import static org.lwjgl.openal.AL10.alBufferData;
 import static org.lwjgl.openal.AL10.alGenBuffers;
 import static org.lwjgl.openal.AL10.alGenSources;
+import static org.lwjgl.openal.AL10.alGetSourcei;
 import static org.lwjgl.openal.AL10.alSource3f;
 import static org.lwjgl.openal.AL10.alSourcePlay;
 import static org.lwjgl.openal.AL10.alSourceQueueBuffers;
 import static org.lwjgl.openal.AL10.alSourceUnqueueBuffers;
 import static org.lwjgl.openal.AL10.alSourcef;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.util.WaveData;
 
 import render.audio.SoundRender;
 import setting.FlagSetting;
@@ -106,8 +106,6 @@ public class SoundManager {
     private AudioBuffer backGroundMusicBuffer;
     
     private AudioSource streamSource;
-    private AudioBuffer[] streamBuffers;
-    private int initializedBuffers;
 
     /**
      * クラスコンストラクタ．
@@ -118,8 +116,6 @@ public class SoundManager {
         this.loadedFiles = new ArrayList<>();
         this.audioBuffers = new ArrayList<>();
         this.audioSources = new ArrayList<>();
-        this.streamBuffers = new AudioBuffer[3];
-        this.initializedBuffers = 0;
 
         // 音溝㝨リスナー㝮デフォルトパラメータをセット
         // this.sourcePos = new float[]{0.0F, 0.0F, 0.0F};
@@ -164,12 +160,9 @@ public class SoundManager {
             this.soundRenderers.add(SoundRender.createDefaultRenderer());
         }
         virtualRenderer = SoundRender.createVirtualRenderer();
-        this.soundRenderers.add(virtualRenderer);
+        //this.soundRenderers.add(virtualRenderer);
         
         streamSource = createAudioSource();
-        for (int i = 0; i < streamBuffers.length; i++) {
-        	streamBuffers[i] = createAudioBuffer();
-        }
         
         this.setListenerValues();
     }
@@ -193,14 +186,15 @@ public class SoundManager {
      * @param loop     ループ㝕㝛る㝋㝩㝆㝋(㝕㝛る場坈㝯true)
      * @return 設定済㝿㝮音溝
      */
-    public AudioBuffer createAudioBuffer(String filePath, boolean loop) {
+    public AudioBuffer createAudioBuffer(String filePath) {
         AudioBuffer audioBuffer = null;
         int[] bufferIds = new int[soundRenderers.size()];
         for (int i = 0; i < soundRenderers.size(); i++) {
             soundRenderers.get(i).set();
-            bufferIds[i] = this.registerSound(filePath);
+            bufferIds[i] = this.createBuffer();
         }
         audioBuffer = new AudioBuffer(bufferIds);
+        audioBuffer.registerSound(filePath);
         this.audioBuffers.add(audioBuffer);
         return audioBuffer;
     }
@@ -241,7 +235,7 @@ public class SoundManager {
         int[] sourceIds = new int[soundRenderers.size()];
         for (int i = 0; i < soundRenderers.size(); i++) {
             soundRenderers.get(i).set();
-            sourceIds[i] = createSource();
+            sourceIds[i] = this.createSource();
         }
         audioSource = new AudioSource(sourceIds);
         this.audioSources.add(audioSource);
@@ -260,32 +254,6 @@ public class SoundManager {
             soundRenderers.get(i).setSource3f(source.getSourceIds()[i], AL_POSITION, x, 0, 4);
         }
     }
-
-    /**
-     * Wav音声ファイルを読㝿込ん㝧ポッファ㝫坖り込㝿，音声ポッファを返㝙．
-     *
-     * @param filePath 音声㝮ファイルパス
-     * @return 音声ポッファ
-     */
-    private int registerSound(String filePath) {
-        // ポッファを生戝
-        int bufferId = createBuffer();
-
-        // Wav音声ファイルをポッファ㝫坖り込む
-        try {
-            BufferedInputStream e = new BufferedInputStream(new FileInputStream(new File(filePath)));
-            WaveData waveFile = WaveData.create(e);
-            alBufferData(bufferId, waveFile.format, waveFile.data, waveFile.samplerate);
-            e.close();
-            waveFile.dispose();
-        } catch (FileNotFoundException arg1) {
-            arg1.printStackTrace();
-        } catch (IOException arg2) {
-            arg2.printStackTrace();
-        }
-
-        return bufferId;
-    }
     
     private int createBuffer() {
         IntBuffer buffer = BufferUtils.createIntBuffer(1);
@@ -294,29 +262,42 @@ public class SoundManager {
         return buffer.get(0);
     }
     
-    public void queueStreamBuffer(byte[] wavFormat) {
-    	int sourceId = streamSource.getSourceIds()[0];
-    	int bufferId;
-    	
-    	if (this.initializedBuffers < this.streamBuffers.length) {
-        	bufferId = this.streamBuffers[this.initializedBuffers++].getBuffers()[0];
-    	} else {
-    		IntBuffer buffer = BufferUtils.createIntBuffer(1);
-    		alSourceUnqueueBuffers(sourceId, buffer);
-    		bufferId = buffer.get(0);
-    	}
-    	
-        ByteBuffer audioBuffer = ByteBuffer.allocate(wavFormat.length);
-        audioBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        audioBuffer.put(wavFormat);
-        audioBuffer.flip();
-        
-    	alBufferData(bufferId, AL_FORMAT_STEREO16, audioBuffer, GameSetting.SOUND_SAMPLING_RATE);
-    	alSourceQueueBuffers(sourceId, bufferId);
-    	
-    	if (!isPlaying(streamSource)) {
-    		alSourcePlay(sourceId);
-    	}
+    public void playback(byte[] wavFormat) {
+        for (int i = 0; i < soundRenderers.size(); i++) {
+            int sourceId = streamSource.getSourceIds()[i];
+            soundRenderers.get(i).set();
+            int bufferId;
+
+            IntBuffer queuedBuffers = BufferUtils.createIntBuffer(1);
+            IntBuffer processedBuffers = BufferUtils.createIntBuffer(1);
+            alGetSourcei(sourceId, AL_BUFFERS_QUEUED, queuedBuffers);
+            alGetSourcei(sourceId, AL_BUFFERS_PROCESSED, processedBuffers);
+            System.out.println("Queued Buffers: " + queuedBuffers.get(0));
+            //System.out.println("Processed Buffers: " + processedBuffers.get(0));
+
+            if (processedBuffers.get(0) > 0) {
+                bufferId = alSourceUnqueueBuffers(sourceId);
+                //System.out.println("Unqueued Buffer: " + bufferId);
+            } else {
+                bufferId = alGenBuffers();
+                //System.out.println("Generated Buffer: " + bufferId);
+            }
+            
+            ByteBuffer audioBuffer = BufferUtils.createByteBuffer(3200);
+            audioBuffer.put(wavFormat);
+            audioBuffer.flip();
+
+            alBufferData(bufferId, AL_FORMAT_STEREO16, audioBuffer, GameSetting.SOUND_SAMPLING_RATE);
+            alSourceQueueBuffers(sourceId, bufferId);
+            alSourcef(sourceId, AL_LOOPING, AL_FALSE);
+            //System.out.println("Queued Buffer: " + bufferId);
+            
+            int state = alGetSourcei(sourceId, AL_SOURCE_STATE);
+            if (state != AL_PLAYING) {
+            	alSourcePlay(sourceId);
+                //System.out.println("Played Source: " + sourceId);
+            }
+        }
     }
 
     /**
@@ -329,6 +310,14 @@ public class SoundManager {
         alSource3f(source, AL_POSITION, x, 0, 4);
         alSourcePlay(source);
     }
+    
+    public void play(AudioSource source, AudioBuffer buffer) {
+    	for (int i = 0; i < soundRenderers.size(); i++) {
+            int sourceId = source.getSourceIds()[i];
+            int bufferId = buffer.getBuffers()[i];
+            soundRenderers.get(i).play(sourceId, bufferId);
+        }
+    }
 
     /**
      * Play audio in a source.
@@ -340,7 +329,7 @@ public class SoundManager {
      * @param loop   looping.
      */
     public void play2(AudioSource source, AudioBuffer buffer, int x, int y, boolean loop) {
-    	if (!FlagSetting.enableBuiltinSoundDesign) return;
+    	if (!FlagSetting.enableBuiltinSound) return;
     	
         for (int i = 0; i < soundRenderers.size(); i++) {
             int sourceId = source.getSourceIds()[i];

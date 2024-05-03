@@ -162,8 +162,11 @@ public class Game extends GameManager {
                 case "--no-vision":
                 	FlagSetting.visualVisibleOnRender = false;
                 	break;
-                case "--use-builtin-sound":
-                	FlagSetting.enableBuiltinSoundDesign = true;
+                case "--enable-builtin-sound":
+                	FlagSetting.enableBuiltinSound = true;
+                	break;
+                case "--enable-replay-sound":
+                	FlagSetting.enableReplaySound = true;
                 	break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING, "Arguments error: unknown format is exist. -> " + options[i] + " ?");
@@ -245,8 +248,9 @@ public class Game extends GameManager {
      */
     private void createLogDirectories() {
         new File("log").mkdir();
-        new File("log/replay").mkdir();
         new File("log/point").mkdir();
+        new File("log/replay").mkdir();
+        new File("log/sound").mkdir();
     }
 
     @Override

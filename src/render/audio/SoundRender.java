@@ -1,12 +1,31 @@
 package render.audio;
 
-import org.lwjgl.openal.*;
-import setting.GameSetting;
+import static org.lwjgl.openal.AL10.AL_BUFFER;
+import static org.lwjgl.openal.AL10.AL_FALSE;
+import static org.lwjgl.openal.AL10.AL_LOOPING;
+import static org.lwjgl.openal.AL10.AL_PLAYING;
+import static org.lwjgl.openal.AL10.AL_POSITION;
+import static org.lwjgl.openal.AL10.AL_SOURCE_STATE;
+import static org.lwjgl.openal.AL10.AL_TRUE;
+import static org.lwjgl.openal.AL10.alDeleteBuffers;
+import static org.lwjgl.openal.AL10.alDeleteSources;
+import static org.lwjgl.openal.AL10.alGetSourcef;
+import static org.lwjgl.openal.AL10.alGetSourcei;
+import static org.lwjgl.openal.AL10.alSource3f;
+import static org.lwjgl.openal.AL10.alSourcef;
+import static org.lwjgl.openal.AL10.alSourcei;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import static org.lwjgl.openal.AL10.*;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALC10;
+import org.lwjgl.openal.ALCCapabilities;
+import org.lwjgl.openal.SOFTLoopback;
+
+import setting.GameSetting;
 
 /**
  * The class dealing with sound rendering in the game using the default speaker or a virtual device.
@@ -112,7 +131,7 @@ public class SoundRender {
         AL10.alSourcei(sourceId, AL10.AL_BUFFER, bufferId);
         alSourcei(sourceId, AL_BUFFER, bufferId);
         alSource3f(sourceId, AL_POSITION, x, 0, 4);
-        alSourcei(sourceId, AL_LOOPING, loop ? 1 : 0);
+        alSourcei(sourceId, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
         AL10.alSourcePlay(sourceId);
     }
 

@@ -151,7 +151,7 @@ public class ResourceLoader {
 		Logger.getAnonymousLogger().log(Level.INFO, "Character images have been loaded.");
 
 		// サウンドエフェクト読み込み
-		if (!isLoaded("soundEffect") && FlagSetting.enableBuiltinSoundDesign) {
+		if (!isLoaded("soundEffect") && FlagSetting.enableBuiltinSound) {
 			loadSoundEffect();
 
 			addLoadedResource("soundEffect");
@@ -159,7 +159,7 @@ public class ResourceLoader {
 		}
 
 		// BGM読み込み
-		if (!isLoaded("BGM") && FlagSetting.enableBuiltinSoundDesign) {
+		if (!isLoaded("BGM") && FlagSetting.enableBuiltinSound) {
 			loadBackGroundMusic();
 
 			addLoadedResource("BGM");
@@ -553,7 +553,7 @@ public class ResourceLoader {
         for (File file : files) {
             if (!file.getName().equals(ResourceSetting.BGM_FILE) && !file.isDirectory()) {
                 SoundManager.getInstance().getSoundBuffers().put(file.getName(),
-                        SoundManager.getInstance().createAudioBuffer(file.getPath(), false));
+                        SoundManager.getInstance().createAudioBuffer(file.getPath()));
             }
         }
     }
@@ -563,7 +563,7 @@ public class ResourceLoader {
      */
     private void loadBackGroundMusic() {
         SoundManager.getInstance().setBackGroundMusicBuffer(SoundManager.getInstance()
-                .createAudioBuffer(ResourceSetting.SOUND_DIRECTORY + ResourceSetting.BGM_FILE, true));
+                .createAudioBuffer(ResourceSetting.SOUND_DIRECTORY + ResourceSetting.BGM_FILE));
     }
 
 	/**

@@ -35,6 +35,7 @@ import struct.ScreenData;
 import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
+import util.WaveFileWriter;
 
 /**
  * 対戦中のシーンを扱うクラス．
@@ -239,24 +240,22 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 
 		InputManager.getInstance().clear();
+		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), new AudioData());
+		
 		SocketServer.getInstance().initRound();
 		
-		SoundManager.getInstance().play2(sourceBgm, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+		String fileName = LogWriter.getInstance().createOutputFileName("./log/sound/", this.timeInfo + "_" + this.currentRound + ".wav");
+		WaveFileWriter.getInstance().initializeWaveFile(fileName);
 	}
 
 	/**
 	 * 各ラウンド開始時における, インターバル処理を行う．
 	 */
 	private void processingBreakTime() {
-		// ダミーフレームをAIにセット
-		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), new AudioData());
-
 		if (FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 		}
-		
-		this.fighting.initRound();
 	}
 
 	/**
@@ -310,8 +309,10 @@ public class Play extends GameScene {
 			this.audioData = new AudioData();
 		} else {
 			this.audioData = InputManager.getInstance().getAudioData();
-    		SoundManager.getInstance().queueStreamBuffer(this.audioData.getWavFormatBytes());
-        }
+		}
+		
+		//SoundManager.getInstance().playback(this.audioData.getWavFormatBytes());
+		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
 		
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
@@ -320,6 +321,10 @@ public class Play extends GameScene {
 		if (FlagSetting.grpc) {
 			ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
 			observer.onGameUpdate(this.frameData, this.screenData, this.audioData);
+		}
+		
+		if (this.nowFrame == 0) {
+			SoundManager.getInstance().play2(sourceBgm, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 		}
 
 		// 体力が0orタイムオーバーならラウンド終了処理
@@ -333,6 +338,7 @@ public class Play extends GameScene {
 	 */
 	private void processingRoundEnd() {
 		SoundManager.getInstance().stopAll();
+		WaveFileWriter.getInstance().writeToFile();
 		
 		SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffer("RoundEnd.wav"), 
 				GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, false);

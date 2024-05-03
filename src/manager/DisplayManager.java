@@ -53,6 +53,7 @@ import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import util.WaveFileWriter;
 
 /**
  * ゲームの進行管理を行うマネージャクラス．
@@ -222,6 +223,7 @@ public class DisplayManager {
 	private void close() {
 		GraphicManager.getInstance().close();
 		SoundManager.getInstance().close();
+		WaveFileWriter.getInstance().close();
 		
 		if (FlagSetting.grpc) {
 			try {

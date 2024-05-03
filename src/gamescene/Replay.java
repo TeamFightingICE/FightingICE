@@ -1,6 +1,6 @@
 package gamescene;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -22,6 +22,7 @@ import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
+import struct.AudioBuffer;
 import struct.AudioSource;
 import struct.FrameData;
 import struct.GameData;
@@ -50,6 +51,8 @@ public class Replay extends GameScene {
 	private int nowFrame;
 
 	private AudioSource audioSource;
+	
+	private AudioBuffer audioBuffer;
 
 	/**
 	 * 各ラウンド前に行う初期化処理内における経過フレーム数．
@@ -107,14 +110,6 @@ public class Replay extends GameScene {
 		this.isTransitionFlag = false;
 		this.nextGameScene = null;
 		//////////////////////////////////////
-
-		try {
-			String path = "./log/replay/" + LaunchSetting.replayName + ".dat";
-			this.dis = new DataInputStream(new FileInputStream(new File(path)));
-			readHeader();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -128,8 +123,6 @@ public class Replay extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
-		
-		this.audioSource = SoundManager.getInstance().createAudioSource();
 
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
@@ -137,9 +130,21 @@ public class Replay extends GameScene {
 		this.playSpeedIndex = 1;
 		this.playSpeedArray = new int[] { 0, 1, 2, 4 };
 		this.isFinished = false;
+		
+		this.audioSource = SoundManager.getInstance().createAudioSource();
+		this.audioBuffer = SoundManager.getInstance().createAudioBuffer();
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		SocketServer.getInstance().initialize(gameData);
+		
+		try {
+			String replayPath = "./log/replay/" + LaunchSetting.replayName + ".dat";
+			this.dis = new DataInputStream(new FileInputStream(new File(replayPath)));
+			
+			readHeader();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -235,6 +240,14 @@ public class Replay extends GameScene {
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 		
 		SocketServer.getInstance().processingGame(frameData, null, null);
+		
+		if (this.nowFrame == 0) {
+			if (FlagSetting.enableReplaySound) {
+				SoundManager.getInstance().play(audioSource, audioBuffer);
+			} else {
+				SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+			}
+		}
 	}
 
 	/**
@@ -247,8 +260,11 @@ public class Replay extends GameScene {
 		
 		RoundResult roundResult = new RoundResult(this.frameData);
 		SocketServer.getInstance().roundEnd(roundResult);
-		
+
 		SoundManager.getInstance().stopAll();
+		
+		if (FlagSetting.enableReplaySound)
+			this.audioSource.clearBuffer();
 	}
 	
 	private void processingGameEnd() {
@@ -283,9 +299,13 @@ public class Replay extends GameScene {
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 		this.isFinished = false;
+		
 		SocketServer.getInstance().initRound();
 		
-		SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+		if (FlagSetting.enableReplaySound) {
+			String soundPath = "./log/sound/" + LaunchSetting.replayName + "_" + this.currentRound + ".wav";
+			this.audioBuffer.registerSound(soundPath);
+		}
 	}
 
 	/**
