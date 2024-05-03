@@ -25,6 +25,7 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -64,6 +65,8 @@ public class DisplayManager {
 	 * GLFWで使用されるwindow作成用の変数．
 	 */
 	private long window;
+	
+	private static final double TARGET_FRAME_TIME = 1.0 / GameSetting.FPS;
 
 	/**
 	 * クラスコンストラクタ．
@@ -189,9 +192,9 @@ public class DisplayManager {
 		// ゲームマネージャ初期化
 		gm.initialize();
 
-		long lastNanos = System.nanoTime();
-		// Runs the rendering loop until the user has attempted to close the
-		// window.
+		double lastFrameTime = glfwGetTime();
+		
+		// Runs the rendering loop until the user has attempted to close the window.
 		while (!glfwWindowShouldClose(this.window)) {
 			// ゲーム終了の場合,リソースを解放してループを抜ける
 			if (gm.isExit()) {
@@ -201,11 +204,7 @@ public class DisplayManager {
 
 			// ゲーム状態の更新
 			gm.update();
-
-		   	if(!FlagSetting.fastModeFlag){
-		   		syncFrameRate(GameSetting.FPS, lastNanos);
-		   		lastNanos = System.nanoTime();
-		   	}
+			
 			// バックバッファに描画する
 			GraphicManager.getInstance().render();
 
@@ -214,6 +213,12 @@ public class DisplayManager {
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
 			glfwPollEvents();
+
+		   	if(!FlagSetting.fastModeFlag){
+		   		syncFrameRate(GameSetting.FPS, lastFrameTime);
+		   		//lastNanos = System.nanoTime();
+		   		lastFrameTime = glfwGetTime();
+		   	}
 		}
 	}
 
@@ -261,14 +266,14 @@ public class DisplayManager {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-    private void syncFrameRate(float fps, long lastNanos) {
-
-    	long targetNanos = lastNanos + (long) (1_000_000_000.0f / fps) - 1_000_000L;  // subtract 1 ms to skip the last sleep call
-    	try {
-    		while (System.nanoTime() < targetNanos) {
-    			Thread.sleep(1);
-    		}
-    	}
-    	catch (InterruptedException ignore) {}
+    private void syncFrameRate(float fps, double lastFrameTime) {
+    	double deltaTime = glfwGetTime() - lastFrameTime;
+    	
+    	if (deltaTime < TARGET_FRAME_TIME) {
+            try {
+                Thread.sleep((long) ((TARGET_FRAME_TIME - deltaTime) * 1000));
+            }
+        	catch (InterruptedException ignore) {}
+        }
     }
 }

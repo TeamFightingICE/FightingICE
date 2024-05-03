@@ -242,10 +242,10 @@ public class Replay extends GameScene {
 		SocketServer.getInstance().processingGame(frameData, null, null);
 		
 		if (this.nowFrame == 0) {
+			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+			
 			if (FlagSetting.enableReplaySound) {
 				SoundManager.getInstance().play(audioSource, audioBuffer);
-			} else {
-				SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 			}
 		}
 	}
@@ -263,8 +263,9 @@ public class Replay extends GameScene {
 
 		SoundManager.getInstance().stopAll();
 		
-		if (FlagSetting.enableReplaySound)
+		if (FlagSetting.enableReplaySound) {
 			this.audioSource.clearBuffer();
+		}
 	}
 	
 	private void processingGameEnd() {
@@ -289,7 +290,7 @@ public class Replay extends GameScene {
 	private boolean isTimeOver() {
 		return this.nowFrame == GameSetting.ROUND_FRAME_NUMBER - 1;
 	}
-
+	
 	/**
 	 * 各ラウンド開始時に, 対戦情報や現在のフレームなどの初期化を行う．
 	 */
