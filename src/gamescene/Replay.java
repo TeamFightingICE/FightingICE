@@ -23,6 +23,7 @@ import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.AudioBuffer;
+import struct.AudioData;
 import struct.AudioSource;
 import struct.FrameData;
 import struct.GameData;
@@ -78,6 +79,8 @@ public class Replay extends GameScene {
 	 * 対戦処理後のゲーム画面の情報．
 	 */
 	private ScreenData screenData;
+	
+	private AudioData audioData;
 
 	/**
 	 * 対戦処理に用いるP1, P2の入力情報．
@@ -126,6 +129,7 @@ public class Replay extends GameScene {
 
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
+		this.audioData = new AudioData();
 		this.keyData = new KeyData();
 		this.playSpeedIndex = 1;
 		this.playSpeedArray = new int[] { 0, 1, 2, 4 };
@@ -247,7 +251,13 @@ public class Replay extends GameScene {
 			if (FlagSetting.enableReplaySound) {
 				SoundManager.getInstance().play(audioSource, audioBuffer);
 			}
+			
+			this.audioData = new AudioData();
+		} else {
+			this.audioData = InputManager.getInstance().getAudioData();
 		}
+		
+		SoundManager.getInstance().playback(this.audioData.getRawShortDataAsBytes());
 	}
 
 	/**
@@ -262,6 +272,7 @@ public class Replay extends GameScene {
 		SocketServer.getInstance().roundEnd(roundResult);
 
 		SoundManager.getInstance().stopAll();
+		SoundManager.getInstance().stopPlayback();
 		
 		if (FlagSetting.enableReplaySound) {
 			this.audioSource.clearBuffer();

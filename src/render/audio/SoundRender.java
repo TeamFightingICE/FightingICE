@@ -1,23 +1,34 @@
 package render.audio;
 
 import static org.lwjgl.openal.AL10.AL_BUFFER;
+import static org.lwjgl.openal.AL10.AL_BUFFERS_PROCESSED;
+import static org.lwjgl.openal.AL10.AL_BUFFERS_QUEUED;
 import static org.lwjgl.openal.AL10.AL_FALSE;
+import static org.lwjgl.openal.AL10.AL_FORMAT_STEREO16;
 import static org.lwjgl.openal.AL10.AL_LOOPING;
+import static org.lwjgl.openal.AL10.AL_NONE;
 import static org.lwjgl.openal.AL10.AL_PLAYING;
 import static org.lwjgl.openal.AL10.AL_POSITION;
 import static org.lwjgl.openal.AL10.AL_SOURCE_STATE;
 import static org.lwjgl.openal.AL10.AL_TRUE;
+import static org.lwjgl.openal.AL10.alBufferData;
 import static org.lwjgl.openal.AL10.alDeleteBuffers;
 import static org.lwjgl.openal.AL10.alDeleteSources;
+import static org.lwjgl.openal.AL10.alGenBuffers;
 import static org.lwjgl.openal.AL10.alGetSourcef;
 import static org.lwjgl.openal.AL10.alGetSourcei;
 import static org.lwjgl.openal.AL10.alSource3f;
+import static org.lwjgl.openal.AL10.alSourcePlay;
+import static org.lwjgl.openal.AL10.alSourceQueueBuffers;
+import static org.lwjgl.openal.AL10.alSourceStop;
+import static org.lwjgl.openal.AL10.alSourceUnqueueBuffers;
 import static org.lwjgl.openal.AL10.alSourcef;
 import static org.lwjgl.openal.AL10.alSourcei;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.ALC;
@@ -25,6 +36,7 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.SOFTLoopback;
 
+import setting.FlagSetting;
 import setting.GameSetting;
 
 /**
@@ -252,6 +264,67 @@ public class SoundRender {
         separatedBuffer[0] = leftBuffer;
         separatedBuffer[1] = rightBuffer;
         return separatedBuffer;
+    }
+    
+    public void playback(int sourceId, byte[] audioSample) {
+    	if (!FlagSetting.enableAudioPlayback) return;
+    	
+    	set();
+    	int bufferId;
+
+        IntBuffer queuedBuffers = BufferUtils.createIntBuffer(1);
+        IntBuffer processedBuffers = BufferUtils.createIntBuffer(1);
+        alGetSourcei(sourceId, AL_BUFFERS_QUEUED, queuedBuffers);
+        alGetSourcei(sourceId, AL_BUFFERS_PROCESSED, processedBuffers);
+        //System.out.println("Queued Buffers: " + queuedBuffers.get(0));
+        //System.out.println("Processed Buffers: " + processedBuffers.get(0));
+
+        if (processedBuffers.get(0) > 0) {
+            bufferId = alSourceUnqueueBuffers(sourceId);
+            //System.out.println("Unqueued Buffer: " + bufferId);
+        } else {
+            bufferId = alGenBuffers();
+            //System.out.println("Generated Buffer: " + bufferId);
+        }
+        
+        ByteBuffer audioBuffer = BufferUtils.createByteBuffer(3200);
+        audioBuffer.put(audioSample);
+        audioBuffer.flip();
+
+        alBufferData(bufferId, AL_FORMAT_STEREO16, audioBuffer, GameSetting.SOUND_SAMPLING_RATE);
+        alSourceQueueBuffers(sourceId, bufferId);
+        alSourcef(sourceId, AL_LOOPING, AL_FALSE);
+        //System.out.println("Queued Buffer: " + bufferId);
+        
+        int state = alGetSourcei(sourceId, AL_SOURCE_STATE);
+        if (state != AL_PLAYING) {
+        	alSourcePlay(sourceId);
+            //System.out.println("Played Source: " + sourceId);
+        }
+    }
+    
+    public void stopPlayback(int sourceId) {
+    	if (!FlagSetting.enableAudioPlayback) return;
+    	
+    	int bufferId;
+
+        IntBuffer queuedBuffers = BufferUtils.createIntBuffer(1);
+        IntBuffer processedBuffers = BufferUtils.createIntBuffer(1);
+        alGetSourcei(sourceId, AL_BUFFERS_QUEUED, queuedBuffers);
+        alGetSourcei(sourceId, AL_BUFFERS_PROCESSED, processedBuffers);
+        //System.out.println("Queued Buffers: " + queuedBuffers.get(0));
+        //System.out.println("Processed Buffers: " + processedBuffers.get(0));
+        
+        int bufferCount = queuedBuffers.get(0) + processedBuffers.get(0);
+        
+        for (int j = 0; j < bufferCount; j++) {
+            bufferId = alSourceUnqueueBuffers(sourceId);
+            alDeleteBuffers(bufferId);
+        }
+        
+        alSourceStop(sourceId);
+		alSourcei(sourceId, AL_BUFFER, AL_NONE);
+		//System.out.println("Clear Buffers: " + bufferCount);
     }
 
     /**

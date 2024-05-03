@@ -164,9 +164,18 @@ public class Game extends GameManager {
                 	break;
                 case "--enable-builtin-sound":
                 	FlagSetting.enableBuiltinSound = true;
+                	FlagSetting.enableReplaySound = false;
+                	FlagSetting.enableAudioPlayback = false;
                 	break;
                 case "--enable-replay-sound":
+                	FlagSetting.enableBuiltinSound = false;
                 	FlagSetting.enableReplaySound = true;
+                	FlagSetting.enableAudioPlayback = false;
+                	break;
+                case "--enable-audio-playback":
+                	FlagSetting.enableBuiltinSound = false;
+                	FlagSetting.enableReplaySound = false;
+                	FlagSetting.enableAudioPlayback = true;
                 	break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING, "Arguments error: unknown format is exist. -> " + options[i] + " ?");

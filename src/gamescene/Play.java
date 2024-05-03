@@ -311,7 +311,7 @@ public class Play extends GameScene {
 			this.audioData = InputManager.getInstance().getAudioData();
 		}
 		
-		//SoundManager.getInstance().playback(this.audioData.getWavFormatBytes());
+		SoundManager.getInstance().playback(this.audioData.getRawShortDataAsBytes());
 		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
 		
 		// AIにFrameDataをセット
@@ -338,6 +338,7 @@ public class Play extends GameScene {
 	 */
 	private void processingRoundEnd() {
 		SoundManager.getInstance().stopAll();
+		SoundManager.getInstance().stopPlayback();
 		WaveFileWriter.getInstance().writeToFile();
 		
 		SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffer("RoundEnd.wav"), 

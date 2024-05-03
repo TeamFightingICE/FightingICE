@@ -1,27 +1,15 @@
 package manager;
 
-import static org.lwjgl.openal.AL10.AL_BUFFERS_PROCESSED;
-import static org.lwjgl.openal.AL10.AL_BUFFERS_QUEUED;
-import static org.lwjgl.openal.AL10.AL_FALSE;
-import static org.lwjgl.openal.AL10.AL_FORMAT_STEREO16;
-import static org.lwjgl.openal.AL10.AL_LOOPING;
 import static org.lwjgl.openal.AL10.AL_ORIENTATION;
-import static org.lwjgl.openal.AL10.AL_PLAYING;
 import static org.lwjgl.openal.AL10.AL_POSITION;
 import static org.lwjgl.openal.AL10.AL_ROLLOFF_FACTOR;
-import static org.lwjgl.openal.AL10.AL_SOURCE_STATE;
 import static org.lwjgl.openal.AL10.AL_VELOCITY;
-import static org.lwjgl.openal.AL10.alBufferData;
 import static org.lwjgl.openal.AL10.alGenBuffers;
 import static org.lwjgl.openal.AL10.alGenSources;
-import static org.lwjgl.openal.AL10.alGetSourcei;
 import static org.lwjgl.openal.AL10.alSource3f;
 import static org.lwjgl.openal.AL10.alSourcePlay;
-import static org.lwjgl.openal.AL10.alSourceQueueBuffers;
-import static org.lwjgl.openal.AL10.alSourceUnqueueBuffers;
 import static org.lwjgl.openal.AL10.alSourcef;
 
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +22,6 @@ import org.lwjgl.BufferUtils;
 
 import render.audio.SoundRender;
 import setting.FlagSetting;
-import setting.GameSetting;
 import struct.AudioBuffer;
 import struct.AudioSource;
 
@@ -262,41 +249,17 @@ public class SoundManager {
         return buffer.get(0);
     }
     
-    public void playback(byte[] wavFormat) {
+    public void playback(byte[] audioSample) {
         for (int i = 0; i < soundRenderers.size(); i++) {
             int sourceId = streamSource.getSourceIds()[i];
-            soundRenderers.get(i).set();
-            int bufferId;
-
-            IntBuffer queuedBuffers = BufferUtils.createIntBuffer(1);
-            IntBuffer processedBuffers = BufferUtils.createIntBuffer(1);
-            alGetSourcei(sourceId, AL_BUFFERS_QUEUED, queuedBuffers);
-            alGetSourcei(sourceId, AL_BUFFERS_PROCESSED, processedBuffers);
-            System.out.println("Queued Buffers: " + queuedBuffers.get(0));
-            //System.out.println("Processed Buffers: " + processedBuffers.get(0));
-
-            if (processedBuffers.get(0) > 0) {
-                bufferId = alSourceUnqueueBuffers(sourceId);
-                //System.out.println("Unqueued Buffer: " + bufferId);
-            } else {
-                bufferId = alGenBuffers();
-                //System.out.println("Generated Buffer: " + bufferId);
-            }
-            
-            ByteBuffer audioBuffer = BufferUtils.createByteBuffer(3200);
-            audioBuffer.put(wavFormat);
-            audioBuffer.flip();
-
-            alBufferData(bufferId, AL_FORMAT_STEREO16, audioBuffer, GameSetting.SOUND_SAMPLING_RATE);
-            alSourceQueueBuffers(sourceId, bufferId);
-            alSourcef(sourceId, AL_LOOPING, AL_FALSE);
-            //System.out.println("Queued Buffer: " + bufferId);
-            
-            int state = alGetSourcei(sourceId, AL_SOURCE_STATE);
-            if (state != AL_PLAYING) {
-            	alSourcePlay(sourceId);
-                //System.out.println("Played Source: " + sourceId);
-            }
+            soundRenderers.get(i).playback(sourceId, audioSample);
+        }
+    }
+    
+    public void stopPlayback() {
+        for (int i = 0; i < soundRenderers.size(); i++) {
+            int sourceId = streamSource.getSourceIds()[i];
+            soundRenderers.get(i).stopPlayback(sourceId);
         }
     }
 
