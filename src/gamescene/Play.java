@@ -104,9 +104,7 @@ public class Play extends GameScene {
 
 	private AudioData audioData;
 	
-	private AudioSource sourceBgm;
-	
-	private AudioSource sourceRoundEnd;
+	private AudioSource audioSource;
 	
 	/**
 	 * クラスコンストラクタ．
@@ -140,8 +138,7 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 		this.roundResults = new ArrayList<RoundResult>();
 		
-		this.sourceBgm = SoundManager.getInstance().createAudioSource();
-		this.sourceRoundEnd = SoundManager.getInstance().createAudioSource();
+		this.audioSource = SoundManager.getInstance().createAudioSource();
 
 		this.timeInfo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss", Locale.ENGLISH));
 
@@ -280,7 +277,7 @@ public class Play extends GameScene {
 			this.roundStartTime = System.currentTimeMillis();
 			this.audioData = new AudioData();
 			
-			SoundManager.getInstance().play2(sourceBgm, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 		} else {
 			this.currentFrameTime = System.currentTimeMillis();
 			this.audioData = InputManager.getInstance().getAudioData();
@@ -326,7 +323,7 @@ public class Play extends GameScene {
 
 		this.screenData = new ScreenData();
 		
-		SoundManager.getInstance().playback(this.audioData.getRawShortDataAsBytes());
+		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
 		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
 		
 		// AIにFrameDataをセット
@@ -347,11 +344,8 @@ public class Play extends GameScene {
 				(double) (currentFrameTime - roundStartTime) / 1e3, (double) (this.frameData.getFramesNumber() + 1) / 60));
 		
 		SoundManager.getInstance().stopAll();
-		SoundManager.getInstance().stopPlayback();
+		SoundManager.getInstance().stopPlayback(this.audioSource);
 		WaveFileWriter.getInstance().writeToFile();
-		
-		SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffer("RoundEnd.wav"), 
-				GameSetting.STAGE_WIDTH / 2, 0, false);
 
 		if (FlagSetting.slowmotion) {
 			if (this.endFrame > GameSetting.ROUND_EXTRAFRAME_NUMBER) {
@@ -472,4 +466,5 @@ public class Play extends GameScene {
 			LogWriter.getInstance().finalizeJson();
 		}
 	}
+
 }

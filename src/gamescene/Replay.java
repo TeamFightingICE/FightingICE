@@ -245,9 +245,9 @@ public class Replay extends GameScene {
 			this.roundStartTime = System.currentTimeMillis();
 			this.audioData = new AudioData();
 			
-			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+			SoundManager.getInstance().play2(this.audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
 			if (FlagSetting.enableReplaySound) {
-				SoundManager.getInstance().play(audioSource, audioBuffer);
+				SoundManager.getInstance().play(this.audioSource, this.audioBuffer);
 			}
 		} else {
 			this.currentFrameTime = System.currentTimeMillis();
@@ -262,7 +262,7 @@ public class Replay extends GameScene {
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 		
 		SocketServer.getInstance().processingGame(frameData, null, null);
-		SoundManager.getInstance().playback(this.audioData.getRawShortDataAsBytes());
+		SoundManager.getInstance().playback(audioSource, audioData.getRawShortDataAsBytes());
 	}
 
 	/**
@@ -280,7 +280,7 @@ public class Replay extends GameScene {
 		SocketServer.getInstance().roundEnd(roundResult);
 
 		SoundManager.getInstance().stopAll();
-		SoundManager.getInstance().stopPlayback();
+		SoundManager.getInstance().stopPlayback(audioSource);
 		
 		if (FlagSetting.enableReplaySound) {
 			this.audioSource.clearBuffer();

@@ -83,6 +83,7 @@ public class SoundManager {
      *
      */
     SoundRender virtualRenderer;
+    
     /**
      * Sound buffers.
      */
@@ -91,8 +92,6 @@ public class SoundManager {
      * Background music buffer.
      */
     private AudioBuffer backGroundMusicBuffer;
-    
-    private AudioSource streamSource;
 
     /**
      * クラスコンストラクタ．
@@ -144,12 +143,11 @@ public class SoundManager {
         // sound renderers
         this.soundRenderers = new ArrayList<>();
         if (!FlagSetting.muteFlag && FlagSetting.enableWindow) {
-            this.soundRenderers.add(SoundRender.createDefaultRenderer());
+        	SoundRender defaultRenderer = SoundRender.createDefaultRenderer();
+            this.soundRenderers.add(defaultRenderer);
         }
         virtualRenderer = SoundRender.createVirtualRenderer();
-        //this.soundRenderers.add(virtualRenderer);
-        
-        streamSource = createAudioSource();
+        this.soundRenderers.add(virtualRenderer);
         
         this.setListenerValues();
     }
@@ -249,20 +247,20 @@ public class SoundManager {
         return buffer.get(0);
     }
     
-    public void playback(byte[] audioSample) {
+    public void playback(AudioSource source, byte[] audioSample) {
     	if (!FlagSetting.enableAudioPlayback) return;
     	
         for (int i = 0; i < soundRenderers.size(); i++) {
-            int sourceId = streamSource.getSourceIds()[i];
+            int sourceId = source.getSourceIds()[i];
             soundRenderers.get(i).playback(sourceId, audioSample);
         }
     }
     
-    public void stopPlayback() {
+    public void stopPlayback(AudioSource source) {
     	if (!FlagSetting.enableAudioPlayback) return;
     	
         for (int i = 0; i < soundRenderers.size(); i++) {
-            int sourceId = streamSource.getSourceIds()[i];
+            int sourceId = source.getSourceIds()[i];
             soundRenderers.get(i).stopPlayback(sourceId);
         }
     }

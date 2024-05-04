@@ -10,16 +10,17 @@ import manager.SoundManager;
  * The class representing OpenAL audio source in multiple devices.
  */
 public class AudioSource {
+	
     /**
      * Source ids.
      */
-    int[] sourceIds;
+    private int[] sourceIds;
 
     /**
      * Class constructor.
      * @param sourceIds sourceids.
      */
-    public AudioSource(int[] sourceIds){
+    public AudioSource(int[] sourceIds) {
         this.sourceIds = sourceIds;
     }
 
@@ -33,10 +34,12 @@ public class AudioSource {
     
     public void clearBuffer() {
     	for (int i = 0; i < sourceIds.length; i++) {
+    		SoundManager.getInstance().getSoundRenderers().get(i).set();
     		int sourceId = sourceIds[i];
     		
     		alSourcei(sourceId, AL_BUFFER, AL_NONE);
     	}
+    
     }
 
     /**
