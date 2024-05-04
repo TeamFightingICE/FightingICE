@@ -89,8 +89,6 @@ In this competition, only "Zen" character, with the same [motion data](https://w
 The ranking rules are as follows:
 In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the AIs are ranked according to the number of winning rounds. If ties exit, their total remaining HPs will be used. Once the AIs are ranked in each league, league points are awarded to them according to their positions using **[the 2018 Formula-1 scoring system ](https://en.wikipedia.org/wiki/2018_Formula_One_World_Championship#Scoring_system)**. The competition winner is finally decided by the sum of league points across all two leagues.
 
-In the 2024 Competition, we are transitioning from the Java platform to Unity. We also plan to integrate our previously mentioned weakened sample, MctsAi23i, into the main game. Consequently, its source code cannot be made public.
-
 ### Evaluation Environments: 
 ---
 1. Software:
