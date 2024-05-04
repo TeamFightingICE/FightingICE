@@ -8,6 +8,7 @@ import java.nio.ByteOrder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import setting.FlagSetting;
 import setting.GameSetting;
 
 public class WaveFileWriter {
@@ -53,11 +54,15 @@ public class WaveFileWriter {
 	}
 	
 	public void initializeWaveFile(String filePath) {
+		if (!FlagSetting.saveSoundOnReplay) return;
+		
 		this.filePath = filePath;
 		this.byteOutput = new ByteArrayOutputStream();
 	}
 	
 	public void addSample(byte[] sample) {
+		if (!FlagSetting.saveSoundOnReplay) return;
+		
 		if (sample.length != nChannels * (sampleRate / 60) * (bitsPerSample / 8)) {
 	        Logger.getAnonymousLogger().log(Level.SEVERE, "Failed to write new audio sample. Invalid format");
 			return;
@@ -72,7 +77,7 @@ public class WaveFileWriter {
 	}
 	
 	public void writeToFile() {
-		if (dataSize < 1) return;
+		if (!FlagSetting.saveSoundOnReplay || dataSize < 1) return;
 		
 		try {
 			FileOutputStream fos = new FileOutputStream(filePath);

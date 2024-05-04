@@ -177,6 +177,9 @@ public class Game extends GameManager {
                 	FlagSetting.enableReplaySound = false;
                 	FlagSetting.enableAudioPlayback = true;
                 	break;
+                case "--save-sound-on-replay":
+                	FlagSetting.saveSoundOnReplay = true;
+                	break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING, "Arguments error: unknown format is exist. -> " + options[i] + " ?");
             }
