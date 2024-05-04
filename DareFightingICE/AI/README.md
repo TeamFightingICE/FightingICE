@@ -34,7 +34,7 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 The source code and model of our deep reinforcement learning blind AI implemented using Python is available [here](https://github.com/TeamFightingICE/BlindAI).
 
 See also the sample AI:
-- The sample AI implemented using Python is available [here](https://github.com/TeamFightingICE/PythonAISamples).
+- The sample AI implemented using Python is available [here](https://github.com/TeamFightingICE/pyftg/tree/master/examples).
 
 ### Rules:
 ---
@@ -68,26 +68,25 @@ In the 2024 Competition, we are transitioning from the Java platform to Unity. W
 ### Evaluation Environments: 
 ---
 1. Software:
-   - OS: Windows 10
-   - Python: 3.10
+   - OS: Linux Ubuntu 20.04.3 LTS (Focal Fossa)
+   - Python: 3.12.3
+   - pyftg: 2.1
    - PyTorch-CUDA: 12.1
-   - PyTorch: 2.2.0
-   - TorchAudio: 2.2.0
-   - TorchVision: 0.17.0
+   - PyTorch: 2.3.0
+   - TorchAudio: 2.3.0
+   - TorchVision: 0.18.0
 2. Hardware:
-   - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz
-   - RAM: 16 GB
-   - GPU: NVIDIA Quadro P1000 4GB VRAM
+   - CPU: Intel(R) Xeon(R) Gold 6258R CPU @ 2.70GHz
+   - RAM: 188 GB
+   - GPU: NVIDIA A100 80GB VRAM
 
 ### Installation:
 ---
-1. Download DareFightingICE-Unity file from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity/releases/tag/v1.0-a.1) (latest version 1.0-alpha1).
-2. Clone the Python AI samples using the following command: `git clone https://github.com/TeamFightingICE/PythonAISamples`, and follow the instruction in `PythonAISamples`'s README file to setup python environment.
-3. Extract the downloaded file and run `DareFightingICE-Unity.exe` for Windows (x64) or `DareFightingICE-Unity.x86_64` for Linux (x64).
-4. Once the game screen opens, click "Launch" button.
-5. When the “Launch” screen appears, change "Player 2" to "gRPC" by `left` or `right` button.
-6. In the Python AI sample folder, run the following command: `python Main_SinglePyAI.py --a2 KickAI`.
-7. Click "Play" on the game screen to start the fight.
+1. Download DareFightingICE from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity/releases/tag/v6.3) (latest version 6.3).
+2. Extract the downloaded file and run the appropriated script for your OS (e.g. `run-windows-amd64.bat` for Windows).
+3. Once the game screen opens, click "Launch" button.
+4. Follow the instruction in this [link](https://github.com/TeamFightingICE/pyftg/tree/master/examples) on how to run Python AI.
+5. Click "Play" on the game screen to start the fight.
 
 ### <b>Prizes: (updated on March 26, 2024) </b>
 ---
@@ -108,7 +107,7 @@ IEEE CIS will award the qualified first-place, second-place, and third-place win
 Please submit your entry via this [page](https://forms.gle/fCRiRUPvVxYjaT5b9). Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your AI to us by the final deadline.)
-- May 24, 2024 (AoE)
+- June 7, 2024 (AoE)
 
 Final deadline
 - July 29, 2024 (AoE)(no extension!!)
