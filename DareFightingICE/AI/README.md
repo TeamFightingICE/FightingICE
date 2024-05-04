@@ -61,6 +61,7 @@ __Multi-threading__
 
 __File I/O__
 - Attempts to read or write files in any other directory than your AI's will lead to disqualification. Any file written may not exceed 64GB.
+- You are allowed to submit up to 64GB, including source code and data (AI model, etc...).
 
 __The "Small Print"__
 - We, the organizers of this competition, will do our utmost to ensure the competition is running smoothly and fairly. All our decisions are final.
