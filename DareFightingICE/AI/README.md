@@ -38,6 +38,8 @@ See also the sample AI:
 
 ### Rules:
 ---
+__General Information__
+
 One game has three rounds. The maximum fighting time of a round is 60s. After one round, the character's positions and HPs will be reset, and a new round is started. All games in the competition are conducted with the options "--limithp 400 400" (limit HP of both players to be 400) and "--blind-player 2" (limit access only to sound data for both players) of DareFightingICE.
 
 Even if the game will boot with `--blind-player` option, it is still recommended to notify the game that your AI will process only audio data by modifying `isBlind` method to be as follows:
@@ -50,6 +52,30 @@ def is_blind(self):
 The FrameData sent to AIs will have a delay of 15 frames, but AudioData and ScreenData have no delay. Please keep in mind that although FrameData and ScreenData are accessible during AI training phase, in the competition, only **AudioData** is provided to all the participating AIs.
 
 Your AI will be made publicly available and by submitting you will have agreed to this.
+
+__Memory Limit__
+- You are allowed to utilize a maximum of 64GB RAM and 32GB VRAM. If your AI exceeds this limit, it will be disqualified and you will need to submit a new controller.
+
+__Multi-threading__
+- You are allowed to utilize multi-threading up to 16 threads (CPU) and employ any GPU computation library.
+
+__File I/O__
+- Attempts to read or write files in any other directory than your AI's will lead to disqualification. Any file written may not exceed 64GB.
+
+__The "Small Print"__
+- We, the organizers of this competition, will do our utmost to ensure the competition is running smoothly and fairly. All our decisions are final.
+- We expect participants to uphold the spirit of the competition. Any attempts to cheat will lead to immediate disqualification without appeal. Attempts to cheat include:
+- trying to disturbing opponent's controller
+- trying to circumvent the competition's security framework
+- memory scanning
+- trying to corrupt the file system
+- trying to disrupt the ongoing competition in any way
+- intentionally loosing games or creating specific game states on purpose
+- We reserve the right to alter these rules at any time without notice.
+If you have any questions or suggestions or encounter any problems, please email us and we will try to address the issue as quickly as possible.
+We have made every effort to comply with copyright law. If you should have copyright concerns, please contact us.
+
+The above rules are based on the Ms Pac-Man vs Ghosts League 2012 Competition.
 
 ### Evaluation:
 ---
