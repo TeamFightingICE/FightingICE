@@ -36,7 +36,6 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.SOFTLoopback;
 
-import setting.FlagSetting;
 import setting.GameSetting;
 
 /**
@@ -267,8 +266,6 @@ public class SoundRender {
     }
     
     public void playback(int sourceId, byte[] audioSample) {
-    	if (!FlagSetting.enableAudioPlayback) return;
-    	
     	set();
     	int bufferId;
 
@@ -304,8 +301,6 @@ public class SoundRender {
     }
     
     public void stopPlayback(int sourceId) {
-    	if (!FlagSetting.enableAudioPlayback) return;
-    	
     	int bufferId;
 
         IntBuffer queuedBuffers = BufferUtils.createIntBuffer(1);
