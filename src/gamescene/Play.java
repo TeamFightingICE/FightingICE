@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import enumerate.GameSceneName;
 import fighting.Fighting;
+import grpc.GrpcServer;
 import grpc.ObserverAgent;
 import informationcontainer.RoundResult;
 import input.KeyData;
@@ -26,7 +27,6 @@ import py4j.Py4JException;
 import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
-import setting.LaunchSetting;
 import struct.AudioData;
 import struct.AudioSource;
 import struct.FrameData;
@@ -98,6 +98,9 @@ public class Play extends GameScene {
 	private String timeInfo;
 
 	private int endFrame;
+	
+	private long roundStartTime;
+	private long currentFrameTime;
 
 	private AudioData audioData;
 	
@@ -129,6 +132,8 @@ public class Play extends GameScene {
 		this.currentRound = 1;
 		this.roundStartFlag = true;
 		this.endFrame = -1;
+		this.roundStartTime = 0;
+		this.currentFrameTime = 0;
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
 		this.audioData = new AudioData();
@@ -156,7 +161,7 @@ public class Play extends GameScene {
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		
 		if (FlagSetting.grpc) {
-			LaunchSetting.grpcServer.getObserver().onInitialize(gameData);
+			GrpcServer.getInstance().getObserver().onInitialize(gameData);
 		}
 
 		try {
@@ -257,7 +262,7 @@ public class Play extends GameScene {
 			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 		}
 	}
-
+	
 	/**
 	 * 対戦処理を行う.<br>
 	 *
@@ -271,6 +276,16 @@ public class Play extends GameScene {
 	 * 8. ラウンドが終了しているか判定する.<br>
 	 */
 	private void processingGame() {
+		if (this.nowFrame == 0) {
+			this.roundStartTime = System.currentTimeMillis();
+			this.audioData = new AudioData();
+			
+			SoundManager.getInstance().play2(sourceBgm, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+		} else {
+			this.currentFrameTime = System.currentTimeMillis();
+			this.audioData = InputManager.getInstance().getAudioData();
+		}
+		
 		if (this.endFrame != -1) {
 			this.keyData = new KeyData();
 			if (this.endFrame % 30 == 0) {
@@ -292,24 +307,24 @@ public class Play extends GameScene {
 			LogWriter.getInstance().updateJson(this.frameData, this.keyData);
 		}
 
+		// P1とP2の行った各アクションの数を数える
+		if (FlagSetting.debugActionFlag) {
+			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
+		}
+
+		// 体力が0orタイムオーバーならラウンド終了処理
+		if (isBeaten() || isTimeOver()) {
+			processingRoundEnd();
+			return;
+		}
+
 		if (FlagSetting.enableWindow) {
 			// 画面をDrawerクラスで描画
 			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
 		}
 
-		// P1とP2の行った各アクションの数を数える
-		if (FlagSetting.debugActionFlag) {
-			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
-		}
-
 		this.screenData = new ScreenData();
-		
-		if (this.nowFrame == 0) {
-			this.audioData = new AudioData();
-		} else {
-			this.audioData = InputManager.getInstance().getAudioData();
-		}
 		
 		SoundManager.getInstance().playback(this.audioData.getRawShortDataAsBytes());
 		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
@@ -319,17 +334,8 @@ public class Play extends GameScene {
 		SocketServer.getInstance().processingGame(this.frameData, this.screenData, this.audioData);
 		
 		if (FlagSetting.grpc) {
-			ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
+			ObserverAgent observer = GrpcServer.getInstance().getObserver();
 			observer.onGameUpdate(this.frameData, this.screenData, this.audioData);
-		}
-		
-		if (this.nowFrame == 0) {
-			SoundManager.getInstance().play2(sourceBgm, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
-		}
-
-		// 体力が0orタイムオーバーならラウンド終了処理
-		if (isBeaten() || isTimeOver()) {
-			processingRoundEnd();
 		}
 	}
 
@@ -337,12 +343,15 @@ public class Play extends GameScene {
 	 * ラウンド終了時の処理を行う.
 	 */
 	private void processingRoundEnd() {
+		Logger.getAnonymousLogger().log(Level.INFO, String.format("Round Duration: %.3f seconds (Expected %.3f)", 
+				(double) (currentFrameTime - roundStartTime) / 1e3, (double) (this.frameData.getFramesNumber() + 1) / 60));
+		
 		SoundManager.getInstance().stopAll();
 		SoundManager.getInstance().stopPlayback();
 		WaveFileWriter.getInstance().writeToFile();
 		
 		SoundManager.getInstance().play2(sourceRoundEnd, SoundManager.getInstance().getSoundBuffer("RoundEnd.wav"), 
-				GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, false);
+				GameSetting.STAGE_WIDTH / 2, 0, false);
 
 		if (FlagSetting.slowmotion) {
 			if (this.endFrame > GameSetting.ROUND_EXTRAFRAME_NUMBER) {
@@ -355,7 +364,7 @@ public class Play extends GameScene {
 				SocketServer.getInstance().roundEnd(roundResult);
 				
 				if (FlagSetting.grpc) {
-					ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
+					ObserverAgent observer = GrpcServer.getInstance().getObserver();
 					observer.onRoundEnd(roundResult);
 				}
 				
@@ -382,7 +391,7 @@ public class Play extends GameScene {
 			SocketServer.getInstance().roundEnd(roundResult);
 			
 			if (FlagSetting.grpc) {
-				ObserverAgent observer = LaunchSetting.grpcServer.getObserver();
+				ObserverAgent observer = GrpcServer.getInstance().getObserver();
 				observer.onRoundEnd(roundResult);
 			}
 			
@@ -420,11 +429,10 @@ public class Play extends GameScene {
 	 */
 	private boolean isTimeOver() {
 		if (FlagSetting.trainingModeFlag) {
-			return this.nowFrame == Integer.MAX_VALUE;
+			return false;
 		} else {
 			return this.nowFrame >= GameSetting.ROUND_FRAME_NUMBER - 1;
 		}
-
 	}
 
 	/**

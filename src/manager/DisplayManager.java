@@ -9,6 +9,7 @@ import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwHideWindow;
@@ -25,7 +26,6 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -50,10 +50,10 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import grpc.GrpcServer;
 import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
-import setting.LaunchSetting;
 import util.WaveFileWriter;
 
 /**
@@ -214,8 +214,8 @@ public class DisplayManager {
 			// invoked during this call.
 			glfwPollEvents();
 
-		   	if(!FlagSetting.fastModeFlag){
-		   		syncFrameRate(GameSetting.FPS, lastFrameTime);
+		   	if (!FlagSetting.fastModeFlag) {
+		   		syncFrameRate(lastFrameTime);
 		   		//lastNanos = System.nanoTime();
 		   		lastFrameTime = glfwGetTime();
 		   	}
@@ -232,7 +232,7 @@ public class DisplayManager {
 		
 		if (FlagSetting.grpc) {
 			try {
-				LaunchSetting.grpcServer.stop();
+				GrpcServer.getInstance().stop();
 				SocketServer.getInstance().stopServer();
 			} catch (IOException | InterruptedException e) {
 				Logger.getAnonymousLogger().log(Level.INFO, "Fail to stop gRPC server");
@@ -266,14 +266,7 @@ public class DisplayManager {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-    private void syncFrameRate(float fps, double lastFrameTime) {
-    	double deltaTime = glfwGetTime() - lastFrameTime;
-    	
-    	if (deltaTime < TARGET_FRAME_TIME) {
-            try {
-                Thread.sleep((long) ((TARGET_FRAME_TIME - deltaTime) * 1000));
-            }
-        	catch (InterruptedException ignore) {}
-        }
+    private void syncFrameRate(double lastFrameTime) {
+    	while (glfwGetTime() - lastFrameTime < TARGET_FRAME_TIME) {}
     }
 }

@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
+import grpc.GrpcServer;
 import grpc.PlayerAgent;
 import informationcontainer.MenuItem;
 import input.Keyboard;
@@ -79,11 +80,11 @@ public class FightingMenu extends GameScene {
 	}
 
 	private boolean isGrpcReady() {
-		if (LaunchSetting.grpcServer == null) {
+		if (GrpcServer.getInstance().isStart()) {
 			return true;
-		} else if (this.playerIndexes[0] == GRPC_INDEX && LaunchSetting.grpcServer.getPlayer(true).isCancelled()) {
+		} else if (this.playerIndexes[0] == GRPC_INDEX && GrpcServer.getInstance().getPlayer(true).isCancelled()) {
 			return false;
-		} else if (this.playerIndexes[1] == GRPC_INDEX && LaunchSetting.grpcServer.getPlayer(false).isCancelled()) {
+		} else if (this.playerIndexes[1] == GRPC_INDEX && GrpcServer.getInstance().getPlayer(false).isCancelled()) {
 			return false;
 		}
 		return true;
@@ -150,7 +151,7 @@ public class FightingMenu extends GameScene {
 					if (LaunchSetting.aiNames[i].equals(DEFAULT_AI_NAME)) {
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_KEYBOARD;
 					} else if (this.playerIndexes[i] == GRPC_INDEX && FlagSetting.grpc) {
-						LaunchSetting.aiNames[i] = LaunchSetting.grpcServer.getPlayer(i == 0).getPlayerName();
+						LaunchSetting.aiNames[i] = GrpcServer.getInstance().getPlayer(i == 0).getPlayerName();
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_GRPC;
 					} else {
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_AI;
@@ -305,7 +306,7 @@ public class FightingMenu extends GameScene {
 
 	private String getAIName(int i) {
 		if (FlagSetting.grpc) {
-			PlayerAgent player = LaunchSetting.grpcServer.getPlayer(i == 0);
+			PlayerAgent player = GrpcServer.getInstance().getPlayer(i == 0);
 			if (this.playerIndexes[i] == GRPC_INDEX && !player.isCancelled()) {
 				return String.format("%s (%s AI)", player.getPlayerName(), player.isBlind() ? "Blind" : "Visual");
 			}

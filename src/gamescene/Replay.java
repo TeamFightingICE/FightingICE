@@ -69,6 +69,9 @@ public class Replay extends GameScene {
 	 * 各ラウンドの開始時かどうかを表すフラグ．
 	 */
 	private boolean roundStartFlag;
+	
+	private long roundStartTime;
+	private long currentFrameTime;
 
 	/**
 	 * 対戦処理後のキャラクターデータなどのゲーム情報を格納したフレームデータ．
@@ -126,6 +129,8 @@ public class Replay extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
+		this.roundStartTime = 0;
+		this.currentFrameTime = 0;
 
 		this.frameData = new FrameData();
 		this.screenData = new ScreenData();
@@ -236,6 +241,19 @@ public class Replay extends GameScene {
 	 * 3. 対戦後のFrameDataを取得する.<br>
 	 */
 	private void processingGame() {
+		if (this.nowFrame == 0) {
+			this.roundStartTime = System.currentTimeMillis();
+			this.audioData = new AudioData();
+			
+			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+			if (FlagSetting.enableReplaySound) {
+				SoundManager.getInstance().play(audioSource, audioBuffer);
+			}
+		} else {
+			this.currentFrameTime = System.currentTimeMillis();
+			this.audioData = InputManager.getInstance().getAudioData();
+		}
+		
 		this.keyData = createKeyData();
 		
 		if (this.isFinished) return;
@@ -244,19 +262,6 @@ public class Replay extends GameScene {
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 		
 		SocketServer.getInstance().processingGame(frameData, null, null);
-		
-		if (this.nowFrame == 0) {
-			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
-			
-			if (FlagSetting.enableReplaySound) {
-				SoundManager.getInstance().play(audioSource, audioBuffer);
-			}
-			
-			this.audioData = new AudioData();
-		} else {
-			this.audioData = InputManager.getInstance().getAudioData();
-		}
-		
 		SoundManager.getInstance().playback(this.audioData.getRawShortDataAsBytes());
 	}
 
@@ -267,6 +272,9 @@ public class Replay extends GameScene {
 		this.isFinished = true;
 		this.currentRound++;
 		this.roundStartFlag = true;
+		
+		Logger.getAnonymousLogger().log(Level.INFO, String.format("Round Duration: %.3f seconds (Expected %.3f)", 
+				(double) (currentFrameTime - roundStartTime) / 1e3, (double) (this.frameData.getFramesNumber() + 1) / 60));
 		
 		RoundResult roundResult = new RoundResult(this.frameData);
 		SocketServer.getInstance().roundEnd(roundResult);

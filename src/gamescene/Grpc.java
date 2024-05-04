@@ -4,6 +4,7 @@ import java.util.List;
 
 import enumerate.GameSceneName;
 import grpc.GrpcGame;
+import grpc.GrpcServer;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
@@ -31,7 +32,7 @@ public class Grpc extends GameScene {
 
 	@Override
 	public void initialize() {
-		this.game = LaunchSetting.grpcServer.getGame();
+		this.game = GrpcServer.getInstance().getGame();
 		FlagSetting.isGrpcAutoReady = true;
 	}
 

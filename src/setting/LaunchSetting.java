@@ -1,7 +1,6 @@
 package setting;
 
 import enumerate.BackgroundType;
-import grpc.GrpcServer;
 import python.PyGatewayServer;
 
 /**
@@ -82,5 +81,4 @@ public final class LaunchSetting {
 	
 	public static int grpcPort = 50051;
 	
-	public static GrpcServer grpcServer = null;
 }

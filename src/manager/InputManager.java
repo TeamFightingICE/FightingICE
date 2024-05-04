@@ -23,6 +23,7 @@ import aiinterface.AIController;
 import aiinterface.AIInterface;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
+import grpc.GrpcServer;
 import informationcontainer.AIContainer;
 import informationcontainer.RoundResult;
 import input.KeyData;
@@ -232,7 +233,7 @@ public class InputManager {
 					this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
 				}
 			} else if (this.deviceTypes[i] == DEVICE_TYPE_GRPC) {
-				this.ais[i] = new AIController(LaunchSetting.grpcServer.getPlayer(i == 0));
+				this.ais[i] = new AIController(GrpcServer.getInstance().getPlayer(i == 0));
 			} else {
 				this.ais[i] = null;
 			}

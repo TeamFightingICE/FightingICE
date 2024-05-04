@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
+import grpc.GrpcServer;
 import informationcontainer.AIContainer;
 import informationcontainer.RoundResult;
 import input.Keyboard;
@@ -186,7 +187,7 @@ public class Result extends GameScene {
 
 					// 指定した繰り返し回数分対戦が終わった場合
 				} else if (FlagSetting.grpcAuto) {
-					LaunchSetting.grpcServer.close();
+					GrpcServer.getInstance().close();
 					Grpc grpc = new Grpc();
 					this.setTransitionFlag(true);
 					this.setNextGameScene(grpc);

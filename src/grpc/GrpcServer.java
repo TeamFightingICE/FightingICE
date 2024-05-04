@@ -16,6 +16,15 @@ public class GrpcServer {
   	private GrpcGame game;
 	private PlayerAgent[] players;
 	private ObserverAgent observer;
+	private boolean start;
+	
+	public static GrpcServer getInstance() {
+        return GrpcServerHolder.instance;
+    }
+
+    private static class GrpcServerHolder {
+        private static final GrpcServer instance = new GrpcServer();
+    }
   	
   	public GrpcServer() {
   		this.game = new GrpcGame();
@@ -31,15 +40,21 @@ public class GrpcServer {
     			.build();
     	
     	server.start();
+    	this.start = true;
     	Logger.getAnonymousLogger().log(Level.INFO, "gRPC server is started, listening on " + port);
   	}
 
   	public void stop() throws InterruptedException {
 	  	if (server != null) {
+	  		this.start = false;
 	  		this.close();
 	  		server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
 	    	Logger.getAnonymousLogger().log(Level.INFO, "gRPC server is stopped");
     	}
+  	}
+  	
+  	public boolean isStart() {
+  		return this.start;
   	}
   	
   	public PlayerAgent getPlayer(boolean playerNumber) {

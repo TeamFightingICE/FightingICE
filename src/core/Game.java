@@ -194,8 +194,7 @@ public class Game extends GameManager {
 
         if (FlagSetting.grpc) {
         	try {
-        		LaunchSetting.grpcServer = new GrpcServer();
-        		LaunchSetting.grpcServer.start(LaunchSetting.grpcPort);
+        		GrpcServer.getInstance().start(LaunchSetting.grpcPort);
         		
     			SocketServer.getInstance().startServer();
 			} catch (IOException e) {
