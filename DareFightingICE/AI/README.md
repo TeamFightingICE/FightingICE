@@ -8,9 +8,17 @@
 
 ### What is the DareFightingICE AI Competition:
 ----
-In this competition, you are tasked with making an AI that plays DareFightingICE using only in-game sound data as the input. You will be provided with a gRPC interface that allows access to sound data and a sample AI. **Click the image below to watch our promotional video.**
+In this competition, you are tasked with making an AI that plays DareFightingICE using only in-game sound data as the input. You will be provided with the interface that allows access to sound data and a sample AI. **Click the image below to watch our promotional video.**
 
 [![Watch the video](./Logo.png)](https://youtu.be/CHaf0vfYkvM)
+
+### Instruction on how to run the platform:
+---
+1. Download DareFightingICE from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity/releases/tag/v6.3) (latest version 6.3).
+2. Extract the downloaded file and run the appropriated script for your OS (e.g. `run-windows-amd64.bat` for Windows).
+3. Once the game screen opens, move to "Launch" with the arrow keys and press "Z" button.
+4. Follow the instruction in this [link](https://github.com/TeamFightingICE/pyftg/tree/master/examples) on how to run Python AI.
+5. Move to "Play" with the arrow keys and press "Z" button to start the fight.
 
 ### What To Submit:
 ---
@@ -100,14 +108,6 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
    - CPU: Intel(R) Xeon(R) Gold 6258R CPU @ 2.70GHz
    - RAM: 188 GB
    - GPU: NVIDIA A100 80GB VRAM
-
-### Installation:
----
-1. Download DareFightingICE from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity/releases/tag/v6.3) (latest version 6.3).
-2. Extract the downloaded file and run the appropriated script for your OS (e.g. `run-windows-amd64.bat` for Windows).
-3. Once the game screen opens, click "Launch" button.
-4. Follow the instruction in this [link](https://github.com/TeamFightingICE/pyftg/tree/master/examples) on how to run Python AI.
-5. Click "Play" on the game screen to start the fight.
 
 ### <b>Prizes: (updated on March 26, 2024) </b>
 ---
