@@ -251,6 +251,8 @@ public class SoundManager {
     	if (!FlagSetting.enableAudioPlayback) return;
     	
         for (int i = 0; i < soundRenderers.size(); i++) {
+        	if (soundRenderers.get(i) == virtualRenderer) continue;
+        	
             int sourceId = source.getSourceIds()[i];
             soundRenderers.get(i).playback(sourceId, audioSample);
         }
@@ -260,6 +262,8 @@ public class SoundManager {
     	if (!FlagSetting.enableAudioPlayback) return;
     	
         for (int i = 0; i < soundRenderers.size(); i++) {
+        	if (soundRenderers.get(i) == virtualRenderer) continue;
+        	
             int sourceId = source.getSourceIds()[i];
             soundRenderers.get(i).stopPlayback(sourceId);
         }
