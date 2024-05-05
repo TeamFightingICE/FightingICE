@@ -54,13 +54,13 @@ The FrameData sent to AIs will have a delay of 15 frames, but AudioData and Scre
 Your AI will be made publicly available and by submitting you will have agreed to this.
 
 __Memory Limit__
-- You are allowed to utilize a maximum of 64GB RAM and 32GB VRAM. If your AI exceeds this limit, it will be disqualified and you will need to submit a new controller.
+- You are allowed to utilize a maximum of 64GB RAM and 32GB VRAM. If your AI exceeds this limit, it will be disqualified.
 
 __Multi-threading__
 - You are allowed to utilize multi-threading up to 16 threads (CPU) and employ any GPU computation library.
 
 __File I/O__
-- Attempts to read or write files in any other directory than your AI's will lead to disqualification. Any file written may not exceed 64GB.
+- Attempts to read or write files in any other directory than your AI's will lead to disqualification.
 - You are allowed to submit up to 64GB, including source code and data (AI model, etc...).
 
 __The "Small Print"__
