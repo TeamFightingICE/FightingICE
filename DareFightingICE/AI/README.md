@@ -18,9 +18,9 @@ In this competition, you are tasked with making an AI that plays DareFightingICE
 ---
 For submission, please create a zip file containing:
 
-- Your AI's executable file
-- Source code (for training AI and evaluating AI, .py for a Python AI) and/or
+- Source code (.py for a Python AI) and/or
 - File-I/O folder with the same name as your AI
+- The `requirements.txt` or `environment.yml` file. Prior to submission, verify that the file can be utilized on different machines. We encourage you to craft this file yourself to ensure its compatibility with other machines. Avoid relying on `pip freeze` or `conda env export` as they may not always be usable.
 - A README file that describes the environment, file structure, and instructions to run your AI
 
 Please also attach a PowerPoint (or OpenOffice) file describing the following information:
@@ -94,12 +94,10 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
 ---
 1. Software:
    - OS: Linux Ubuntu 20.04.3 LTS (Focal Fossa)
+   - OpenJDK: 21.0.2
+   - DareFightingICE: 6.3
    - Python: 3.12.3
    - pyftg: 2.1
-   - PyTorch-CUDA: 12.1
-   - PyTorch: 2.3.0
-   - TorchAudio: 2.3.0
-   - TorchVision: 0.18.0
 2. Hardware:
    - CPU: Intel(R) Xeon(R) Gold 6258R CPU @ 2.70GHz
    - RAM: 188 GB
