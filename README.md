@@ -2,8 +2,6 @@
 
 # FightingICE #
 
-**Deprecated:** This project is no longer supported by TeamFightingICE. Please use the new platform implemented using Unity [here](https://github.com/TeamFightingICE/DareFightingICE-Unity) instead.
-
 This repository is a repository for the development of the 2D fighting game FightingICE, which is used in international competitions for fighting game AI performance.<br>
 
 ### About FightingICE ###
