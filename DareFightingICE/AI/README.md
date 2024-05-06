@@ -13,7 +13,7 @@ In this competition, you are tasked with making an AI that plays DareFightingICE
 
 ### Instruction on how to run the platform:
 ---
-1. Download DareFightingICE from this [link](https://github.com/TeamFightingICE/FightingICE/releases) (latest version 6.3).
+1. Download DareFightingICE from this [link](https://github.com/TeamFightingICE/FightingICE/releases) (latest version 6.2).
 2. Extract the downloaded file and run the appropriated script for your OS (e.g. `run-windows-amd64.bat` for Windows).
 3. Once the game screen opens, move to "Launch" with the arrow keys and press "Z" button.
 4. Follow the instruction in this [link](https://github.com/TeamFightingICE/pyftg/tree/master/examples) on how to run Python AI.
