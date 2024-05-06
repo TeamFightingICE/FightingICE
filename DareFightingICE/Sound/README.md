@@ -67,7 +67,7 @@ Pre-screening:
 - Two most capable test players (players with vision) will play against each other for one round using the default sound design. The replay of the same round will be played using all the submitted sound designs – all videos will be of the same match but different sound designs. Then a sound aesthetic survey of those replay videos will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
 
 Screening:
-- The blindfolded players will play against a weak AI (a weak form of [MCTS AI](https://github.com/TeamFightingICE/MctsAi-grpc)), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
+- The blindfolded players will play against a weak AI (a weak form of MCTS AI, the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
 - Each player will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design, and the score will be calculated by health point (HP) difference between the player and the AI, in relative to the HP difference when playing without being blindfolded.
 - After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
 -  In addition, [our deep reinforcement learning blind AI](https://github.com/TeamFightingICE/BlindAI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
