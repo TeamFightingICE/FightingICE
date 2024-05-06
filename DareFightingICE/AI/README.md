@@ -1,5 +1,4 @@
 # <div align="center"> 2024 DareFightingICE AI Competition</div>
-# Owing to a few setbacks with Unity, we have decided to revert to our Java version and augment its capabilities to foster sound design research. We anticipate launching this platform on May 8, 2024. We extend our sincere apologies for any inconvenience.
 ----
 <div align = "center"> Welcome to the 2024 DareFightingICE AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
@@ -8,19 +7,25 @@
 
 ### What is the DareFightingICE AI Competition:
 ----
-In this competition, you are tasked with making an AI that plays DareFightingICE using only in-game sound data as the input. You will be provided with a gRPC interface that allows access to sound data and a sample AI. **Click the image below to watch our promotional video.**
+In this competition, you are tasked with making an AI that plays DareFightingICE using only in-game sound data as the input. You will be provided with the interface that allows access to sound data and a sample AI. **Click the image below to watch our promotional video.**
 
 [![Watch the video](./Logo.png)](https://youtu.be/CHaf0vfYkvM)
 
+### Instruction on how to run the platform:
+---
+1. Download DareFightingICE from this [link](https://github.com/TeamFightingICE/FightingICE/releases) (latest version 6.2).
+2. Extract the downloaded file and run the appropriated script for your OS (e.g. `run-windows-amd64.bat` for Windows).
+3. Once the game screen opens, move to "Launch" with the arrow keys and press "Z" button.
+4. Follow the instruction in this [link](https://github.com/TeamFightingICE/pyftg/tree/master/examples) on how to run Python AI.
+5. Move to "Play" with the arrow keys and press "Z" button to start the fight.
 
-<em>We’re aware that our current platform does not support the ARM architecture. However, we’re actively working on this and aim to include ARM support in DareFightingICE as soon as possible. In the meantime, we recommend using devices with the x86 architecture for the best experience. If ARM compatibility is essential, participants can continue using DareFightingICE-java (DareFightingICE-java can be downloaded from [here](https://github.com/TeamFightingICE/FightingICE/tags)). However, while the AI Interface remains consistent across both versions, please be aware that performance may vary. We appreciate your patience and thank you for your continued support!</em>
 ### What To Submit:
 ---
 For submission, please create a zip file containing:
 
-- Your AI's executable file
-- Source code (for training AI and evaluating AI, .py for a Python AI) and/or
+- Source code (.py for a Python AI) and/or
 - File-I/O folder with the same name as your AI
+- The `requirements.txt` or `environment.yml` file. Prior to submission, verify that the file can be utilized on different machines. We encourage you to craft this file yourself to ensure its compatibility with other machines. Avoid relying on `pip freeze` or `conda env export` as they may not always be usable.
 - A README file that describes the environment, file structure, and instructions to run your AI
 
 Please also attach a PowerPoint (or OpenOffice) file describing the following information:
@@ -34,10 +39,12 @@ Please also attach a PowerPoint (or OpenOffice) file describing the following in
 The source code and model of our deep reinforcement learning blind AI implemented using Python is available [here](https://github.com/TeamFightingICE/BlindAI).
 
 See also the sample AI:
-- The sample AI implemented using Python is available [here](https://github.com/TeamFightingICE/PythonAISamples).
+- The sample AI implemented using Python is available [here](https://github.com/TeamFightingICE/pyftg/tree/master/examples).
 
 ### Rules:
 ---
+__General Information__
+
 One game has three rounds. The maximum fighting time of a round is 60s. After one round, the character's positions and HPs will be reset, and a new round is started. All games in the competition are conducted with the options "--limithp 400 400" (limit HP of both players to be 400) and "--blind-player 2" (limit access only to sound data for both players) of DareFightingICE.
 
 Even if the game will boot with `--blind-player` option, it is still recommended to notify the game that your AI will process only audio data by modifying `isBlind` method to be as follows:
@@ -51,6 +58,31 @@ The FrameData sent to AIs will have a delay of 15 frames, but AudioData and Scre
 
 Your AI will be made publicly available and by submitting you will have agreed to this.
 
+__Memory Limit__
+- You are allowed to utilize a maximum of 64GB RAM and 32GB VRAM. If your AI exceeds this limit, it will be disqualified.
+
+__Multi-threading__
+- You are allowed to utilize multi-threading up to 16 threads (CPU) and employ any GPU computation library.
+
+__File I/O__
+- Attempts to read or write files in any other directory than your AI's will lead to disqualification.
+- You are allowed to submit up to 64GB, including source code and data (AI model, etc...).
+
+__The "Small Print"__
+- We, the organizers of this competition, will do our utmost to ensure the competition is running smoothly and fairly. All our decisions are final.
+- We expect participants to uphold the spirit of the competition. Any attempts to cheat will lead to immediate disqualification without appeal. Attempts to cheat include:
+- trying to disturbing opponent's controller
+- trying to circumvent the competition's security framework
+- memory scanning
+- trying to corrupt the file system
+- trying to disrupt the ongoing competition in any way
+- intentionally loosing games or creating specific game states on purpose
+- We reserve the right to alter these rules at any time without notice.
+If you have any questions or suggestions or encounter any problems, please email us and we will try to address the issue as quickly as possible.
+We have made every effort to comply with copyright law. If you should have copyright concerns, please contact us.
+
+The above rules are based on the Ms Pac-Man vs Ghosts League 2012 Competition.
+
 ### Evaluation:
 ---
 Two leagues (Standard and Speedrunning) in this competition are described as follows:
@@ -63,31 +95,18 @@ In this competition, only "Zen" character, with the same [motion data](https://w
 The ranking rules are as follows:
 In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the AIs are ranked according to the number of winning rounds. If ties exit, their total remaining HPs will be used. Once the AIs are ranked in each league, league points are awarded to them according to their positions using **[the 2018 Formula-1 scoring system ](https://en.wikipedia.org/wiki/2018_Formula_One_World_Championship#Scoring_system)**. The competition winner is finally decided by the sum of league points across all two leagues.
 
-In the 2024 Competition, we are transitioning from the Java platform to Unity. We also plan to integrate our previously mentioned weakened sample, MctsAi23i, into the main game. Consequently, its source code cannot be made public.
-
 ### Evaluation Environments: 
 ---
 1. Software:
-   - OS: Windows 10
-   - Python: 3.10
-   - PyTorch-CUDA: 12.1
-   - PyTorch: 2.2.0
-   - TorchAudio: 2.2.0
-   - TorchVision: 0.17.0
+   - OS: Linux Ubuntu 20.04.3 LTS (Focal Fossa)
+   - OpenJDK: 21.0.2
+   - DareFightingICE: 6.3
+   - Python: 3.12.3
+   - pyftg: 2.1
 2. Hardware:
-   - CPU: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz
-   - RAM: 16 GB
-   - GPU: NVIDIA Quadro P1000 4GB VRAM
-
-### Installation:
----
-1. Download DareFightingICE-Unity file from this [link](https://github.com/TeamFightingICE/DareFightingICE-Unity/releases/tag/v1.0-a.1) (latest version 1.0-alpha1).
-2. Clone the Python AI samples using the following command: `git clone https://github.com/TeamFightingICE/PythonAISamples`, and follow the instruction in `PythonAISamples`'s README file to setup python environment.
-3. Extract the downloaded file and run `DareFightingICE-Unity.exe` for Windows (x64) or `DareFightingICE-Unity.x86_64` for Linux (x64).
-4. Once the game screen opens, click "Launch" button.
-5. When the “Launch” screen appears, change "Player 2" to "gRPC" by `left` or `right` button.
-6. In the Python AI sample folder, run the following command: `python Main_SinglePyAI.py --a2 KickAI`.
-7. Click "Play" on the game screen to start the fight.
+   - CPU: Intel(R) Xeon(R) Gold 6258R CPU @ 2.70GHz
+   - RAM: 188 GB
+   - GPU: NVIDIA A100 80GB VRAM
 
 ### <b>Prizes: (updated on March 26, 2024) </b>
 ---
@@ -108,7 +127,7 @@ IEEE CIS will award the qualified first-place, second-place, and third-place win
 Please submit your entry via this [page](https://forms.gle/fCRiRUPvVxYjaT5b9). Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your AI to us by the final deadline.)
-- May 24, 2024 (AoE)
+- June 7, 2024 (AoE)
 
 Final deadline
 - July 29, 2024 (AoE)(no extension!!)
