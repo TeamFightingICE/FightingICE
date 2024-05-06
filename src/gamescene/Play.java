@@ -277,7 +277,8 @@ public class Play extends GameScene {
 			this.roundStartTime = System.currentTimeMillis();
 			this.audioData = new AudioData();
 			
-			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+			SoundManager.getInstance().play2(audioSource,
+					SoundManager.getInstance().getBackGroundMusicBuffer(), GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, true);
 		} else {
 			this.currentFrameTime = System.currentTimeMillis();
 			this.audioData = InputManager.getInstance().getAudioData();

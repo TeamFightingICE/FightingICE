@@ -140,7 +140,7 @@ public class SoundRender {
             stop(sourceId);
         AL10.alSourcei(sourceId, AL10.AL_BUFFER, bufferId);
         alSourcei(sourceId, AL_BUFFER, bufferId);
-        alSource3f(sourceId, AL_POSITION, x, 0, 4);
+        alSource3f(sourceId, AL_POSITION, x, 0, y);
         alSourcei(sourceId, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
         AL10.alSourcePlay(sourceId);
     }
