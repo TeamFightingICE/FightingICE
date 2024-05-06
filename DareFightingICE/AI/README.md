@@ -102,7 +102,7 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
    - OpenJDK: 21.0.2
    - DareFightingICE: 6.3
    - Python: 3.12.3
-   - pyftg: 2.1
+   - pyftg: 2.1.1
 2. Hardware:
    - CPU: Intel(R) Xeon(R) Gold 6258R CPU @ 2.70GHz
    - RAM: 188 GB
