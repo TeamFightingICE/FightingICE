@@ -27,7 +27,7 @@ You will submit:
 - The source code files you edited or added.
 -  A slide file(ppt) explaining the changes and the reasoning behind them. 
 -  A tutorial video (maximum length of video is 3 min) featuring the important features of your sound design.
--  Keep in mind that you do not need to edit the source code, you can just change the sounds, but give them the same name as the sounds already in the sound folder. To change the background music just overwrite the “BGM0” audio file with your own background music (name should remain the same). 
+-  Keep in mind that editing the source code is not required. You can just change the sounds, but give them the same name as the sounds already in the sound folder. To change the background music just overwrite the “BGM0” audio file with your own background music (name should remain the same). 
 -  You are allowed to add new source code files and any technique like procedural content generation to generate sounds. The programming language you are allowed to use is Python or any other language (for languages other than Python the participant will have to implement the interface themselves). <br>
 
 Source code files you are allowed to edit will be found [here](https://github.com/TeamFightingICE/Generative-Sound-AI). <br>
