@@ -2,8 +2,6 @@
 
 # FightingICE #
 
-**Deprecated:** This project is no longer supported by TeamFightingICE. Please use the new platform implemented using Unity [here](https://github.com/TeamFightingICE/DareFightingICE-Unity) instead.
-
 This repository is a repository for the development of the 2D fighting game FightingICE, which is used in international competitions for fighting game AI performance.<br>
 
 ### About FightingICE ###
@@ -40,11 +38,8 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 - lwjgl: Containing libraries related to LWJGL module
 	- natives: Containing libraries related to LWJGL module native to many architectures.
 		- linux/amd64: for Linux
-		- linux/arm64: for Linux with ARM-architecture CPU
-		- macos/amd64: for macOS with Intel chip
 		- macos/arm64: for macOS with Apple chip
 		- windows/amd64: for Windows
-		- windows/arm64: for Windows with ARM-architecture CPU
 	- lwjgl 3.3.3
 	- lwjgl-glfw 3.3.3
 	- lwjgl-openal 3.3.3
