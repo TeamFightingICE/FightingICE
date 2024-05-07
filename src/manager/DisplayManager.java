@@ -9,7 +9,6 @@ import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
-import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwHideWindow;
@@ -54,6 +53,7 @@ import grpc.GrpcServer;
 import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
+import util.FrameRateSync;
 import util.WaveFileWriter;
 
 /**
@@ -65,8 +65,6 @@ public class DisplayManager {
 	 * GLFWで使用されるwindow作成用の変数．
 	 */
 	private long window;
-	
-	private static final double TARGET_FRAME_TIME = 1.0 / GameSetting.FPS;
 
 	/**
 	 * クラスコンストラクタ．
@@ -148,15 +146,14 @@ public class DisplayManager {
 		glfwMakeContextCurrent(this.window);
 
 		int sync;
-		if (!FlagSetting.enableWindow || FlagSetting.fastModeFlag) {
-			sync = 0;
-		} else {
+		if (FlagSetting.enableVsync && FlagSetting.enableWindow && !FlagSetting.fastModeFlag) {
 			sync = 1;
+		} else {
+			sync = 0;
 		}
 
 		// Enable v-sync
 		glfwSwapInterval(sync);
-
 
 		if (FlagSetting.enableWindow) {
 			// Makes the window visible
@@ -192,7 +189,7 @@ public class DisplayManager {
 		// ゲームマネージャ初期化
 		gm.initialize();
 
-		double lastFrameTime = glfwGetTime();
+		long lastNanos = System.nanoTime();
 		
 		// Runs the rendering loop until the user has attempted to close the window.
 		while (!glfwWindowShouldClose(this.window)) {
@@ -210,15 +207,16 @@ public class DisplayManager {
 
 			// バックバッファとフレームバッファを入れ替える
 			glfwSwapBuffers(this.window);
+		   	
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
 			glfwPollEvents();
 
-		   	if (!FlagSetting.fastModeFlag) {
-		   		syncFrameRate(lastFrameTime);
-		   		//lastNanos = System.nanoTime();
-		   		lastFrameTime = glfwGetTime();
-		   	}
+//		   	if (!FlagSetting.fastModeFlag) {
+//		   		syncFrameRate(lastNanos);
+//		   		lastNanos = System.nanoTime();
+//		   	}
+			FrameRateSync.sync(GameSetting.FPS);
 		}
 	}
 
@@ -266,7 +264,10 @@ public class DisplayManager {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-    private void syncFrameRate(double lastFrameTime) {
-    	while (glfwGetTime() - lastFrameTime < TARGET_FRAME_TIME) {}
+    private void syncFrameRate(long lastNanos) {
+    	long targetNanos = lastNanos + (long) (1_000_000_000.0 / GameSetting.FPS);
+    	while (System.nanoTime() < targetNanos) {
+    		
+    	}
     }
 }

@@ -254,6 +254,8 @@ public class Play extends GameScene {
 	 * 各ラウンド開始時における, インターバル処理を行う．
 	 */
 	private void processingBreakTime() {
+		this.roundStartTime = System.currentTimeMillis();
+		
 		if (FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
@@ -273,15 +275,7 @@ public class Play extends GameScene {
 	 * 8. ラウンドが終了しているか判定する.<br>
 	 */
 	private void processingGame() {
-		if (this.nowFrame == 0) {
-			this.roundStartTime = System.currentTimeMillis();
-			this.audioData = new AudioData();
-			
-			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
-		} else {
-			this.currentFrameTime = System.currentTimeMillis();
-			this.audioData = InputManager.getInstance().getAudioData();
-		}
+		this.currentFrameTime = System.currentTimeMillis();
 		
 		if (this.endFrame != -1) {
 			this.keyData = new KeyData();
@@ -322,6 +316,14 @@ public class Play extends GameScene {
 		}
 
 		this.screenData = new ScreenData();
+		
+		if (this.nowFrame == 0) {
+			this.audioData = new AudioData();
+			
+			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+		} else {
+			this.audioData = InputManager.getInstance().getAudioData();
+		}
 		
 		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
 		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
