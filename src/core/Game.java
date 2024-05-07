@@ -106,6 +106,9 @@ public class Game extends GameManager {
                 case "--vsync":
                 	FlagSetting.enableVsync = true;
                 	break;
+                case "--show-fps":
+                	FlagSetting.showFPS = true;
+                	break;
                 case "--disable-window":
                     FlagSetting.enableWindow = false;
                     // FlagSetting.muteFlag = true;

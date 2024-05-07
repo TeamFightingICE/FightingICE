@@ -207,7 +207,7 @@ public class ResourceDrawer {
 			GraphicManager.getInstance().drawQuad(480 + 50, 75 + 20, p2Energy, 8, red[1], green[1], blue[1], 0.0f, render);
 		}
 	}
-
+	
 	/**
 	 * Draws time.
 	 *

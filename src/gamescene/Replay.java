@@ -190,8 +190,12 @@ public class Replay extends GameScene {
 							this.fighting.getProjectileDeque(), this.fighting.getHitEffectList(),
 							this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
 
-					GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50,
-							550);
+					GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50, 550);
+					
+					if (FlagSetting.showFPS) {
+						double fps = this.nowFrame / ((double) (currentFrameTime - roundStartTime) / 1e9);
+						GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
+					}
 
 					this.screenData = new ScreenData();
 				}
@@ -229,10 +233,10 @@ public class Replay extends GameScene {
 	 * 各ラウンド開始時における, インターバル処理を行う．
 	 */
 	private void processingBreakTime() {
+		this.roundStartTime = System.nanoTime();
+		
 		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
-		
-		this.roundStartTime = System.currentTimeMillis();
 	}
 
 	/**
@@ -243,7 +247,7 @@ public class Replay extends GameScene {
 	 * 3. 対戦後のFrameDataを取得する.<br>
 	 */
 	private void processingGame() {
-		this.currentFrameTime = System.currentTimeMillis();
+		this.currentFrameTime = System.nanoTime();
 		this.keyData = createKeyData();
 		
 		if (this.isFinished) return;
@@ -275,7 +279,7 @@ public class Replay extends GameScene {
 		this.roundStartFlag = true;
 		
 		Logger.getAnonymousLogger().log(Level.INFO, String.format("Round Duration: %.3f seconds (Expected %.3f)", 
-				(double) (currentFrameTime - roundStartTime) / 1e3, (double) (this.frameData.getFramesNumber() + 1) / 60));
+				(double) (currentFrameTime - roundStartTime) / 1e9, (double) (this.nowFrame + 1) / 60));
 		
 		RoundResult roundResult = new RoundResult(this.frameData);
 		SocketServer.getInstance().roundEnd(roundResult);

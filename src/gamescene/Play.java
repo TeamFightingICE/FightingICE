@@ -198,9 +198,7 @@ public class Play extends GameScene {
 			} else {
 				// processing
 				processingGame();
-				if (this.endFrame == -1) {
-					this.nowFrame++;
-				} else if (this.endFrame % 30 == 0) {
+				if (this.endFrame == -1 || this.endFrame % 30 == 0) {
 					this.nowFrame++;
 				}
 			}
@@ -254,7 +252,7 @@ public class Play extends GameScene {
 	 * 各ラウンド開始時における, インターバル処理を行う．
 	 */
 	private void processingBreakTime() {
-		this.roundStartTime = System.currentTimeMillis();
+		this.roundStartTime = System.nanoTime();
 		
 		if (FlagSetting.enableWindow) {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
@@ -275,7 +273,7 @@ public class Play extends GameScene {
 	 * 8. ラウンドが終了しているか判定する.<br>
 	 */
 	private void processingGame() {
-		this.currentFrameTime = System.currentTimeMillis();
+		this.currentFrameTime = System.nanoTime();
 		
 		if (this.endFrame != -1) {
 			this.keyData = new KeyData();
@@ -313,6 +311,11 @@ public class Play extends GameScene {
 			// 画面をDrawerクラスで描画
 			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
+			
+			if (FlagSetting.showFPS && FlagSetting.visualVisibleOnRender) {
+				double fps = (this.nowFrame + 1) / ((double) (currentFrameTime - roundStartTime) / 1e9);
+				GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
+			}
 		}
 
 		this.screenData = new ScreenData();
@@ -343,7 +346,7 @@ public class Play extends GameScene {
 	 */
 	private void processingRoundEnd() {
 		Logger.getAnonymousLogger().log(Level.INFO, String.format("Round Duration: %.3f seconds (Expected %.3f)", 
-				(double) (currentFrameTime - roundStartTime) / 1e3, (double) (this.frameData.getFramesNumber() + 1) / 60));
+				(double) (currentFrameTime - roundStartTime) / 1e9, (double) (this.nowFrame + 1) / 60));
 		
 		SoundManager.getInstance().stopAll();
 		SoundManager.getInstance().stopPlayback(this.audioSource);
