@@ -457,7 +457,7 @@ public class ResourceLoader {
 			}
 		}
 		buffer.flip();
-
+		
 		// Generate a texture ID
 		int textureId = glGenTextures();
 

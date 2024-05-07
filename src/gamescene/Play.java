@@ -165,13 +165,6 @@ public class Play extends GameScene {
 			InputManager.getInstance().createAIcontroller();
 			InputManager.getInstance().startAI(gameData);
 			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 	        Logger.getAnonymousLogger().log(Level.INFO, "AI controller is ready");
 		} catch (Py4JException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, "Fail to Initialize AI");

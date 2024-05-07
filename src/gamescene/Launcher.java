@@ -83,11 +83,7 @@ public class Launcher extends GameScene {
 				Logger.getAnonymousLogger().log(Level.WARNING, "This scene does not exist");
 				this.setGameEndFlag(true);
 			}
-
-//			if (FlagSetting.enableWindow) {
-//				// Loads resources
-//				ResourceLoader.getInstance().loadResource();
-//			}
+			
 			ResourceLoader.getInstance().loadResource();
 		}
 	}
