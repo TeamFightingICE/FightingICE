@@ -188,8 +188,6 @@ public class DisplayManager {
 
 		// ゲームマネージャ初期化
 		gm.initialize();
-
-		long lastNanos = System.nanoTime();
 		
 		// Runs the rendering loop until the user has attempted to close the window.
 		while (!glfwWindowShouldClose(this.window)) {
@@ -211,11 +209,8 @@ public class DisplayManager {
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
 			glfwPollEvents();
-
-//		   	if (!FlagSetting.fastModeFlag) {
-//		   		syncFrameRate(lastNanos);
-//		   		lastNanos = System.nanoTime();
-//		   	}
+			
+			// Sync frame rate
 			FrameRateSync.sync(GameSetting.FPS);
 		}
 	}
@@ -263,11 +258,5 @@ public class DisplayManager {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
-
-    private void syncFrameRate(long lastNanos) {
-    	long targetNanos = lastNanos + (long) (1_000_000_000.0 / GameSetting.FPS);
-    	while (System.nanoTime() < targetNanos) {
-    		
-    	}
-    }
+	
 }
