@@ -3,14 +3,12 @@ FROM openjdk:21
 RUN mkdir /app
 WORKDIR /app
 
-COPY ./run-docker.sh script.sh
 COPY ./FightingICE.jar .
-
 COPY ./data ./data
-
 COPY ./lib/*.jar ./lib/
-COPY ./lib/grpc/*.jar ./lib/grpc/
-COPY ./lib/lwjgl/*.jar ./lib/lwjgl/
-COPY ./lib/lwjgl/natives/linux/amd64/*.jar ./lib/lwjgl/natives/linux/amd64/
+COPY ./lib/grpc/*.jar ./lib/
+COPY ./lib/lwjgl/*.jar ./lib/
+COPY ./lib/lwjgl/natives/linux/amd64/*.jar ./lib/
 
-CMD [ "/bin/bash", "script.sh" ]
+ENTRYPOINT [ "java", "-cp", "FightingICE.jar:./lib/*", "Main", "--no-graphic" ]
+CMD [ "--grpc-auto", "--limithp", "400", "400" ]
