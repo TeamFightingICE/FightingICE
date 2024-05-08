@@ -22,6 +22,7 @@ import org.lwjgl.BufferUtils;
 
 import render.audio.SoundRender;
 import setting.FlagSetting;
+import setting.GameSetting;
 import struct.AudioBuffer;
 import struct.AudioSource;
 
@@ -106,7 +107,7 @@ public class SoundManager {
         // 音溝㝨リスナー㝮デフォルトパラメータをセット
         // this.sourcePos = new float[]{0.0F, 0.0F, 0.0F};
         // this.sourceVel = new float[]{0.0F, 0.0F, 0.0F};
-        this.listenerPos = new float[]{350F, 0.0F, 0.0F};
+        this.listenerPos = new float[]{GameSetting.STAGE_WIDTH / 2.0F, 0.0F, GameSetting.STAGE_HEIGHT / 2.0F};
         this.listenerVel = new float[]{0.0F, 0.0F, 0.0F};
         // 坑㝝(0, 0, -1), 上方坑(0, 1, 0)
         this.listenerOri = new float[]{0.0F, 0.0F, -1.0F, 0.0F, 1.0F, 0.0F};
@@ -238,7 +239,7 @@ public class SoundManager {
      */
     public void setSourcePos(AudioSource source, int x, int y) {
         for (int i = 0; i < soundRenderers.size(); i++) {
-            soundRenderers.get(i).setSource3f(source.getSourceIds()[i], AL_POSITION, x, 0, 4);
+            soundRenderers.get(i).setSource3f(source.getSourceIds()[i], AL_POSITION, x, 0, y);
         }
     }
     
@@ -253,6 +254,8 @@ public class SoundManager {
     	if (!FlagSetting.enableAudioPlayback) return;
     	
         for (int i = 0; i < soundRenderers.size(); i++) {
+        	if (soundRenderers.get(i) == virtualRenderer) continue;
+        	
             int sourceId = source.getSourceIds()[i];
             soundRenderers.get(i).playback(sourceId, audioSample);
         }
@@ -262,6 +265,8 @@ public class SoundManager {
     	if (!FlagSetting.enableAudioPlayback) return;
     	
         for (int i = 0; i < soundRenderers.size(); i++) {
+        	if (soundRenderers.get(i) == virtualRenderer) continue;
+        	
             int sourceId = source.getSourceIds()[i];
             soundRenderers.get(i).stopPlayback(sourceId);
         }

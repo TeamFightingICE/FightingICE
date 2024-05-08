@@ -257,8 +257,9 @@ public class Replay extends GameScene {
 		
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();
-			
-			SoundManager.getInstance().play2(this.audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
+
+			SoundManager.getInstance().play2(audioSource,
+					SoundManager.getInstance().getBackGroundMusicBuffer(), GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, true);
 			if (FlagSetting.enableReplaySound) {
 				SoundManager.getInstance().play(this.audioSource, this.audioBuffer);
 			}
