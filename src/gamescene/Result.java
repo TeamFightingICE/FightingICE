@@ -80,7 +80,7 @@ public class Result extends GameScene {
 
 	@Override
 	public void update() {
-		if (FlagSetting.enableWindow) {
+		if (FlagSetting.enableGraphic) {
 			int[] positionX = new int[] { GameSetting.STAGE_WIDTH / 2 - 70, GameSetting.STAGE_WIDTH / 2 + 10 };
 
 			for (int i = 0; i < this.roundResults.size(); i++) {

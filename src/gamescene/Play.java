@@ -247,7 +247,7 @@ public class Play extends GameScene {
 	private void processingBreakTime() {
 		this.roundStartTime = System.nanoTime();
 		
-		if (FlagSetting.enableWindow) {
+		if (FlagSetting.enableGraphic) {
 			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
 			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 		}
@@ -300,7 +300,7 @@ public class Play extends GameScene {
 			return;
 		}
 
-		if (FlagSetting.enableWindow) {
+		if (FlagSetting.enableGraphic) {
 			// 画面をDrawerクラスで描画
 			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound);

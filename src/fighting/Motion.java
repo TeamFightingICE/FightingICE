@@ -227,7 +227,7 @@ public class Motion {
 		this.landingFlag = Boolean.valueOf(data[32]);
 		// data[33]は読み込む画像が入ったディレクトリ名
 		//
-		if (FlagSetting.enableWindow) {
+		if (FlagSetting.enableGraphic) {
 			setMotionImage(characterName, playerIndex);
 		}
 	}

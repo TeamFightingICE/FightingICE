@@ -431,47 +431,51 @@ public class ResourceLoader {
 	 * @return 新たな画像クラスのインスタンス
 	 */
 	public Image loadTextureFromBufferedImage(BufferedImage bimg) {
+		int textureId = -1;
+		
 		// Gather all the pixels
 		int[] pixels = new int[bimg.getWidth() * bimg.getHeight()];
 		bimg.getRGB(0, 0, bimg.getWidth(), bimg.getHeight(), pixels, 0, bimg.getWidth());
-
-		// Create a ByteBuffer
-		ByteBuffer buffer = ByteBuffer.allocateDirect(bimg.getWidth() * bimg.getHeight() * 4)
-				.order(ByteOrder.nativeOrder());
-
-		// Iterate through all the pixels and add them to the ByteBuffer
-		for (int y = 0; y < bimg.getHeight(); y++) {
-			for (int x = 0; x < bimg.getWidth(); x++) {
-				// Select the pixel
-				int pixel = pixels[y * bimg.getWidth() + x];
-
-				// Add the RED component
-				buffer.put(((byte) ((pixel >> 16) & 0xFF)));
-				// Add the GREEN component
-				buffer.put(((byte) ((pixel >> 8) & 0xFF)));
-				// Add the BLUE component
-				buffer.put((byte) (pixel & 0xFF));
-				// Add the ALPHA component
-				buffer.put(((byte) ((pixel >> 24) & 0xFF)));
-
-			}
-		}
-		buffer.flip();
 		
-		// Generate a texture ID
-		int textureId = glGenTextures();
+		if (FlagSetting.enableGraphic) {
+			// Create a ByteBuffer
+			ByteBuffer buffer = ByteBuffer.allocateDirect(bimg.getWidth() * bimg.getHeight() * 4)
+					.order(ByteOrder.nativeOrder());
 
-		// Bind the ID to the context
-		glBindTexture(GL_TEXTURE_2D, textureId);
+			// Iterate through all the pixels and add them to the ByteBuffer
+			for (int y = 0; y < bimg.getHeight(); y++) {
+				for (int x = 0; x < bimg.getWidth(); x++) {
+					// Select the pixel
+					int pixel = pixels[y * bimg.getWidth() + x];
 
-		// Setup texture scaling filtering
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+					// Add the RED component
+					buffer.put(((byte) ((pixel >> 16) & 0xFF)));
+					// Add the GREEN component
+					buffer.put(((byte) ((pixel >> 8) & 0xFF)));
+					// Add the BLUE component
+					buffer.put((byte) (pixel & 0xFF));
+					// Add the ALPHA component
+					buffer.put(((byte) ((pixel >> 24) & 0xFF)));
 
-		// Send texture data to OpenGL
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, bimg.getWidth(), bimg.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
-				buffer);
-		buffer = null;
+				}
+			}
+			buffer.flip();
+			
+			// Generate a texture ID
+			textureId = glGenTextures();
+
+			// Bind the ID to the context
+			glBindTexture(GL_TEXTURE_2D, textureId);
+
+			// Setup texture scaling filtering
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			// Send texture data to OpenGL
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, bimg.getWidth(), bimg.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+					buffer);
+			buffer = null;
+		}
 
 		return new Image(textureId, bimg);
 	}

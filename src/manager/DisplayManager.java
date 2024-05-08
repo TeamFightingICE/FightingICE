@@ -98,6 +98,8 @@ public class DisplayManager {
 	 * ウィンドウを作成する際の初期化及びOpenGLの初期化処理を行う．
 	 */
 	private void initialize() {
+		if (!FlagSetting.enableGraphic) return;
+		
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -146,7 +148,7 @@ public class DisplayManager {
 		glfwMakeContextCurrent(this.window);
 
 		int sync;
-		if (FlagSetting.enableVsync && FlagSetting.enableWindow && !FlagSetting.fastModeFlag) {
+		if (FlagSetting.enableVsync && FlagSetting.enableGraphic && !FlagSetting.fastModeFlag) {
 			sync = 1;
 		} else {
 			sync = 0;
@@ -155,7 +157,7 @@ public class DisplayManager {
 		// Enable v-sync
 		glfwSwapInterval(sync);
 
-		if (FlagSetting.enableWindow) {
+		if (FlagSetting.enableGraphic) {
 			// Makes the window visible
 			glfwShowWindow(this.window);
 			Logger.getAnonymousLogger().log(Level.INFO, "Create Window " + width + "x" + height);
@@ -164,15 +166,7 @@ public class DisplayManager {
 			glfwHideWindow(this.window);
 			Logger.getAnonymousLogger().log(Level.INFO, "Disable window mode");
 		}
-	}
-
-	/**
-	 * ゲームのメインループの処理を行う．
-	 *
-	 * @param gm
-	 *            GameManagerクラスのインスタンス
-	 */
-	private void gameLoop(GameManager gm) {
+		
 		glfwSetTime(0.0);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
@@ -185,12 +179,28 @@ public class DisplayManager {
 		// Sets the clear color
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		initGL();
+	}
+	
+	private boolean shouldClose() {
+		if (FlagSetting.enableGraphic) {
+			return glfwWindowShouldClose(this.window);
+		} else {
+			return false;
+		}
+	}
 
+	/**
+	 * ゲームのメインループの処理を行う．
+	 *
+	 * @param gm
+	 *            GameManagerクラスのインスタンス
+	 */
+	private void gameLoop(GameManager gm) {
 		// ゲームマネージャ初期化
 		gm.initialize();
 		
 		// Runs the rendering loop until the user has attempted to close the window.
-		while (!glfwWindowShouldClose(this.window)) {
+		while (!shouldClose()) {
 			// ゲーム終了の場合,リソースを解放してループを抜ける
 			if (gm.isExit()) {
 				gm.close();
@@ -202,13 +212,15 @@ public class DisplayManager {
 			
 			// バックバッファに描画する
 			GraphicManager.getInstance().render();
-
-			// バックバッファとフレームバッファを入れ替える
-			glfwSwapBuffers(this.window);
-		   	
-			// Poll for window events. The key callback above will only be
-			// invoked during this call.
-			glfwPollEvents();
+			
+			if (FlagSetting.enableGraphic) {
+				// バックバッファとフレームバッファを入れ替える
+				glfwSwapBuffers(this.window);
+			   	
+				// Poll for window events. The key callback above will only be
+				// invoked during this call.
+				glfwPollEvents();
+			}
 			
 			// Sync frame rate
 			FrameRateSync.sync(GameSetting.FPS);
@@ -232,13 +244,15 @@ public class DisplayManager {
 			}
 		}
 
-		// Free the window callbacks and destroy the window
-		glfwFreeCallbacks(this.window);
-		glfwDestroyWindow(this.window);
+		if (FlagSetting.enableGraphic) {
+			// Free the window callbacks and destroy the window
+			glfwFreeCallbacks(this.window);
+			glfwDestroyWindow(this.window);
 
-		// Terminate GLFW and free the error callback
-		glfwTerminate();
-		glfwSetErrorCallback(null).free();
+			// Terminate GLFW and free the error callback
+			glfwTerminate();
+			glfwSetErrorCallback(null).free();
+		}
 		
 		Logger.getAnonymousLogger().log(Level.INFO, "Close FightingICE");
 		System.exit(0);

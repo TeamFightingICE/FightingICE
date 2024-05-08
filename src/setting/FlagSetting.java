@@ -68,7 +68,7 @@ public class FlagSetting {
     /**
      * ゲームウィンドウを生成するかどうかのフラグ．
      */
-    public static boolean enableWindow = true;
+    public static boolean enableGraphic = true;
 
     /**
      * ラウンド終了時にスローモーションを発生させるかどうかのフラグ

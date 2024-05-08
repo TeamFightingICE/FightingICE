@@ -23,6 +23,7 @@ import render.ImageTask;
 import render.QuadTask;
 import render.RenderTask;
 import render.StringTask;
+import setting.FlagSetting;
 import setting.GameSetting;
 
 /**
@@ -208,18 +209,22 @@ public class GraphicManager {
 	 * @see DisplayManager#gameLoop(GameManager)
 	 */
 	public void render() {
+		if (FlagSetting.enableGraphic) {
+			// 黒で塗りつぶすように指定
+			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			// 指定した色でバッファを塗りつぶすことでバッファクリアを行う
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// 黒で塗りつぶすように指定
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		// 指定した色でバッファを塗りつぶすことでバッファクリアを行う
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// レンダリングタスクリストに残っているタスクを実行し，画像をバッファにセット
-		while (!this.renderTaskList.isEmpty()) {
-			this.renderTaskList.removeFirst().render();
+			// レンダリングタスクリストに残っているタスクを実行し，画像をバッファにセット
+			while (!this.renderTaskList.isEmpty()) {
+				this.renderTaskList.removeFirst().render();
+			}
+			
+			// バッファの中身を画面にレンダリング
+			glFlush();
+		} else {
+			this.renderTaskList.clear();
 		}
-		// バッファの中身を画面にレンダリング
-		glFlush();
 	}
 
 	/**

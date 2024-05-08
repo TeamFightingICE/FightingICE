@@ -60,10 +60,9 @@ public class Launcher extends GameScene {
 
 	@Override
 	public void update() {
-		if (this.isFirstUpdate && FlagSetting.enableWindow) {
+		if (this.isFirstUpdate && FlagSetting.enableGraphic) {
 			GraphicManager.getInstance().drawString("Now loading ...", GameSetting.STAGE_WIDTH / 2 - 80, 200);
 			this.isFirstUpdate = false;
-
 		} else {
 			switch (this.nextGameSceneName.name()) {
 			case "PLAY":
@@ -72,7 +71,6 @@ public class Launcher extends GameScene {
 				this.setTransitionFlag(true);
 				this.setNextGameScene(play);
 				break;
-
 			case "REPLAY":
 				Logger.getAnonymousLogger().log(Level.WARNING, "Transition to REPLAY");
 				Replay replay = new Replay();

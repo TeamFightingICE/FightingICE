@@ -187,7 +187,7 @@ public class Fighting {
 
 		// エフェクト関係の処理. Windowが生成されているときのみ行う.
 		for (int i = 0; i < 2; i++) {
-			if (FlagSetting.enableWindow) {
+			if (FlagSetting.enableGraphic) {
 				if (this.playerCharacters[i].getAttack() != null) {
 					// 現在のコンボに応じたエフェクトをセット
 					int comboState = Math.max(this.playerCharacters[i].getHitCount() - 1, 0);
@@ -258,16 +258,16 @@ public class Fighting {
 			if (this.playerCharacters[i].getAttack() != null) {
 				if (this.playerCharacters[i].getAttack().isProjectile()) {
 					Attack attack = this.playerCharacters[i].getAttack();
-					ArrayList<Image> projectileImage = FlagSetting.enableWindow
+					ArrayList<Image> projectileImage = FlagSetting.enableGraphic
 							? GraphicManager.getInstance().getProjectileImageContainer() : null;
 
 					if (this.playerCharacters[i].getAction() == Action.STAND_D_DF_FC) {
-						projectileImage = FlagSetting.enableWindow
+						projectileImage = FlagSetting.enableGraphic
 								? GraphicManager.getInstance().getUltimateAttackImageContainer() : null;
 					}
 
 					Image[] temp;
-					if (FlagSetting.enableWindow) {
+					if (FlagSetting.enableGraphic) {
 						temp = new Image[projectileImage.size()];
 						for (int j = 0; j < temp.length; j++) {
 							temp[j] = projectileImage.get(j);

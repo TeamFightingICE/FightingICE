@@ -109,8 +109,8 @@ public class Game extends GameManager {
                 case "--show-fps":
                 	FlagSetting.showFPS = true;
                 	break;
-                case "--disable-window":
-                    FlagSetting.enableWindow = false;
+                case "--no-graphic":
+                    FlagSetting.enableGraphic = false;
                     // FlagSetting.muteFlag = true;
                     FlagSetting.automationFlag = true;
                     break;

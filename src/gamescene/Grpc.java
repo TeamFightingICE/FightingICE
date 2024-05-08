@@ -1,6 +1,8 @@
 package gamescene;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import enumerate.GameSceneName;
 import grpc.GrpcGame;
@@ -17,6 +19,7 @@ import setting.LaunchSetting;
 public class Grpc extends GameScene {
 	
 	private GrpcGame game;
+	private boolean isFirstUpdate;
 
 	/**
 	 * クラスコンストラクタ．
@@ -34,13 +37,20 @@ public class Grpc extends GameScene {
 	public void initialize() {
 		this.game = GrpcServer.getInstance().getGame();
 		FlagSetting.isGrpcAutoReady = true;
+		this.isFirstUpdate = true;
 	}
 
 	@Override
 	public void update() {
-		if(FlagSetting.enableWindow){
+		if (this.isFirstUpdate) {
+			Logger.getAnonymousLogger().log(Level.INFO, "Waiting gRPC to launch a game");
+			this.isFirstUpdate = false;
+		}
+		
+		if (FlagSetting.enableGraphic) {
 			GraphicManager.getInstance().drawString("Waiting gRPC to launch a game", 300, 200);
 		}
+		
 		if (this.game.getRunFlag()) {
 			this.game.setRunFlag(false);
 			FlagSetting.isGrpcAutoReady = false;

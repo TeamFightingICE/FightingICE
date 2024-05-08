@@ -57,9 +57,11 @@ public class Python extends GameScene {
 			this.stateInhibitor.replayUpdate();
 			return;
 		}
-		if(FlagSetting.enableWindow){
+		
+		if (FlagSetting.enableGraphic) {
 			GraphicManager.getInstance().drawString("Waiting python to launch a game", 300, 200);
 		}
+		
 		if (this.needRun) {
 			this.needRun = false;
 
