@@ -140,19 +140,20 @@ public class SoundManager {
      * OpenAL㝮準備を行㝆．
      */
     private void initialize() {
-    	if (!FlagSetting.enableGraphic) return;
-    	
         // OpenAL㝮デフォルトデポイス㝫接続㝙る
         // sound renderers
         this.soundRenderers = new ArrayList<>();
-        if (!FlagSetting.muteFlag && FlagSetting.enableGraphic) {
-        	SoundRender defaultRenderer = SoundRender.createDefaultRenderer();
-            this.soundRenderers.add(defaultRenderer);
-        }
-        virtualRenderer = SoundRender.createVirtualRenderer();
-        this.soundRenderers.add(virtualRenderer);
         
-        this.setListenerValues();
+    	if (FlagSetting.enableGraphic) {
+    		if (!FlagSetting.muteFlag && FlagSetting.enableGraphic) {
+            	SoundRender defaultRenderer = SoundRender.createDefaultRenderer();
+                this.soundRenderers.add(defaultRenderer);
+            }
+            virtualRenderer = SoundRender.createVirtualRenderer();
+            this.soundRenderers.add(virtualRenderer);
+            
+            this.setListenerValues();
+    	}
     }
 
     /**
