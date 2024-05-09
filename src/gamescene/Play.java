@@ -300,12 +300,12 @@ public class Play extends GameScene {
 			return;
 		}
 
-		if (FlagSetting.enableGraphic) {
+		if (FlagSetting.enableGraphic && FlagSetting.visualVisibleOnRender) {
 			// 画面をDrawerクラスで描画
 			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
 			
-			if (FlagSetting.showFPS && FlagSetting.visualVisibleOnRender) {
+			if (FlagSetting.showFPS) {
 				double fps = (this.nowFrame + 1) / ((double) (currentFrameTime - roundStartTime) / 1e9);
 				GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
 			}
