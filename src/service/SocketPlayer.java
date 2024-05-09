@@ -178,12 +178,7 @@ public class SocketPlayer implements AIInterface {
 
 	@Override
 	public void close()  {
-		if (!this.cancelled) {
-			this.cancel();
-		}
 		
-		this.din = null;
-		this.dout = null;
 	}
 
 }

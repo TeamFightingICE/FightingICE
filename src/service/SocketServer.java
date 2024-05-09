@@ -215,7 +215,7 @@ public class SocketServer {
 	
 	public void close() {
 		for (int i = 0; i < 2; i++) {
-			this.players[i].close();
+			this.players[i].cancel();;
 		}
 	}
 	
