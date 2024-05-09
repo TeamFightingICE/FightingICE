@@ -10,6 +10,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 
+import com.google.protobuf.ByteString;
+
+import protoc.MessageProto.GrpcScreenData;
+import setting.GameSetting;
+
 /**
  * The class dealing with the screen information such as the game screen's image
  * and the background color.
@@ -113,5 +118,14 @@ public class ScreenData {
 			return new byte[1];
 		}
 	}
+	
+	public GrpcScreenData toProto() {
+  		GrpcScreenData.Builder builder = GrpcScreenData.newBuilder();
+  		if (this.displayBufferedImage != null) {
+  			builder.setDisplayBytes(ByteString.copyFrom(this.getCompressedDisplayByteBufferAsBytes(
+  					GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, false)));
+  		}
+  		return builder.build();
+  	}
 
 }

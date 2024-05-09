@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import fighting.Character;
 import fighting.Motion;
+import protoc.MessageProto.GrpcGameData;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import simulator.Simulator;
@@ -223,4 +224,18 @@ public class GameData {
 	public Simulator getSimulator() {
 		return this.simulator;
 	}
+	
+	public GrpcGameData toProto() {
+		return GrpcGameData.newBuilder()
+    			.addMaxHps(this.maxHPs[0])
+    			.addMaxHps(this.maxHPs[1])
+    			.addMaxEnergies(this.maxEnergies[0])
+    			.addMaxEnergies(this.maxEnergies[1])
+    			.addCharacterNames(this.characterNames[0])
+    			.addCharacterNames(this.characterNames[1])
+    			.addAiNames(this.aiNames[0])
+    			.addAiNames(this.aiNames[1])
+    			.build();
+	}
+	
 }

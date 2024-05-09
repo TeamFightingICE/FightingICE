@@ -12,10 +12,12 @@ import java.util.logging.Logger;
 
 import grpc.ObserverGameState;
 import informationcontainer.RoundResult;
+import protoc.ServiceProto.InitializeRequest;
 import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
+import util.SocketUtil;
 
 public class SocketServer {
 
@@ -23,6 +25,7 @@ public class SocketServer {
 	private ServerSocket server;
 	private Thread serverThread;
 	private List<SocketClientHandler> clientList;
+	private SocketPlayer[] players;
 	
 	public static SocketServer getInstance() {
         return SocketServerHolder.instance;
@@ -35,6 +38,7 @@ public class SocketServer {
 	public SocketServer(int serverPort) {
 		this.serverPort = serverPort;
 		this.clientList = new ArrayList<>();
+		this.players = new SocketPlayer[] { new SocketPlayer(), new SocketPlayer() };
 	}
 	
 	public int getServerPort() {
@@ -51,10 +55,13 @@ public class SocketServer {
 					try {
 						Socket client = server.accept();
 						DataInputStream din = new DataInputStream(client.getInputStream());
-						byte[] data = din.readNBytes(1);
+						byte[] data = SocketUtil.socketRecv(din, 1);
 						
 						if (data[0] == 1) {
-							// TODO: Play Agent Gateway
+							// Play Agent Gateway
+							byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
+							InitializeRequest request = InitializeRequest.parseFrom(requestAsBytes);
+							players[request.getPlayerNumber() ? 0 : 1].initializeSocket(client, request);
 						} else if (data[0] == 2) {
 							// TODO: Run Game
 						} else if (data[0] == 3) {

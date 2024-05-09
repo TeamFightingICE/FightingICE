@@ -150,14 +150,14 @@ public class AIController extends Thread {
                 FrameData frameData = !this.framesData.isEmpty() ? new FrameData(this.framesData.removeFirst()) : new FrameData();
                 
                 if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-                	this.ai.getInformation(frameData, isControl);
-        	        this.ai.getAudioData(this.audioData);
         	        // screen raw data isn't provided to sound-only AI
         	        if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
         	            this.ai.getScreenData(this.screenData);
         	        } else {
         	        	frameData.removeVisualData();
         	        }
+                	this.ai.getInformation(frameData, isControl);
+        	        this.ai.getAudioData(this.audioData);
         	        
         	        this.ai.processing();
         	        this.setInput(this.ai.input());
@@ -251,7 +251,7 @@ public class AIController extends Thread {
      */
     public synchronized void informRoundResult(RoundResult roundResult) {
         if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-        	this.ai.roundEnd(roundResult.getRemainingHPs()[0], roundResult.getRemainingHPs()[1], roundResult.getElapsedFrame());
+        	this.ai.roundEnd(roundResult);
         } else if (this.deviceType == InputManager.DEVICE_TYPE_GRPC) {
         	this.isRoundEnd = true;
         	this.roundResult = roundResult;

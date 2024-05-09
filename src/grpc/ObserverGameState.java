@@ -7,7 +7,6 @@ import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
-import util.GrpcUtil;
 
 public class ObserverGameState implements Comparable<ObserverGameState> {
 
@@ -70,7 +69,7 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 		if (this.getStateFlag() == StateFlag.INITIALIZE) {
 			response = SpectatorGameState.newBuilder()
 	  				.setStateFlag(GrpcFlag.INITIALIZE)
-	  				.setGameData(GrpcUtil.convertGameData(this.getGameData()))
+	  				.setGameData(this.gameData.toProto())
 	  				.build();
 		} else if (this.getStateFlag() == StateFlag.INIT_ROUND) {
 			response = SpectatorGameState.newBuilder()
@@ -79,13 +78,12 @@ public class ObserverGameState implements Comparable<ObserverGameState> {
 		} else if (this.getStateFlag() == StateFlag.PROCESSING) {
 			response = SpectatorGameState.newBuilder()
 					.setStateFlag(GrpcFlag.PROCESSING)
-					.setFrameData(this.getFrameData().toProto())
+					.setFrameData(this.frameData.toProto())
 					.build();
 		} else if (this.getStateFlag() == StateFlag.ROUND_END) {
-			RoundResult roundResult = this.getRoundResult();
 			response = SpectatorGameState.newBuilder()
 					.setStateFlag(GrpcFlag.ROUND_END)
-					.setRoundResult(GrpcUtil.convertRoundResult(roundResult))
+					.setRoundResult(this.roundResult.toProto())
 	  				.build();
 		} else if (this.getStateFlag() == StateFlag.GAME_END) {
 			response = SpectatorGameState.newBuilder()

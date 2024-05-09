@@ -4,13 +4,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manager.InputManager;
 import struct.AudioData;
+import util.SocketUtil;
 
 public class SocketClientHandler {
 	
@@ -49,8 +48,8 @@ public class SocketClientHandler {
 		try {
 			if (waitForInput && spawnWaitThread) return;
 			
-			socketSend(new byte[] { 1 }, false);
-			socketSend(byteArray, true);
+			SocketUtil.socketSend(dout, new byte[] { 1 }, false);
+			SocketUtil.socketSend(dout, byteArray, true);
 			
 			if (spawnWaitThread) {
 				waitForInput = true;
@@ -62,42 +61,23 @@ public class SocketClientHandler {
 		}
 	}
 	
-	private void socketSend(byte[] byteArray, boolean withHeader) throws IOException {
-		if (withHeader) {
-			int dataLength = byteArray.length;
-			byte[] lengthBytes = ByteBuffer.allocate(4)
-					.order(ByteOrder.LITTLE_ENDIAN)
-					.putInt(dataLength)
-					.array();
-			dout.write(lengthBytes);
-		}
-		dout.write(byteArray);
-	}
-	
-	private byte[] socketRecv(int dataLength) throws IOException {
-		if (dataLength == -1) {
-			byte[] lengthBytes = din.readNBytes(4);
-			dataLength = ByteBuffer.wrap(lengthBytes)
-					.order(ByteOrder.LITTLE_ENDIAN)
-					.getInt();
-		}
-		return din.readNBytes(dataLength);
-	}
-	
 	private Runnable waitForInput() {
 		return new Runnable() {
 
 			@Override
 			public void run() {
 				try {
-					byte[] byteArray = socketRecv(-1);
+					byte[] byteArray = SocketUtil.socketRecv(din, -1);
 					
-					if (byteArray.length != 3200 && byteArray.length != 6400) {
-				        byteArray = new byte[6400];
-						Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
-					}
+					if (clientType == SocketClientType.GENERATIVE_SOUND_AGENT) {
+						if (byteArray.length != 3200 && byteArray.length != 6400) {
+					        byteArray = new byte[6400];
+							Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
+						}
 
-			        InputManager.getInstance().setAudioData(new AudioData(byteArray));
+				        InputManager.getInstance().setAudioData(new AudioData(byteArray));
+					}
+					
 			        waitForInput = false;
 				} catch (Exception ex) {
 					setCancelled(true);
@@ -109,7 +89,7 @@ public class SocketClientHandler {
 	
 	public void close() throws IOException {
 		if (!isCancelled()) {
-			socketSend(new byte[] { 0 }, false);
+			SocketUtil.socketSend(dout, new byte[] { 0 }, false);
 			setCancelled(true);
 		}
 		

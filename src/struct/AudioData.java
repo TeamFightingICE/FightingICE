@@ -4,6 +4,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
+import com.google.protobuf.ByteString;
+
+import protoc.MessageProto.GrpcAudioData;
 import setting.GameSetting;
 import util.FFT;
 import util.MFCC;
@@ -185,5 +188,13 @@ public class AudioData {
     public byte[] getRawShortDataAsBytes() {
     	return rawShortDataAsBytes;
     }
+    
+    public GrpcAudioData toProto() {
+  		return GrpcAudioData.newBuilder()
+  				.setRawDataAsBytes(ByteString.copyFrom(this.rawFloatDataAsBytes))
+  				.addAllFftData(Arrays.stream(this.fftData).map(x -> x.toProto()).toList())
+  				.setSpectrogramDataAsBytes(ByteString.copyFrom(this.spectrogramDataAsBytes))
+  				.build();
+  	}
     
 }
