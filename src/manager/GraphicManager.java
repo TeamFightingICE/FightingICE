@@ -237,7 +237,11 @@ public class GraphicManager {
 	 *            画像の左右の向き(右がtrue)
 	 */
 	public void drawImage(Image img, int x, int y, boolean direction) {
-		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, -img.getWidth(), 0);
+		this.drawImage(img, x, y, direction, true);
+	}
+	
+	public void drawImage(Image img, int x, int y, boolean direction, boolean shouldRender) {
+		this.drawImage(img, x, y, img.getWidth(), img.getHeight(), direction, -img.getWidth(), 0, shouldRender);
 	}
 
 	/**
@@ -256,10 +260,10 @@ public class GraphicManager {
 	 * @param direction
 	 *            画像の左右の向き(右がtrue)
 	 */
-	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty) {
+	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty, boolean shouldRender) {
 		this.drawImageInScreenData(img, x, y, sizeX, sizeY, direction, tx, ty);
 		
-		if (FlagSetting.enableGraphic) {
+		if (FlagSetting.enableGraphic && shouldRender) {
 			ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
 			this.renderTaskList.add(task);
 		}
@@ -286,11 +290,14 @@ public class GraphicManager {
 	 * @param y
 	 *            文字画像をレンダリングするy座標
 	 */
-	
 	public void drawString(String string, int x, int y) {
+		this.drawString(string, x, y, true);
+	}
+	
+	public void drawString(String string, int x, int y, boolean shouldRender) {
 		this.drawStringInScreenData(string, x, y);
 		
-		if (FlagSetting.enableGraphic) {
+		if (FlagSetting.enableGraphic && shouldRender) {
 			StringTask task = new StringTask(letterImage, string, x, y);
 			this.renderTaskList.add(task);
 		}
@@ -329,9 +336,13 @@ public class GraphicManager {
 	 *            塗りつぶし色の不透明度
 	 */
 	public void drawQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
+		this.drawQuad(x, y, sizeX, sizeY, red, green, blue, alpha, true);
+	}
+	
+	public void drawQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha, boolean shouldRender) {
 		this.drawQuadInScreenData(x, y, sizeX, sizeY, red, green, blue, alpha);
 		
-		if (FlagSetting.enableGraphic) {
+		if (FlagSetting.enableGraphic && shouldRender) {
 			QuadTask task = new QuadTask(QuadTask.FILLED_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 			this.renderTaskList.add(task);
 		}
@@ -374,11 +385,14 @@ public class GraphicManager {
 	 * @param alpha
 	 *            線の色の不透明度
 	 */
-	
 	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha) {
+		this.drawLineQuad(x, y, sizeX, sizeY, red, green, blue, alpha, true);
+	}
+	
+	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha, boolean shouldRender) {
 		this.drawLineQuadinScreenData(x, y, sizeX, sizeY, red, green, blue, alpha);
 		
-		if (FlagSetting.enableGraphic) {
+		if (FlagSetting.enableGraphic && shouldRender) {
 			QuadTask task = new QuadTask(QuadTask.LINE_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 			this.renderTaskList.add(task);
 		}

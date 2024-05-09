@@ -239,10 +239,9 @@ public class Play extends GameScene {
 	private void processingBreakTime() {
 		this.roundStartTime = System.nanoTime();
 		
-		if (FlagSetting.enableGraphic) {
-			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
-			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
-		}
+		GraphicManager.getInstance().resetScreen();
+		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
+		GraphicManager.getInstance().disposeScreenGraphic();
 	}
 	
 	/**
@@ -292,17 +291,18 @@ public class Play extends GameScene {
 			return;
 		}
 
-		if (FlagSetting.enableGraphic && FlagSetting.visualVisibleOnRender) {
-			// 画面をDrawerクラスで描画
-			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
-					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
-			
-			if (FlagSetting.showFPS) {
-				double fps = (this.nowFrame + 1) / ((double) (currentFrameTime - roundStartTime) / 1e9);
-				GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
-			}
+		GraphicManager.getInstance().resetScreen();
+		
+		// 画面をDrawerクラスで描画
+		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
+				this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound, FlagSetting.visualVisibleOnRender);
+		
+		if (FlagSetting.showFPS && FlagSetting.visualVisibleOnRender) {
+			double fps = (this.nowFrame + 1) / ((double) (currentFrameTime - roundStartTime) / 1e9);
+			GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
 		}
-
+		
+		GraphicManager.getInstance().disposeScreenGraphic();
 		this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 		
 		if (this.nowFrame == 0) {

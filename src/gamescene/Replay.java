@@ -185,6 +185,7 @@ public class Replay extends GameScene {
 				}
 				
 				if (!this.isFinished) {
+					GraphicManager.getInstance().resetScreen();
 					// 画面をDrawerクラスで描画
 					ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(),
 							this.fighting.getProjectileDeque(), this.fighting.getHitEffectList(),
@@ -196,7 +197,8 @@ public class Replay extends GameScene {
 						double fps = this.nowFrame / ((double) (currentFrameTime - roundStartTime) / 1e9);
 						GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
 					}
-
+					
+					GraphicManager.getInstance().disposeScreenGraphic();
 					this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 				}
 			}
@@ -235,8 +237,9 @@ public class Replay extends GameScene {
 	private void processingBreakTime() {
 		this.roundStartTime = System.nanoTime();
 		
-		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
+		GraphicManager.getInstance().resetScreen();
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
+		GraphicManager.getInstance().disposeScreenGraphic();
 	}
 
 	/**
