@@ -50,4 +50,3 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 - javax.annotation-api 1.3.2
 - lwjgl_util 2.9.3
 - perfmark-api 0.26.0
-- py4j 0.10.9.7
