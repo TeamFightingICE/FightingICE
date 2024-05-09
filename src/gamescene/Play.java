@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 
 import enumerate.GameSceneName;
 import fighting.Fighting;
-import grpc.GrpcServer;
-import grpc.ObserverAgent;
 import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
@@ -155,10 +153,6 @@ public class Play extends GameScene {
 		}
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
-		
-		if (FlagSetting.grpc) {
-			GrpcServer.getInstance().getObserver().onInitialize(gameData);
-		}
 
 		SocketServer.getInstance().initialize(gameData);
 
@@ -319,11 +313,6 @@ public class Play extends GameScene {
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
 		SocketServer.getInstance().processingGame(this.frameData, this.screenData, this.audioData);
-		
-		if (FlagSetting.grpc) {
-			ObserverAgent observer = GrpcServer.getInstance().getObserver();
-			observer.onGameUpdate(this.frameData, this.screenData, this.audioData);
-		}
 	}
 
 	/**
@@ -347,11 +336,6 @@ public class Play extends GameScene {
 				InputManager.getInstance().sendRoundResult(roundResult);
 				SocketServer.getInstance().roundEnd(roundResult);
 				
-				if (FlagSetting.grpc) {
-					ObserverAgent observer = GrpcServer.getInstance().getObserver();
-					observer.onRoundEnd(roundResult);
-				}
-				
 				this.currentRound++;
 				this.roundStartFlag = true;
 				this.endFrame = -1;
@@ -373,11 +357,6 @@ public class Play extends GameScene {
 			// AIに結果を渡す
 			InputManager.getInstance().sendRoundResult(roundResult);
 			SocketServer.getInstance().roundEnd(roundResult);
-			
-			if (FlagSetting.grpc) {
-				ObserverAgent observer = GrpcServer.getInstance().getObserver();
-				observer.onRoundEnd(roundResult);
-			}
 			
 			this.currentRound++;
 			this.roundStartFlag = true;

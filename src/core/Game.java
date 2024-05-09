@@ -11,7 +11,6 @@ import enumerate.GameSceneName;
 import gamescene.Grpc;
 import gamescene.HomeMenu;
 import gamescene.Launcher;
-import grpc.GrpcServer;
 import image.LetterImage;
 import informationcontainer.AIContainer;
 import loader.ResourceLoader;
@@ -153,13 +152,10 @@ public class Game extends GameManager {
                 	break;
                 case "--port":
                 	int port = Integer.parseInt(options[++i]);
-                    LaunchSetting.py4jPort = LaunchSetting.grpcPort = port;
+                    LaunchSetting.serverPort = port;
                     break;
-                case "--grpc-auto":
-                	FlagSetting.grpcAuto = true;
-                	break;
-                case "--disable-grpc":
-                	FlagSetting.grpc = false;
+                case "--auto":
+                	FlagSetting.enableAuto = true;
                 	break;
                 case "--no-vision":
                 	FlagSetting.visualVisibleOnRender = false;
@@ -197,17 +193,13 @@ public class Game extends GameManager {
 
         createLogDirectories();
 
-        if (FlagSetting.grpc) {
-        	try {
-    			SocketServer.getInstance().startServer();
-        		GrpcServer.getInstance().start(LaunchSetting.grpcPort);
-			} catch (IOException e) {
-                Logger.getAnonymousLogger().log(Level.INFO, "Fail to start gRPC server");
-                FlagSetting.grpc = false;
-			}
-        }
+        try {
+			SocketServer.getInstance().startServer(LaunchSetting.serverPort);
+		} catch (IOException e) {
+            Logger.getAnonymousLogger().log(Level.INFO, "Fail to start gRPC server");
+		}
         
-        if (FlagSetting.grpcAuto) {
+        if (FlagSetting.enableAuto) {
         	Grpc grpc = new Grpc();
         	this.startGame(grpc);
         } else if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag)) {

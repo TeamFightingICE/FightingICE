@@ -8358,54 +8358,43 @@ public final class ServiceProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rservice.proto\022\007service\032\033google/protobu" +
-      "f/empty.proto\032\nenum.proto\032\rmessage.proto" +
-      "\"s\n\016RunGameRequest\022\023\n\013character_1\030\001 \001(\t\022" +
-      "\023\n\013character_2\030\002 \001(\t\022\020\n\010player_1\030\003 \001(\t\022\020" +
-      "\n\010player_2\030\004 \001(\t\022\023\n\013game_number\030\005 \001(\005\"Y\n" +
-      "\017RunGameResponse\022,\n\013status_code\030\001 \001(\0162\027." +
-      "service.GrpcStatusCode\022\030\n\020response_messa" +
-      "ge\030\002 \001(\t\"o\n\017SpectateRequest\022\020\n\010interval\030" +
-      "\001 \001(\005\022\027\n\017frame_data_flag\030\002 \001(\010\022\030\n\020screen" +
-      "_data_flag\030\003 \001(\010\022\027\n\017audio_data_flag\030\004 \001(" +
-      "\010\"\233\002\n\022SpectatorGameState\022%\n\nstate_flag\030\001" +
-      " \001(\0162\021.service.GrpcFlag\022(\n\tgame_data\030\002 \001" +
-      "(\0132\025.service.GrpcGameData\022*\n\nframe_data\030" +
-      "\003 \001(\0132\026.service.GrpcFrameData\022,\n\013screen_" +
-      "data\030\004 \001(\0132\027.service.GrpcScreenData\022*\n\na" +
-      "udio_data\030\005 \001(\0132\026.service.GrpcAudioData\022" +
-      ".\n\014round_result\030\006 \001(\0132\030.service.GrpcRoun" +
-      "dResult\"Q\n\021InitializeRequest\022\025\n\rplayer_n" +
-      "umber\030\001 \001(\010\022\023\n\013player_name\030\002 \001(\t\022\020\n\010is_b" +
-      "lind\030\003 \001(\010\")\n\022InitializeResponse\022\023\n\013play" +
-      "er_uuid\030\001 \001(\t\")\n\022ParticipateRequest\022\023\n\013p" +
-      "layer_uuid\030\001 \001(\t\"\342\002\n\017PlayerGameState\022%\n\n" +
-      "state_flag\030\001 \001(\0162\021.service.GrpcFlag\022\022\n\ni" +
-      "s_control\030\002 \001(\010\022*\n\nframe_data\030\003 \001(\0132\026.se" +
-      "rvice.GrpcFrameData\0224\n\024non_delay_frame_d" +
-      "ata\030\004 \001(\0132\026.service.GrpcFrameData\022,\n\013scr" +
-      "een_data\030\005 \001(\0132\027.service.GrpcScreenData\022" +
-      "*\n\naudio_data\030\006 \001(\0132\026.service.GrpcAudioD" +
-      "ata\022(\n\tgame_data\030\007 \001(\0132\025.service.GrpcGam" +
-      "eData\022.\n\014round_result\030\010 \001(\0132\030.service.Gr" +
-      "pcRoundResult\"G\n\013PlayerInput\022\023\n\013player_u" +
-      "uid\030\001 \001(\t\022#\n\tinput_key\030\002 \001(\0132\020.service.G" +
-      "rpcKey2\334\002\n\007Service\022>\n\007RunGame\022\027.service." +
-      "RunGameRequest\032\030.service.RunGameResponse" +
-      "\"\000\022E\n\010Spectate\022\030.service.SpectateRequest" +
-      "\032\033.service.SpectatorGameState\"\0000\001\022G\n\nIni" +
-      "tialize\022\032.service.InitializeRequest\032\033.se" +
-      "rvice.InitializeResponse\"\000\022H\n\013Participat" +
-      "e\022\033.service.ParticipateRequest\032\030.service" +
-      ".PlayerGameState\"\0000\001\0227\n\005Input\022\024.service." +
-      "PlayerInput\032\026.google.protobuf.Empty\"\000B5\n" +
-      "\006protocB\014ServiceProtoP\000\252\002\032DareFightingIC" +
-      "E.Grpc.Protob\006proto3"
+      "\n\rservice.proto\022\007service\032\nenum.proto\032\rme" +
+      "ssage.proto\"s\n\016RunGameRequest\022\023\n\013charact" +
+      "er_1\030\001 \001(\t\022\023\n\013character_2\030\002 \001(\t\022\020\n\010playe" +
+      "r_1\030\003 \001(\t\022\020\n\010player_2\030\004 \001(\t\022\023\n\013game_numb" +
+      "er\030\005 \001(\005\"Y\n\017RunGameResponse\022,\n\013status_co" +
+      "de\030\001 \001(\0162\027.service.GrpcStatusCode\022\030\n\020res" +
+      "ponse_message\030\002 \001(\t\"o\n\017SpectateRequest\022\020" +
+      "\n\010interval\030\001 \001(\005\022\027\n\017frame_data_flag\030\002 \001(" +
+      "\010\022\030\n\020screen_data_flag\030\003 \001(\010\022\027\n\017audio_dat" +
+      "a_flag\030\004 \001(\010\"\233\002\n\022SpectatorGameState\022%\n\ns" +
+      "tate_flag\030\001 \001(\0162\021.service.GrpcFlag\022(\n\tga" +
+      "me_data\030\002 \001(\0132\025.service.GrpcGameData\022*\n\n" +
+      "frame_data\030\003 \001(\0132\026.service.GrpcFrameData" +
+      "\022,\n\013screen_data\030\004 \001(\0132\027.service.GrpcScre" +
+      "enData\022*\n\naudio_data\030\005 \001(\0132\026.service.Grp" +
+      "cAudioData\022.\n\014round_result\030\006 \001(\0132\030.servi" +
+      "ce.GrpcRoundResult\"Q\n\021InitializeRequest\022" +
+      "\025\n\rplayer_number\030\001 \001(\010\022\023\n\013player_name\030\002 " +
+      "\001(\t\022\020\n\010is_blind\030\003 \001(\010\")\n\022InitializeRespo" +
+      "nse\022\023\n\013player_uuid\030\001 \001(\t\")\n\022ParticipateR" +
+      "equest\022\023\n\013player_uuid\030\001 \001(\t\"\342\002\n\017PlayerGa" +
+      "meState\022%\n\nstate_flag\030\001 \001(\0162\021.service.Gr" +
+      "pcFlag\022\022\n\nis_control\030\002 \001(\010\022*\n\nframe_data" +
+      "\030\003 \001(\0132\026.service.GrpcFrameData\0224\n\024non_de" +
+      "lay_frame_data\030\004 \001(\0132\026.service.GrpcFrame" +
+      "Data\022,\n\013screen_data\030\005 \001(\0132\027.service.Grpc" +
+      "ScreenData\022*\n\naudio_data\030\006 \001(\0132\026.service" +
+      ".GrpcAudioData\022(\n\tgame_data\030\007 \001(\0132\025.serv" +
+      "ice.GrpcGameData\022.\n\014round_result\030\010 \001(\0132\030" +
+      ".service.GrpcRoundResult\"G\n\013PlayerInput\022" +
+      "\023\n\013player_uuid\030\001 \001(\t\022#\n\tinput_key\030\002 \001(\0132" +
+      "\020.service.GrpcKeyB5\n\006protocB\014ServiceProt" +
+      "oP\000\252\002\032DareFightingICE.Grpc.Protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.google.protobuf.EmptyProto.getDescriptor(),
           protoc.EnumProto.getDescriptor(),
           protoc.MessageProto.getDescriptor(),
         });
@@ -8463,7 +8452,6 @@ public final class ServiceProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service_PlayerInput_descriptor,
         new java.lang.String[] { "PlayerUuid", "InputKey", });
-    com.google.protobuf.EmptyProto.getDescriptor();
     protoc.EnumProto.getDescriptor();
     protoc.MessageProto.getDescriptor();
   }

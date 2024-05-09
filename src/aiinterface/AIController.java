@@ -2,7 +2,6 @@ package aiinterface;
 
 import java.util.LinkedList;
 
-import grpc.PlayerAgent;
 import informationcontainer.RoundResult;
 import manager.InputManager;
 import setting.LaunchSetting;
@@ -22,7 +21,6 @@ public class AIController extends Thread {
      * AIに実装すべきメソッドを定義するインタフェース．
      */
     private AIInterface ai;
-    private PlayerAgent grpc;
     
     //private GameData gameData;
 
@@ -58,9 +56,6 @@ public class AIController extends Thread {
     private ScreenData screenData;
 
     private AudioData audioData;
-    
-    private boolean isRoundEnd;
-    private RoundResult roundResult;
 
     /**
      * 各AIの処理を同時に始めるための同期用オブジェクト．
@@ -79,11 +74,6 @@ public class AIController extends Thread {
         this.ai = ai;
         this.deviceType = InputManager.DEVICE_TYPE_AI;
     }
-    
-    public AIController(PlayerAgent grpc) {
-    	this.grpc = grpc;
-    	this.deviceType = InputManager.DEVICE_TYPE_GRPC;
-    }
     /**
      * 引数で与えられたパラメータをセットし，初期化を行う．
      *
@@ -95,27 +85,13 @@ public class AIController extends Thread {
      */
     public void initialize(Object waitFrame, GameData gameData, boolean playerNumber) {
         this.waitObj = waitFrame;
-        //this.gameData = gameData;
         this.playerNumber = playerNumber;
         this.key = new Key();
         this.framesData = new LinkedList<FrameData>();
         this.clear();
         this.isFighting = true;
-        this.isRoundEnd = false;
-//		boolean isInit = false;
-//		while(!isInit)
         
-//		try {
-        if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-        	this.ai.initialize(gameData, playerNumber);
-        } else if (this.deviceType == InputManager.DEVICE_TYPE_GRPC) {
-        	this.grpc.initialize(gameData, playerNumber);
-        }
-//			isInit = true;
-//		} catch (Py4JException e) {
-//			Logger.getAnonymousLogger().log(Level.SEVERE, "Cannot Initialize AI");
-//			InputManager.getInstance().createAIcontroller();
-//		}
+    	this.ai.initialize(gameData, playerNumber);
     }
     
     public Key input() {
@@ -133,41 +109,29 @@ public class AIController extends Thread {
                 }
             }
 
-            if (isRoundEnd) {
-            	this.grpc.onRoundEnd(roundResult);
-            	this.isRoundEnd = false;
-            	this.roundResult = null;
-            } else {
-            	boolean isControl;
+            boolean isControl;
 
-                try {
-                    isControl = this.framesData.getLast().getCharacter(this.playerNumber).isControl();
-                } catch (NullPointerException e) {
-                    // while game is not started
-                    isControl = false;
-                }
-
-                FrameData frameData = !this.framesData.isEmpty() ? new FrameData(this.framesData.removeFirst()) : new FrameData();
-                
-                if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-        	        // screen raw data isn't provided to sound-only AI
-        	        if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
-        	            this.ai.getScreenData(this.screenData);
-        	        } else {
-        	        	frameData.removeVisualData();
-        	        }
-                	this.ai.getInformation(frameData, isControl);
-        	        this.ai.getAudioData(this.audioData);
-        	        
-        	        this.ai.processing();
-        	        this.setInput(this.ai.input());
-                } else if (this.deviceType == InputManager.DEVICE_TYPE_GRPC) {
-                	if (this.grpc.isReady()) {
-                		this.grpc.setInformation(isControl, frameData, audioData, screenData, this.framesData.getLast());
-                    	this.grpc.onGameUpdate();
-                	}
-                }
+            try {
+                isControl = this.framesData.getLast().getCharacter(this.playerNumber).isControl();
+            } catch (NullPointerException e) {
+                // while game is not started
+                isControl = false;
             }
+
+            FrameData frameData = !this.framesData.isEmpty() ? new FrameData(this.framesData.removeFirst()) : new FrameData();
+            
+            // screen raw data isn't provided to sound-only AI
+	        if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
+	            this.ai.getScreenData(this.screenData);
+	        } else {
+	        	frameData.removeVisualData();
+	        }
+        	this.ai.getInformation(frameData, isControl);
+	        this.ai.getAudioData(this.audioData);
+	        
+	        this.ai.processing();
+	        this.setInput(this.ai.input());
+	        
 	        ThreadController.getInstance().notifyEndProcess(this.playerNumber);
         }
     }
@@ -250,12 +214,7 @@ public class AIController extends Thread {
      * @see RoundResult
      */
     public synchronized void informRoundResult(RoundResult roundResult) {
-        if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-        	this.ai.roundEnd(roundResult);
-        } else if (this.deviceType == InputManager.DEVICE_TYPE_GRPC) {
-        	this.isRoundEnd = true;
-        	this.roundResult = roundResult;
-        }
+    	this.ai.roundEnd(roundResult);
     }
 
     /**

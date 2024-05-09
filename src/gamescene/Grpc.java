@@ -6,10 +6,10 @@ import java.util.logging.Logger;
 
 import enumerate.GameSceneName;
 import grpc.GrpcGame;
-import grpc.GrpcServer;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 
@@ -34,21 +34,21 @@ public class Grpc extends GameScene {
 
 	@Override
 	public void initialize() {
-		this.game = GrpcServer.getInstance().getGame();
-		FlagSetting.isGrpcAutoReady = true;
+		this.game = SocketServer.getInstance().getGame();
+		FlagSetting.isAutoReady = true;
 		
-		Logger.getAnonymousLogger().log(Level.INFO, "Waiting gRPC to launch a game");
+		Logger.getAnonymousLogger().log(Level.INFO, "Waiting to launch a game");
 	}
 
 	@Override
 	public void update() {
 		if (FlagSetting.enableGraphic) {
-			GraphicManager.getInstance().drawString("Waiting gRPC to launch a game", 300, 200);
+			GraphicManager.getInstance().drawString("Waiting to launch a game", 330, 200);
 		}
 		
 		if (this.game.getRunFlag()) {
 			this.game.setRunFlag(false);
-			FlagSetting.isGrpcAutoReady = false;
+			FlagSetting.isAutoReady = false;
 
 			List<String> allAiNames = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
 			for (int i = 0; i < 2; i++) {

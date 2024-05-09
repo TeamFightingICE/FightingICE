@@ -53,9 +53,17 @@ public class SocketPlayer implements AIInterface {
 		return this.blind;
 	}
 	
-	public void cancel() throws IOException {
+	public boolean isCancelled() {
+		return this.cancelled;
+	}
+	
+	public void cancel() {
 		if (!this.cancelled) {
-			SocketUtil.socketSend(dout, new byte[] { 0 }, false);
+			try {
+				SocketUtil.socketSend(dout, new byte[] { 0 }, false);
+			} catch (IOException e) {
+				Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
+			}
 		}
 		
 		this.cancelled = true;
@@ -85,6 +93,7 @@ public class SocketPlayer implements AIInterface {
   				.build();
 		
 		try {
+			SocketUtil.socketSend(dout, new byte[] { 1 }, false);
 			SocketUtil.socketSend(dout, state.toByteArray(), true);
 			return 0;
 		} catch (IOException e) {
@@ -138,6 +147,7 @@ public class SocketPlayer implements AIInterface {
 		}
 		
 		try {
+			SocketUtil.socketSend(dout, new byte[] { 1 }, false);
 			SocketUtil.socketSend(dout, builder.build().toByteArray(), true);
 			
 			byte[] keyAsBytes = SocketUtil.socketRecv(din, -1);
@@ -159,6 +169,7 @@ public class SocketPlayer implements AIInterface {
   				.build();
 		
 		try {
+			SocketUtil.socketSend(dout, new byte[] { 1 }, false);
 			SocketUtil.socketSend(dout, state.toByteArray(), true);
 		} catch (IOException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
@@ -166,7 +177,11 @@ public class SocketPlayer implements AIInterface {
 	}
 
 	@Override
-	public void close() {
+	public void close()  {
+		if (!this.cancelled) {
+			this.cancel();
+		}
+		
 		this.din = null;
 		this.dout = null;
 	}

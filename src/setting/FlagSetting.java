@@ -73,9 +73,8 @@ public class FlagSetting {
     public static boolean enableVsync = false;
     public static boolean showFPS = false;
     
-    public static boolean grpc = true;
-    public static boolean grpcAuto = false;
-    public static boolean isGrpcAutoReady = false;
+    public static boolean enableAuto = false;
+    public static boolean isAutoReady = false;
     
     public static boolean visualVisibleOnRender = true;
     public static boolean enableBuiltinSound = false;

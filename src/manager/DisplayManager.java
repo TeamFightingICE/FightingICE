@@ -49,7 +49,6 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
-import grpc.GrpcServer;
 import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
@@ -235,13 +234,10 @@ public class DisplayManager {
 		SoundManager.getInstance().close();
 		WaveFileWriter.getInstance().close();
 		
-		if (FlagSetting.grpc) {
-			try {
-				GrpcServer.getInstance().stop();
-				SocketServer.getInstance().stopServer();
-			} catch (IOException | InterruptedException e) {
-				Logger.getAnonymousLogger().log(Level.INFO, "Fail to stop gRPC server");
-			}
+		try {
+			SocketServer.getInstance().stopServer();
+		} catch (IOException e) {
+			Logger.getAnonymousLogger().log(Level.INFO, "Fail to stop socket server");
 		}
 
 		if (FlagSetting.enableGraphic) {

@@ -23,12 +23,12 @@ import aiinterface.AIController;
 import aiinterface.AIInterface;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
-import grpc.GrpcServer;
 import informationcontainer.AIContainer;
 import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
@@ -232,7 +232,7 @@ public class InputManager {
 					this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
 				}
 			} else if (this.deviceTypes[i] == DEVICE_TYPE_GRPC) {
-				this.ais[i] = new AIController(GrpcServer.getInstance().getPlayer(i == 0));
+				this.ais[i] = new AIController(SocketServer.getInstance().getPlayer(i));
 			} else {
 				this.ais[i] = null;
 			}

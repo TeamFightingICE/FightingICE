@@ -37,11 +37,6 @@ public final class LaunchSetting {
 	public static char[] deviceTypes = { 0, 0 };
 
 	/**
-	 * Pythonを利用するときのポート番号．
-	 */
-	public static int py4jPort = 4242;
-
-	/**
 	 * 試合を繰り返して行う回数．
 	 */
 	public static int repeatNumber = 1;
@@ -73,6 +68,6 @@ public final class LaunchSetting {
 	public static boolean[] noVisual = {false, false};
 	public static boolean[] nonDelay = {false, false};
 	
-	public static int grpcPort = 50051;
+	public static int serverPort = 31415;
 	
 }

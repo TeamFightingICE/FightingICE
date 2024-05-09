@@ -1,5 +1,4 @@
 syntax = "proto3";
-import "google/protobuf/empty.proto";
 import "enum.proto";
 import "message.proto";
 package service;
@@ -66,13 +65,4 @@ message PlayerGameState {
 message PlayerInput {
 	string player_uuid = 1;
 	GrpcKey input_key = 2;
-}
-
-service Service {
-	rpc RunGame (RunGameRequest) returns (RunGameResponse) {}
-	rpc Spectate (SpectateRequest) returns (stream SpectatorGameState) {}
-
-	rpc Initialize (InitializeRequest) returns (InitializeResponse) {}
-	rpc Participate (ParticipateRequest) returns (stream PlayerGameState) {}
-	rpc Input (PlayerInput) returns (google.protobuf.Empty) {}
 }

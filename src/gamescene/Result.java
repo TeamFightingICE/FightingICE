@@ -5,12 +5,12 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
-import grpc.GrpcServer;
 import informationcontainer.AIContainer;
 import informationcontainer.RoundResult;
 import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -149,7 +149,7 @@ public class Result extends GameScene {
 	 */
 	private void endProcess() {
 		// -aや-nを引数にして起動 or Repeat Countを2以上にして起動した場合の処理
-		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag || FlagSetting.grpcAuto) {
+		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag || FlagSetting.enableAuto) {
 			if (++this.displayedTime > 300) {
 				// まだ繰り返し回数が残っている場合
 				if (FlagSetting.automationFlag && LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
@@ -175,8 +175,8 @@ public class Result extends GameScene {
 						this.setGameEndFlag(true);
 					}
 
-				} else if (FlagSetting.grpcAuto) {
-					GrpcServer.getInstance().close();
+				} else if (FlagSetting.enableAuto) {
+					SocketServer.getInstance().close();
 					Grpc grpc = new Grpc();
 					this.setTransitionFlag(true);
 					this.setNextGameScene(grpc);
