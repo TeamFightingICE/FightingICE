@@ -29,7 +29,6 @@ import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
-import py4j.Py4JException;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
@@ -248,7 +247,7 @@ public class InputManager {
 	 *            GameDataクラスのインスタンス
 	 * @see GameData
 	 */
-	public void startAI(GameData gameData) throws Py4JException{
+	public void startAI(GameData gameData) {
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (this.ais[i] != null) {
 		        Logger.getAnonymousLogger().log(Level.INFO, String.format("Initialize AI controller for P%s", i == 0 ? "1" : "2"));

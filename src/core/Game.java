@@ -11,7 +11,6 @@ import enumerate.GameSceneName;
 import gamescene.Grpc;
 import gamescene.HomeMenu;
 import gamescene.Launcher;
-import gamescene.Python;
 import grpc.GrpcServer;
 import image.LetterImage;
 import informationcontainer.AIContainer;
@@ -152,9 +151,6 @@ public class Game extends GameManager {
                 		LaunchSetting.nonDelay[player] = true;
                 	}
                 	break;
-                case "--py4j":
-                    FlagSetting.py4j = true;
-                    break;
                 case "--port":
                 	int port = Integer.parseInt(options[++i]);
                     LaunchSetting.py4jPort = LaunchSetting.grpcPort = port;
@@ -203,16 +199,18 @@ public class Game extends GameManager {
 
         if (FlagSetting.grpc) {
         	try {
-        		GrpcServer.getInstance().start(LaunchSetting.grpcPort);
-        		
     			SocketServer.getInstance().startServer();
+        		GrpcServer.getInstance().start(LaunchSetting.grpcPort);
 			} catch (IOException e) {
                 Logger.getAnonymousLogger().log(Level.INFO, "Fail to start gRPC server");
                 FlagSetting.grpc = false;
 			}
         }
         
-        if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag) && !FlagSetting.py4j && !FlagSetting.grpcAuto) {
+        if (FlagSetting.grpcAuto) {
+        	Grpc grpc = new Grpc();
+        	this.startGame(grpc);
+        } else if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag)) {
             // -nまたは-aが指定されたときは, メニュー画面に行かず直接ゲームをLaunchする
             if (FlagSetting.allCombinationFlag) {
                 AIContainer.allAINameList = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
@@ -222,19 +220,13 @@ public class Game extends GameManager {
                     this.isExitFlag = true;
                 }
             }
+            
             if (!LaunchSetting.soundName.equals("Default")) {
 				ResourceSetting.SOUND_DIRECTORY = String.format("./data/sounds/%s/", LaunchSetting.soundName);
             }
 
             Launcher launcher = new Launcher(GameSceneName.PLAY);
             this.startGame(launcher);
-        } else if (FlagSetting.py4j) {
-        	// -Python側で起動するときは, Pythonシーンからゲームを開始する
-            Python python = new Python();
-            this.startGame(python);
-        } else if (FlagSetting.grpcAuto) {
-        	Grpc grpc = new Grpc();
-        	this.startGame(grpc);
         } else {
             // 上記以外の場合, メニュー画面からゲームを開始する
             HomeMenu homeMenu = new HomeMenu();

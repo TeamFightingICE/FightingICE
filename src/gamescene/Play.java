@@ -23,7 +23,6 @@ import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
-import py4j.Py4JException;
 import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
@@ -161,19 +160,12 @@ public class Play extends GameScene {
 			GrpcServer.getInstance().getObserver().onInitialize(gameData);
 		}
 
-		try {
-			InputManager.getInstance().createAIcontroller();
-			InputManager.getInstance().startAI(gameData);
-			
-	        Logger.getAnonymousLogger().log(Level.INFO, "AI controller is ready");
-		} catch (Py4JException e) {
-			Logger.getAnonymousLogger().log(Level.SEVERE, "Fail to Initialize AI");
-			Launcher launch = new Launcher(GameSceneName.PLAY);
-			this.setTransitionFlag(true);
-			this.setNextGameScene(launch);
-		}
-
 		SocketServer.getInstance().initialize(gameData);
+
+		InputManager.getInstance().createAIcontroller();
+		InputManager.getInstance().startAI(gameData);
+		
+        Logger.getAnonymousLogger().log(Level.INFO, "AI controller is ready");
 	}
 
 	@Override

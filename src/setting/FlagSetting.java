@@ -21,11 +21,6 @@ public class FlagSetting {
     public static boolean enableBackground = true;
 
     /**
-     * Pythonを使用するかどうかのフラグ．
-     */
-    public static boolean py4j = false;
-
-    /**
      * アクションを行った回数をログに出力するかどうかのフラグ．
      */
     public static boolean debugActionFlag = false;

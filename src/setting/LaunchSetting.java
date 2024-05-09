@@ -1,7 +1,6 @@
 package setting;
 
 import enumerate.BackgroundType;
-import python.PyGatewayServer;
 
 /**
  * キャラクターの最大HPや試合の繰り返し回数など、試合を行う際に必要な設定を扱うクラス．
@@ -66,11 +65,6 @@ public final class LaunchSetting {
 	 * 試合の繰り返し回数のカウンタ．
 	 */
 	public static int repeatedCount = 0;
-
-	/**
-	 * PythonでJavaの処理を行うためのゲートウェイサーバー．
-	 */
-	public static PyGatewayServer pyGatewayServer = null;
 
 	/**
 	 * AI's visual data is disabled or not
