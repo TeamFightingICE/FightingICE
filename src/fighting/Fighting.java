@@ -10,7 +10,6 @@ import enumerate.State;
 import image.Image;
 import input.KeyData;
 import manager.GraphicManager;
-import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
 import struct.AttackData;
@@ -187,25 +186,22 @@ public class Fighting {
 
 		// エフェクト関係の処理. Windowが生成されているときのみ行う.
 		for (int i = 0; i < 2; i++) {
-			if (FlagSetting.enableGraphic) {
-				if (this.playerCharacters[i].getAttack() != null) {
-					// 現在のコンボに応じたエフェクトをセット
-					int comboState = Math.max(this.playerCharacters[i].getHitCount() - 1, 0);
-					// 4Hit以上であれば,エフェクトは4ヒット目のもの固定
-					comboState = Math.min(comboState, 3);
+			if (this.playerCharacters[i].getAttack() != null) {
+				// 現在のコンボに応じたエフェクトをセット
+				int comboState = Math.max(this.playerCharacters[i].getHitCount() - 1, 0);
+				// 4Hit以上であれば,エフェクトは4ヒット目のもの固定
+				comboState = Math.min(comboState, 3);
 
-					Image[] effect = GraphicManager.getInstance().getHitEffectImageContaier()[comboState];
-					this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), effect, isHit[i]));
+				Image[] effect = GraphicManager.getInstance().getHitEffectImageContaier()[comboState];
+				this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), effect, isHit[i]));
 
-					// アッパーの処理
-					if (playerCharacters[i].getAction() == Action.STAND_F_D_DFB) {
-						Image[] upper = GraphicManager.getInstance().getUpperImageContainer()[i];
-						Motion motion = this.playerCharacters[i].getMotionList().get(Action.STAND_F_D_DFB.ordinal());
+				// アッパーの処理
+				if (playerCharacters[i].getAction() == Action.STAND_F_D_DFB) {
+					Image[] upper = GraphicManager.getInstance().getUpperImageContainer()[i];
+					Motion motion = this.playerCharacters[i].getMotionList().get(Action.STAND_F_D_DFB.ordinal());
 
-						if (this.playerCharacters[i].startActive(motion)) {
-							this.hitEffects.get(i)
-									.add(new HitEffect(this.playerCharacters[i].getAttack(), upper, true, false));
-						}
+					if (this.playerCharacters[i].startActive(motion)) {
+						this.hitEffects.get(i).add(new HitEffect(this.playerCharacters[i].getAttack(), upper, true, false));
 					}
 				}
 			}
@@ -258,22 +254,15 @@ public class Fighting {
 			if (this.playerCharacters[i].getAttack() != null) {
 				if (this.playerCharacters[i].getAttack().isProjectile()) {
 					Attack attack = this.playerCharacters[i].getAttack();
-					ArrayList<Image> projectileImage = FlagSetting.enableGraphic
-							? GraphicManager.getInstance().getProjectileImageContainer() : null;
+					ArrayList<Image> projectileImage = GraphicManager.getInstance().getProjectileImageContainer();
 
 					if (this.playerCharacters[i].getAction() == Action.STAND_D_DF_FC) {
-						projectileImage = FlagSetting.enableGraphic
-								? GraphicManager.getInstance().getUltimateAttackImageContainer() : null;
+						projectileImage = GraphicManager.getInstance().getUltimateAttackImageContainer();
 					}
 
-					Image[] temp;
-					if (FlagSetting.enableGraphic) {
-						temp = new Image[projectileImage.size()];
-						for (int j = 0; j < temp.length; j++) {
-							temp[j] = projectileImage.get(j);
-						}
-					} else {
-						temp = null;
+					Image[] temp = new Image[projectileImage.size()];
+					for (int j = 0; j < temp.length; j++) {
+						temp[j] = projectileImage.get(j);
 					}
 					
 					this.projectileDeque.addLast(new LoopEffect(attack, temp));

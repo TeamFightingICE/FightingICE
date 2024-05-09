@@ -7,7 +7,6 @@ import enumerate.GameSceneName;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
-import setting.FlagSetting;
 import setting.GameSetting;
 
 /**
@@ -60,7 +59,7 @@ public class Launcher extends GameScene {
 
 	@Override
 	public void update() {
-		if (this.isFirstUpdate && FlagSetting.enableGraphic) {
+		if (this.isFirstUpdate) {
 			GraphicManager.getInstance().drawString("Now loading ...", GameSetting.STAGE_WIDTH / 2 - 80, 200);
 			this.isFirstUpdate = false;
 		} else {

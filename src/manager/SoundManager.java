@@ -145,7 +145,7 @@ public class SoundManager {
         this.soundRenderers = new ArrayList<>();
         
     	if (FlagSetting.enableGraphic) {
-    		if (!FlagSetting.muteFlag && FlagSetting.enableGraphic) {
+    		if (!FlagSetting.muteFlag) {
             	SoundRender defaultRenderer = SoundRender.createDefaultRenderer();
                 this.soundRenderers.add(defaultRenderer);
             }
