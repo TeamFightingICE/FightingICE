@@ -197,7 +197,7 @@ public class Replay extends GameScene {
 						GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
 					}
 
-					this.screenData = new ScreenData();
+					this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 				}
 			}
 

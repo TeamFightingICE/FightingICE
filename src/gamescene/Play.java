@@ -303,7 +303,7 @@ public class Play extends GameScene {
 			}
 		}
 
-		this.screenData = new ScreenData();
+		this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 		
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();

@@ -399,17 +399,17 @@ public class GraphicManager {
 		this.letterImage = lf;
 	}
 
-	public void resetScreen(){
+	public void resetScreen() {
 		screen = new BufferedImage(screen.getWidth(), screen.getHeight(), BufferedImage.TYPE_INT_RGB);
 		screenGraphic = screen.createGraphics();
 		screenGraphic.setColor(new Color(128, 128, 128));
 	}
 
-	public void disposeScreenGraphic(){
+	public void disposeScreenGraphic() {
 		screenGraphic.dispose();
 	}
 
-	public BufferedImage getScreenImage(){
+	public BufferedImage getScreenImage() {
 		return screen;
 	}
 

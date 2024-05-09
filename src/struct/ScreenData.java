@@ -10,8 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 
-import manager.GraphicManager;
-
 /**
  * The class dealing with the screen information such as the game screen's image
  * and the background color.
@@ -23,7 +21,11 @@ public class ScreenData {
 	private BufferedImage displayBufferedImage;
 	
 	public ScreenData() {
-		this.displayBufferedImage = GraphicManager.getInstance().getScreenImage();
+		
+	}
+	
+	public ScreenData(BufferedImage bimg) {
+		this.displayBufferedImage = bimg;
 	}
 
 	/**
