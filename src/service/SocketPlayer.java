@@ -138,10 +138,6 @@ public class SocketPlayer implements AIInterface {
   				.setFrameData(this.frameData.toProto())
   				.setAudioData(this.audioData.toProto());
 		
-		if (this.screenData != null) {
-			builder.setScreenData(this.screenData.toProto());
-		}
-		
 		if (this.nonDelayFrameData != null) {
 			builder.setNonDelayFrameData(this.nonDelayFrameData.toProto());
 		}

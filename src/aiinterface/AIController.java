@@ -62,6 +62,9 @@ public class AIController extends Thread {
      */
     private Object waitObj;
     
+    private boolean isRoundEnd;
+    private RoundResult roundResult;
+    
     //private List<Double> durations = new ArrayList<>();
 
     /**
@@ -90,6 +93,7 @@ public class AIController extends Thread {
         this.framesData = new LinkedList<FrameData>();
         this.clear();
         this.isFighting = true;
+        this.isRoundEnd = false;
         
     	this.ai.initialize(gameData, playerNumber);
     }
@@ -108,29 +112,35 @@ public class AIController extends Thread {
                     e.printStackTrace();
                 }
             }
-
-            boolean isControl;
-
-            try {
-                isControl = this.framesData.getLast().getCharacter(this.playerNumber).isControl();
-            } catch (NullPointerException e) {
-                // while game is not started
-                isControl = false;
-            }
-
-            FrameData frameData = !this.framesData.isEmpty() ? new FrameData(this.framesData.removeFirst()) : new FrameData();
             
-            // screen raw data isn't provided to sound-only AI
-	        if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
-	            this.ai.getScreenData(this.screenData);
-	        } else {
-	        	frameData.removeVisualData();
-	        }
-        	this.ai.getInformation(frameData, isControl);
-	        this.ai.getAudioData(this.audioData);
-	        
-	        this.ai.processing();
-	        this.setInput(this.ai.input());
+            if (isRoundEnd) {
+            	this.ai.roundEnd(roundResult);
+            	this.isRoundEnd = false;
+            	this.roundResult = null;
+            } else {
+            	boolean isControl;
+
+                try {
+                    isControl = this.framesData.getLast().getCharacter(this.playerNumber).isControl();
+                } catch (NullPointerException e) {
+                    // while game is not started
+                    isControl = false;
+                }
+
+                FrameData frameData = !this.framesData.isEmpty() ? new FrameData(this.framesData.removeFirst()) : new FrameData();
+                
+                // screen raw data isn't provided to sound-only AI
+    	        if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
+    	            this.ai.getScreenData(this.screenData);
+    	        } else {
+    	        	frameData.removeVisualData();
+    	        }
+            	this.ai.getInformation(frameData, isControl);
+    	        this.ai.getAudioData(this.audioData);
+    	        
+    	        this.ai.processing();
+    	        this.setInput(this.ai.input());
+            }
 	        
 	        ThreadController.getInstance().notifyEndProcess(this.playerNumber);
         }
@@ -214,7 +224,8 @@ public class AIController extends Thread {
      * @see RoundResult
      */
     public synchronized void informRoundResult(RoundResult roundResult) {
-    	this.ai.roundEnd(roundResult);
+    	this.isRoundEnd = true;
+    	this.roundResult = roundResult;
     }
 
     /**
