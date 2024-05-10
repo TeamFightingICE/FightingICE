@@ -80,7 +80,7 @@ Screening:
 
 ### Installation Guide:
 ---
-- To install DareFightingICE please visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-2.html).
+- To install DareFightingICE please visit this [link](https://github.com/TeamFightingICE/FightingICE/releases).
 - To install our sound generative AI interface, please visit this [link](https://github.com/TeamFightingICE/Generative-Sound-AI)
 
 ### <b>Prizes: (updated on March 26, 2024) </b>
