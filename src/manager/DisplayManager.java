@@ -221,8 +221,10 @@ public class DisplayManager {
 				glfwPollEvents();
 			}
 			
-			// Sync frame rate
-			FrameRateSync.sync(GameSetting.FPS);
+			if (!FlagSetting.fastModeFlag) {
+				// Sync frame rate
+				FrameRateSync.sync(GameSetting.FPS);
+			}
 		}
 	}
 

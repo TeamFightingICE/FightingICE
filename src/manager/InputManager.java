@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import aiinterface.AIController;
 import aiinterface.AIInterface;
+import aiinterface.SoundController;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import informationcontainer.AIContainer;
@@ -28,6 +29,7 @@ import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
+import service.SocketGenerativeSound;
 import service.SocketServer;
 import setting.FlagSetting;
 import setting.LaunchSetting;
@@ -56,6 +58,8 @@ public class InputManager {
 	 * AIコントローラを格納する配列．
 	 */
 	private AIController[] ais;
+	
+	private SoundController sound;
 
 	/**
 	 * ゲームのシーン名．
@@ -93,8 +97,6 @@ public class InputManager {
 	 * 1フレーム分のゲームの処理が終わったことを示すオブジェクト．
 	 */
 	private Object endFrame;
-	
-	private AudioData audioData;
 
 	/**
 	 * InputManagerクラスのクラスコンストラクタ．<br>
@@ -107,13 +109,13 @@ public class InputManager {
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		sceneName = GameSceneName.HOME_MENU;
 		this.predifinedAIs = new HashMap<String, AIInterface>();
+		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
 
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
 
 		this.endFrame = ThreadController.getInstance().getEndFrame();
-		this.audioData = new AudioData();
 	}
 
 	/**
@@ -223,7 +225,6 @@ public class InputManager {
 		}
 
 		this.deviceTypes = LaunchSetting.deviceTypes.clone();
-		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (this.deviceTypes[i] == DEVICE_TYPE_AI) {
 				if (this.predifinedAIs.containsKey(aiNames[i])) {
@@ -236,6 +237,13 @@ public class InputManager {
 			} else {
 				this.ais[i] = null;
 			}
+		}
+	}
+	
+	public void createSoundController() {
+		SocketGenerativeSound generativeSound = SocketServer.getInstance().getGenerativeSound();
+		if (!generativeSound.isCancelled()) {
+			this.sound = new SoundController(generativeSound);
 		}
 	}
 
@@ -256,6 +264,14 @@ public class InputManager {
 			}
 		}
 	}
+	
+	public void startSound(GameData gameData) {
+        if (this.sound != null) {
+        	Logger.getAnonymousLogger().log(Level.INFO, "Initialize Sound controller");
+            this.sound.initialize(ThreadController.getInstance().getSoundObject(), gameData);
+            this.sound.start();
+        }
+	}
 
 	/**
 	 * AIの動作を停止させる．
@@ -265,6 +281,7 @@ public class InputManager {
 		
 		this.deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
+		this.sound = null;
 	}
 
 	/**
@@ -283,12 +300,10 @@ public class InputManager {
 		return new Key(ai.getInput());
 	}
 	
-	public void setAudioData(AudioData audioData) {
-		this.audioData = audioData;
-	}
-	
 	public AudioData getAudioData() {
-		return this.audioData;
+		if (sound == null)
+			return new AudioData();
+		return new AudioData(sound.getInput());
 	}
 
 	/**
@@ -305,6 +320,7 @@ public class InputManager {
 	 * @see AudioData
 	 */
 	public void setFrameData(FrameData frameData, ScreenData screenData, AudioData audioData) {
+		// Game Playing AI
 		for (AIController ai : this.ais) {
 			if (ai != null) {
 				if (!frameData.getEmptyFlag()) {
@@ -317,11 +333,16 @@ public class InputManager {
 			}
 		}
 
-		ThreadController.getInstance().resetAllAIsObj();
+		// Sound Design AI
+		if (this.sound != null) {
+			this.sound.setFrameData(frameData);
+		}
+
+		ThreadController.getInstance().resetAllObjects();
 		if (FlagSetting.fastModeFlag) {
 			synchronized (this.endFrame) {
 				try {
-					this.endFrame.wait(20);
+					this.endFrame.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -344,18 +365,30 @@ public class InputManager {
 	 * @see RoundResult
 	 */
 	public void sendRoundResult(RoundResult roundResult) {
+		// Game Playing AI
 		for (AIController ai : this.ais) {
 			if (ai != null) {
 				ai.informRoundResult(roundResult);
 			}
 		}
+		
+		// Sound Design AI
+		if (this.sound != null) {
+			this.sound.informRoundResult(roundResult);
+		}
 	}
 	
 	public void gameEnd() {
+		// Game Playing AI
 		for (AIController ai : this.ais) {
 			if (ai != null) {
 				ai.gameEnd();
 			}
+		}
+		
+		// Sound Design AI
+		if (this.sound != null) {
+			this.sound.gameEnd();
 		}
 	}
 

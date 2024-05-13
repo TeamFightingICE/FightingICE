@@ -54,12 +54,13 @@ public class Grpc extends GameScene {
 			for (int i = 0; i < 2; i++) {
 				String aiName = game.getAIName(i == 0);
 				LaunchSetting.characterNames[i] = game.getCharacterName(i == 0);
-				if (aiName != null) {
+				if (aiName != null && !aiName.equalsIgnoreCase("Keyboard")) {
 					LaunchSetting.deviceTypes[i] = allAiNames.contains(aiName) 
 							? InputManager.DEVICE_TYPE_AI : InputManager.DEVICE_TYPE_GRPC;
 					LaunchSetting.aiNames[i] = aiName;
 				} else {
 					LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_KEYBOARD;
+					LaunchSetting.aiNames[i] = "Keyboard";
 				}
 			}
 			

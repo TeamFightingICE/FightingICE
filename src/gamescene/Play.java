@@ -21,7 +21,6 @@ import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
-import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import struct.AudioData;
@@ -154,10 +153,10 @@ public class Play extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 
-		SocketServer.getInstance().initialize(gameData);
-
 		InputManager.getInstance().createAIcontroller();
+		InputManager.getInstance().createSoundController();
 		InputManager.getInstance().startAI(gameData);
+		InputManager.getInstance().startSound(gameData);
 		
         Logger.getAnonymousLogger().log(Level.INFO, "AI controller is ready");
 	}
@@ -220,8 +219,6 @@ public class Play extends GameScene {
 
 		InputManager.getInstance().clear();
 		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), new AudioData());
-		
-		SocketServer.getInstance().initRound();
 		
 		String fileName = LogWriter.getInstance().createOutputFileName("./log/sound/", this.timeInfo + "_" + this.currentRound + ".wav");
 		WaveFileWriter.getInstance().initializeWaveFile(fileName);
@@ -312,7 +309,6 @@ public class Play extends GameScene {
 		
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
-		SocketServer.getInstance().processingGame(this.frameData, this.screenData, this.audioData);
 	}
 
 	/**
@@ -334,7 +330,6 @@ public class Play extends GameScene {
 
 				// AIに結果を渡す
 				InputManager.getInstance().sendRoundResult(roundResult);
-				SocketServer.getInstance().roundEnd(roundResult);
 				
 				this.currentRound++;
 				this.roundStartFlag = true;
@@ -356,7 +351,6 @@ public class Play extends GameScene {
 
 			// AIに結果を渡す
 			InputManager.getInstance().sendRoundResult(roundResult);
-			SocketServer.getInstance().roundEnd(roundResult);
 			
 			this.currentRound++;
 			this.roundStartFlag = true;
@@ -371,7 +365,6 @@ public class Play extends GameScene {
 	
 	private void processingGameEnd() {
 		InputManager.getInstance().gameEnd();
-		SocketServer.getInstance().gameEnd();
 	}
 
 	/**

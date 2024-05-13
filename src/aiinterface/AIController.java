@@ -3,7 +3,6 @@ package aiinterface;
 import java.util.LinkedList;
 
 import informationcontainer.RoundResult;
-import manager.InputManager;
 import setting.LaunchSetting;
 import struct.AudioData;
 import struct.FrameData;
@@ -16,7 +15,6 @@ import struct.ScreenData;
  */
 public class AIController extends Thread {
 
-	private char deviceType;
     /**
      * AIに実装すべきメソッドを定義するインタフェース．
      */
@@ -75,7 +73,6 @@ public class AIController extends Thread {
      */
     public AIController(AIInterface ai) {
         this.ai = ai;
-        this.deviceType = InputManager.DEVICE_TYPE_AI;
     }
     /**
      * 引数で与えられたパラメータをセットし，初期化を行う．
@@ -142,7 +139,7 @@ public class AIController extends Thread {
     	        this.setInput(this.ai.input());
             }
 	        
-	        ThreadController.getInstance().notifyEndProcess(this.playerNumber);
+	        ThreadController.getInstance().notifyEndAIProcess(this.playerNumber);
         }
     }
 
@@ -233,9 +230,7 @@ public class AIController extends Thread {
      */
     public synchronized void gameEnd() {
         this.isFighting = false;
-        if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-            this.ai.close();
-    	}
+        this.ai.close();
         synchronized (this.waitObj) {
             this.waitObj.notifyAll();
         }

@@ -3,6 +3,8 @@ package struct;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.protobuf.ByteString;
 
@@ -115,6 +117,11 @@ public class AudioData {
     
     public AudioData(byte[] rawDataAsBytes) {
     	this.init();
+    	
+    	if (rawDataAsBytes.length != 3200 && rawDataAsBytes.length != 6400) {
+    		rawDataAsBytes = new byte[6400];
+			Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
+		}
     	
     	if (rawDataAsBytes.length == 3200) {
     		this.rawShortDataAsBytes = rawDataAsBytes;

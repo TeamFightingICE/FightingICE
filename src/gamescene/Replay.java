@@ -18,7 +18,6 @@ import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
-import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -144,7 +143,9 @@ public class Replay extends GameScene {
 		this.audioBuffer = SoundManager.getInstance().createAudioBuffer();
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
-		SocketServer.getInstance().initialize(gameData);
+		
+		InputManager.getInstance().createSoundController();
+		InputManager.getInstance().startSound(gameData);
 		
 		try {
 			String replayPath = "./log/replay/" + LaunchSetting.replayName + ".dat";
@@ -257,6 +258,7 @@ public class Replay extends GameScene {
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		InputManager.getInstance().setFrameData(frameData, screenData, audioData);
 		
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();
@@ -270,7 +272,6 @@ public class Replay extends GameScene {
 			this.audioData = InputManager.getInstance().getAudioData();
 		}
 		
-		SocketServer.getInstance().processingGame(frameData, null, null);
 		SoundManager.getInstance().playback(audioSource, audioData.getRawShortDataAsBytes());
 	}
 
@@ -286,7 +287,7 @@ public class Replay extends GameScene {
 				(double) (currentFrameTime - roundStartTime) / 1e9, (double) (this.nowFrame + 1) / 60));
 		
 		RoundResult roundResult = new RoundResult(this.frameData);
-		SocketServer.getInstance().roundEnd(roundResult);
+		InputManager.getInstance().sendRoundResult(roundResult);
 
 		SoundManager.getInstance().stopAll();
 		SoundManager.getInstance().stopPlayback(audioSource);
@@ -297,7 +298,7 @@ public class Replay extends GameScene {
 	}
 	
 	private void processingGameEnd() {
-		SocketServer.getInstance().gameEnd();
+		
 	}
 
 	/**
@@ -328,8 +329,6 @@ public class Replay extends GameScene {
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 		this.isFinished = false;
-		
-		SocketServer.getInstance().initRound();
 		
 		if (FlagSetting.enableReplaySound) {
 			String soundPath = "./log/sound/" + LaunchSetting.replayName + "_" + this.currentRound + ".wav";

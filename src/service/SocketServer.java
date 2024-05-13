@@ -5,24 +5,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import grpc.GrpcGame;
-import grpc.ObserverGameState;
-import informationcontainer.RoundResult;
 import protoc.EnumProto.GrpcStatusCode;
 import protoc.ServiceProto.InitializeRequest;
 import protoc.ServiceProto.RunGameRequest;
 import protoc.ServiceProto.RunGameResponse;
 import setting.FlagSetting;
-import struct.AudioData;
-import struct.FrameData;
-import struct.GameData;
-import struct.ScreenData;
 import util.SocketUtil;
 
 public class SocketServer {
@@ -32,8 +23,8 @@ public class SocketServer {
 	private GrpcGame game;
 	private ServerSocket server;
 	private Thread serverThread;
-	private List<SocketClientHandler> clientList;
 	private SocketPlayer[] players;
+	private SocketGenerativeSound generativeSound;
 	
 	public static SocketServer getInstance() {
         return SocketServerHolder.instance;
@@ -46,8 +37,8 @@ public class SocketServer {
 	public SocketServer() {
 		this.open = false;
 		this.game = new GrpcGame();
-		this.clientList = new ArrayList<>();
 		this.players = new SocketPlayer[] { new SocketPlayer(), new SocketPlayer() };
+		this.generativeSound = new SocketGenerativeSound();
 	}
 	
 	public boolean isOpen() {
@@ -64,6 +55,10 @@ public class SocketServer {
 	
 	public SocketPlayer getPlayer(int index) {
 		return this.players[index];
+	}
+	
+	public SocketGenerativeSound getGenerativeSound() {
+		return this.generativeSound;
 	}
 	
 	public RunGameResponse callRunGame(RunGameRequest request) {
@@ -132,8 +127,7 @@ public class SocketServer {
 							Logger.getAnonymousLogger().log(Level.INFO, "Received run game request");
 						} else if (data[0] == 3) {
 							// Generative Sound Gateway
-							SocketClientHandler clientHandler = new SocketClientHandler(client, SocketClientType.GENERATIVE_SOUND_AGENT);
-							clientList.add(clientHandler);
+							generativeSound.initializeSocket(client);
 							Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
 						}
 					} catch (IOException e) {
@@ -149,74 +143,21 @@ public class SocketServer {
 	}
 	
 	public void stopServer() throws IOException {
-		for (SocketClientHandler client: clientList) {
-			client.close();
-		}
 		serverThread.interrupt();
 		server.close();
 		this.close();
 		
 		serverThread = null;
-		clientList.clear();
 		
 		this.open = false;
     	Logger.getAnonymousLogger().log(Level.INFO, "Socket server is stopped");
-	}
-	
-	private void removeCancelledClients() {
-		Iterator<SocketClientHandler> iter = clientList.iterator();
-		while (iter.hasNext()) {
-			SocketClientHandler client = iter.next();
-			if (client.isCancelled()) {
-				iter.remove();
-			}
-		}
-	}
-	
-	public void initialize(GameData gameData) {
-		removeCancelledClients();
-		byte[] byteArray = ObserverGameState.newInitializeState(gameData).toProto().toByteArray();
-		for (SocketClientHandler client: clientList) {
-			client.produce(byteArray, false);
-		}
-	}
-	
-	public void initRound() {
-		removeCancelledClients();
-		byte[] byteArray = ObserverGameState.newInitRoundState().toProto().toByteArray();
-		for (SocketClientHandler client: clientList) {
-			client.produce(byteArray, false);
-		}
-	}
-	
-	public void processingGame(FrameData frameData, ScreenData screenData, AudioData audioData) {
-		removeCancelledClients();
-		byte[] byteArray = ObserverGameState.newProcessingState(frameData, screenData, audioData).toProto().toByteArray();
-		for (SocketClientHandler client: clientList) {
-			client.produce(byteArray, true);
-		}
-	}
-	
-	public void roundEnd(RoundResult roundResult) {
-		removeCancelledClients();
-		byte[] byteArray = ObserverGameState.newRoundEndState(roundResult).toProto().toByteArray();
-		for (SocketClientHandler client: clientList) {
-			client.produce(byteArray, false);
-		}
-	}
-	
-	public void gameEnd() {
-		removeCancelledClients();
-		byte[] byteArray = ObserverGameState.newGameEndState().toProto().toByteArray();
-		for (SocketClientHandler client: clientList) {
-			client.produce(byteArray, false);
-		}
 	}
 	
 	public void close() {
 		for (int i = 0; i < 2; i++) {
 			this.players[i].cancel();;
 		}
+		this.generativeSound.cancel();
 	}
 	
 }

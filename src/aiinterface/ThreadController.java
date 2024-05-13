@@ -1,5 +1,8 @@
 package aiinterface;
 
+import manager.InputManager;
+import setting.LaunchSetting;
+
 /**
  * AIの実行のタイミングなどのスレッド関連の処理を扱うクラス．
  */
@@ -19,6 +22,8 @@ public class ThreadController {
 	 * P2のAIの処理の開始のタイミングを管理するオブジェクト．
 	 */
 	private Object AI2;
+	
+	private Object sound;
 
 	/**
 	 * P1のAIの処理が終わったかどうかを表すフラグ．<br>
@@ -31,6 +36,8 @@ public class ThreadController {
 	 * Fastmodeのときのみ使用される．
 	 */
 	private boolean processedAI2;
+	
+	private boolean processedSound;
 
 	/**
 	 * 各AIの処理を同時に始めるための同期用オブジェクト
@@ -43,6 +50,7 @@ public class ThreadController {
 	private ThreadController() {
 		this.AI1 = new Object();
 		this.AI2 = new Object();
+		this.sound = new Object();
 		this.endFrame = new Object();
 
 		resetProcessedFlag();
@@ -60,12 +68,15 @@ public class ThreadController {
 	/**
 	 * 各AIの処理を再開させる．
 	 */
-	public void resetAllAIsObj() {
+	public void resetAllObjects() {
 		synchronized (this.AI1) {
 			this.AI1.notifyAll();
 		}
 		synchronized (this.AI2) {
 			this.AI2.notifyAll();
+		}
+		synchronized (this.sound) {
+			this.sound.notifyAll();
 		}
 	}
 
@@ -84,6 +95,10 @@ public class ThreadController {
 		else
 			return this.AI2;
 	}
+	
+	public Object getSoundObject() {
+		return this.sound;
+	}
 
 	/**
 	 * 1フレーム分のゲームの処理が終わったことを示すオブジェクトを返す．
@@ -101,6 +116,7 @@ public class ThreadController {
 	private void resetProcessedFlag() {
 		this.processedAI1 = false;
 		this.processedAI2 = false;
+		this.processedSound = false;
 	}
 
 	/**
@@ -112,13 +128,32 @@ public class ThreadController {
 	 *            The character's side flag.<br>
 	 *            {@code true} if the character is P1, or {@code false} if P2.
 	 */
-	synchronized public void notifyEndProcess(boolean playerNumber) {
+	synchronized public void notifyEndAIProcess(boolean playerNumber) {
 		if (playerNumber) {
 			this.processedAI1 = true;
 		} else {
 			this.processedAI2 = true;
 		}
 		this.checkEndFrame();
+	}
+	
+	synchronized public void notifyEndSoundProcess() {
+		this.processedSound = true;
+		this.checkEndFrame();
+	}
+	
+	private boolean isAIProcessed() {
+		boolean ans = true;
+		for (int i = 0; i < 2; i++) {
+			char deviceType = LaunchSetting.deviceTypes[i];
+			boolean processedAI = i == 0 ? this.processedAI1 : this.processedAI2;
+			ans = ans && deviceType == InputManager.DEVICE_TYPE_KEYBOARD || processedAI;
+		}
+		return ans;
+	}
+	
+	private boolean isSoundProcessed() {
+		return this.processedSound;
 	}
 
 	/**
@@ -127,12 +162,11 @@ public class ThreadController {
 	 * Fastmodeのときのみ使用される．
 	 */
 	private void checkEndFrame() {
-		if (this.processedAI1 && this.processedAI2) {
+		if (isAIProcessed() && isSoundProcessed()) {
 			synchronized (this.endFrame) {
 				this.endFrame.notifyAll();
 			}
-			this.processedAI1 = false;
-			this.processedAI2 = false;
+			resetProcessedFlag();
 		}
 	}
 
