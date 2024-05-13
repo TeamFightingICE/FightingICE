@@ -96,10 +96,12 @@ public class AudioData {
         int bufferSize = (audioData.getRawData() != null && audioData.getRawData()[0].length > 0) ? audioData.getRawData()[0].length : 0;
         this.init();
         if (bufferSize > 0) {
+        	this.rawShortData = audioData.getRawShortData();
             this.rawFloatData = audioData.getRawData();
+            this.rawFloatDataAsBytes = audioData.getRawDataAsBytes();
+            this.rawShortDataAsBytes = audioData.getRawShortDataAsBytes();
             this.fftData = audioData.getFftData();
             this.spectrogramData = audioData.getSpectrogramData();
-            this.rawFloatDataAsBytes = audioData.getRawDataAsBytes();
             this.spectrogramDataAsBytes = audioData.getSpectrogramDataAsBytes();
         }
     }
@@ -156,6 +158,10 @@ public class AudioData {
      */
     public float[][] getRawData() {
         return rawFloatData;
+    }
+    
+    public short[][] getRawShortData() {
+    	return rawShortData;
     }
 
     /**
