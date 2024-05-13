@@ -23,6 +23,7 @@ import org.lwjgl.BufferUtils;
 import render.audio.SoundRender;
 import setting.FlagSetting;
 import setting.GameSetting;
+import setting.LaunchSetting;
 import struct.AudioBuffer;
 import struct.AudioSource;
 
@@ -144,7 +145,7 @@ public class SoundManager {
         // sound renderers
         this.soundRenderers = new ArrayList<>();
         
-    	if (FlagSetting.enableGraphic) {
+    	if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
     		if (!FlagSetting.muteFlag) {
             	SoundRender defaultRenderer = SoundRender.createDefaultRenderer();
                 this.soundRenderers.add(defaultRenderer);

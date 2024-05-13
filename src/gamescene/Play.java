@@ -23,6 +23,7 @@ import manager.InputManager;
 import manager.SoundManager;
 import setting.FlagSetting;
 import setting.GameSetting;
+import setting.LaunchSetting;
 import struct.AudioData;
 import struct.AudioSource;
 import struct.FrameData;
@@ -163,6 +164,8 @@ public class Play extends GameScene {
 
 	@Override
 	public void update() {
+		GraphicManager.getInstance().resetScreen();
+		
 		if (this.currentRound <= GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
@@ -229,10 +232,7 @@ public class Play extends GameScene {
 	 */
 	private void processingBreakTime() {
 		this.roundStartTime = System.nanoTime();
-		
-		GraphicManager.getInstance().resetScreen();
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
-		GraphicManager.getInstance().disposeScreenGraphic();
 	}
 	
 	/**
@@ -281,20 +281,19 @@ public class Play extends GameScene {
 			processingRoundEnd();
 			return;
 		}
-
-		GraphicManager.getInstance().resetScreen();
 		
-		// 画面をDrawerクラスで描画
-		ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
-				this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound, FlagSetting.visualVisibleOnRender);
-		
-		if (FlagSetting.showFPS && FlagSetting.visualVisibleOnRender) {
-			double fps = (this.nowFrame + 1) / ((double) (currentFrameTime - roundStartTime) / 1e9);
-			GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+			// 画面をDrawerクラスで描画
+			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
+					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound, FlagSetting.visualVisibleOnRender);
+			
+			if (FlagSetting.showFPS && FlagSetting.visualVisibleOnRender) {
+				double fps = (this.nowFrame + 1) / ((double) (currentFrameTime - roundStartTime) / 1e9);
+				GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
+			}
+			
+			this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 		}
-		
-		GraphicManager.getInstance().disposeScreenGraphic();
-		this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 		
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();

@@ -11,7 +11,6 @@ import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
-import static org.lwjgl.glfw.GLFW.glfwHideWindow;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
@@ -52,6 +51,7 @@ import org.lwjgl.system.MemoryStack;
 import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
+import setting.LaunchSetting;
 import util.FrameRateSync;
 import util.WaveFileWriter;
 
@@ -97,7 +97,7 @@ public class DisplayManager {
 	 * ウィンドウを作成する際の初期化及びOpenGLの初期化処理を行う．
 	 */
 	private void initialize() {
-		if (!FlagSetting.enableGraphic) return;
+		if (!LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) return;
 		
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
@@ -147,7 +147,7 @@ public class DisplayManager {
 		glfwMakeContextCurrent(this.window);
 
 		int sync;
-		if (FlagSetting.enableVsync && FlagSetting.enableGraphic && !FlagSetting.fastModeFlag) {
+		if (FlagSetting.enableVsync && !FlagSetting.fastModeFlag) {
 			sync = 1;
 		} else {
 			sync = 0;
@@ -156,15 +156,9 @@ public class DisplayManager {
 		// Enable v-sync
 		glfwSwapInterval(sync);
 
-		if (FlagSetting.enableGraphic) {
-			// Makes the window visible
-			glfwShowWindow(this.window);
-			Logger.getAnonymousLogger().log(Level.INFO, "Create Window " + width + "x" + height);
-		} else {
-			// Makes the window invisible
-			glfwHideWindow(this.window);
-			Logger.getAnonymousLogger().log(Level.INFO, "Disable window mode");
-		}
+		// Makes the window visible
+		glfwShowWindow(this.window);
+		Logger.getAnonymousLogger().log(Level.INFO, "Create Window " + width + "x" + height);
 		
 		glfwSetTime(0.0);
 
@@ -181,7 +175,7 @@ public class DisplayManager {
 	}
 	
 	private boolean shouldClose() {
-		if (FlagSetting.enableGraphic) {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
 			return glfwWindowShouldClose(this.window);
 		} else {
 			return false;
@@ -212,7 +206,7 @@ public class DisplayManager {
 			// バックバッファに描画する
 			GraphicManager.getInstance().render();
 			
-			if (FlagSetting.enableGraphic) {
+			if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
 				// バックバッファとフレームバッファを入れ替える
 				glfwSwapBuffers(this.window);
 			   	
@@ -242,7 +236,7 @@ public class DisplayManager {
 			Logger.getAnonymousLogger().log(Level.INFO, "Fail to stop socket server");
 		}
 
-		if (FlagSetting.enableGraphic) {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
 			// Free the window callbacks and destroy the window
 			glfwFreeCallbacks(this.window);
 			glfwDestroyWindow(this.window);

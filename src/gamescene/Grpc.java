@@ -42,9 +42,7 @@ public class Grpc extends GameScene {
 
 	@Override
 	public void update() {
-		if (FlagSetting.enableGraphic) {
-			GraphicManager.getInstance().drawString("Waiting to launch a game", 330, 200);
-		}
+		GraphicManager.getInstance().drawString("Waiting to launch a game", 330, 200);
 		
 		if (this.game.getRunFlag()) {
 			this.game.setRunFlag(false);

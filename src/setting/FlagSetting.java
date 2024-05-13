@@ -61,11 +61,6 @@ public class FlagSetting {
     public static boolean fastModeFlag = false;
 
     /**
-     * ゲームウィンドウを生成するかどうかのフラグ．
-     */
-    public static boolean enableGraphic = true;
-
-    /**
      * ラウンド終了時にスローモーションを発生させるかどうかのフラグ
      */
     public static boolean slowmotion = false;

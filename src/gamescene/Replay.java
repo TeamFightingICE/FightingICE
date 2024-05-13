@@ -159,6 +159,8 @@ public class Replay extends GameScene {
 
 	@Override
 	public void update() {
+		GraphicManager.getInstance().resetScreen();
+		
 		if (this.currentRound <= GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
@@ -186,7 +188,6 @@ public class Replay extends GameScene {
 				}
 				
 				if (!this.isFinished) {
-					GraphicManager.getInstance().resetScreen();
 					// 画面をDrawerクラスで描画
 					ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(),
 							this.fighting.getProjectileDeque(), this.fighting.getHitEffectList(),
@@ -199,7 +200,6 @@ public class Replay extends GameScene {
 						GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
 					}
 					
-					GraphicManager.getInstance().disposeScreenGraphic();
 					this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 				}
 			}
@@ -237,10 +237,7 @@ public class Replay extends GameScene {
 	 */
 	private void processingBreakTime() {
 		this.roundStartTime = System.nanoTime();
-		
-		GraphicManager.getInstance().resetScreen();
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
-		GraphicManager.getInstance().disposeScreenGraphic();
 	}
 
 	/**

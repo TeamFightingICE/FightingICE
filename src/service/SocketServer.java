@@ -139,7 +139,6 @@ public class SocketServer {
 		serverThread.start();
 		
 		this.open = true;
-    	Logger.getAnonymousLogger().log(Level.INFO, "Socket server is started, listening on " + serverPort);
 	}
 	
 	public void stopServer() throws IOException {

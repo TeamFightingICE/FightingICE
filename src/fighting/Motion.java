@@ -224,9 +224,10 @@ public class Motion {
 		this.motionLevel = Integer.valueOf(data[30]);
 		this.control = Boolean.valueOf(data[31]);
 		this.landingFlag = Boolean.valueOf(data[32]);
-		// data[33]は読み込む画像が入ったディレクトリ名
-		//
-		setMotionImage(characterName, playerIndex);
+		
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+			setMotionImage(characterName, playerIndex);
+		}
 	}
 
 	/**

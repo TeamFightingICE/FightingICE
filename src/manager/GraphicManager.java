@@ -23,8 +23,8 @@ import render.ImageTask;
 import render.QuadTask;
 import render.RenderTask;
 import render.StringTask;
-import setting.FlagSetting;
 import setting.GameSetting;
+import setting.LaunchSetting;
 
 /**
  * 画像の描画を管理するマネージャークラス．
@@ -208,7 +208,7 @@ public class GraphicManager {
 	 * @see DisplayManager#gameLoop(GameManager)
 	 */
 	public void render() {
-		if (FlagSetting.enableGraphic) {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
 			// 黒で塗りつぶすように指定
 			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			// 指定した色でバッファを塗りつぶすことでバッファクリアを行う
@@ -261,9 +261,11 @@ public class GraphicManager {
 	 *            画像の左右の向き(右がtrue)
 	 */
 	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty, boolean shouldRender) {
+		if (!LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) return;
+		
 		this.drawImageInScreenData(img, x, y, sizeX, sizeY, direction, tx, ty);
 		
-		if (FlagSetting.enableGraphic && shouldRender) {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE) && shouldRender) {
 			ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction);
 			this.renderTaskList.add(task);
 		}
@@ -295,9 +297,11 @@ public class GraphicManager {
 	}
 	
 	public void drawString(String string, int x, int y, boolean shouldRender) {
+		if (!LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) return;
+		
 		this.drawStringInScreenData(string, x, y);
 		
-		if (FlagSetting.enableGraphic && shouldRender) {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE) && shouldRender) {
 			StringTask task = new StringTask(letterImage, string, x, y);
 			this.renderTaskList.add(task);
 		}
@@ -340,9 +344,11 @@ public class GraphicManager {
 	}
 	
 	public void drawQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha, boolean shouldRender) {
+		if (!LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) return;
+		
 		this.drawQuadInScreenData(x, y, sizeX, sizeY, red, green, blue, alpha);
 		
-		if (FlagSetting.enableGraphic && shouldRender) {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE) && shouldRender) {
 			QuadTask task = new QuadTask(QuadTask.FILLED_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 			this.renderTaskList.add(task);
 		}
@@ -390,9 +396,11 @@ public class GraphicManager {
 	}
 	
 	public void drawLineQuad(int x, int y, int sizeX, int sizeY, float red, float green, float blue, float alpha, boolean shouldRender) {
+		if (!LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) return;
+		
 		this.drawLineQuadinScreenData(x, y, sizeX, sizeY, red, green, blue, alpha);
 		
-		if (FlagSetting.enableGraphic && shouldRender) {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE) && shouldRender) {
 			QuadTask task = new QuadTask(QuadTask.LINE_QUAD, x, y, sizeX, sizeY, red, green, blue, alpha);
 			this.renderTaskList.add(task);
 		}
@@ -414,6 +422,8 @@ public class GraphicManager {
 	}
 
 	public void resetScreen() {
+		disposeScreenGraphic();
+		
 		screen = new BufferedImage(screen.getWidth(), screen.getHeight(), BufferedImage.TYPE_INT_RGB);
 		screenGraphic = screen.createGraphics();
 		screenGraphic.setColor(new Color(128, 128, 128));

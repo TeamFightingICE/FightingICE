@@ -85,6 +85,8 @@ public class ResourceLoader {
 	 * ゲームに必要な画像と音声をまとめて読み込むメソッド．
 	 */
 	public void loadResource() {
+		if (!LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) return;
+		
 		Logger.getAnonymousLogger().log(Level.INFO, "Loading the resources");
 		String graphicPath = "./data/graphics/";
 		String characterGraphicPath = "./data/characters/";
@@ -437,7 +439,7 @@ public class ResourceLoader {
 		int[] pixels = new int[bimg.getWidth() * bimg.getHeight()];
 		bimg.getRGB(0, 0, bimg.getWidth(), bimg.getHeight(), pixels, 0, bimg.getWidth());
 		
-		if (FlagSetting.enableGraphic) {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
 			// Create a ByteBuffer
 			ByteBuffer buffer = ByteBuffer.allocateDirect(bimg.getWidth() * bimg.getHeight() * 4)
 					.order(ByteOrder.nativeOrder());

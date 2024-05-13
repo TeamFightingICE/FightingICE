@@ -33,7 +33,7 @@ package util;
  
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 
-import setting.FlagSetting;
+import setting.LaunchSetting;
  
 /**
 * A highly accurate sync method that continually adapts to the system 
@@ -141,7 +141,7 @@ public class FrameRateSync {
 	 * @return will return the current time in nano's
 	 */
 	private long getTime() {
-		return FlagSetting.enableGraphic ? (long)(glfwGetTime() * NANOS_IN_SECOND) : System.nanoTime();
+		return LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE) ? (long)(glfwGetTime() * NANOS_IN_SECOND) : System.nanoTime();
 	}
  
 	private class RunningAvg {

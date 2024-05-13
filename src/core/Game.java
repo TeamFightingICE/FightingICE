@@ -107,8 +107,13 @@ public class Game extends GameManager {
                 case "--show-fps":
                 	FlagSetting.showFPS = true;
                 	break;
-                case "--no-graphic":
-                    FlagSetting.enableGraphic = false;
+                case "--lightweight-mode":
+                    LaunchSetting.processingMode = LaunchSetting.LIGHTWEIGHT_MODE;
+                    // FlagSetting.muteFlag = true;
+                    FlagSetting.automationFlag = true;
+                    break;
+                case "--headless-mode":
+                    LaunchSetting.processingMode = LaunchSetting.HEADLESS_MODE;
                     // FlagSetting.muteFlag = true;
                     FlagSetting.automationFlag = true;
                     break;
@@ -187,14 +192,17 @@ public class Game extends GameManager {
 
     @Override
     public void initialize() {
-        // 使用フォントの初期化
-        Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-        GraphicManager.getInstance().setLetterFont(new LetterImage(awtFont, true));
+        if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+        	// 使用フォントの初期化
+            Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+            GraphicManager.getInstance().setLetterFont(new LetterImage(awtFont, true));
+        }
 
         createLogDirectories();
 
         try {
 			SocketServer.getInstance().startServer(LaunchSetting.serverPort);
+	    	Logger.getAnonymousLogger().log(Level.INFO, "Socket server is started, listening on " + LaunchSetting.serverPort);
 		} catch (IOException e) {
             Logger.getAnonymousLogger().log(Level.INFO, "Fail to start gRPC server");
 		}
