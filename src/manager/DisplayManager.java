@@ -160,9 +160,6 @@ public class DisplayManager {
 			// Sets the clear color
 			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			initGL();
-		} else {
-			Thread closeHook = new Thread(() -> this.close());
-			Runtime.getRuntime().addShutdownHook(closeHook);
 		}
 	}
 	
