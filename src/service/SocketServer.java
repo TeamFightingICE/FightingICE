@@ -65,10 +65,10 @@ public class SocketServer {
 		GrpcStatusCode statusCode;
 		String responseMessage;
 		
-		if (!FlagSetting.enableAuto) {
+		if (!FlagSetting.enablePyftgMode) {
 			statusCode = GrpcStatusCode.FAILED;
 			responseMessage = "The game is not in auto mode.";
-		} else if (!FlagSetting.isAutoReady) {
+		} else if (!FlagSetting.isPyftgReady) {
 			statusCode = GrpcStatusCode.FAILED;
 			responseMessage = "The game is not ready for running the game.";
 		} else {
@@ -101,40 +101,35 @@ public class SocketServer {
 		this.serverPort = serverPort;
 		server = new ServerSocket(serverPort);
 		
-		serverThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (!Thread.currentThread().isInterrupted()) {
-					try {
-						Socket client = server.accept();
-						DataInputStream din = new DataInputStream(client.getInputStream());
-						DataOutputStream dout = new DataOutputStream(client.getOutputStream());
-						byte[] data = SocketUtil.socketRecv(din, 1);
-						
-						if (data[0] == 1) {
-							// Play Agent Gateway
-							byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
-							InitializeRequest request = InitializeRequest.parseFrom(requestAsBytes);
-							players[request.getPlayerNumber() ? 0 : 1].initializeSocket(client, request);
-							Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Game Playing AI");
-						} else if (data[0] == 2) {
-							// Run Game Gateway
-							byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
-							RunGameRequest request = RunGameRequest.parseFrom(requestAsBytes);
-							RunGameResponse response = callRunGame(request);
-							byte[] responseAsBytes = response.toByteArray();
-							SocketUtil.socketSend(dout, responseAsBytes, true);
-							Logger.getAnonymousLogger().log(Level.INFO, "Received run game request");
-						} else if (data[0] == 3) {
-							// Generative Sound Gateway
-							byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
-							InitializeRequest request = InitializeRequest.parseFrom(requestAsBytes);
-							generativeSound.initializeSocket(client);
-							Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
-						}
-					} catch (IOException e) {
-						if (!Thread.currentThread().isInterrupted()) Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
+		serverThread = new Thread(() -> {
+			while (!Thread.currentThread().isInterrupted()) {
+				try {
+					Socket client = server.accept();
+					DataInputStream din = new DataInputStream(client.getInputStream());
+					DataOutputStream dout = new DataOutputStream(client.getOutputStream());
+					byte[] data = SocketUtil.socketRecv(din, 1);
+					
+					if (data[0] == 1) {
+						// Play Agent Gateway
+						byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
+						InitializeRequest request = InitializeRequest.parseFrom(requestAsBytes);
+						players[request.getPlayerNumber() ? 0 : 1].initializeSocket(client, request);
+						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Game Playing AI");
+					} else if (data[0] == 2) {
+						// Run Game Gateway
+						byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
+						RunGameRequest request = RunGameRequest.parseFrom(requestAsBytes);
+						RunGameResponse response = callRunGame(request);
+						byte[] responseAsBytes = response.toByteArray();
+						SocketUtil.socketSend(dout, responseAsBytes, true);
+						Logger.getAnonymousLogger().log(Level.INFO, "Received run game request");
+					} else if (data[0] == 3) {
+						// Generative Sound Gateway
+						generativeSound.initializeSocket(client);
+						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
 					}
+				} catch (IOException e) {
+					if (!Thread.currentThread().isInterrupted()) Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
 				}
 			}
 		});

@@ -20,7 +20,6 @@ import static org.lwjgl.glfw.GLFW.glfwSetTime;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
@@ -97,81 +96,74 @@ public class DisplayManager {
 	 * ウィンドウを作成する際の初期化及びOpenGLの初期化処理を行う．
 	 */
 	private void initialize() {
-		if (!LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) return;
-		
-		// Setup an error callback. The default implementation
-		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(System.err).set();
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
+			// Setup an error callback. The default implementation
+			// will print the error message in System.err.
+			GLFWErrorCallback.createPrint(System.err).set();
 
-		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if (!glfwInit()) {
-			throw new IllegalStateException("Unable to initialize GLFW");
-		}
+			// Initialize GLFW. Most GLFW functions will not work before doing this.
+			if (!glfwInit()) {
+				throw new IllegalStateException("Unable to initialize GLFW");
+			}
 
-		// GLFWの設定
-		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-		System.setProperty("java.awt.headless", "true");
+			// GLFWの設定
+			glfwDefaultWindowHints();
+			glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+			glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+			System.setProperty("java.awt.headless", "true");
 
-		// windowの作成
-		short width = GameSetting.STAGE_WIDTH;
-		short height = GameSetting.STAGE_HEIGHT;
-		String title = GameSetting.TITLE_NAME;
-		this.window = glfwCreateWindow(width, height, title, NULL, NULL);
-		if (this.window == NULL) {
-			throw new RuntimeException("Failed to create the GLFW window");
-		}
+			// windowの作成
+			short width = GameSetting.STAGE_WIDTH;
+			short height = GameSetting.STAGE_HEIGHT;
+			String title = GameSetting.TITLE_NAME;
+			this.window = glfwCreateWindow(width, height, title, NULL, NULL);
+			if (this.window == NULL) {
+				throw new RuntimeException("Failed to create the GLFW window");
+			}
 
-		// Setup a key callback. It will be called every time a key is pressed,
-		// repeated or released.
-		glfwSetKeyCallback(this.window, InputManager.getInstance().getKeyboard());
+			// Setup a key callback. It will be called every time a key is pressed,
+			// repeated or released.
+			glfwSetKeyCallback(this.window, InputManager.getInstance().getKeyboard());
 
-		// Gets the thread stack and push a new frame
-		try (MemoryStack stack = stackPush()) {
-			IntBuffer pWidth = stack.mallocInt(1); // int*
-			IntBuffer pHeight = stack.mallocInt(1); // int*
+			// Gets the thread stack and push a new frame
+			try (MemoryStack stack = stackPush()) {
+				IntBuffer pWidth = stack.mallocInt(1); // int*
+				IntBuffer pHeight = stack.mallocInt(1); // int*
 
-			// Gets the window size passed to glfwCreateWindow
-			glfwGetWindowSize(this.window, pWidth, pHeight);
+				// Gets the window size passed to glfwCreateWindow
+				glfwGetWindowSize(this.window, pWidth, pHeight);
 
-			// Gets the resolution of the primary monitor
-			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+				// Gets the resolution of the primary monitor
+				GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-			// Center the window
-			glfwSetWindowPos(this.window, (vidmode.width() - pWidth.get(0)) / 2,
-					(vidmode.height() - pHeight.get(0)) / 2);
-		} // the stack frame is popped automatically
+				// Center the window
+				glfwSetWindowPos(this.window, (vidmode.width() - pWidth.get(0)) / 2,
+						(vidmode.height() - pHeight.get(0)) / 2);
+			} // the stack frame is popped automatically
 
-		// Makes the OpenGL context current
-		glfwMakeContextCurrent(this.window);
+			// Makes the OpenGL context current
+			glfwMakeContextCurrent(this.window);
 
-		int sync;
-		if (FlagSetting.enableVsync && !FlagSetting.fastModeFlag) {
-			sync = 1;
+			// Makes the window visible
+			glfwShowWindow(this.window);
+			Logger.getAnonymousLogger().log(Level.INFO, "Create Window " + width + "x" + height);
+			
+			glfwSetTime(0.0);
+
+			// This line is critical for LWJGL's interoperation with GLFW's
+			// OpenGL context, or any context that is managed externally.
+			// LWJGL detects the context that is current in the current thread,
+			// creates the GLCapabilities instance and makes the OpenGL
+			// bindings available for use.
+			GL.createCapabilities();
+
+			// Sets the clear color
+			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			initGL();
 		} else {
-			sync = 0;
+			Thread closeHook = new Thread(() -> this.close());
+			Runtime.getRuntime().addShutdownHook(closeHook);
 		}
-
-		// Enable v-sync
-		glfwSwapInterval(sync);
-
-		// Makes the window visible
-		glfwShowWindow(this.window);
-		Logger.getAnonymousLogger().log(Level.INFO, "Create Window " + width + "x" + height);
-		
-		glfwSetTime(0.0);
-
-		// This line is critical for LWJGL's interoperation with GLFW's
-		// OpenGL context, or any context that is managed externally.
-		// LWJGL detects the context that is current in the current thread,
-		// creates the GLCapabilities instance and makes the OpenGL
-		// bindings available for use.
-		GL.createCapabilities();
-
-		// Sets the clear color
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		initGL();
 	}
 	
 	private boolean shouldClose() {
@@ -215,7 +207,7 @@ public class DisplayManager {
 				glfwPollEvents();
 			}
 			
-			if (!FlagSetting.fastModeFlag) {
+			if (!FlagSetting.inputSyncFlag) {
 				// Sync frame rate
 				FrameRateSync.sync(GameSetting.FPS);
 			}

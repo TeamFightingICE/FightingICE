@@ -35,7 +35,7 @@ public class Grpc extends GameScene {
 	@Override
 	public void initialize() {
 		this.game = SocketServer.getInstance().getGame();
-		FlagSetting.isAutoReady = true;
+		FlagSetting.isPyftgReady = true;
 		
 		Logger.getAnonymousLogger().log(Level.INFO, "Waiting to launch a game");
 	}
@@ -46,7 +46,7 @@ public class Grpc extends GameScene {
 		
 		if (this.game.getRunFlag()) {
 			this.game.setRunFlag(false);
-			FlagSetting.isAutoReady = false;
+			FlagSetting.isPyftgReady = false;
 
 			List<String> allAiNames = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
 			for (int i = 0; i < 2; i++) {

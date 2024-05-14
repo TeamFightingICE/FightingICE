@@ -34,6 +34,8 @@ public class SoundController extends Thread {
     	this.waitObj = waitFrame;
         this.isFighting = true;
         this.isRoundEnd = false;
+        
+        this.ai.initialize(gameData);
     }
 	
 	@Override
@@ -62,7 +64,6 @@ public class SoundController extends Thread {
 	}
 	
 	public synchronized void setFrameData(FrameData frameData) {
-		System.out.println("Frame Number: " + frameData.getFramesNumber());
         this.frameData = frameData;
     }
 	
@@ -75,7 +76,7 @@ public class SoundController extends Thread {
 	}
 	
 	public synchronized void setInput(AudioData input) {
-        this.audioData = new AudioData(input);
+        this.audioData = input;
     }
 	
 	public synchronized void clear() {

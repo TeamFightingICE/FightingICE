@@ -99,19 +99,10 @@ public class SocketGenerativeSound implements SoundDesignAIInterface {
   				.setAudioData(this.audioData.toProto());
 		
 		try {
-			long start, end;
-        	System.out.println(frameData.getFramesNumber());
-        	start = System.nanoTime();
 			SocketUtil.socketSend(dout, new byte[] { 1 }, false);
 			SocketUtil.socketSend(dout, builder.build().toByteArray(), true);
-        	end = System.nanoTime();
-        	System.out.println("Sound processing duration: " + ((double)(end - start) / 1e6) + " ms");
 
-        	start = System.nanoTime();
 			byte[] inputAsBytes = SocketUtil.socketRecv(din, -1);
-        	end = System.nanoTime();
-			System.out.println("Sound input length: " + inputAsBytes.length);
-        	System.out.println("Sound input duration: " + ((double)(end - start) / 1e6) + " ms");
 			this.audioData = new AudioData(inputAsBytes);
 		} catch (IOException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());

@@ -230,7 +230,6 @@ public class Play extends GameScene {
 	 */
 	private void processingBreakTime() {
 		this.roundStartTime = System.nanoTime();
-		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), new AudioData());
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 	}
 	
@@ -261,20 +260,6 @@ public class Play extends GameScene {
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 
-		// リプレイログ吐き出し
-		if (!FlagSetting.trainingModeFlag) {
-			LogWriter.getInstance().outputLog(this.dos, this.keyData, this.fighting.getCharacters());
-		}
-
-		if (FlagSetting.jsonFlag) {
-			LogWriter.getInstance().updateJson(this.frameData, this.keyData);
-		}
-
-		// P1とP2の行った各アクションの数を数える
-		if (FlagSetting.debugActionFlag) {
-			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
-		}
-
 		// 体力が0orタイムオーバーならラウンド終了処理
 		if (isBeaten() || isTimeOver()) {
 			processingRoundEnd();
@@ -302,11 +287,25 @@ public class Play extends GameScene {
 			this.audioData = InputManager.getInstance().getAudioData();
 		}
 		
-		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
-		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
-		
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
+		
+		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
+		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
+
+		// リプレイログ吐き出し
+		if (!FlagSetting.trainingModeFlag) {
+			LogWriter.getInstance().outputLog(this.dos, this.keyData, this.fighting.getCharacters());
+		}
+
+		if (FlagSetting.jsonFlag) {
+			LogWriter.getInstance().updateJson(this.frameData, this.keyData);
+		}
+
+		// P1とP2の行った各アクションの数を数える
+		if (FlagSetting.debugActionFlag) {
+			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
+		}
 	}
 
 	/**

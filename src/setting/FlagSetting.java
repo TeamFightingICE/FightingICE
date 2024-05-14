@@ -58,18 +58,17 @@ public class FlagSetting {
     /**
      * FastModeで起動するかどうかのフラグ．
      */
-    public static boolean fastModeFlag = false;
+    public static boolean inputSyncFlag = false;
 
     /**
      * ラウンド終了時にスローモーションを発生させるかどうかのフラグ
      */
     public static boolean slowmotion = false;
     
-    public static boolean enableVsync = false;
     public static boolean showFPS = false;
     
-    public static boolean enableAuto = false;
-    public static boolean isAutoReady = false;
+    public static boolean enablePyftgMode = false;
+    public static boolean isPyftgReady = false;
     
     public static boolean visualVisibleOnRender = true;
     public static boolean enableBuiltinSound = false;

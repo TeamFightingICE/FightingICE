@@ -339,7 +339,7 @@ public class InputManager {
 		}
 
 		ThreadController.getInstance().resetAllObjects();
-		if (FlagSetting.fastModeFlag) {
+		if (FlagSetting.inputSyncFlag) {
 			synchronized (this.endFrame) {
 				try {
 					this.endFrame.wait();

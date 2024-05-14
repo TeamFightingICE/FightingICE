@@ -143,19 +143,10 @@ public class SocketPlayer implements AIInterface {
 		}
 		
 		try {
-			long start, end;
-        	System.out.println(frameData.getFramesNumber());
-        	start = System.nanoTime();
 			SocketUtil.socketSend(dout, new byte[] { 1 }, false);
 			SocketUtil.socketSend(dout, builder.build().toByteArray(), true);
-        	end = System.nanoTime();
-        	System.out.println("AI processing duration: " + ((double)(end - start) / 1e6) + " ms");
 
-        	start = System.nanoTime();
 			byte[] keyAsBytes = SocketUtil.socketRecv(din, -1);
-        	end = System.nanoTime();
-			System.out.println("AI input length: " + keyAsBytes.length);
-        	System.out.println("AI input duration: " + ((double)(end - start) / 1e6) + " ms");
 			this.input = GrpcUtil.fromGrpcKey(GrpcKey.parseFrom(keyAsBytes));
 		} catch (IOException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());

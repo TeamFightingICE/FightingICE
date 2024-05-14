@@ -101,25 +101,19 @@ public class Game extends GameManager {
                 case "--mute":
                     FlagSetting.muteFlag = true;
                     break;
-                case "--vsync":
-                	FlagSetting.enableVsync = true;
-                	break;
                 case "--show-fps":
                 	FlagSetting.showFPS = true;
                 	break;
                 case "--lightweight-mode":
                     LaunchSetting.processingMode = LaunchSetting.LIGHTWEIGHT_MODE;
-                    // FlagSetting.muteFlag = true;
                     FlagSetting.automationFlag = true;
                     break;
                 case "--headless-mode":
                     LaunchSetting.processingMode = LaunchSetting.HEADLESS_MODE;
-                    // FlagSetting.muteFlag = true;
                     FlagSetting.automationFlag = true;
                     break;
-                case "--fastmode":
-                    FlagSetting.fastModeFlag = true;
-                    // FlagSetting.automationFlag = true;
+                case "--input-sync":
+                    FlagSetting.inputSyncFlag = true;
                     break;
                 case "--json":
                     FlagSetting.jsonFlag = true;
@@ -159,8 +153,8 @@ public class Game extends GameManager {
                 	int port = Integer.parseInt(options[++i]);
                     LaunchSetting.serverPort = port;
                     break;
-                case "--auto":
-                	FlagSetting.enableAuto = true;
+                case "--pyftg-mode":
+                	FlagSetting.enablePyftgMode = true;
                 	break;
                 case "--no-vision":
                 	FlagSetting.visualVisibleOnRender = false;
@@ -207,7 +201,7 @@ public class Game extends GameManager {
             Logger.getAnonymousLogger().log(Level.INFO, "Fail to start gRPC server");
 		}
         
-        if (FlagSetting.enableAuto) {
+        if (FlagSetting.enablePyftgMode) {
         	Grpc grpc = new Grpc();
         	this.startGame(grpc);
         } else if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag)) {
