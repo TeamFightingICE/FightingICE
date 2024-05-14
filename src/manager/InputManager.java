@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import aiinterface.AIController;
 import aiinterface.AIInterface;
 import aiinterface.SoundController;
+import aiinterface.StreamController;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import informationcontainer.AIContainer;
@@ -31,6 +32,7 @@ import input.Keyboard;
 import loader.ResourceLoader;
 import service.SocketGenerativeSound;
 import service.SocketServer;
+import service.SocketStream;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
@@ -60,6 +62,8 @@ public class InputManager {
 	private AIController[] ais;
 	
 	private SoundController sound;
+	
+	private StreamController stream;
 
 	/**
 	 * ゲームのシーン名．
@@ -246,6 +250,13 @@ public class InputManager {
 			this.sound = new SoundController(generativeSound);
 		}
 	}
+	
+	public void createStreamController() {
+		SocketStream socketStream = SocketServer.getInstance().getStream();
+		if (!socketStream.isCancelled()) {
+			this.stream = new StreamController(socketStream);
+		}
+	}
 
 	/**
 	 * AIコントローラの動作を開始させる．<br>
@@ -271,6 +282,14 @@ public class InputManager {
             this.sound.start();
         	Logger.getAnonymousLogger().log(Level.INFO, "Start Sound controller thread");
         }
+	}
+	
+	public void startStream(GameData gameData) {
+		if (this.stream != null) {
+			this.stream.initialize(ThreadController.getInstance().getStreamObject(), gameData);
+            this.stream.start();
+        	Logger.getAnonymousLogger().log(Level.INFO, "Start Stream controller thread");
+		}
 	}
 
 	/**
@@ -337,6 +356,10 @@ public class InputManager {
 		if (this.sound != null) {
 			this.sound.setFrameData(frameData);
 		}
+		
+		if (this.stream != null) {
+			this.stream.setFrameData(frameData, audioData, screenData);
+		}
 
 		ThreadController.getInstance().resetAllObjects();
 		if (FlagSetting.inputSyncFlag) {
@@ -376,6 +399,10 @@ public class InputManager {
 		if (this.sound != null) {
 			this.sound.informRoundResult(roundResult);
 		}
+		
+		if (this.stream != null) {
+			this.stream.informRoundResult(roundResult);
+		}
 	}
 	
 	public void gameEnd() {
@@ -390,6 +417,10 @@ public class InputManager {
 		if (this.sound != null) {
 			this.sound.gameEnd();
 		}
+		
+		if (this.stream != null) {
+			this.stream.gameEnd();
+		}
 	}
 
 	/**
@@ -401,8 +432,13 @@ public class InputManager {
 				ai.clear();
 			}
 		}
+		
 		if (this.sound != null) {
 			this.sound.clear();
+		}
+		
+		if (this.stream != null) {
+			this.stream.clear();
 		}
 	}
 

@@ -24,6 +24,8 @@ public class ThreadController {
 	private Object AI2;
 	
 	private Object sound;
+	
+	private Object stream;
 
 	/**
 	 * P1のAIの処理が終わったかどうかを表すフラグ．<br>
@@ -51,6 +53,7 @@ public class ThreadController {
 		this.AI1 = new Object();
 		this.AI2 = new Object();
 		this.sound = new Object();
+		this.stream = new Object();
 		this.endFrame = new Object();
 
 		resetProcessedFlag();
@@ -78,6 +81,9 @@ public class ThreadController {
 		synchronized (this.sound) {
 			this.sound.notifyAll();
 		}
+		synchronized (this.stream) {
+			this.stream.notifyAll();
+		}
 	}
 
 	/**
@@ -98,6 +104,10 @@ public class ThreadController {
 	
 	public Object getSoundObject() {
 		return this.sound;
+	}
+	
+	public Object getStreamObject() {
+		return this.stream;
 	}
 
 	/**
@@ -147,7 +157,7 @@ public class ThreadController {
 		for (int i = 0; i < 2; i++) {
 			char deviceType = LaunchSetting.deviceTypes[i];
 			boolean processedAI = i == 0 ? this.processedAI1 : this.processedAI2;
-			ans = ans && deviceType == InputManager.DEVICE_TYPE_KEYBOARD || processedAI;
+			ans = ans && (deviceType == InputManager.DEVICE_TYPE_KEYBOARD || processedAI);
 		}
 		return ans;
 	}

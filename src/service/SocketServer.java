@@ -25,6 +25,7 @@ public class SocketServer {
 	private Thread serverThread;
 	private SocketPlayer[] players;
 	private SocketGenerativeSound generativeSound;
+	private SocketStream stream;
 	
 	public static SocketServer getInstance() {
         return SocketServerHolder.instance;
@@ -39,6 +40,7 @@ public class SocketServer {
 		this.game = new GrpcGame();
 		this.players = new SocketPlayer[] { new SocketPlayer(), new SocketPlayer() };
 		this.generativeSound = new SocketGenerativeSound();
+		this.stream = new SocketStream();
 	}
 	
 	public boolean isOpen() {
@@ -59,6 +61,10 @@ public class SocketServer {
 	
 	public SocketGenerativeSound getGenerativeSound() {
 		return this.generativeSound;
+	}
+	
+	public SocketStream getStream() {
+		return this.stream;
 	}
 	
 	public RunGameResponse callRunGame(RunGameRequest request) {
@@ -127,6 +133,10 @@ public class SocketServer {
 						// Generative Sound Gateway
 						generativeSound.initializeSocket(client);
 						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
+					} else if (data[0] == 4) {
+						// Stream Gateway
+						stream.initializeSocket(client);
+						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Stream Handler");
 					}
 				} catch (IOException e) {
 					if (!Thread.currentThread().isInterrupted()) Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
@@ -154,6 +164,7 @@ public class SocketServer {
 			this.players[i].cancel();;
 		}
 		this.generativeSound.cancel();
+		this.stream.cancel();
 	}
 	
 }
