@@ -10,17 +10,24 @@ public class SoundController extends Thread {
 	private SoundDesignAIInterface ai;
 	
 	private boolean isFighting;
-	private AudioData input;
 	
     private Object waitObj;
-    
+
+    /**
+     * フレームデータを格納するリスト．
+     */
     private FrameData frameData;
+
+    private AudioData audioData;
     
     private boolean isRoundEnd;
     private RoundResult roundResult;
     
     public SoundController(SoundDesignAIInterface ai) {
     	this.ai = ai;
+    	this.frameData = new FrameData();
+    	this.audioData = new AudioData();
+        this.clear();
     }
     
     public void initialize(Object waitFrame, GameData gameData) {
@@ -44,8 +51,8 @@ public class SoundController extends Thread {
             	this.ai.roundEnd(roundResult);
             	this.isRoundEnd = false;
             	this.roundResult = null;
-            } else if (!frameData.getEmptyFlag()) {
-            	this.ai.getInformation(frameData);
+            } else {
+            	this.ai.getInformation(this.frameData);
             	this.ai.processing();
             	this.setInput(this.ai.input());
             }
@@ -55,19 +62,24 @@ public class SoundController extends Thread {
 	}
 	
 	public synchronized void setFrameData(FrameData frameData) {
-		this.frameData = frameData;
-	}
+		System.out.println("Frame Number: " + frameData.getFramesNumber());
+        this.frameData = frameData;
+    }
 	
-	public synchronized AudioData getInput() {
-		if (this.input != null) {
-			return this.input;
+	public synchronized AudioData getAudioData() {
+		if (this.audioData != null) {
+			return this.audioData;
 		} else {
 			return new AudioData();
 		}
 	}
 	
-	public synchronized void setInput(byte[] input) {
-        this.input = new AudioData(input);
+	public synchronized void setInput(AudioData input) {
+        this.audioData = new AudioData(input);
+    }
+	
+	public synchronized void clear() {
+        
     }
 	
 	public synchronized void informRoundResult(RoundResult roundResult) {

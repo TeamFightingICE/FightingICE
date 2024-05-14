@@ -158,8 +158,6 @@ public class Play extends GameScene {
 		InputManager.getInstance().createSoundController();
 		InputManager.getInstance().startAI(gameData);
 		InputManager.getInstance().startSound(gameData);
-		
-        Logger.getAnonymousLogger().log(Level.INFO, "AI controller is ready");
 	}
 
 	@Override
@@ -232,6 +230,7 @@ public class Play extends GameScene {
 	 */
 	private void processingBreakTime() {
 		this.roundStartTime = System.nanoTime();
+		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), new AudioData());
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 	}
 	

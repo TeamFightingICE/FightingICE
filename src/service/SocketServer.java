@@ -127,6 +127,8 @@ public class SocketServer {
 							Logger.getAnonymousLogger().log(Level.INFO, "Received run game request");
 						} else if (data[0] == 3) {
 							// Generative Sound Gateway
+							byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
+							InitializeRequest request = InitializeRequest.parseFrom(requestAsBytes);
 							generativeSound.initializeSocket(client);
 							Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
 						}

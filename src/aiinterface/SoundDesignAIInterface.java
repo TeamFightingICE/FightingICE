@@ -1,6 +1,7 @@
 package aiinterface;
 
 import informationcontainer.RoundResult;
+import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
 
@@ -10,7 +11,7 @@ public interface SoundDesignAIInterface {
 	void getInformation(FrameData frameData);
 	void processing();
 	void roundEnd(RoundResult roundResult);
-	byte[] input();
+	AudioData input();
 	void close();
 	
 }

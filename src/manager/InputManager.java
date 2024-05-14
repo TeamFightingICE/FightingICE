@@ -258,18 +258,18 @@ public class InputManager {
 	public void startAI(GameData gameData) {
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			if (this.ais[i] != null) {
-		        Logger.getAnonymousLogger().log(Level.INFO, String.format("Initialize AI controller for P%s", i == 0 ? "1" : "2"));
 				this.ais[i].initialize(ThreadController.getInstance().getAIsObject(i == 0), gameData, i == 0);
 				this.ais[i].start();// start the thread
+		        Logger.getAnonymousLogger().log(Level.INFO, String.format("Start P%s AI controller thread", i == 0 ? "1" : "2"));
 			}
 		}
 	}
 	
 	public void startSound(GameData gameData) {
         if (this.sound != null) {
-        	Logger.getAnonymousLogger().log(Level.INFO, "Initialize Sound controller");
             this.sound.initialize(ThreadController.getInstance().getSoundObject(), gameData);
             this.sound.start();
+        	Logger.getAnonymousLogger().log(Level.INFO, "Start Sound controller thread");
         }
 	}
 
@@ -303,7 +303,7 @@ public class InputManager {
 	public AudioData getAudioData() {
 		if (sound == null)
 			return new AudioData();
-		return new AudioData(sound.getInput());
+		return new AudioData(sound.getAudioData());
 	}
 
 	/**
@@ -400,6 +400,9 @@ public class InputManager {
 			if (ai != null) {
 				ai.clear();
 			}
+		}
+		if (this.sound != null) {
+			this.sound.clear();
 		}
 	}
 

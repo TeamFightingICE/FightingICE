@@ -134,7 +134,6 @@ public class AIController extends Thread {
     	        }
             	this.ai.getInformation(frameData, isControl);
     	        this.ai.getAudioData(this.audioData);
-    	        
     	        this.ai.processing();
     	        this.setInput(this.ai.input());
             }
