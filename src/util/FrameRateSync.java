@@ -46,12 +46,6 @@ public class FrameRateSync {
 	
 	/** number of nano seconds in a second */
 	private static final long NANOS_IN_SECOND = 1000L * 1000L * 1000L;
-	
-	private static FrameRateSync instance = new FrameRateSync();
-	
-	public static void sync(int fps) {
-		instance.syncFrameRate(fps);
-	}
  
 	/** The time to sleep/yield until the next frame */
 	private long nextFrame = 0;
@@ -64,7 +58,7 @@ public class FrameRateSync {
 	private RunningAvg yieldDurations = new RunningAvg(10);
 	
 	public FrameRateSync() {
-		
+		this.initialise();
 	}
 	
 	/**
@@ -73,7 +67,7 @@ public class FrameRateSync {
 	 * 
 	 * @param fps - the desired frame rate, in frames per second
 	 */
-	public void syncFrameRate(int fps) {
+	public void sync(int fps) {
 		if (fps <= 0) return;
 		if (!initialised) initialise();
 		

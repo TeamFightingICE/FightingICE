@@ -75,7 +75,7 @@ public class AudioData {
         this.fftData[0] = new FFTData(fft.getReal(), fft.getImag());
         fft.process(Arrays.copyOf(this.rawFloatData[1], this.rawFloatData[1].length));
         this.fftData[1] = new FFTData(fft.getReal(), fft.getImag());
-        
+       
         if (this.rawShortDataAsBytes == null)
         	this.rawShortDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawShortData);
         
@@ -113,6 +113,11 @@ public class AudioData {
     public AudioData(float[][] rawData) {
         this.init();
         this.rawFloatData = rawData;
+        for (int i = 0; i < 2; i++) {
+        	for (int j = 0; j < GameSetting.SOUND_RENDER_SIZE; j++) {
+    			this.rawShortData[i][j] = (short) (rawFloatData[i][j] * 32767);
+        	}
+		}
 
         this.tranformRawData();
     }

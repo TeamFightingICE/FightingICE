@@ -286,7 +286,9 @@ public class InputManager {
 	
 	public void startStream(GameData gameData) {
 		if (this.stream != null) {
-			this.stream.initialize(ThreadController.getInstance().getStreamObject(), gameData);
+			Object waitObj = new Object();
+			ThreadController.getInstance().addWaitObject(waitObj);
+			this.stream.initialize(waitObj, gameData);
             this.stream.start();
         	Logger.getAnonymousLogger().log(Level.INFO, "Start Stream controller thread");
 		}

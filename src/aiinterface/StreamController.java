@@ -13,7 +13,7 @@ public class StreamController extends Thread {
     private boolean isFighting;
     private StreamInterface stream;
 	
-    private final static int DELAY = 15;
+    private final static int DELAY = 3;
     private int queueSize;
     private LinkedList<FrameData> framesData;
     private LinkedList<AudioData> audiosData;
@@ -56,7 +56,7 @@ public class StreamController extends Thread {
             	this.isRoundEnd = false;
             	this.roundResult = null;
             } else {
-                FrameData frameData = !this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData();
+            	FrameData frameData = !this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData();
                 AudioData audioData = !this.audiosData.isEmpty() ? this.audiosData.removeFirst() : new AudioData();
                 ScreenData screenData = !this.screensData.isEmpty() ? this.screensData.removeFirst() : new ScreenData();
                 this.queueSize--;

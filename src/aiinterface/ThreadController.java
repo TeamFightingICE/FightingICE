@@ -1,5 +1,8 @@
 package aiinterface;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import manager.InputManager;
 import setting.LaunchSetting;
 
@@ -25,7 +28,7 @@ public class ThreadController {
 	
 	private Object sound;
 	
-	private Object stream;
+	private List<Object> waitObjs;
 
 	/**
 	 * P1のAIの処理が終わったかどうかを表すフラグ．<br>
@@ -53,10 +56,18 @@ public class ThreadController {
 		this.AI1 = new Object();
 		this.AI2 = new Object();
 		this.sound = new Object();
-		this.stream = new Object();
 		this.endFrame = new Object();
+		
+		this.waitObjs = new ArrayList<>();
+		this.addWaitObject(this.AI1);
+		this.addWaitObject(this.AI2);
+		this.addWaitObject(this.sound);
 
 		resetProcessedFlag();
+	}
+	
+	public void addWaitObject(Object waitObj) {
+		this.waitObjs.add(waitObj);
 	}
 
 	/**
@@ -72,17 +83,10 @@ public class ThreadController {
 	 * 各AIの処理を再開させる．
 	 */
 	public void resetAllObjects() {
-		synchronized (this.AI1) {
-			this.AI1.notifyAll();
-		}
-		synchronized (this.AI2) {
-			this.AI2.notifyAll();
-		}
-		synchronized (this.sound) {
-			this.sound.notifyAll();
-		}
-		synchronized (this.stream) {
-			this.stream.notifyAll();
+		for (Object waitObj : this.waitObjs) {
+			synchronized (waitObj) {
+				waitObj.notifyAll();
+			}
 		}
 	}
 
@@ -104,10 +108,6 @@ public class ThreadController {
 	
 	public Object getSoundObject() {
 		return this.sound;
-	}
-	
-	public Object getStreamObject() {
-		return this.stream;
 	}
 
 	/**

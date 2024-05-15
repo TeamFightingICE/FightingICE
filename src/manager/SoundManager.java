@@ -145,14 +145,14 @@ public class SoundManager {
         // sound renderers
         this.soundRenderers = new ArrayList<>();
         
-    	if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
-    		if (!FlagSetting.muteFlag) {
+    	if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+    		if (!FlagSetting.muteFlag && LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
             	SoundRender defaultRenderer = SoundRender.createDefaultRenderer();
                 this.soundRenderers.add(defaultRenderer);
             }
             virtualRenderer = SoundRender.createVirtualRenderer();
             this.soundRenderers.add(virtualRenderer);
-            
+
             this.setListenerValues();
     	}
     }

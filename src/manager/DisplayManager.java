@@ -63,12 +63,14 @@ public class DisplayManager {
 	 * GLFWで使用されるwindow作成用の変数．
 	 */
 	private long window;
+	
+	private FrameRateSync frameSync;
 
 	/**
 	 * クラスコンストラクタ．
 	 */
 	public DisplayManager() {
-
+		this.frameSync = new FrameRateSync();
 	}
 
 	/**
@@ -206,7 +208,7 @@ public class DisplayManager {
 			
 			if (!FlagSetting.inputSyncFlag) {
 				// Sync frame rate
-				FrameRateSync.sync(GameSetting.FPS);
+				frameSync.sync(GameSetting.FPS);
 			}
 		}
 	}

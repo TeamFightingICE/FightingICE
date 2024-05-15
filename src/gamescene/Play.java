@@ -165,6 +165,9 @@ public class Play extends GameScene {
 
 	@Override
 	public void update() {
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+			this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
+		}
 		GraphicManager.getInstance().resetScreen();
 		
 		if (this.currentRound <= GameSetting.ROUND_MAX) {
@@ -269,6 +272,25 @@ public class Play extends GameScene {
 			return;
 		}
 		
+		if (this.nowFrame == 0) {
+			this.audioData = new AudioData();
+			
+			SoundManager.getInstance().play2(audioSource, 
+					SoundManager.getInstance().getBackGroundMusicBuffer(), GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, true);
+		} else {
+			if (FlagSetting.enableBuiltinSound) {
+				this.audioData = new AudioData(SoundManager.getInstance().getVirtualRenderer().sampleAudio());
+			} else {
+				this.audioData = InputManager.getInstance().getAudioData();
+			}
+		}
+		
+		// AIにFrameDataをセット
+		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
+		
+		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
+		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
+		
 		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
 			// 画面をDrawerクラスで描画
 			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
@@ -278,23 +300,7 @@ public class Play extends GameScene {
 				double fps = (this.nowFrame + 1) / ((double) (currentFrameTime - roundStartTime) / 1e9);
 				GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
 			}
-			
-			this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 		}
-		
-		if (this.nowFrame == 0) {
-			this.audioData = new AudioData();
-			
-			SoundManager.getInstance().play2(audioSource, SoundManager.getInstance().getBackGroundMusicBuffer(), 350, 0, true);
-		} else {
-			this.audioData = InputManager.getInstance().getAudioData();
-		}
-		
-		// AIにFrameDataをセット
-		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
-		
-		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
-		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {
