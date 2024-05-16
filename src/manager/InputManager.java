@@ -309,6 +309,7 @@ public class InputManager {
 		this.deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
 		this.sound = null;
+		this.streams.clear();
 	}
 
 	/**
