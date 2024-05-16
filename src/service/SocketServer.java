@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +15,7 @@ import protoc.EnumProto.GrpcStatusCode;
 import protoc.ServiceProto.InitializeRequest;
 import protoc.ServiceProto.RunGameRequest;
 import protoc.ServiceProto.RunGameResponse;
+import protoc.ServiceProto.SpectateRequest;
 import setting.FlagSetting;
 import util.SocketUtil;
 
@@ -25,7 +28,7 @@ public class SocketServer {
 	private Thread serverThread;
 	private SocketPlayer[] players;
 	private SocketGenerativeSound generativeSound;
-	private SocketStream stream;
+	private List<SocketStream> streams;
 	
 	public static SocketServer getInstance() {
         return SocketServerHolder.instance;
@@ -40,7 +43,7 @@ public class SocketServer {
 		this.game = new GrpcGame();
 		this.players = new SocketPlayer[] { new SocketPlayer(), new SocketPlayer() };
 		this.generativeSound = new SocketGenerativeSound();
-		this.stream = new SocketStream();
+		this.streams = new ArrayList<>();
 	}
 	
 	public boolean isOpen() {
@@ -63,8 +66,8 @@ public class SocketServer {
 		return this.generativeSound;
 	}
 	
-	public SocketStream getStream() {
-		return this.stream;
+	public List<SocketStream> getStreams() {
+		return this.streams;
 	}
 	
 	public RunGameResponse callRunGame(RunGameRequest request) {
@@ -135,7 +138,11 @@ public class SocketServer {
 						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
 					} else if (data[0] == 4) {
 						// Stream Gateway
-						stream.initializeSocket(client);
+						byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
+						SpectateRequest request = SpectateRequest.parseFrom(requestAsBytes);
+						SocketStream stream = new SocketStream();
+						stream.initializeSocket(client, request);
+						this.streams.add(stream);
 						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Stream Handler");
 					}
 				} catch (IOException e) {
@@ -163,8 +170,13 @@ public class SocketServer {
 		for (int i = 0; i < 2; i++) {
 			this.players[i].cancel();;
 		}
+		
+		for (SocketStream stream : this.streams) {
+			stream.cancel();
+		}
+
 		this.generativeSound.cancel();
-		this.stream.cancel();
+		this.streams.clear();
 	}
 	
 }

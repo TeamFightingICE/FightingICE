@@ -156,11 +156,11 @@ public class Play extends GameScene {
 
 		InputManager.getInstance().createAIcontroller();
 		InputManager.getInstance().createSoundController();
-		InputManager.getInstance().createStreamController();
+		InputManager.getInstance().createStreamControllers();
 		
 		InputManager.getInstance().startAI(gameData);
 		InputManager.getInstance().startSound(gameData);
-		InputManager.getInstance().startStream(gameData);
+		InputManager.getInstance().startStreams(gameData);
 	}
 
 	@Override

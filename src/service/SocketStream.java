@@ -11,6 +11,7 @@ import aiinterface.StreamInterface;
 import informationcontainer.RoundResult;
 import protoc.EnumProto.GrpcFlag;
 import protoc.ServiceProto.PlayerGameState;
+import protoc.ServiceProto.SpectateRequest;
 import setting.GameSetting;
 import struct.AudioData;
 import struct.FrameData;
@@ -22,6 +23,10 @@ import util.SocketUtil;
 public class SocketStream implements StreamInterface {
 
 	private boolean cancelled;
+	
+	private boolean frameDataFlag;
+	private boolean audioDataFlag;
+	private boolean screenDataFlag;
 	
 	private DataInputStream din;
 	private DataOutputStream dout;
@@ -55,12 +60,15 @@ public class SocketStream implements StreamInterface {
 		this.dout = null;
 	}
 	
-	public void initializeSocket(Socket client) throws IOException {
+	public void initializeSocket(Socket client, SpectateRequest request) throws IOException {
 		if (!this.cancelled) {
 			this.cancel();
 		}
 		
 		this.cancelled = false;
+		this.frameDataFlag = request.getFrameDataFlag();
+		this.audioDataFlag = request.getAudioDataFlag();
+		this.screenDataFlag = request.getScreenDataFlag();
 		
 		this.din = new DataInputStream(client.getInputStream());
 		this.dout = new DataOutputStream(client.getOutputStream());
@@ -102,10 +110,19 @@ public class SocketStream implements StreamInterface {
 		if (this.cancelled) return;
 		
 		PlayerGameState.Builder builder = PlayerGameState.newBuilder()
-				.setStateFlag(GrpcFlag.PROCESSING)
-  				.setFrameData(this.frameData.toProto())
-  				.setAudioData(this.audioData.toProto())
-  				.setScreenData(this.screenData.toProto());
+				.setStateFlag(GrpcFlag.PROCESSING);
+		
+		if (this.frameDataFlag) {
+			builder.setFrameData(this.frameData.toProto());
+		}
+		
+		if (this.audioDataFlag) {
+			builder.setAudioData(this.audioData.toProto());
+		}
+		
+		if (this.screenDataFlag) {
+			builder.setScreenData(this.screenData.toProto());
+		}
 		
 		try {
 			SocketUtil.socketSend(dout, new byte[] { 1 }, false);

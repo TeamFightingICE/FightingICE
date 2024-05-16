@@ -15,7 +15,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Y;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,7 +65,7 @@ public class InputManager {
 	
 	private SoundController sound;
 	
-	private StreamController stream;
+	private List<StreamController> streams;
 
 	/**
 	 * ゲームのシーン名．
@@ -114,6 +116,7 @@ public class InputManager {
 		sceneName = GameSceneName.HOME_MENU;
 		this.predifinedAIs = new HashMap<String, AIInterface>();
 		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
+		this.streams = new ArrayList<>();
 
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
@@ -251,10 +254,12 @@ public class InputManager {
 		}
 	}
 	
-	public void createStreamController() {
-		SocketStream socketStream = SocketServer.getInstance().getStream();
-		if (!socketStream.isCancelled()) {
-			this.stream = new StreamController(socketStream);
+	public void createStreamControllers() {
+		for (SocketStream socketStream : SocketServer.getInstance().getStreams()) {
+			if (!socketStream.isCancelled()) {
+				StreamController stream = new StreamController(socketStream);
+				this.streams.add(stream);
+			}
 		}
 	}
 
@@ -284,13 +289,14 @@ public class InputManager {
         }
 	}
 	
-	public void startStream(GameData gameData) {
-		if (this.stream != null) {
+	public void startStreams(GameData gameData) {
+		for (int i = 0; i < this.streams.size(); i++) {
+			StreamController stream = this.streams.get(i);
 			Object waitObj = new Object();
 			ThreadController.getInstance().addWaitObject(waitObj);
-			this.stream.initialize(waitObj, gameData);
-            this.stream.start();
-        	Logger.getAnonymousLogger().log(Level.INFO, "Start Stream controller thread");
+			stream.initialize(waitObj, gameData);
+            stream.start();
+        	Logger.getAnonymousLogger().log(Level.INFO, String.format("Start Stream controller thread #%d", i + 1));
 		}
 	}
 
@@ -359,8 +365,8 @@ public class InputManager {
 			this.sound.setFrameData(frameData);
 		}
 		
-		if (this.stream != null) {
-			this.stream.setFrameData(frameData, audioData, screenData);
+		for (StreamController stream : this.streams) {
+			stream.setFrameData(frameData, audioData, screenData);
 		}
 
 		ThreadController.getInstance().resetAllObjects();
@@ -402,8 +408,8 @@ public class InputManager {
 			this.sound.informRoundResult(roundResult);
 		}
 		
-		if (this.stream != null) {
-			this.stream.informRoundResult(roundResult);
+		for (StreamController stream : this.streams) {
+			stream.informRoundResult(roundResult);
 		}
 	}
 	
@@ -420,8 +426,8 @@ public class InputManager {
 			this.sound.gameEnd();
 		}
 		
-		if (this.stream != null) {
-			this.stream.gameEnd();
+		for (StreamController stream : this.streams) {
+			stream.gameEnd();
 		}
 	}
 
@@ -439,8 +445,8 @@ public class InputManager {
 			this.sound.clear();
 		}
 		
-		if (this.stream != null) {
-			this.stream.clear();
+		for (StreamController stream : this.streams) {
+			stream.clear();
 		}
 	}
 
