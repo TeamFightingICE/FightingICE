@@ -24,7 +24,7 @@ You are provided with our new generative sound AI interface that already has a s
 
 You will submit:
 - The sound effects.
-- The source code files you edited or added.
+- The source code files.
 -  A slide file(ppt) explaining the changes and the reasoning behind them. 
 -  A tutorial video (maximum length of video is 3 min) featuring the important features of your sound design.
 -  Keep in mind that editing the source code is not required. You can just change the sounds, but give them the same name as the sounds already in the sound folder. To change the background music just overwrite the “BGM0” audio file with your own background music (name should remain the same). 
