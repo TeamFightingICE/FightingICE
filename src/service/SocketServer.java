@@ -114,6 +114,8 @@ public class SocketServer {
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
 					Socket client = server.accept();
+					client.setTcpNoDelay(true);
+					
 					DataInputStream din = new DataInputStream(client.getInputStream());
 					DataOutputStream dout = new DataOutputStream(client.getOutputStream());
 					byte[] data = SocketUtil.socketRecv(din, 1);

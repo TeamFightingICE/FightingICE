@@ -95,8 +95,7 @@ public class SocketGenerativeSound implements SoundDesignAIInterface {
 		
 		PlayerGameState.Builder builder = PlayerGameState.newBuilder()
 				.setStateFlag(GrpcFlag.PROCESSING)
-  				.setFrameData(this.frameData.toProto())
-  				.setAudioData(this.audioData.toProto());
+  				.setFrameData(this.frameData.toProto());
 		
 		try {
 			SocketUtil.socketSend(dout, new byte[] { 1 }, false);

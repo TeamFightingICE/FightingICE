@@ -12,4 +12,4 @@ COPY ./lib/lwjgl/*.jar ./lib/
 COPY ./lib/lwjgl/natives/linux/amd64/*.jar ./lib/
 
 ENTRYPOINT [ "/opt/java/bin/java", "-cp", "FightingICE.jar:./lib/*", "Main", "--lightweight-mode" ]
-CMD [ "--auto", "--limithp", "400", "400" ]
+CMD [ "--limithp", "400", "400", "--pyftg-mode" ]
