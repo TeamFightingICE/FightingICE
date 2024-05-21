@@ -20,7 +20,7 @@ public class StreamController extends Thread {
     private LinkedList<ScreenData> screensData;
     private Object waitObj;
     
-    private boolean isRoundEnd;
+    private boolean roundEndFlag;
     private RoundResult roundResult;
     
     public StreamController(StreamInterface stream) {
@@ -35,7 +35,7 @@ public class StreamController extends Thread {
         this.screensData = new LinkedList<ScreenData>();
         this.clear();
         this.isFighting = true;
-        this.isRoundEnd = false;
+        this.roundEndFlag = false;
         
     	this.stream.initialize(gameData);
     }
@@ -51,9 +51,9 @@ public class StreamController extends Thread {
                 }
             }
             
-            if (isRoundEnd) {
+            if (this.roundEndFlag) {
             	this.stream.roundEnd(roundResult);
-            	this.isRoundEnd = false;
+            	this.roundEndFlag = false;
             	this.roundResult = null;
             } else {
             	FrameData frameData = !this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData();
@@ -98,7 +98,7 @@ public class StreamController extends Thread {
     }
     
     public synchronized void informRoundResult(RoundResult roundResult) {
-    	this.isRoundEnd = true;
+    	this.roundEndFlag = true;
     	this.roundResult = roundResult;
     }
 

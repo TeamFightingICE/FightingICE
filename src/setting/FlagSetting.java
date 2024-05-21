@@ -65,8 +65,6 @@ public class FlagSetting {
      */
     public static boolean slowmotion = false;
     
-    public static boolean showFPS = false;
-    
     public static boolean enablePyftgMode = false;
     public static boolean isPyftgReady = false;
     

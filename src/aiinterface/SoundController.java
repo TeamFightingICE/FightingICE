@@ -20,7 +20,7 @@ public class SoundController extends Thread {
 
     private AudioData audioData;
     
-    private boolean isRoundEnd;
+    private boolean roundEndFlag;
     private RoundResult roundResult;
     
     public SoundController(SoundDesignAIInterface ai) {
@@ -33,7 +33,7 @@ public class SoundController extends Thread {
     public void initialize(Object waitFrame, GameData gameData) {
     	this.waitObj = waitFrame;
         this.isFighting = true;
-        this.isRoundEnd = false;
+        this.roundEndFlag = false;
         
         this.ai.initialize(gameData);
     }
@@ -49,9 +49,9 @@ public class SoundController extends Thread {
                 }
             }
             
-            if (isRoundEnd) {
+            if (this.roundEndFlag) {
             	this.ai.roundEnd(roundResult);
-            	this.isRoundEnd = false;
+            	this.roundEndFlag = false;
             	this.roundResult = null;
             } else {
             	this.ai.getInformation(this.frameData);
@@ -84,7 +84,7 @@ public class SoundController extends Thread {
     }
 	
 	public synchronized void informRoundResult(RoundResult roundResult) {
-    	this.isRoundEnd = true;
+    	this.roundEndFlag = true;
     	this.roundResult = roundResult;
     }
 	

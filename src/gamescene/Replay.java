@@ -195,11 +195,6 @@ public class Replay extends GameScene {
 
 					GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50, 550);
 					
-					if (FlagSetting.showFPS) {
-						double fps = this.nowFrame / ((double) (currentFrameTime - roundStartTime) / 1e9);
-						GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
-					}
-					
 					this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 				}
 			}

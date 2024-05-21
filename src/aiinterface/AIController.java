@@ -60,7 +60,7 @@ public class AIController extends Thread {
      */
     private Object waitObj;
     
-    private boolean isRoundEnd;
+    private boolean roundEndFlag;
     private RoundResult roundResult;
     
     //private List<Double> durations = new ArrayList<>();
@@ -90,7 +90,7 @@ public class AIController extends Thread {
         this.framesData = new LinkedList<FrameData>();
         this.clear();
         this.isFighting = true;
-        this.isRoundEnd = false;
+        this.roundEndFlag = false;
         
     	this.ai.initialize(gameData, playerNumber);
     }
@@ -110,9 +110,9 @@ public class AIController extends Thread {
                 }
             }
             
-            if (isRoundEnd) {
+            if (this.roundEndFlag) {
             	this.ai.roundEnd(roundResult);
-            	this.isRoundEnd = false;
+            	this.roundEndFlag = false;
             	this.roundResult = null;
             } else {
             	boolean isControl;
@@ -221,7 +221,7 @@ public class AIController extends Thread {
      * @see RoundResult
      */
     public synchronized void informRoundResult(RoundResult roundResult) {
-    	this.isRoundEnd = true;
+    	this.roundEndFlag = true;
     	this.roundResult = roundResult;
     }
 

@@ -111,7 +111,10 @@ public class InputManager {
 	private InputManager() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + InputManager.class.getName());
 
-		keyboard = new Keyboard();
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
+			keyboard = new Keyboard();
+		}
+		
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		sceneName = GameSceneName.HOME_MENU;
 		this.predifinedAIs = new HashMap<String, AIInterface>();
@@ -195,23 +198,25 @@ public class InputManager {
 	 */
 	private Key getKeyFromKeyboard(boolean playerNumber) {
 		Key key = new Key();
-
-		if (playerNumber) {
-			key.A = Keyboard.getKeyDown(GLFW_KEY_Z);
-			key.B = Keyboard.getKeyDown(GLFW_KEY_X);
-			key.C = Keyboard.getKeyDown(GLFW_KEY_C);
-			key.U = Keyboard.getKeyDown(GLFW_KEY_UP);
-			key.D = Keyboard.getKeyDown(GLFW_KEY_DOWN);
-			key.R = Keyboard.getKeyDown(GLFW_KEY_RIGHT);
-			key.L = Keyboard.getKeyDown(GLFW_KEY_LEFT);
-		} else {
-			key.A = Keyboard.getKeyDown(GLFW_KEY_T);
-			key.B = Keyboard.getKeyDown(GLFW_KEY_Y);
-			key.C = Keyboard.getKeyDown(GLFW_KEY_U);
-			key.U = Keyboard.getKeyDown(GLFW_KEY_I);
-			key.D = Keyboard.getKeyDown(GLFW_KEY_K);
-			key.R = Keyboard.getKeyDown(GLFW_KEY_L);
-			key.L = Keyboard.getKeyDown(GLFW_KEY_J);
+		
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
+			if (playerNumber) {
+				key.A = Keyboard.getKeyDown(GLFW_KEY_Z);
+				key.B = Keyboard.getKeyDown(GLFW_KEY_X);
+				key.C = Keyboard.getKeyDown(GLFW_KEY_C);
+				key.U = Keyboard.getKeyDown(GLFW_KEY_UP);
+				key.D = Keyboard.getKeyDown(GLFW_KEY_DOWN);
+				key.R = Keyboard.getKeyDown(GLFW_KEY_RIGHT);
+				key.L = Keyboard.getKeyDown(GLFW_KEY_LEFT);
+			} else {
+				key.A = Keyboard.getKeyDown(GLFW_KEY_T);
+				key.B = Keyboard.getKeyDown(GLFW_KEY_Y);
+				key.C = Keyboard.getKeyDown(GLFW_KEY_U);
+				key.U = Keyboard.getKeyDown(GLFW_KEY_I);
+				key.D = Keyboard.getKeyDown(GLFW_KEY_K);
+				key.R = Keyboard.getKeyDown(GLFW_KEY_L);
+				key.L = Keyboard.getKeyDown(GLFW_KEY_J);
+			}
 		}
 
 		return key;
@@ -412,6 +417,8 @@ public class InputManager {
 		for (StreamController stream : this.streams) {
 			stream.informRoundResult(roundResult);
 		}
+		
+		ThreadController.getInstance().resetAllObjects();
 	}
 	
 	public void gameEnd() {

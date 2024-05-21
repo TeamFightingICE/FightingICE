@@ -101,9 +101,6 @@ public class Game extends GameManager {
                 case "--mute":
                     FlagSetting.muteFlag = true;
                     break;
-                case "--show-fps":
-                	FlagSetting.showFPS = true;
-                	break;
                 case "--lightweight-mode":
                     LaunchSetting.processingMode = LaunchSetting.LIGHTWEIGHT_MODE;
                     FlagSetting.automationFlag = true;

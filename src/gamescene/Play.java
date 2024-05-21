@@ -63,6 +63,7 @@ public class Play extends GameScene {
 	 * 各ラウンドの開始時かどうかを表すフラグ．
 	 */
 	private boolean roundStartFlag;
+	private boolean roundEndFlag;
 
 	/**
 	 * 対戦処理後のキャラクターデータなどのゲーム情報を格納したフレームデータ．
@@ -126,6 +127,7 @@ public class Play extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
+		this.roundEndFlag = false;
 		this.endFrame = -1;
 		this.roundStartTime = 0;
 		this.currentFrameTime = 0;
@@ -165,11 +167,6 @@ public class Play extends GameScene {
 
 	@Override
 	public void update() {
-		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
-			this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
-		}
-		GraphicManager.getInstance().resetScreen();
-		
 		if (this.currentRound <= GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
@@ -180,6 +177,9 @@ public class Play extends GameScene {
 				processingBreakTime();
 				this.elapsedBreakTime++;
 
+			} else if (this.roundEndFlag) {
+				// round end
+				processingRoundEnd();
 			} else {
 				// processing
 				processingGame();
@@ -197,21 +197,22 @@ public class Play extends GameScene {
 			this.setNextGameScene(result);
 		}
 
-		if (Keyboard.getKeyDown(GLFW_KEY_SPACE)) {
-			System.out.println("P1 x:" + this.frameData.getCharacter(true).getCenterX() + "\n" + "P2 x:"
-					+ this.frameData.getCharacter(false).getCenterX() + "\n" + "P1 Left:"
-					+ this.frameData.getCharacter(true).getLeft() + "\n" + "P1 Right:"
-					+ this.frameData.getCharacter(true).getRight() + "\n" + "P2 Left:"
-					+ this.frameData.getCharacter(false).getLeft() + "\n" + "P2 Right:"
-					+ this.frameData.getCharacter(false).getRight() + "\n");
-		}
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
+			if (Keyboard.getKeyDown(GLFW_KEY_SPACE)) {
+				System.out.println("P1 x:" + this.frameData.getCharacter(true).getCenterX() + "\n" + "P2 x:"
+						+ this.frameData.getCharacter(false).getCenterX() + "\n" + "P1 Left:"
+						+ this.frameData.getCharacter(true).getLeft() + "\n" + "P1 Right:"
+						+ this.frameData.getCharacter(true).getRight() + "\n" + "P2 Left:"
+						+ this.frameData.getCharacter(false).getLeft() + "\n" + "P2 Right:"
+						+ this.frameData.getCharacter(false).getRight() + "\n");
+			}
 
-		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			HomeMenu homeMenu = new HomeMenu();
-			this.setTransitionFlag(true);
-			this.setNextGameScene(homeMenu);
+			if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
+				HomeMenu homeMenu = new HomeMenu();
+				this.setTransitionFlag(true);
+				this.setNextGameScene(homeMenu);
+			}
 		}
-
 	}
 
 	/**
@@ -236,6 +237,8 @@ public class Play extends GameScene {
 	 */
 	private void processingBreakTime() {
 		this.roundStartTime = System.nanoTime();
+
+		GraphicManager.getInstance().resetScreen();
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 	}
 	
@@ -254,6 +257,21 @@ public class Play extends GameScene {
 	private void processingGame() {
 		this.currentFrameTime = System.nanoTime();
 		
+		if (this.nowFrame == 0) {
+			this.audioData = new AudioData();
+			
+			SoundManager.getInstance().play2(audioSource, 
+					SoundManager.getInstance().getBackGroundMusicBuffer(), GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, true);
+		} else if (FlagSetting.enableBuiltinSound) {
+			this.audioData = new AudioData(SoundManager.getInstance().getVirtualRenderer().sampleAudio());
+		} else {
+			this.audioData = InputManager.getInstance().getAudioData();
+		}
+		
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+			this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
+		}
+		
 		if (this.endFrame != -1) {
 			this.keyData = new KeyData();
 			if (this.endFrame % 30 == 0) {
@@ -265,25 +283,6 @@ public class Play extends GameScene {
 		}
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
-
-		// 体力が0orタイムオーバーならラウンド終了処理
-		if (isBeaten() || isTimeOver()) {
-			processingRoundEnd();
-			return;
-		}
-		
-		if (this.nowFrame == 0) {
-			this.audioData = new AudioData();
-			
-			SoundManager.getInstance().play2(audioSource, 
-					SoundManager.getInstance().getBackGroundMusicBuffer(), GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, true);
-		} else {
-			if (FlagSetting.enableBuiltinSound) {
-				this.audioData = new AudioData(SoundManager.getInstance().getVirtualRenderer().sampleAudio());
-			} else {
-				this.audioData = InputManager.getInstance().getAudioData();
-			}
-		}
 		
 		// AIにFrameDataをセット
 		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
@@ -291,15 +290,11 @@ public class Play extends GameScene {
 		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
 		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
 		
+		GraphicManager.getInstance().resetScreen();
 		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
 			// 画面をDrawerクラスで描画
 			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
 					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound, FlagSetting.visualVisibleOnRender);
-			
-			if (FlagSetting.showFPS && FlagSetting.visualVisibleOnRender) {
-				double fps = (this.nowFrame + 1) / ((double) (currentFrameTime - roundStartTime) / 1e9);
-				GraphicManager.getInstance().drawString(String.format("FPS: %.2f", fps), 10, 10);
-			}
 		}
 
 		// リプレイログ吐き出し
@@ -315,6 +310,11 @@ public class Play extends GameScene {
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
 		}
+		
+		// 体力が0orタイムオーバーならラウンド終了処理
+		if (isBeaten() || isTimeOver()) {
+			this.roundEndFlag = true;
+		}
 	}
 
 	/**
@@ -322,7 +322,7 @@ public class Play extends GameScene {
 	 */
 	private void processingRoundEnd() {
 		Logger.getAnonymousLogger().log(Level.INFO, String.format("Round Duration: %.3f seconds (Expected %.3f)", 
-				(double) (currentFrameTime - roundStartTime) / 1e9, (double) (this.nowFrame + 1) / 60));
+				(double) (currentFrameTime - roundStartTime) / 1e9, (double) this.nowFrame / 60));
 		
 		SoundManager.getInstance().stopAll();
 		SoundManager.getInstance().stopPlayback(this.audioSource);
@@ -339,6 +339,7 @@ public class Play extends GameScene {
 				
 				this.currentRound++;
 				this.roundStartFlag = true;
+				this.roundEndFlag = false;
 				this.endFrame = -1;
 
 				// P1とP2の行った各アクションの数のデータをCSVに出力する
@@ -360,6 +361,7 @@ public class Play extends GameScene {
 			
 			this.currentRound++;
 			this.roundStartFlag = true;
+			this.roundEndFlag = false;
 			this.endFrame = -1;
 
 			// P1とP2の行った各アクションの数のデータをCSVに出力する
