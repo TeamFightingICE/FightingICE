@@ -50,6 +50,8 @@ public class SocketServer {
 				while (!Thread.currentThread().isInterrupted()) {
 					try {
 						Socket client = server.accept();
+						client.setTcpNoDelay(true);
+						
 						DataInputStream din = new DataInputStream(client.getInputStream());
 						byte[] data = din.readNBytes(1);
 						
