@@ -1,5 +1,7 @@
 FROM ubuntu/jre:17-22.04_edge
 
+ARG TARGETARCH
+
 WORKDIR /
 USER root
 
@@ -9,7 +11,7 @@ COPY ./data/characters/ZEN/gSetting.txt ./data/characters/ZEN/gSetting.txt
 COPY ./data/characters/ZEN/Motion.csv ./data/characters/ZEN/Motion.csv
 COPY ./lib/*.jar ./lib/
 COPY ./lib/lwjgl/*.jar ./lib/
-COPY ./lib/lwjgl/natives/linux/amd64/*.jar ./lib/
+COPY ./lib/lwjgl/natives/linux/${TARGETARCH}/*.jar ./lib/
 
 ENTRYPOINT [ "/opt/java/bin/java", "-cp", "FightingICE.jar:./lib/*", "Main", "--lightweight-mode" ]
 CMD [ "--limithp", "400", "400", "--pyftg-mode" ]
