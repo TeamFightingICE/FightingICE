@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import manager.InputManager;
+import service.SocketGenerativeSound;
+import service.SocketServer;
 import setting.LaunchSetting;
 
 /**
@@ -163,7 +165,8 @@ public class ThreadController {
 	}
 	
 	private boolean isSoundProcessed() {
-		return this.processedSound;
+		SocketGenerativeSound generativeSound = SocketServer.getInstance().getGenerativeSound();
+		return generativeSound.isCancelled() || this.processedSound;
 	}
 
 	/**
