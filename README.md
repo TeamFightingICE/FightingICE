@@ -7,9 +7,14 @@ This repository is a repository for the development of the 2D fighting game Figh
 ### About FightingICE ###
 FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGAIC), an international competition that competes for the performance of fighting game AI certified by Computational Intelligence and Games (CIG).
 
+### Quickstart with Docker ###
+```sh
+docker run -it --rm -v ${PWD}/log:/log -p 31415:31415 ghcr.io/teamfightingice/fightingice
+```
+
 ### How to start development ###
 - Clone the project into your local workspace.
-- Download resources required for development from [here](https://github.com/TeamFightingICE/FightingICE/releases/download/v6.1/resources-6.1.zip) and extract into the root directory.
+- Download resources required for development from [here](https://github.com/TeamFightingICE/FightingICE/releases/download/v6.3/resources-6.3.zip) and extract into the root directory.
 - Add all libraries from `lib` into your project. (for LWJGL, please add only one native match with your OS)
 
 ### Important contents ###
@@ -20,13 +25,14 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 	- graphics: Directory containing graphics such as backgrounds and hadouken
 	- sounds: Directory containing background music and sound effects
 - lib: Directory containing libraries required for startup
-- protoc-gen: Directory containing libraries required for generate gRPC code
+- protos: Directory containing protocal buffer codes
 - src: Directory containing source code
 
 ### Java libraries in use ###
 - lwjgl: Containing libraries related to LWJGL module
 	- natives: Containing libraries related to LWJGL module native to many architectures.
 		- linux/amd64: for Linux
+		- linux/arm64: for Linux with ARM-architecture CPU
 		- macos/arm64: for macOS with Apple chip
 		- windows/amd64: for Windows
 	- lwjgl 3.3.3
