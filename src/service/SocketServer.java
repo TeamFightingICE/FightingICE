@@ -169,16 +169,22 @@ public class SocketServer {
 	}
 	
 	public void close() {
-		for (int i = 0; i < 2; i++) {
-			this.players[i].cancel();;
+		if (!FlagSetting.keepAIAlive) {
+			for (int i = 0; i < 2; i++) {
+				this.players[i].cancel();;
+			}
 		}
 		
-		for (SocketStream stream : this.streams) {
-			stream.cancel();
+		if (!FlagSetting.keepSoundAlive) {
+			this.generativeSound.cancel();
 		}
-
-		this.generativeSound.cancel();
-		this.streams.clear();
+		
+		if (!FlagSetting.keepStreamAlive) {
+			for (SocketStream stream : this.streams) {
+				stream.cancel();
+			}
+			this.streams.clear();
+		}
 	}
 	
 }

@@ -174,6 +174,15 @@ public class Game extends GameManager {
                 case "--save-sound-on-replay":
                 	FlagSetting.saveSoundOnReplay = true;
                 	break;
+                case "--keep-ai-alive":
+                	FlagSetting.keepAIAlive = true;
+                	break;
+                case "--keep-sound-alive":
+                	FlagSetting.keepSoundAlive = true;
+                	break;
+                case "--keep-stream-alive":
+                	FlagSetting.keepStreamAlive = true;
+                	break;
                 default:
                     Logger.getAnonymousLogger().log(Level.WARNING, "Arguments error: unknown format is exist. -> " + options[i] + " ?");
             }
