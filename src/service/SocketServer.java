@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -136,7 +137,9 @@ public class SocketServer {
 						Logger.getAnonymousLogger().log(Level.INFO, "Received run game request");
 					} else if (data[0] == 3) {
 						// Generative Sound Gateway
-						generativeSound.initializeSocket(client);
+						byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
+						SpectateRequest request = SpectateRequest.parseFrom(requestAsBytes);
+						generativeSound.initializeSocket(client, request);
 						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
 					} else if (data[0] == 4) {
 						// Stream Gateway
@@ -158,32 +161,32 @@ public class SocketServer {
 	}
 	
 	public void stopServer() throws IOException {
+		this.notifyTaskFinished();
+		
 		serverThread.interrupt();
 		server.close();
-		this.close();
 		
 		serverThread = null;
-		
 		this.open = false;
     	Logger.getAnonymousLogger().log(Level.INFO, "Socket server is stopped");
 	}
 	
-	public void close() {
-		if (!FlagSetting.keepAIAlive) {
-			for (int i = 0; i < 2; i++) {
-				this.players[i].cancel();;
-			}
+	public void notifyTaskFinished() {
+		for (int i = 0; i < 2; i++) {
+			this.players[i].cancel();;
 		}
 		
-		if (!FlagSetting.keepSoundAlive) {
+		if (!this.generativeSound.isKeepAlive()) {
 			this.generativeSound.cancel();
 		}
 		
-		if (!FlagSetting.keepStreamAlive) {
-			for (SocketStream stream : this.streams) {
-				stream.cancel();
+		Iterator<SocketStream> streamsIter = this.streams.iterator();
+		while (streamsIter.hasNext()) {
+			SocketStream streamClient = streamsIter.next();
+			if (!streamClient.isKeepAlive()) {
+				streamClient.cancel();
+				streamsIter.remove();
 			}
-			this.streams.clear();
 		}
 	}
 	

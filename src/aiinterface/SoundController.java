@@ -10,14 +10,9 @@ public class SoundController extends Thread {
 	private SoundDesignAIInterface ai;
 	
 	private boolean isFighting;
-	
     private Object waitObj;
 
-    /**
-     * フレームデータを格納するリスト．
-     */
     private FrameData frameData;
-
     private AudioData audioData;
     
     private boolean roundEndFlag;
@@ -25,8 +20,6 @@ public class SoundController extends Thread {
     
     public SoundController(SoundDesignAIInterface ai) {
     	this.ai = ai;
-    	this.frameData = new FrameData();
-    	this.audioData = new AudioData();
         this.clear();
     }
     
@@ -49,8 +42,10 @@ public class SoundController extends Thread {
                 }
             }
             
+            if (!isFighting) break;
+            
             if (this.roundEndFlag) {
-            	this.ai.roundEnd(roundResult);
+            	this.ai.roundEnd(this.roundResult);
             	this.roundEndFlag = false;
             	this.roundResult = null;
             } else {
@@ -80,7 +75,8 @@ public class SoundController extends Thread {
     }
 	
 	public synchronized void clear() {
-        
+        this.frameData = new FrameData();
+        this.audioData = new AudioData();
     }
 	
 	public synchronized void informRoundResult(RoundResult roundResult) {

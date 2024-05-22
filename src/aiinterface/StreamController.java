@@ -1,7 +1,5 @@
 package aiinterface;
 
-import java.util.LinkedList;
-
 import informationcontainer.RoundResult;
 import struct.AudioData;
 import struct.FrameData;
@@ -9,30 +7,26 @@ import struct.GameData;
 import struct.ScreenData;
 
 public class StreamController extends Thread {
-	
-    private boolean isFighting;
+
     private StreamInterface stream;
-	
-    private final static int DELAY = 3;
-    private int queueSize;
-    private LinkedList<FrameData> framesData;
-    private LinkedList<AudioData> audiosData;
-    private LinkedList<ScreenData> screensData;
+    
+    private boolean isFighting;
     private Object waitObj;
+	
+    private FrameData frameData;
+    private AudioData audioData;
+    private ScreenData screenData;
     
     private boolean roundEndFlag;
     private RoundResult roundResult;
     
     public StreamController(StreamInterface stream) {
     	this.stream = stream;
+    	this.clear();
     }
     
     public void initialize(Object waitFrame, GameData gameData) {
         this.waitObj = waitFrame;
-    	this.queueSize = 0;
-        this.framesData = new LinkedList<FrameData>();
-        this.audiosData = new LinkedList<AudioData>();
-        this.screensData = new LinkedList<ScreenData>();
         this.clear();
         this.isFighting = true;
         this.roundEndFlag = false;
@@ -51,50 +45,31 @@ public class StreamController extends Thread {
                 }
             }
             
+            if (!isFighting) break;
+            
             if (this.roundEndFlag) {
-            	this.stream.roundEnd(roundResult);
+            	this.stream.roundEnd(this.roundResult);
             	this.roundEndFlag = false;
             	this.roundResult = null;
             } else {
-            	FrameData frameData = !this.framesData.isEmpty() ? this.framesData.removeFirst() : new FrameData();
-                AudioData audioData = !this.audiosData.isEmpty() ? this.audiosData.removeFirst() : new AudioData();
-                ScreenData screenData = !this.screensData.isEmpty() ? this.screensData.removeFirst() : new ScreenData();
-                this.queueSize--;
-
-            	this.stream.getInformation(frameData);
-    	        this.stream.getAudioData(audioData);
-    	        this.stream.getScreenData(screenData);
+            	this.stream.getInformation(this.frameData);
+    	        this.stream.getAudioData(this.audioData);
+    	        this.stream.getScreenData(this.screenData);
     	        this.stream.processing();
             }
         }
     }
     
     public synchronized void setFrameData(FrameData fd, AudioData ad, ScreenData sd) {
-        this.framesData.addLast(fd);
-        this.audiosData.addLast(ad);
-        this.screensData.addLast(sd);
-        this.queueSize++;
-
-        while (this.queueSize > DELAY) {
-            this.framesData.removeFirst();
-            this.audiosData.removeFirst();
-            this.screensData.removeFirst();
-            this.queueSize--;
-        }
+        this.frameData = fd;
+        this.audioData = ad;
+        this.screenData = sd;
     }
     
     public synchronized void clear() {
-    	this.queueSize = 0;
-    	this.framesData.clear();
-    	this.audiosData.clear();
-    	this.screensData.clear();
-
-        while (this.queueSize < DELAY) {
-            this.framesData.add(new FrameData());
-            this.audiosData.add(new AudioData());
-            this.screensData.add(new ScreenData());
-            this.queueSize++;
-        }
+    	this.frameData = new FrameData();
+    	this.audioData = new AudioData();
+    	this.screenData = new ScreenData();
     }
     
     public synchronized void informRoundResult(RoundResult roundResult) {

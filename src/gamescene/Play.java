@@ -226,7 +226,6 @@ public class Play extends GameScene {
 		this.keyData = new KeyData();
 
 		InputManager.getInstance().clear();
-		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), new AudioData());
 		
 		String fileName = LogWriter.getInstance().createOutputFileName("./log/sound/", this.timeInfo + "_" + this.currentRound + ".wav");
 		WaveFileWriter.getInstance().initializeWaveFile(fileName);

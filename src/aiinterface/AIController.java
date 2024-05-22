@@ -110,6 +110,8 @@ public class AIController extends Thread {
                 }
             }
             
+            if (!isFighting) break;
+            
             if (this.roundEndFlag) {
             	this.ai.roundEnd(roundResult);
             	this.roundEndFlag = false;
@@ -212,6 +214,9 @@ public class AIController extends Thread {
                 this.framesData.add(new FrameData());
             }
         }
+
+        this.screenData = new ScreenData();
+        this.audioData = new AudioData();
     }
     
     /**

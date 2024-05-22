@@ -28,6 +28,8 @@ public class SocketStream implements StreamInterface {
 	private boolean audioDataFlag;
 	private boolean screenDataFlag;
 	
+	private boolean keepAlive;
+	
 	private DataInputStream din;
 	private DataOutputStream dout;
 	
@@ -37,6 +39,7 @@ public class SocketStream implements StreamInterface {
 	
 	public SocketStream() {
 		this.cancelled = true;
+		this.keepAlive = false;
 		this.frameData = new FrameData();
 		this.audioData = new AudioData();
 		this.screenData = new ScreenData();
@@ -44,6 +47,10 @@ public class SocketStream implements StreamInterface {
 	
 	public boolean isCancelled() {
 		return this.cancelled;
+	}
+	
+	public boolean isKeepAlive() {
+		return this.keepAlive;
 	}
 	
 	public void cancel() {
@@ -56,6 +63,7 @@ public class SocketStream implements StreamInterface {
 		}
 		
 		this.cancelled = true;
+		this.keepAlive = false;
 		this.din = null;
 		this.dout = null;
 	}
@@ -69,6 +77,7 @@ public class SocketStream implements StreamInterface {
 		this.frameDataFlag = request.getFrameDataFlag();
 		this.audioDataFlag = request.getAudioDataFlag();
 		this.screenDataFlag = request.getScreenDataFlag();
+		this.keepAlive = request.getKeepAlive();
 		
 		this.din = new DataInputStream(client.getInputStream());
 		this.dout = new DataOutputStream(client.getOutputStream());

@@ -26,6 +26,7 @@ message SpectateRequest {
 	bool frame_data_flag = 2;
 	bool screen_data_flag = 3;
 	bool audio_data_flag = 4;
+	bool keep_alive = 5;
 }
 
 message SpectatorGameState {

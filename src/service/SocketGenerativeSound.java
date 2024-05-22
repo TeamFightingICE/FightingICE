@@ -11,6 +11,7 @@ import aiinterface.SoundDesignAIInterface;
 import informationcontainer.RoundResult;
 import protoc.EnumProto.GrpcFlag;
 import protoc.ServiceProto.PlayerGameState;
+import protoc.ServiceProto.SpectateRequest;
 import setting.GameSetting;
 import struct.AudioData;
 import struct.FrameData;
@@ -21,6 +22,7 @@ import util.SocketUtil;
 public class SocketGenerativeSound implements SoundDesignAIInterface {
 
 	private boolean cancelled;
+	private boolean keepAlive;
 	
 	private DataInputStream din;
 	private DataOutputStream dout;
@@ -30,12 +32,17 @@ public class SocketGenerativeSound implements SoundDesignAIInterface {
 	
 	public SocketGenerativeSound() {
 		this.cancelled = true;
+		this.keepAlive = false;
 		this.frameData = new FrameData();
 		this.audioData = new AudioData();
 	}
 	
 	public boolean isCancelled() {
 		return this.cancelled;
+	}
+	
+	public boolean isKeepAlive() {
+		return this.keepAlive;
 	}
 	
 	public void cancel() {
@@ -48,16 +55,18 @@ public class SocketGenerativeSound implements SoundDesignAIInterface {
 		}
 		
 		this.cancelled = true;
+		this.keepAlive = false;
 		this.din = null;
 		this.dout = null;
 	}
 	
-	public void initializeSocket(Socket client) throws IOException {
+	public void initializeSocket(Socket client, SpectateRequest request) throws IOException {
 		if (!this.cancelled) {
 			this.cancel();
 		}
 		
 		this.cancelled = false;
+		this.keepAlive = request.getKeepAlive();
 		
 		this.din = new DataInputStream(client.getInputStream());
 		this.dout = new DataOutputStream(client.getOutputStream());

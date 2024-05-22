@@ -74,8 +74,4 @@ public class FlagSetting {
     public static boolean enableAudioPlayback = false;
     public static boolean saveSoundOnReplay = false;
     
-    public static boolean keepAIAlive = false;
-    public static boolean keepSoundAlive = false;
-    public static boolean keepStreamAlive = false;
-    
 }
