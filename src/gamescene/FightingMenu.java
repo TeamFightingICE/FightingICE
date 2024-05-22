@@ -148,7 +148,7 @@ public class FightingMenu extends GameScene {
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_KEYBOARD;
 					} else if (this.playerIndexes[i] == EXTERNAL_AI_INDEX) {
 						LaunchSetting.aiNames[i] = SocketServer.getInstance().getPlayer(i).getName();
-						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_GRPC;
+						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_EXTERNAL;
 					} else {
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_AI;
 					}

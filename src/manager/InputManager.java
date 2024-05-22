@@ -80,7 +80,7 @@ public class InputManager {
 	/**
 	 * Default number of devices.
 	 */
-	private final static int DEFAULT_DEVICE_NUMBER = 3;
+	private final static int DEFAULT_DEVICE_NUMBER = 2;
 
 	/**
 	 * デバイスタイプとしてキーボードを指定する場合の定数．
@@ -92,7 +92,7 @@ public class InputManager {
 	 */
 	public final static char DEVICE_TYPE_AI = 1;
 	
-	public final static char DEVICE_TYPE_GRPC = 2;
+	public final static char DEVICE_TYPE_EXTERNAL = 2;
 
 	/**
 	 * 入力デバイスを指定する配列．
@@ -176,7 +176,7 @@ public class InputManager {
 				keys[i] = getKeyFromKeyboard(i == 0);
 				break;
 			case DEVICE_TYPE_AI:
-			case DEVICE_TYPE_GRPC:
+			case DEVICE_TYPE_EXTERNAL:
 				keys[i] = getKeyFromAI(this.ais[i]);
 				break;
 			default:
@@ -244,7 +244,7 @@ public class InputManager {
 				} else {
 					this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
 				}
-			} else if (this.deviceTypes[i] == DEVICE_TYPE_GRPC) {
+			} else if (this.deviceTypes[i] == DEVICE_TYPE_EXTERNAL) {
 				this.ais[i] = new AIController(SocketServer.getInstance().getPlayer(i));
 			} else {
 				this.ais[i] = null;
