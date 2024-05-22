@@ -338,6 +338,19 @@ public class InputManager {
 			return new AudioData();
 		return new AudioData(sound.getAudioData());
 	}
+	
+	public void resetAllObjects() {
+		ThreadController.getInstance().resetAllObjects();
+		if (FlagSetting.inputSyncFlag) {
+			synchronized (this.endFrame) {
+				try {
+					this.endFrame.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	/**
 	 * 引数のフレームデータ及びScreenDataを各AIコントローラにセットする．
@@ -374,17 +387,8 @@ public class InputManager {
 		for (StreamController stream : this.streams) {
 			stream.setFrameData(frameData, audioData, screenData);
 		}
-
-		ThreadController.getInstance().resetAllObjects();
-		if (FlagSetting.inputSyncFlag) {
-			synchronized (this.endFrame) {
-				try {
-					this.endFrame.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		
+		this.resetAllObjects();
 	}
 	
 	public void setInput(boolean playerNumber, Key input) {
@@ -418,7 +422,7 @@ public class InputManager {
 			stream.informRoundResult(roundResult);
 		}
 		
-		ThreadController.getInstance().resetAllObjects();
+		this.resetAllObjects();
 	}
 	
 	public void gameEnd() {
