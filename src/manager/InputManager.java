@@ -341,10 +341,13 @@ public class InputManager {
 	
 	public void resetAllObjects() {
 		ThreadController.getInstance().resetAllObjects();
+		
 		if (FlagSetting.inputSyncFlag) {
 			synchronized (this.endFrame) {
 				try {
 					this.endFrame.wait();
+					
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

@@ -146,6 +146,7 @@ public class ThreadController {
 		} else {
 			this.processedAI2 = true;
 		}
+		
 		this.checkEndFrame();
 	}
 	
@@ -179,6 +180,7 @@ public class ThreadController {
 			synchronized (this.endFrame) {
 				this.endFrame.notifyAll();
 			}
+			
 			resetProcessedFlag();
 		}
 	}

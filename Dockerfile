@@ -13,5 +13,7 @@ COPY ./lib/*.jar ./lib/
 COPY ./lib/lwjgl/*.jar ./lib/
 COPY ./lib/lwjgl/natives/linux/${TARGETARCH}/*.jar ./lib/
 
+EXPOSE 31415/tcp
+
 ENTRYPOINT [ "/opt/java/bin/java", "-cp", "FightingICE.jar:./lib/*", "Main", "--lightweight-mode" ]
 CMD [ "--limithp", "400", "400", "--pyftg-mode" ]

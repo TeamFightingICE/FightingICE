@@ -3,6 +3,7 @@ package service;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import util.SocketUtil;
 public class SocketServer {
 
 	private boolean open;
+	private String serverHost;
 	private int serverPort;
 	private GrpcGame game;
 	private ServerSocket server;
@@ -41,6 +43,12 @@ public class SocketServer {
 	
 	public SocketServer() {
 		this.open = false;
+		this.serverHost = System.getenv("SERVER_HOST");
+		
+		if (this.serverHost == null) {
+			this.serverHost = "0.0.0.0";
+		}
+		
 		this.game = new GrpcGame();
 		this.players = new SocketPlayer[] { new SocketPlayer(), new SocketPlayer() };
 		this.generativeSound = new SocketGenerativeSound();
@@ -49,6 +57,10 @@ public class SocketServer {
 	
 	public boolean isOpen() {
 		return this.open;
+	}
+	
+	public String getServerHost() {
+		return this.serverHost;
 	}
 	
 	public int getServerPort() {
@@ -109,7 +121,8 @@ public class SocketServer {
 	
 	public void startServer(int serverPort) throws IOException {
 		this.serverPort = serverPort;
-		server = new ServerSocket(serverPort);
+		server = new ServerSocket();
+		server.bind(new InetSocketAddress(this.serverHost, serverPort));;
 		
 		serverThread = new Thread(() -> {
 			while (!Thread.currentThread().isInterrupted()) {

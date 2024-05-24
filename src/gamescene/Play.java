@@ -229,6 +229,14 @@ public class Play extends GameScene {
 		
 		String fileName = LogWriter.getInstance().createOutputFileName("./log/sound/", this.timeInfo + "_" + this.currentRound + ".wav");
 		WaveFileWriter.getInstance().initializeWaveFile(fileName);
+		
+		if (FlagSetting.inputSyncFlag) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
