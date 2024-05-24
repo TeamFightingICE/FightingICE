@@ -9,7 +9,7 @@ FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGA
 
 ### Quickstart with Docker ###
 ```sh
-docker run -it --rm -v ${PWD}/log:/log -p 31415:31415 ghcr.io/teamfightingice/fightingice
+docker run -it --rm -v ${PWD}/log:/app/log -p 31415:31415 ghcr.io/teamfightingice/fightingice
 ```
 
 ### How to start development ###
