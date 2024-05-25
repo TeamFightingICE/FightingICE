@@ -109,7 +109,7 @@ public class InputManager {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
 
-		this.waitObj = new Object();
+		this.waitObj = ThreadController.getInstance().getEndFrame();
 	}
 
 	/**
@@ -126,10 +126,6 @@ public class InputManager {
 	 */
 	private static class InputManagerHolder {
 		private static final InputManager instance = new InputManager();
-	}
-	
-	public Object getWaitObject() {
-		return this.waitObj;
 	}
 
 	/**
@@ -303,6 +299,13 @@ public class InputManager {
 			}
 		}
 	}
+	
+	public void setInput(boolean playerNumber, Key input) {
+		AIController ai = ThreadController.getInstance().getAIController(playerNumber);
+		if (ai != null) {
+			ai.setInput(input);
+		}
+	}
 
 	/**
 	 * 引数のフレームデータ及びScreenDataを各AIコントローラにセットする．
@@ -319,15 +322,7 @@ public class InputManager {
 	 */
 	public void setFrameData(FrameData frameData, ScreenData screenData, AudioData audioData) {
 		ThreadController.getInstance().setFrameData(frameData, screenData, audioData);
-		
-		this.resetAllObjects();
-	}
-	
-	public void setInput(boolean playerNumber, Key input) {
-		AIController ai = ThreadController.getInstance().getAIController(playerNumber);
-		if (ai != null) {
-			ai.setInput(input);
-		}
+		resetAllObjects();
 	}
 
 	/**
@@ -339,8 +334,7 @@ public class InputManager {
 	 */
 	public void sendRoundResult(RoundResult roundResult) {
 		ThreadController.getInstance().sendRoundResult(roundResult);
-		
-		this.resetAllObjects();
+		resetAllObjects();
 	}
 
 	/**

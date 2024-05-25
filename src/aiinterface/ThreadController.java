@@ -19,7 +19,7 @@ import struct.ScreenData;
 /**
  * AIの実行のタイミングなどのスレッド関連の処理を扱うクラス．
  */
-public class ThreadController extends Thread {
+public class ThreadController {
 
 	/**
 	 * ThreadController唯一のインスタンス
@@ -231,10 +231,7 @@ public class ThreadController extends Thread {
 			stream.gameEnd();
 		}
 		
-        this.isFighting = false;
-        synchronized (this.endFrame) {
-            this.endFrame.notifyAll();
-        }
+		this.isFighting = false;
 	}
 	
 	/**
@@ -284,24 +281,16 @@ public class ThreadController extends Thread {
 	 *            The character's side flag.<br>
 	 *            {@code true} if the character is P1, or {@code false} if P2.
 	 */
-	synchronized public void notifyEndAIProcess(boolean playerNumber) {
+	public void notifyEndAIProcess(boolean playerNumber) {
 		if (playerNumber) {
 			this.processedAI1 = true;
 		} else {
 			this.processedAI2 = true;
 		}
-		
-		synchronized (this.endFrame) {
-			this.endFrame.notifyAll();
-		}
 	}
 	
-	synchronized public void notifyEndSoundProcess() {
+	public void notifyEndSoundProcess() {
 		this.processedSound = true;
-		
-		synchronized (this.endFrame) {
-			this.endFrame.notifyAll();
-		}
 	}
 	
 	private boolean isAIProcessed() {
@@ -320,35 +309,42 @@ public class ThreadController extends Thread {
 	}
 	
 	private boolean isThreadWaiting() {
-		return true;
+		boolean ans = true;
+		for (int i = 0; i < 2; i++) {
+			if (this.ais[i] != null) {
+				ans = ans && this.ais[i].getState() == Thread.State.WAITING;
+			}
+		}
+		
+		if (this.sound != null) {
+			ans = ans && this.sound.getState() == Thread.State.WAITING;
+		}
+		
+		return ans;
 	}
 	
 	public void initialize() {
 		this.isFighting = true;
 	}
 	
-	@Override
-	public void run() {
-		while (this.isFighting) {
-			synchronized (this.endFrame) {
-                try {
-                    this.endFrame.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            
-            if (!isFighting) break;
-			
-            if (isAIProcessed() && isSoundProcessed() && isThreadWaiting()) {
-    			resetProcessedFlag();
+	public void start() {
+		new Thread(() -> {
+			while (this.isFighting) {
+				try {
+	    			Thread.sleep(1);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+				
+	            if (isAIProcessed() && isSoundProcessed() && isThreadWaiting()) {
+	    			resetProcessedFlag();
 
-    			Object waitObj = InputManager.getInstance().getWaitObject();
-    			synchronized (waitObj) {
-    				waitObj.notifyAll();
-    			}
-    		}
-		}
+	    			synchronized (this.endFrame) {
+	    				this.endFrame.notifyAll();
+	    			}
+	    		}
+			}
+		}).start();
 	}
 
 }
