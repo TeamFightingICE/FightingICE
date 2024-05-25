@@ -246,16 +246,16 @@ public class ThreadController {
 		return generativeSound.isCancelled() || this.processedSound;
 	}
 	
-	private boolean isThreadWaiting() {
+	private boolean checkThreadState(Thread.State threadState) {
 		boolean ans = true;
 		for (int i = 0; i < 2; i++) {
 			if (this.ais[i] != null) {
-				ans = ans && this.ais[i].getState() == Thread.State.WAITING;
+				ans = ans && this.ais[i].getState() == threadState;
 			}
 		}
 		
 		if (this.sound != null) {
-			ans = ans && this.sound.getState() == Thread.State.WAITING;
+			ans = ans && this.sound.getState() == threadState;
 		}
 		
 		return ans;
@@ -274,7 +274,7 @@ public class ThreadController {
 	                e.printStackTrace();
 	            }
 				
-	            if (isFighting && isAIProcessed() && isSoundProcessed() && isThreadWaiting()) {
+	            if (isFighting && isAIProcessed() && isSoundProcessed() && checkThreadState(Thread.State.WAITING)) {
 	    			resetProcessedFlag();
 
 	    			synchronized (this.endFrame) {
@@ -289,6 +289,7 @@ public class ThreadController {
 		this.ais = new AIController[2];
 		this.sound = null;
 		this.streams.clear();
+		this.waitObjs.clear();
 		this.controllerList.clear();
 	}
 

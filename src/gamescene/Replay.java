@@ -250,10 +250,6 @@ public class Replay extends GameScene {
 		this.keyData = createKeyData();
 		
 		if (this.isFinished) return;
-
-		this.fighting.processingFight(this.nowFrame, this.keyData);
-		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
-		ThreadController.getInstance().setFrameData(frameData, screenData, audioData);
 		
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();
@@ -266,6 +262,10 @@ public class Replay extends GameScene {
 		} else {
 			this.audioData = InputManager.getInstance().getAudioData();
 		}
+
+		this.fighting.processingFight(this.nowFrame, this.keyData);
+		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		ThreadController.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
 		
 		SoundManager.getInstance().playback(audioSource, audioData.getRawShortDataAsBytes());
 	}
