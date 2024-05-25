@@ -15,16 +15,13 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Y;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import aiinterface.AIController;
 import aiinterface.AIInterface;
 import aiinterface.SoundController;
-import aiinterface.StreamController;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import informationcontainer.AIContainer;
@@ -32,9 +29,7 @@ import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
-import service.SocketGenerativeSound;
 import service.SocketServer;
-import service.SocketStream;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
@@ -59,15 +54,6 @@ public class InputManager {
 	private Keyboard keyboard;
 
 	/**
-	 * AIコントローラを格納する配列．
-	 */
-	private AIController[] ais;
-	
-	private SoundController sound;
-	
-	private List<StreamController> streams;
-
-	/**
 	 * ゲームのシーン名．
 	 */
 	private GameSceneName sceneName;
@@ -80,7 +66,7 @@ public class InputManager {
 	/**
 	 * Default number of devices.
 	 */
-	private final static int DEFAULT_DEVICE_NUMBER = 2;
+	public final static int DEFAULT_DEVICE_NUMBER = 2;
 
 	/**
 	 * デバイスタイプとしてキーボードを指定する場合の定数．
@@ -102,7 +88,7 @@ public class InputManager {
 	/**
 	 * 1フレーム分のゲームの処理が終わったことを示すオブジェクト．
 	 */
-	private Object endFrame;
+	private Object waitObj;
 
 	/**
 	 * InputManagerクラスのクラスコンストラクタ．<br>
@@ -118,14 +104,12 @@ public class InputManager {
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		sceneName = GameSceneName.HOME_MENU;
 		this.predifinedAIs = new HashMap<String, AIInterface>();
-		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
-		this.streams = new ArrayList<>();
 
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
 
-		this.endFrame = ThreadController.getInstance().getEndFrame();
+		this.waitObj = new Object();
 	}
 
 	/**
@@ -142,6 +126,10 @@ public class InputManager {
 	 */
 	private static class InputManagerHolder {
 		private static final InputManager instance = new InputManager();
+	}
+	
+	public Object getWaitObject() {
+		return this.waitObj;
 	}
 
 	/**
@@ -164,6 +152,52 @@ public class InputManager {
 	public void registerAI(String name, AIInterface ai) {
 		this.predifinedAIs.put(name, ai);
 	}
+	
+	/**
+	 * AIの情報を格納したコントローラをInputManagerクラスに取り込む．
+	 */
+	public void createController() {
+		// AI Controller
+		String[] aiNames = LaunchSetting.aiNames.clone();
+
+		if (FlagSetting.allCombinationFlag) {
+			if (AIContainer.p1Index == AIContainer.p2Index) {
+				AIContainer.p1Index++;
+			}
+			aiNames[0] = AIContainer.allAINameList.get(AIContainer.p1Index);
+			aiNames[1] = AIContainer.allAINameList.get(AIContainer.p2Index);
+		}
+
+		this.deviceTypes = LaunchSetting.deviceTypes.clone();
+		for (int i = 0; i < this.deviceTypes.length; i++) {
+			AIController ai = null;
+			if (this.deviceTypes[i] == DEVICE_TYPE_AI) {
+				if (this.predifinedAIs.containsKey(aiNames[i])) {
+					ai = new AIController(this.predifinedAIs.get(aiNames[i]));
+				} else {
+					ai = ResourceLoader.getInstance().loadAI(aiNames[i]);
+				}
+			} else if (this.deviceTypes[i] == DEVICE_TYPE_EXTERNAL) {
+				ai = new AIController(SocketServer.getInstance().getPlayer(i));
+			}
+			
+			ThreadController.getInstance().setAIController(i, ai);
+		}
+		
+		ThreadController.getInstance().createSoundController();
+		ThreadController.getInstance().createStreamControllers();
+	}
+	
+	public void startController(GameData gameData) {
+		ThreadController.getInstance().startAI(gameData);
+		ThreadController.getInstance().startSound(gameData);
+		ThreadController.getInstance().startStreams(gameData);
+		
+		if (FlagSetting.inputSyncFlag) {
+			ThreadController.getInstance().initialize();
+			ThreadController.getInstance().start();
+		}
+	}
 
 	/**
 	 * 毎フレーム実行され，キーボード入力及びAIの入力情報を取得する．
@@ -177,7 +211,8 @@ public class InputManager {
 				break;
 			case DEVICE_TYPE_AI:
 			case DEVICE_TYPE_EXTERNAL:
-				keys[i] = getKeyFromAI(this.ais[i]);
+				AIController ai = ThreadController.getInstance().getAIController(i == 0);
+				keys[i] = getKeyFromAI(ai);
 				break;
 			default:
 				break;
@@ -223,98 +258,13 @@ public class InputManager {
 	}
 
 	/**
-	 * AIの情報を格納したコントローラをInputManagerクラスに取り込む．
-	 */
-	public void createAIcontroller() {
-		String[] aiNames = LaunchSetting.aiNames.clone();
-
-		if (FlagSetting.allCombinationFlag) {
-			if (AIContainer.p1Index == AIContainer.p2Index) {
-				AIContainer.p1Index++;
-			}
-			aiNames[0] = AIContainer.allAINameList.get(AIContainer.p1Index);
-			aiNames[1] = AIContainer.allAINameList.get(AIContainer.p2Index);
-		}
-
-		this.deviceTypes = LaunchSetting.deviceTypes.clone();
-		for (int i = 0; i < this.deviceTypes.length; i++) {
-			if (this.deviceTypes[i] == DEVICE_TYPE_AI) {
-				if (this.predifinedAIs.containsKey(aiNames[i])) {
-					this.ais[i] = new AIController(this.predifinedAIs.get(aiNames[i]));
-				} else {
-					this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
-				}
-			} else if (this.deviceTypes[i] == DEVICE_TYPE_EXTERNAL) {
-				this.ais[i] = new AIController(SocketServer.getInstance().getPlayer(i));
-			} else {
-				this.ais[i] = null;
-			}
-		}
-	}
-	
-	public void createSoundController() {
-		SocketGenerativeSound generativeSound = SocketServer.getInstance().getGenerativeSound();
-		if (!generativeSound.isCancelled()) {
-			this.sound = new SoundController(generativeSound);
-		}
-	}
-	
-	public void createStreamControllers() {
-		for (SocketStream socketStream : SocketServer.getInstance().getStreams()) {
-			if (!socketStream.isCancelled()) {
-				StreamController stream = new StreamController(socketStream);
-				this.streams.add(stream);
-			}
-		}
-	}
-
-	/**
-	 * AIコントローラの動作を開始させる．<br>
-	 * 引数のGameDataクラスのインスタンスを用いてAIコントローラを初期化し，AIの動作を開始する．
-	 *
-	 * @param gameData
-	 *            GameDataクラスのインスタンス
-	 * @see GameData
-	 */
-	public void startAI(GameData gameData) {
-		for (int i = 0; i < this.deviceTypes.length; i++) {
-			if (this.ais[i] != null) {
-				this.ais[i].initialize(ThreadController.getInstance().getAIsObject(i == 0), gameData, i == 0);
-				this.ais[i].start();// start the thread
-		        Logger.getAnonymousLogger().log(Level.INFO, String.format("Start P%s AI controller thread", i == 0 ? "1" : "2"));
-			}
-		}
-	}
-	
-	public void startSound(GameData gameData) {
-        if (this.sound != null) {
-            this.sound.initialize(ThreadController.getInstance().getSoundObject(), gameData);
-            this.sound.start();
-        	Logger.getAnonymousLogger().log(Level.INFO, "Start Sound controller thread");
-        }
-	}
-	
-	public void startStreams(GameData gameData) {
-		for (int i = 0; i < this.streams.size(); i++) {
-			StreamController stream = this.streams.get(i);
-			Object waitObj = new Object();
-			ThreadController.getInstance().addWaitObject(waitObj);
-			stream.initialize(waitObj, gameData);
-            stream.start();
-        	Logger.getAnonymousLogger().log(Level.INFO, String.format("Start Stream controller thread #%d", i + 1));
-		}
-	}
-
-	/**
 	 * AIの動作を停止させる．
 	 */
 	public void closeAI() {
 		this.buffer = new KeyData();
 		
 		this.deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
-		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
-		this.sound = null;
-		this.streams.clear();
+		ThreadController.getInstance().closeAI();
 	}
 
 	/**
@@ -334,6 +284,7 @@ public class InputManager {
 	}
 	
 	public AudioData getAudioData() {
+		SoundController sound = ThreadController.getInstance().getSoundController();
 		if (sound == null)
 			return new AudioData();
 		return new AudioData(sound.getAudioData());
@@ -343,11 +294,9 @@ public class InputManager {
 		ThreadController.getInstance().resetAllObjects();
 		
 		if (FlagSetting.inputSyncFlag) {
-			synchronized (this.endFrame) {
+			synchronized (this.waitObj) {
 				try {
-					this.endFrame.wait();
-					
-					Thread.sleep(1);
+					this.waitObj.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -369,33 +318,13 @@ public class InputManager {
 	 * @see AudioData
 	 */
 	public void setFrameData(FrameData frameData, ScreenData screenData, AudioData audioData) {
-		// Game Playing AI
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				if (!frameData.getEmptyFlag()) {
-					ai.setFrameData(new FrameData(frameData));
-				} else {
-					ai.setFrameData(new FrameData());
-				}
-				ai.setScreenData(new ScreenData(screenData));
-				ai.setAudioData(new AudioData(audioData));
-			}
-		}
-
-		// Sound Design AI
-		if (this.sound != null) {
-			this.sound.setFrameData(frameData);
-		}
-		
-		for (StreamController stream : this.streams) {
-			stream.setFrameData(frameData, audioData, screenData);
-		}
+		ThreadController.getInstance().setFrameData(frameData, screenData, audioData);
 		
 		this.resetAllObjects();
 	}
 	
 	public void setInput(boolean playerNumber, Key input) {
-		AIController ai = this.ais[playerNumber ? 0 : 1];
+		AIController ai = ThreadController.getInstance().getAIController(playerNumber);
 		if (ai != null) {
 			ai.setInput(input);
 		}
@@ -409,60 +338,9 @@ public class InputManager {
 	 * @see RoundResult
 	 */
 	public void sendRoundResult(RoundResult roundResult) {
-		// Game Playing AI
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.informRoundResult(roundResult);
-			}
-		}
-		
-		// Sound Design AI
-		if (this.sound != null) {
-			this.sound.informRoundResult(roundResult);
-		}
-		
-		for (StreamController stream : this.streams) {
-			stream.informRoundResult(roundResult);
-		}
+		ThreadController.getInstance().sendRoundResult(roundResult);
 		
 		this.resetAllObjects();
-	}
-	
-	public void gameEnd() {
-		// Game Playing AI
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.gameEnd();
-			}
-		}
-		
-		// Sound Design AI
-		if (this.sound != null) {
-			this.sound.gameEnd();
-		}
-		
-		for (StreamController stream : this.streams) {
-			stream.gameEnd();
-		}
-	}
-
-	/**
-	 * 各AIコントローラ内に保持されているフレームデータをクリアする.
-	 */
-	public void clear() {
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.clear();
-			}
-		}
-		
-		if (this.sound != null) {
-			this.sound.clear();
-		}
-		
-		for (StreamController stream : this.streams) {
-			stream.clear();
-		}
 	}
 
 	/**

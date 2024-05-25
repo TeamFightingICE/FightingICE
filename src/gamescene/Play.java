@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import fighting.Fighting;
 import informationcontainer.RoundResult;
@@ -156,13 +157,8 @@ public class Play extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 
-		InputManager.getInstance().createAIcontroller();
-		InputManager.getInstance().createSoundController();
-		InputManager.getInstance().createStreamControllers();
-		
-		InputManager.getInstance().startAI(gameData);
-		InputManager.getInstance().startSound(gameData);
-		InputManager.getInstance().startStreams(gameData);
+		InputManager.getInstance().createController();
+		InputManager.getInstance().startController(gameData);
 	}
 
 	@Override
@@ -225,7 +221,7 @@ public class Play extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.keyData = new KeyData();
 
-		InputManager.getInstance().clear();
+		ThreadController.getInstance().clear();
 		
 		String fileName = LogWriter.getInstance().createOutputFileName("./log/sound/", this.timeInfo + "_" + this.currentRound + ".wav");
 		WaveFileWriter.getInstance().initializeWaveFile(fileName);
@@ -379,7 +375,7 @@ public class Play extends GameScene {
 	}
 	
 	private void processingGameEnd() {
-		InputManager.getInstance().gameEnd();
+		ThreadController.getInstance().gameEnd();
 	}
 
 	/**

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import fighting.Fighting;
 import informationcontainer.RoundResult;
@@ -144,8 +145,8 @@ public class Replay extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		
-		InputManager.getInstance().createSoundController();
-		InputManager.getInstance().startSound(gameData);
+		ThreadController.getInstance().createSoundController();
+		ThreadController.getInstance().startSound(gameData);
 		
 		try {
 			String replayPath = "./log/replay/" + LaunchSetting.replayName + ".dat";
@@ -290,7 +291,7 @@ public class Replay extends GameScene {
 	}
 	
 	private void processingGameEnd() {
-		
+		ThreadController.getInstance().gameEnd();
 	}
 
 	/**
