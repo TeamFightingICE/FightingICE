@@ -27,8 +27,6 @@ public class ThreadController {
 	 */
 	private static ThreadController threadController = new ThreadController();
 	
-	private boolean isFighting;
-	
 	private AIController[] ais;
 	private SoundController sound;
 	private List<StreamController> streams;
@@ -48,9 +46,6 @@ public class ThreadController {
 	 * フィールド変数を初期化するクラスコンストラクタ
 	 */
 	private ThreadController() {
-		this.isFighting = false;
-		this.endFrame = new Object();
-		
 		this.ais = new AIController[2];
 		this.streams = new ArrayList<>();
 		
@@ -153,13 +148,15 @@ public class ThreadController {
 		}
 		
 		if (FlagSetting.inputSyncFlag) {
-			synchronized (this.endFrame) {
+			while (!(isAIProcessed() && isSoundProcessed() && checkThreadState(Thread.State.WAITING))) {
 				try {
-					this.endFrame.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+	    			Thread.sleep(1);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
 			}
+			
+			resetProcessedFlag();
 		}
 	}
 	
@@ -184,7 +181,6 @@ public class ThreadController {
 			controller.gameEnd();
 		}
 		
-		this.isFighting = false;
 		resetProcessedFlag();
 	}
 	
@@ -259,30 +255,6 @@ public class ThreadController {
 		}
 		
 		return ans;
-	}
-	
-	public void initialize() {
-		this.isFighting = true;
-	}
-	
-	public void start() {
-		new Thread(() -> {
-			while (this.isFighting) {
-				try {
-	    			Thread.sleep(1);
-	            } catch (InterruptedException e) {
-	                e.printStackTrace();
-	            }
-				
-	            if (isFighting && isAIProcessed() && isSoundProcessed() && checkThreadState(Thread.State.WAITING)) {
-	    			resetProcessedFlag();
-
-	    			synchronized (this.endFrame) {
-	    				this.endFrame.notifyAll();
-	    			}
-	    		}
-			}
-		}).start();
 	}
 	
 	public void close() {

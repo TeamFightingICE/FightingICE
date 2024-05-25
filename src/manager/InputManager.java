@@ -178,11 +178,6 @@ public class InputManager {
 		ThreadController.getInstance().startAI(gameData);
 		ThreadController.getInstance().startSound(gameData);
 		ThreadController.getInstance().startStreams(gameData);
-		
-		if (FlagSetting.inputSyncFlag) {
-			ThreadController.getInstance().initialize();
-			ThreadController.getInstance().start();
-		}
 	}
 
 	/**
