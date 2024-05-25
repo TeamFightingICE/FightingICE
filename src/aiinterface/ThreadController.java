@@ -10,6 +10,7 @@ import manager.InputManager;
 import service.SocketGenerativeSound;
 import service.SocketServer;
 import service.SocketStream;
+import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
 import struct.FrameData;
@@ -28,29 +29,14 @@ public class ThreadController {
 	
 	private boolean isFighting;
 	
-	/**
-	 * AIコントローラを格納する配列．
-	 */
 	private AIController[] ais;
-	
 	private SoundController sound;
-	
 	private List<StreamController> streams;
+	private List<ControllerInterface> controllerList;
 	
 	private List<Object> waitObjs;
 
-	/**
-	 * P1のAIの処理が終わったかどうかを表すフラグ．<br>
-	 * Fastmodeのときのみ使用される．
-	 */
-	private boolean processedAI1;
-
-	/**
-	 * P2のAIの処理が終わったかどうかを表すフラグ．<br>
-	 * Fastmodeのときのみ使用される．
-	 */
-	private boolean processedAI2;
-	
+	private boolean[] processedAIs;
 	private boolean processedSound;
 
 	/**
@@ -65,16 +51,14 @@ public class ThreadController {
 		this.isFighting = false;
 		this.endFrame = new Object();
 		
-		this.ais = new AIController[InputManager.DEFAULT_DEVICE_NUMBER];
+		this.ais = new AIController[2];
 		this.streams = new ArrayList<>();
 		
 		this.waitObjs = new ArrayList<>();
-
+		this.controllerList = new ArrayList<>();
+		
+		this.processedAIs = new boolean[2];
 		resetProcessedFlag();
-	}
-	
-	public void addWaitObject(Object waitObj) {
-		this.waitObjs.add(waitObj);
 	}
 
 	/**
@@ -85,17 +69,6 @@ public class ThreadController {
 	public static ThreadController getInstance() {
 		return threadController;
 	}
-
-	/**
-	 * 各AIの処理を再開させる．
-	 */
-	public void resetAllObjects() {
-		for (Object waitObj : this.waitObjs) {
-			synchronized (waitObj) {
-				waitObj.notifyAll();
-			}
-		}
-	}
 	
 	public AIController getAIController(boolean playerNumber) {
 		return this.ais[playerNumber ? 0 : 1];
@@ -105,20 +78,19 @@ public class ThreadController {
 		return this.sound;
 	}
 	
-	public void closeAI() {
-		this.ais = new AIController[InputManager.DEFAULT_DEVICE_NUMBER];
-		this.sound = null;
-		this.streams.clear();
-	}
-	
 	public void setAIController(int i, AIController ai) {
 		this.ais[i] = ai;
+		
+		if (ai != null) {
+			this.controllerList.add(ai);
+		}
 	}
 	
 	public void createSoundController() {
 		SocketGenerativeSound generativeSound = SocketServer.getInstance().getGenerativeSound();
 		if (!generativeSound.isCancelled()) {
 			this.sound = new SoundController(generativeSound);
+			this.controllerList.add(this.sound);
 		}
 	}
 	
@@ -127,13 +99,14 @@ public class ThreadController {
 			if (!socketStream.isCancelled()) {
 				StreamController stream = new StreamController(socketStream);
 				this.streams.add(stream);
+				this.controllerList.add(stream);
 			}
 		}
 	}
 	
 	public Object createWaitObject() {
 		Object waitObj = new Object();
-		addWaitObject(waitObj);
+		this.waitObjs.add(waitObj);
 		return waitObj;
 	}
 	
@@ -172,84 +145,55 @@ public class ThreadController {
 		}
 	}
 	
-	public void setFrameData(FrameData frameData, ScreenData screenData, AudioData audioData) {
-		// Game Playing AI
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				if (!frameData.getEmptyFlag()) {
-					ai.setFrameData(new FrameData(frameData));
-				} else {
-					ai.setFrameData(new FrameData());
-				}
-				ai.setScreenData(new ScreenData(screenData));
-				ai.setAudioData(new AudioData(audioData));
+	public void resetAllObjects() {
+		for (Object waitObj : this.waitObjs) {
+			synchronized (waitObj) {
+				waitObj.notifyAll();
 			}
 		}
-
-		// Sound Design AI
-		if (this.sound != null) {
-			this.sound.setFrameData(frameData);
+		
+		if (FlagSetting.inputSyncFlag) {
+			synchronized (this.endFrame) {
+				try {
+					this.endFrame.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public void setFrameData(FrameData frameData, ScreenData screenData, AudioData audioData) {
+		for (ControllerInterface controller : this.controllerList) {
+			controller.setFrameData(frameData, screenData, audioData);
 		}
 		
-		for (StreamController stream : this.streams) {
-			stream.setFrameData(frameData, audioData, screenData);
-		}
+		resetAllObjects();
 	}
 	
 	public void sendRoundResult(RoundResult roundResult) {
-		// Game Playing AI
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.informRoundResult(roundResult);
-			}
+		for (ControllerInterface controller : this.controllerList) {
+			controller.informRoundResult(roundResult);
 		}
 		
-		// Sound Design AI
-		if (this.sound != null) {
-			this.sound.informRoundResult(roundResult);
-		}
-		
-		for (StreamController stream : this.streams) {
-			stream.informRoundResult(roundResult);
-		}
+		resetAllObjects();
 	}
 	
 	public void gameEnd() {
-		// Game Playing AI
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.gameEnd();
-			}
-		}
-		
-		// Sound Design AI
-		if (this.sound != null) {
-			this.sound.gameEnd();
-		}
-		
-		for (StreamController stream : this.streams) {
-			stream.gameEnd();
+		for (ControllerInterface controller : this.controllerList) {
+			controller.gameEnd();
 		}
 		
 		this.isFighting = false;
+		resetProcessedFlag();
 	}
 	
 	/**
 	 * 各AIコントローラ内に保持されているフレームデータをクリアする.
 	 */
 	public void clear() {
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.clear();
-			}
-		}
-		
-		if (this.sound != null) {
-			this.sound.clear();
-		}
-		
-		for (StreamController stream : this.streams) {
-			stream.clear();
+		for (ControllerInterface controller : this.controllerList) {
+			controller.clear();
 		}
 	}
 
@@ -267,8 +211,8 @@ public class ThreadController {
 	 * Fastmodeのときのみ使用される．
 	 */
 	private void resetProcessedFlag() {
-		this.processedAI1 = false;
-		this.processedAI2 = false;
+		this.processedAIs[0] = false;
+		this.processedAIs[1] = false;
 		this.processedSound = false;
 	}
 
@@ -282,11 +226,7 @@ public class ThreadController {
 	 *            {@code true} if the character is P1, or {@code false} if P2.
 	 */
 	public void notifyEndAIProcess(boolean playerNumber) {
-		if (playerNumber) {
-			this.processedAI1 = true;
-		} else {
-			this.processedAI2 = true;
-		}
+		this.processedAIs[playerNumber ? 0 : 1] = true;
 	}
 	
 	public void notifyEndSoundProcess() {
@@ -296,9 +236,7 @@ public class ThreadController {
 	private boolean isAIProcessed() {
 		boolean ans = true;
 		for (int i = 0; i < 2; i++) {
-			char deviceType = LaunchSetting.deviceTypes[i];
-			boolean processedAI = i == 0 ? this.processedAI1 : this.processedAI2;
-			ans = ans && (deviceType == InputManager.DEVICE_TYPE_KEYBOARD || processedAI);
+			ans = ans && (LaunchSetting.deviceTypes[i] == InputManager.DEVICE_TYPE_KEYBOARD || this.processedAIs[i]);
 		}
 		return ans;
 	}
@@ -336,7 +274,7 @@ public class ThreadController {
 	                e.printStackTrace();
 	            }
 				
-	            if (isAIProcessed() && isSoundProcessed() && isThreadWaiting()) {
+	            if (isFighting && isAIProcessed() && isSoundProcessed() && isThreadWaiting()) {
 	    			resetProcessedFlag();
 
 	    			synchronized (this.endFrame) {
@@ -345,6 +283,13 @@ public class ThreadController {
 	    		}
 			}
 		}).start();
+	}
+	
+	public void close() {
+		this.ais = new AIController[2];
+		this.sound = null;
+		this.streams.clear();
+		this.controllerList.clear();
 	}
 
 }

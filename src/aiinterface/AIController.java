@@ -13,7 +13,7 @@ import struct.ScreenData;
 /**
  * AIのスレッドや処理を管理するクラス．
  */
-public class AIController extends Thread {
+public class AIController extends Thread implements ControllerInterface {
 
     /**
      * AIに実装すべきメソッドを定義するインタフェース．
@@ -176,9 +176,9 @@ public class AIController extends Thread {
      * @param fd 対戦処理後のフレームデータ
      * @see FrameData
      */
-    public synchronized void setFrameData(FrameData fd) {
-        if (fd != null) {
-            this.framesData.addLast(fd);
+    public synchronized void setFrameData(FrameData fd, ScreenData sd, AudioData ad) {
+        if (!fd.getEmptyFlag()) {
+            this.framesData.addLast(new FrameData(fd));
         } else {
             this.framesData.addLast(new FrameData());
         }
@@ -186,20 +186,9 @@ public class AIController extends Thread {
         while (this.framesData.size() > DELAY) {
             this.framesData.removeFirst();
         }
-    }
 
-    /**
-     * 対戦処理後の画面情報をセットする．<br>
-     *
-     * @param screenData 対戦処理後の画面情報
-     * @see ScreenData
-     */
-    public synchronized void setScreenData(ScreenData screenData) {
-        this.screenData = screenData;
-    }
-
-    public synchronized void setAudioData(AudioData audioData) {
-        this.audioData = audioData;
+        this.screenData = new ScreenData(sd);
+        this.audioData = new AudioData(ad);
     }
 
     /**

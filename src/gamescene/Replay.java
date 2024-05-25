@@ -219,13 +219,15 @@ public class Replay extends GameScene {
 		this.frameData = null;
 		this.screenData = null;
 		this.keyData = null;
+		
+		InputManager.getInstance().close();
+		ThreadController.getInstance().close();
 
 		try {
 			this.dis.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -251,7 +253,7 @@ public class Replay extends GameScene {
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
-		InputManager.getInstance().setFrameData(frameData, screenData, audioData);
+		ThreadController.getInstance().setFrameData(frameData, screenData, audioData);
 		
 		if (this.nowFrame == 0) {
 			this.audioData = new AudioData();
@@ -280,7 +282,7 @@ public class Replay extends GameScene {
 				(double) (currentFrameTime - roundStartTime) / 1e9, (double) (this.nowFrame + 1) / 60));
 		
 		RoundResult roundResult = new RoundResult(this.frameData);
-		InputManager.getInstance().sendRoundResult(roundResult);
+		ThreadController.getInstance().sendRoundResult(roundResult);
 
 		SoundManager.getInstance().stopAll();
 		SoundManager.getInstance().stopPlayback(audioSource);

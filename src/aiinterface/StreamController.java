@@ -6,7 +6,7 @@ import struct.FrameData;
 import struct.GameData;
 import struct.ScreenData;
 
-public class StreamController extends Thread {
+public class StreamController extends Thread implements ControllerInterface {
 
     private StreamInterface stream;
     
@@ -60,10 +60,10 @@ public class StreamController extends Thread {
         }
     }
     
-    public synchronized void setFrameData(FrameData fd, AudioData ad, ScreenData sd) {
+    public synchronized void setFrameData(FrameData fd, ScreenData sd, AudioData ad) {
         this.frameData = fd;
-        this.audioData = ad;
         this.screenData = sd;
+        this.audioData = ad;
     }
     
     public synchronized void clear() {

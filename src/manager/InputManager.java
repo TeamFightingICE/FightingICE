@@ -25,7 +25,6 @@ import aiinterface.SoundController;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import informationcontainer.AIContainer;
-import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
@@ -33,10 +32,8 @@ import service.SocketServer;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
-import struct.FrameData;
 import struct.GameData;
 import struct.Key;
-import struct.ScreenData;
 
 /**
  * AIやキーボード等の入力関連のタスクを管理するマネージャークラス．
@@ -86,11 +83,6 @@ public class InputManager {
 	private char[] deviceTypes;
 
 	/**
-	 * 1フレーム分のゲームの処理が終わったことを示すオブジェクト．
-	 */
-	private Object waitObj;
-
-	/**
 	 * InputManagerクラスのクラスコンストラクタ．<br>
 	 * デバイスタイプはデフォルトでキーボードを指定する．
 	 */
@@ -108,8 +100,6 @@ public class InputManager {
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
-
-		this.waitObj = ThreadController.getInstance().getEndFrame();
 	}
 
 	/**
@@ -256,11 +246,10 @@ public class InputManager {
 	/**
 	 * AIの動作を停止させる．
 	 */
-	public void closeAI() {
+	public void close() {
 		this.buffer = new KeyData();
 		
 		this.deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
-		ThreadController.getInstance().closeAI();
 	}
 
 	/**
@@ -286,55 +275,11 @@ public class InputManager {
 		return new AudioData(sound.getAudioData());
 	}
 	
-	public void resetAllObjects() {
-		ThreadController.getInstance().resetAllObjects();
-		
-		if (FlagSetting.inputSyncFlag) {
-			synchronized (this.waitObj) {
-				try {
-					this.waitObj.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
 	public void setInput(boolean playerNumber, Key input) {
 		AIController ai = ThreadController.getInstance().getAIController(playerNumber);
 		if (ai != null) {
 			ai.setInput(input);
 		}
-	}
-
-	/**
-	 * 引数のフレームデータ及びScreenDataを各AIコントローラにセットする．
-	 *
-	 * @param frameData
-	 *            フレームデータ
-	 * @param screenData
-	 *            スクリーンデータ
-	 * @param audioData
-	 *
-	 * @see FrameData
-	 * @see ScreenData
-	 * @see AudioData
-	 */
-	public void setFrameData(FrameData frameData, ScreenData screenData, AudioData audioData) {
-		ThreadController.getInstance().setFrameData(frameData, screenData, audioData);
-		resetAllObjects();
-	}
-
-	/**
-	 * AIコントローラに現在のラウンドの結果を送信する．
-	 *
-	 * @param roundResult
-	 *            現在のラウンドの結果
-	 * @see RoundResult
-	 */
-	public void sendRoundResult(RoundResult roundResult) {
-		ThreadController.getInstance().sendRoundResult(roundResult);
-		resetAllObjects();
 	}
 
 	/**

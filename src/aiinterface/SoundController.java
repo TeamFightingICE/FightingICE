@@ -4,8 +4,9 @@ import informationcontainer.RoundResult;
 import struct.AudioData;
 import struct.FrameData;
 import struct.GameData;
+import struct.ScreenData;
 
-public class SoundController extends Thread {
+public class SoundController extends Thread implements ControllerInterface {
 	
 	private SoundDesignAIInterface ai;
 	
@@ -58,7 +59,7 @@ public class SoundController extends Thread {
 		}
 	}
 	
-	public synchronized void setFrameData(FrameData frameData) {
+	public synchronized void setFrameData(FrameData frameData, ScreenData sd, AudioData ad) {
         this.frameData = frameData;
     }
 	

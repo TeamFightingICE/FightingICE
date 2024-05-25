@@ -288,7 +288,7 @@ public class Play extends GameScene {
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
 		
 		// AIにFrameDataをセット
-		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
+		ThreadController.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
 		
 		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
 		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
@@ -338,7 +338,7 @@ public class Play extends GameScene {
 				this.roundResults.add(roundResult);
 
 				// AIに結果を渡す
-				InputManager.getInstance().sendRoundResult(roundResult);
+				ThreadController.getInstance().sendRoundResult(roundResult);
 				
 				this.currentRound++;
 				this.roundStartFlag = true;
@@ -360,7 +360,7 @@ public class Play extends GameScene {
 			this.roundResults.add(roundResult);
 
 			// AIに結果を渡す
-			InputManager.getInstance().sendRoundResult(roundResult);
+			ThreadController.getInstance().sendRoundResult(roundResult);
 			
 			this.currentRound++;
 			this.roundStartFlag = true;
@@ -421,7 +421,8 @@ public class Play extends GameScene {
 		this.keyData = null;
 		this.roundResults.clear();
 		
-		InputManager.getInstance().closeAI();
+		InputManager.getInstance().close();
+		ThreadController.getInstance().close();
 
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().closeAllWriters();
