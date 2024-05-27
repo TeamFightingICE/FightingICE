@@ -18,7 +18,7 @@ public class Socket extends GameScene {
 	 */
 	public Socket() {
 		// 以下4行の処理はgamesceneパッケージ内クラスのコンストラクタには必ず含める
-		this.gameSceneName = GameSceneName.GRPC;
+		this.gameSceneName = GameSceneName.SOCKET;
 		this.isGameEndFlag = false;
 		this.isTransitionFlag = false;
 		this.nextGameScene = null;
