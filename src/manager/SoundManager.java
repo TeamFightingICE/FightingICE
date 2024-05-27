@@ -149,7 +149,7 @@ public class SoundManager {
         	virtualRenderer = SoundRender.createVirtualRenderer();
             this.soundRenderers.add(virtualRenderer);
             
-            if (!FlagSetting.muteFlag) {
+            if (!FlagSetting.muteFlag && LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
             	SoundRender defaultRenderer = SoundRender.createDefaultRenderer();
                 this.soundRenderers.add(defaultRenderer);
             }
