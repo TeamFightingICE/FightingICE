@@ -146,7 +146,7 @@ public class Replay extends GameScene {
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		
 		ThreadController.getInstance().createSoundController();
-		ThreadController.getInstance().startSound(gameData);
+		ThreadController.getInstance().startAllThreads(gameData);
 		
 		try {
 			String replayPath = "./log/replay/" + LaunchSetting.replayName + ".dat";

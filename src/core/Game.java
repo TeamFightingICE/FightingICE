@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import enumerate.BackgroundType;
 import enumerate.GameSceneName;
-import gamescene.Grpc;
+import gamescene.Socket;
 import gamescene.HomeMenu;
 import gamescene.Launcher;
 import image.LetterImage;
@@ -200,7 +200,7 @@ public class Game extends GameManager {
 		}
         
         if (FlagSetting.enablePyftgMode) {
-        	Grpc grpc = new Grpc();
+        	Socket grpc = new Socket();
         	this.startGame(grpc);
         } else if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag)) {
             // -nまたは-aが指定されたときは, メニュー画面に行かず直接ゲームをLaunchする

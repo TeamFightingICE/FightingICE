@@ -32,7 +32,6 @@ import service.SocketServer;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
-import struct.GameData;
 import struct.Key;
 
 /**
@@ -54,11 +53,6 @@ public class InputManager {
 	 * ゲームのシーン名．
 	 */
 	private GameSceneName sceneName;
-
-	/**
-	 * Python側で定義されたAI名とAIInterfaceをセットで管理するマップ.
-	 */
-	private HashMap<String, AIInterface> predifinedAIs;
 
 	/**
 	 * Default number of devices.
@@ -95,7 +89,6 @@ public class InputManager {
 		
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		sceneName = GameSceneName.HOME_MENU;
-		this.predifinedAIs = new HashMap<String, AIInterface>();
 
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
@@ -126,60 +119,11 @@ public class InputManager {
 	public Keyboard getKeyboard() {
 		return this.keyboard;
 	}
-
-	/**
-	 * Pythonでの処理のために用意されたAI名とAIインタフェースをマップに追加する．
-	 *
-	 * @param name
-	 *            AI名
-	 * @param ai
-	 *            AIインタフェース
-	 */
-	public void registerAI(String name, AIInterface ai) {
-		this.predifinedAIs.put(name, ai);
-	}
 	
-	/**
-	 * AIの情報を格納したコントローラをInputManagerクラスに取り込む．
-	 */
-	public void createController() {
-		// AI Controller
-		String[] aiNames = LaunchSetting.aiNames.clone();
-
-		if (FlagSetting.allCombinationFlag) {
-			if (AIContainer.p1Index == AIContainer.p2Index) {
-				AIContainer.p1Index++;
-			}
-			aiNames[0] = AIContainer.allAINameList.get(AIContainer.p1Index);
-			aiNames[1] = AIContainer.allAINameList.get(AIContainer.p2Index);
-		}
-
+	public void initialize() {
 		this.deviceTypes = LaunchSetting.deviceTypes.clone();
-		for (int i = 0; i < this.deviceTypes.length; i++) {
-			AIController ai = null;
-			if (this.deviceTypes[i] == DEVICE_TYPE_AI) {
-				if (this.predifinedAIs.containsKey(aiNames[i])) {
-					ai = new AIController(this.predifinedAIs.get(aiNames[i]));
-				} else {
-					ai = ResourceLoader.getInstance().loadAI(aiNames[i]);
-				}
-			} else if (this.deviceTypes[i] == DEVICE_TYPE_EXTERNAL) {
-				ai = new AIController(SocketServer.getInstance().getPlayer(i));
-			}
-			
-			ThreadController.getInstance().setAIController(i, ai);
-		}
-		
-		ThreadController.getInstance().createSoundController();
-		ThreadController.getInstance().createStreamControllers();
 	}
 	
-	public void startController(GameData gameData) {
-		ThreadController.getInstance().startAI(gameData);
-		ThreadController.getInstance().startSound(gameData);
-		ThreadController.getInstance().startStreams(gameData);
-	}
-
 	/**
 	 * 毎フレーム実行され，キーボード入力及びAIの入力情報を取得する．
 	 */

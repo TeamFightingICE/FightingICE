@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import grpc.GrpcGame;
 import protoc.EnumProto.GrpcStatusCode;
 import protoc.ServiceProto.InitializeRequest;
 import protoc.ServiceProto.RunGameRequest;
@@ -26,7 +25,6 @@ public class SocketServer {
 	private boolean open;
 	private String serverHost;
 	private int serverPort;
-	private GrpcGame game;
 	private ServerSocket server;
 	private Thread serverThread;
 	private SocketPlayer[] players;
@@ -49,7 +47,6 @@ public class SocketServer {
 			this.serverHost = "0.0.0.0";
 		}
 		
-		this.game = new GrpcGame();
 		this.players = new SocketPlayer[] { new SocketPlayer(), new SocketPlayer() };
 		this.generativeSound = new SocketGenerativeSound();
 		this.streams = new ArrayList<>();
@@ -65,10 +62,6 @@ public class SocketServer {
 	
 	public int getServerPort() {
 		return serverPort;
-	}
-	
-	public GrpcGame getGame() {
-		return this.game;
 	}
 	
 	public SocketPlayer getPlayer(int index) {
@@ -100,12 +93,12 @@ public class SocketServer {
 			String aiName2 = request.getPlayer2();
 			int gameNumber = request.getGameNumber();
 			
-			game.setCharacterName(true, characterName1);
-	  		game.setCharacterName(false, characterName2);
-	  		game.setAIName(true, aiName1);
-	  		game.setAIName(false, aiName2);
-	  		game.setGameNumber(gameNumber);
-	  		game.setRunFlag(true);
+			GameService.getInstance().setCharacterName(true, characterName1);
+			GameService.getInstance().setCharacterName(false, characterName2);
+			GameService.getInstance().setAIName(true, aiName1);
+			GameService.getInstance().setAIName(false, aiName2);
+			GameService.getInstance().setGameNumber(gameNumber);
+			GameService.getInstance().setRunFlag(true);
 			
 			statusCode = GrpcStatusCode.SUCCESS;
 			responseMessage = "Success";
@@ -135,13 +128,13 @@ public class SocketServer {
 					byte[] data = SocketUtil.socketRecv(din, 1);
 					
 					if (data[0] == 1) {
-						// Play Agent Gateway
+						// Play Agent
 						byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
 						InitializeRequest request = InitializeRequest.parseFrom(requestAsBytes);
 						players[request.getPlayerNumber() ? 0 : 1].initializeSocket(client, request);
 						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Game Playing AI");
 					} else if (data[0] == 2) {
-						// Run Game Gateway
+						// Run Game
 						byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
 						RunGameRequest request = RunGameRequest.parseFrom(requestAsBytes);
 						RunGameResponse response = callRunGame(request);
@@ -149,19 +142,23 @@ public class SocketServer {
 						SocketUtil.socketSend(dout, responseAsBytes, true);
 						Logger.getAnonymousLogger().log(Level.INFO, "Received run game request");
 					} else if (data[0] == 3) {
-						// Generative Sound Gateway
+						// Generative Sound
 						byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
 						SpectateRequest request = SpectateRequest.parseFrom(requestAsBytes);
 						generativeSound.initializeSocket(client, request);
 						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Sound Generative AI");
 					} else if (data[0] == 4) {
-						// Stream Gateway
+						// Stream
 						byte[] requestAsBytes = SocketUtil.socketRecv(din, -1);
 						SpectateRequest request = SpectateRequest.parseFrom(requestAsBytes);
 						SocketStream stream = new SocketStream();
 						stream.initializeSocket(client, request);
 						this.streams.add(stream);
 						Logger.getAnonymousLogger().log(Level.INFO, "Client connected as Stream Handler");
+					} else if (data[0] == 5) {
+						// Close Game
+						GameService.getInstance().setCloseFlag(true);
+						Logger.getAnonymousLogger().log(Level.INFO, "Received close game request");
 					}
 				} catch (IOException e) {
 					if (!Thread.currentThread().isInterrupted()) Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());

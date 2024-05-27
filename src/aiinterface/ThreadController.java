@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import informationcontainer.AIContainer;
 import informationcontainer.RoundResult;
+import loader.ResourceLoader;
 import manager.InputManager;
 import service.SocketGenerativeSound;
 import service.SocketServer;
@@ -73,11 +75,30 @@ public class ThreadController {
 		return this.sound;
 	}
 	
-	public void setAIController(int i, AIController ai) {
-		this.ais[i] = ai;
-		
-		if (ai != null) {
-			this.controllerList.add(ai);
+	public void createAIController() {
+		// AI Controller
+		String[] aiNames = LaunchSetting.aiNames.clone();
+
+		if (FlagSetting.allCombinationFlag) {
+			if (AIContainer.p1Index == AIContainer.p2Index) {
+				AIContainer.p1Index++;
+			}
+			aiNames[0] = AIContainer.allAINameList.get(AIContainer.p1Index);
+			aiNames[1] = AIContainer.allAINameList.get(AIContainer.p2Index);
+		}
+
+		char[] deviceTypes = LaunchSetting.deviceTypes.clone();
+		for (int i = 0; i < deviceTypes.length; i++) {
+			switch (deviceTypes[i]) {
+			case InputManager.DEVICE_TYPE_AI:
+				this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
+				this.controllerList.add(this.ais[i]);
+				break;
+			case InputManager.DEVICE_TYPE_EXTERNAL:
+				this.ais[i] = new AIController(SocketServer.getInstance().getPlayer(i));
+				this.controllerList.add(this.ais[i]);
+				break;
+			}
 		}
 	}
 	
@@ -137,6 +158,20 @@ public class ThreadController {
 			stream.initialize(createWaitObject(), gameData);
             stream.start();
         	Logger.getAnonymousLogger().log(Level.INFO, String.format("Start Stream controller thread #%d", i + 1));
+		}
+	}
+	
+	public void startAllThreads(GameData gameData) {
+		startAI(gameData);
+		startSound(gameData);
+		startStreams(gameData);
+		
+		while (!checkThreadState(Thread.State.WAITING)) {
+			try {
+    			Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 		}
 	}
 	

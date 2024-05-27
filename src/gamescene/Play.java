@@ -156,9 +156,13 @@ public class Play extends GameScene {
 		}
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
+		
+		InputManager.getInstance().initialize();
 
-		InputManager.getInstance().createController();
-		InputManager.getInstance().startController(gameData);
+		ThreadController.getInstance().createAIController();
+		ThreadController.getInstance().createSoundController();
+		ThreadController.getInstance().createStreamControllers();
+		ThreadController.getInstance().startAllThreads(gameData);
 	}
 
 	@Override
@@ -225,14 +229,6 @@ public class Play extends GameScene {
 		
 		String fileName = LogWriter.getInstance().createOutputFileName("./log/sound/", this.timeInfo + "_" + this.currentRound + ".wav");
 		WaveFileWriter.getInstance().initializeWaveFile(fileName);
-		
-		if (FlagSetting.inputSyncFlag) {
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**

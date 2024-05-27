@@ -1,41 +1,40 @@
-package grpc;
+package service;
 
 import java.util.List;
 
 import loader.ResourceLoader;
 import manager.InputManager;
-import service.SocketPlayer;
-import service.SocketServer;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 
-public class GrpcGame {
+public class GameService {
 	
-	private String[] characterNames;
-	private String[] aiNames;
-	private int gameNumber;
 	private boolean runFlag;
+	private boolean closeFlag;
 	
 	private List<String> allAiNames;
 	
-	public GrpcGame() {
-		this.characterNames = new String[2];
-		this.aiNames = new String[2];
-		this.gameNumber = 1;
-		this.runFlag = false;
-		
+	public static GameService getInstance() {
+        return GameServiceHolder.instance;
+    }
 
+    private static class GameServiceHolder {
+        private static final GameService instance = new GameService();
+    }
+	
+	public GameService() {
+		this.runFlag = false;
+		this.closeFlag = false;
+		
 		this.allAiNames = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
 	}
 	
 	public void setCharacterName(boolean player, String characterName) {
-		this.characterNames[player ? 0 : 1] = characterName;
 		LaunchSetting.characterNames[player ? 0 : 1] = characterName;
 	}
 	
 	public void setAIName(boolean player, String aiName) {
 		int i = player ? 0 : 1;
-		this.aiNames[i] = aiName;
 		if (aiName != null && !aiName.equalsIgnoreCase("Keyboard")) {
 			LaunchSetting.deviceTypes[i] = allAiNames.contains(aiName) 
 					? InputManager.DEVICE_TYPE_AI : InputManager.DEVICE_TYPE_EXTERNAL;
@@ -47,7 +46,6 @@ public class GrpcGame {
 	}
 	
 	public void setGameNumber(int gameNumber) {
-		this.gameNumber = gameNumber;
 		LaunchSetting.repeatNumber = gameNumber;
 		if (gameNumber > 1) {
 			FlagSetting.automationFlag = true;
@@ -58,7 +56,11 @@ public class GrpcGame {
 		this.runFlag = runFlag;
 	}
 	
-	public boolean isReady() {
+	public void setCloseFlag(boolean closeFlag) {
+		this.closeFlag = closeFlag;
+	}
+	
+	public boolean getRunFlag() {
 		if (!this.runFlag) return false;
 		
 		boolean ans = true;
@@ -70,6 +72,10 @@ public class GrpcGame {
 		}
 		
 		return ans;
+	}
+	
+	public boolean getCloseFlag() {
+		return this.closeFlag;
 	}
 	
 }

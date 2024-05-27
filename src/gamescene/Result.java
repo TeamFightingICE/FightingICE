@@ -175,7 +175,7 @@ public class Result extends GameScene {
 
 				} else if (FlagSetting.enablePyftgMode) {
 					SocketServer.getInstance().notifyTaskFinished();
-					Grpc grpc = new Grpc();
+					Socket grpc = new Socket();
 					this.setTransitionFlag(true);
 					this.setNextGameScene(grpc);
 				} else {
