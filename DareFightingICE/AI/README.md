@@ -135,6 +135,10 @@ Final deadline
 
 #### Note that all the submissions will be made publicly available after the competition.
 
+### 2024 Results (updated on August 12, 2024):
+---
+[link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-R.html)
+
 ### <b>Contact Us:</b>
 ---
 d-ice-aic at ice dot ci dot ritsumei dot ac dot jp
