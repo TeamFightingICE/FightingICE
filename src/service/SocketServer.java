@@ -30,6 +30,7 @@ public class SocketServer {
 	private SocketPlayer[] players;
 	private SocketGenerativeSound generativeSound;
 	private List<SocketStream> streams;
+	private DataOutputStream runGameClient;
 	
 	public static SocketServer getInstance() {
         return SocketServerHolder.instance;
@@ -112,6 +113,18 @@ public class SocketServer {
 		return response;
 	}
 	
+	public void sendRunGameComplete() {
+		if (this.runGameClient != null) {
+			try {
+				SocketUtil.socketSend(this.runGameClient, new byte[] { 0 }, false);
+			} catch (IOException e) {
+				Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage());
+			}
+			
+			this.runGameClient = null;
+		}
+	}
+	
 	public void startServer(int serverPort) throws IOException {
 		this.serverPort = serverPort;
 		server = new ServerSocket();
@@ -140,6 +153,7 @@ public class SocketServer {
 						RunGameResponse response = callRunGame(request);
 						byte[] responseAsBytes = response.toByteArray();
 						SocketUtil.socketSend(dout, responseAsBytes, true);
+						this.runGameClient = dout;
 						Logger.getAnonymousLogger().log(Level.INFO, "Received run game request");
 					} else if (data[0] == 3) {
 						// Generative Sound
@@ -182,6 +196,8 @@ public class SocketServer {
 	}
 	
 	public void notifyTaskFinished() {
+		this.sendRunGameComplete();
+		
 		for (int i = 0; i < 2; i++) {
 			this.players[i].cancel();;
 		}
