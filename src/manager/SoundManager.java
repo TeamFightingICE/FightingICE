@@ -169,6 +169,17 @@ public class SoundManager {
         }
     }
 
+    public AudioBuffer createAudioBuffer() {
+    	AudioBuffer audioBuffer = null;
+        int[] bufferIds = new int[soundRenderers.size()];
+        for (int i = 0; i < soundRenderers.size(); i++) {
+            soundRenderers.get(i).set();
+            bufferIds[i] = this.createBuffer();
+        }
+        audioBuffer = new AudioBuffer(bufferIds);
+        return audioBuffer;
+    }
+
     /**
      * 音声㝮読㝿込㝿㝨パラメータ㝮設定を行㝄，冝生準備済㝿㝮音溝を返㝙．<br>
      * 音声ポッファを坖得㝗㝦，生戝㝗㝟音溝㝫セット㝗，ピッポ・ゲイン㝪㝩㝮パラメータを設定㝗㝟後，設定済㝿㝮音溝を返㝙．
@@ -178,26 +189,8 @@ public class SoundManager {
      * @return 設定済㝿㝮音溝
      */
     public AudioBuffer createAudioBuffer(String filePath) {
-        AudioBuffer audioBuffer = null;
-        int[] bufferIds = new int[soundRenderers.size()];
-        for (int i = 0; i < soundRenderers.size(); i++) {
-            soundRenderers.get(i).set();
-            bufferIds[i] = this.createBuffer();
-        }
-        audioBuffer = new AudioBuffer(bufferIds);
+        AudioBuffer audioBuffer = createAudioBuffer();
         audioBuffer.registerSound(filePath);
-        this.audioBuffers.add(audioBuffer);
-        return audioBuffer;
-    }
-
-    public AudioBuffer createAudioBuffer() {
-    	AudioBuffer audioBuffer = null;
-        int[] bufferIds = new int[soundRenderers.size()];
-        for (int i = 0; i < soundRenderers.size(); i++) {
-            soundRenderers.get(i).set();
-            bufferIds[i] = this.createBuffer();
-        }
-        audioBuffer = new AudioBuffer(bufferIds);
         return audioBuffer;
     }
 
