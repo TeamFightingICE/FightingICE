@@ -54,6 +54,7 @@ These three special sounds are in place to help visually impaired players be awa
 - The sounds you submit must be copyright-free (legally made by yourself or use copyright-free sounds). Here copyright-free means [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/) licence.
 - For all the sound effects you have changed, please make a list explaning if you came up with the sound yourself or you used an already exsisting free sound (CC0). In case of already exsisting free sound, please provide the reference. 
 - One team can only submit one sound design.
+- Participants must not submit a previous year’s entry without modification.
 - If you add any new sound (special sound effect) which is not in the sample sound design. You are asked to give a reason for the addition.
 - If any sound effect is found not to be copyright free you will be contacted to change and resubmit before the deadline. If you are not able to resubmit before the deadline, your submission will be discarded. Your submission will also be discarded if your sounds are found not to be copyright free at any stage of the competition, even if the results are out and the participant below you will take your place. 
 - Your sound design will be made publicly available and by submitting you will have agreed to this.
