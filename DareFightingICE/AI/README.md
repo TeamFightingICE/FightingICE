@@ -59,6 +59,10 @@ The FrameData sent to AIs will have a delay of 15 frames, but AudioData and Scre
 
 Your AI will be made publicly available and by submitting you will have agreed to this.
 
+Each team can submit only one entry.
+
+Participants **must not** submit a previous year’s entry **without modification**.
+
 __Memory Limit__
 - You are allowed to utilize a maximum of 64GB RAM and 32GB VRAM. If your AI exceeds this limit, it will be disqualified.
 
