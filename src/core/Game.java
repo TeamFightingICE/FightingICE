@@ -8,11 +8,9 @@ import java.util.logging.Logger;
 
 import enumerate.BackgroundType;
 import enumerate.GameSceneName;
-import gamescene.Grpc;
+import gamescene.Socket;
 import gamescene.HomeMenu;
 import gamescene.Launcher;
-import gamescene.Python;
-import grpc.GrpcServer;
 import image.LetterImage;
 import informationcontainer.AIContainer;
 import loader.ResourceLoader;
@@ -103,14 +101,16 @@ public class Game extends GameManager {
                 case "--mute":
                     FlagSetting.muteFlag = true;
                     break;
-                case "--disable-window":
-                    FlagSetting.enableWindow = false;
-                    // FlagSetting.muteFlag = true;
+                case "--lightweight-mode":
+                    LaunchSetting.processingMode = LaunchSetting.LIGHTWEIGHT_MODE;
                     FlagSetting.automationFlag = true;
                     break;
-                case "--fastmode":
-                    FlagSetting.fastModeFlag = true;
-                    // FlagSetting.automationFlag = true;
+                case "--headless-mode":
+                    LaunchSetting.processingMode = LaunchSetting.HEADLESS_MODE;
+                    FlagSetting.automationFlag = true;
+                    break;
+                case "--input-sync":
+                    FlagSetting.inputSyncFlag = true;
                     break;
                 case "--json":
                     FlagSetting.jsonFlag = true;
@@ -146,18 +146,12 @@ public class Game extends GameManager {
                 		LaunchSetting.nonDelay[player] = true;
                 	}
                 	break;
-                case "--py4j":
-                    FlagSetting.py4j = true;
-                    break;
                 case "--port":
                 	int port = Integer.parseInt(options[++i]);
-                    LaunchSetting.py4jPort = LaunchSetting.grpcPort = port;
+                    LaunchSetting.serverPort = port;
                     break;
-                case "--grpc-auto":
-                	FlagSetting.grpcAuto = true;
-                	break;
-                case "--disable-grpc":
-                	FlagSetting.grpc = false;
+                case "--pyftg-mode":
+                	FlagSetting.enablePyftgMode = true;
                 	break;
                 case "--no-vision":
                 	FlagSetting.visualVisibleOnRender = false;
@@ -189,24 +183,26 @@ public class Game extends GameManager {
 
     @Override
     public void initialize() {
-        // 使用フォントの初期化
-        Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-        GraphicManager.getInstance().setLetterFont(new LetterImage(awtFont, true));
+        if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+        	// 使用フォントの初期化
+            Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+            GraphicManager.getInstance().setLetterFont(new LetterImage(awtFont, true));
+        }
 
         createLogDirectories();
 
-        if (FlagSetting.grpc) {
-        	try {
-        		GrpcServer.getInstance().start(LaunchSetting.grpcPort);
-        		
-    			SocketServer.getInstance().startServer();
-			} catch (IOException e) {
-                Logger.getAnonymousLogger().log(Level.INFO, "Fail to start gRPC server");
-                FlagSetting.grpc = false;
-			}
-        }
+        try {
+			SocketServer.getInstance().startServer(LaunchSetting.serverPort);
+	    	Logger.getAnonymousLogger().log(Level.INFO, "Socket server is started, listening on " + LaunchSetting.serverPort);
+		} catch (IOException e) {
+			e.printStackTrace();
+            Logger.getAnonymousLogger().log(Level.INFO, "Fail to start gRPC server");
+		}
         
-        if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag) && !FlagSetting.py4j && !FlagSetting.grpcAuto) {
+        if (FlagSetting.enablePyftgMode) {
+        	Socket grpc = new Socket();
+        	this.startGame(grpc);
+        } else if ((FlagSetting.automationFlag || FlagSetting.allCombinationFlag)) {
             // -nまたは-aが指定されたときは, メニュー画面に行かず直接ゲームをLaunchする
             if (FlagSetting.allCombinationFlag) {
                 AIContainer.allAINameList = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
@@ -216,19 +212,13 @@ public class Game extends GameManager {
                     this.isExitFlag = true;
                 }
             }
+            
             if (!LaunchSetting.soundName.equals("Default")) {
 				ResourceSetting.SOUND_DIRECTORY = String.format("./data/sounds/%s/", LaunchSetting.soundName);
             }
 
             Launcher launcher = new Launcher(GameSceneName.PLAY);
             this.startGame(launcher);
-        } else if (FlagSetting.py4j) {
-        	// -Python側で起動するときは, Pythonシーンからゲームを開始する
-            Python python = new Python();
-            this.startGame(python);
-        } else if (FlagSetting.grpcAuto) {
-        	Grpc grpc = new Grpc();
-        	this.startGame(grpc);
         } else {
             // 上記以外の場合, メニュー画面からゲームを開始する
             HomeMenu homeMenu = new HomeMenu();

@@ -250,14 +250,14 @@ public class SoundRender {
      */
     public float[][] sampleAudio() {
         set();
-        float[] rawData = new float[GameSetting.SOUND_BUFFER_SIZE * 2];
+        float[] rawData = new float[GameSetting.SOUND_RENDER_SIZE * 2];
         SOFTLoopback.alcRenderSamplesSOFT(this.device, rawData, GameSetting.SOUND_RENDER_SIZE);
         float[][] separatedBuffer = new float[2][];
         float[] leftBuffer = new float[GameSetting.SOUND_BUFFER_SIZE];
         float[] rightBuffer = new float[GameSetting.SOUND_BUFFER_SIZE];
         for (int i = 0; i < GameSetting.SOUND_RENDER_SIZE; i++) {
-            leftBuffer[i] = rawData[i * 2];
-            rightBuffer[i] = rawData[i * 2 + 1];
+            leftBuffer[i] = rawData[i];
+            rightBuffer[i] = rawData[i + GameSetting.SOUND_RENDER_SIZE];
         }
         separatedBuffer[0] = leftBuffer;
         separatedBuffer[1] = rightBuffer;

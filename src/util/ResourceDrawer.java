@@ -21,12 +21,10 @@ import struct.HitArea;
  */
 public class ResourceDrawer {
 
-	private boolean render;
 	/**
 	 * クラスコンストラクタ．
 	 */
 	private ResourceDrawer() {
-		this.render = FlagSetting.visualVisibleOnRender;
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + ResourceDrawer.class.getName());
 	}
 
@@ -62,40 +60,30 @@ public class ResourceDrawer {
 	 */
 	public void drawResource(Character[] characters, Deque<LoopEffect> projectiles,
 			LinkedList<LinkedList<HitEffect>> hitEffects, int remainingTime, int round) {
-
-		GraphicManager.getInstance().resetScreen();
-
-		drawBackGroundImage();
-
-		drawCharacterImage(characters);
-
-		drawAttackImage(projectiles, characters);
-
-		drawHPGaugeImage(characters);
-
-		drawEnergyGaugeImage(characters);
-
-		drawTimeImage(remainingTime);
-		
-		drawPlayerDetail(characters);
-
-		drawRoundNumber(round);
-
-		drawHitCounter(characters);
-
-		drawHitArea(characters, projectiles);
-
-		drawHitEffects(hitEffects);
-
-		GraphicManager.getInstance().disposeScreenGraphic();
+		this.drawResource(characters, projectiles, hitEffects, remainingTime, round, true);
+	}
+	
+	public void drawResource(Character[] characters, Deque<LoopEffect> projectiles,
+			LinkedList<LinkedList<HitEffect>> hitEffects, int remainingTime, int round, boolean shouldRender) {
+		drawBackGroundImage(shouldRender);
+		drawCharacterImage(characters, shouldRender);
+		drawAttackImage(projectiles, characters, shouldRender);
+		drawHPGaugeImage(characters, shouldRender);
+		drawEnergyGaugeImage(characters, shouldRender);
+		drawTimeImage(remainingTime, shouldRender);
+		drawPlayerDetail(characters, shouldRender);
+		drawRoundNumber(round, shouldRender);
+		drawHitCounter(characters, shouldRender);
+		drawHitArea(characters, projectiles, shouldRender);
+		drawHitEffects(hitEffects, shouldRender);
 	}
 
 	/**
 	 * Draws the background image.
 	 */
-	public void drawBackGroundImage() {
+	public void drawBackGroundImage(boolean shouldRender) {
 		Image bg = GraphicManager.getInstance().getBackgroundImage().get(0);
-		GraphicManager.getInstance().drawImage(bg, 0, 0, Image.DIRECTION_RIGHT, render);
+		GraphicManager.getInstance().drawImage(bg, 0, 0, Image.DIRECTION_RIGHT, shouldRender);
 	}
 
 	/**
@@ -104,7 +92,7 @@ public class ResourceDrawer {
 	 * @param playerCharacters
 	 *            P1とP2のキャラクターデータを格納した配列
 	 */
-	public void drawCharacterImage(Character[] playerCharacters) {
+	public void drawCharacterImage(Character[] playerCharacters, boolean shouldRender) {
 		String[] names = { "P1", "P2" };
 
 		// draw players name
@@ -118,11 +106,11 @@ public class ResourceDrawer {
 					+ (playerCharacters[i].getHitAreaRight() - playerCharacters[i].getHitAreaLeft()) / 3;
 			int positionY = playerCharacters[i].getHitAreaTop() - 50;
 
-			GraphicManager.getInstance().drawString(names[i], positionX, positionY, render);
+			GraphicManager.getInstance().drawString(names[i], positionX, positionY, shouldRender);
 			GraphicManager.getInstance().drawImage(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
 					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
 					playerCharacters[i].getGraphicSizeY(), playerCharacters[i].isFront(),
-					-playerCharacters[i].getGraphicSizeX()/2, 0, render);
+					-playerCharacters[i].getGraphicSizeX()/2, 0, shouldRender);
 		}
 	}
 
@@ -134,7 +122,7 @@ public class ResourceDrawer {
 	 * @param characters
 	 *            P1とP2のキャラクターデータを格納した配列
 	 */
-	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters) {
+	private void drawAttackImage(Deque<LoopEffect> projectiles, Character[] characters, boolean shouldRender) {
 		// Is displayed according to the orientation image attack.
 		for (LoopEffect projectile : projectiles) {
 			Attack attack = projectile.getAttack();
@@ -151,7 +139,7 @@ public class ResourceDrawer {
 				}
 				int positionY = area.getTop() - ((image.getHeight() - (area.getBottom() - area.getTop())) / 2);
 
-				GraphicManager.getInstance().drawImage(image, positionX, positionY, attack.getSpeedX() >= 0, render);
+				GraphicManager.getInstance().drawImage(image, positionX, positionY, attack.getSpeedX() >= 0, shouldRender);
 			}
 		}
 	}
@@ -162,15 +150,15 @@ public class ResourceDrawer {
 	 * @param playerCharacters
 	 *            P1とP2のキャラクターデータを格納した配列
 	 */
-	private void drawHPGaugeImage(Character[] playerCharacters) {
+	private void drawHPGaugeImage(Character[] playerCharacters, boolean shouldRender) {
 		if (FlagSetting.limitHpFlag) {
 			int p1Hp = (int) ((double) playerCharacters[0].getHp() / LaunchSetting.maxHp[0] * 300 * -1);
 			int p2Hp = (int) ((double) playerCharacters[1].getHp() / LaunchSetting.maxHp[1] * 300);
 
-			GraphicManager.getInstance().drawQuad(480 - 50, 75, -300, 20, 0.2f, 0.2f, 0.2f, 0.0f, render);
-			GraphicManager.getInstance().drawQuad(480 + 50, 75, 300, 20, 0.2f, 0.2f, 0.2f, 0.0f, render);
-			GraphicManager.getInstance().drawQuad(480 - 50, 75, Math.max(-300, Math.min(0, p1Hp)), 20, 0, 1.0f, 0, 0.0f, render);
-			GraphicManager.getInstance().drawQuad(480 + 50, 75, Math.min(300, Math.max(0, p2Hp)), 20, 1.0f, 0.65f, 0, 0.0f, render);
+			GraphicManager.getInstance().drawQuad(480 - 50, 75, -300, 20, 0.2f, 0.2f, 0.2f, 0.0f, shouldRender);
+			GraphicManager.getInstance().drawQuad(480 + 50, 75, 300, 20, 0.2f, 0.2f, 0.2f, 0.0f, shouldRender);
+			GraphicManager.getInstance().drawQuad(480 - 50, 75, Math.max(-300, Math.min(0, p1Hp)), 20, 0, 1.0f, 0, 0.0f, shouldRender);
+			GraphicManager.getInstance().drawQuad(480 + 50, 75, Math.min(300, Math.max(0, p2Hp)), 20, 1.0f, 0.65f, 0, 0.0f, shouldRender);
 		}
 	}
 
@@ -180,7 +168,7 @@ public class ResourceDrawer {
 	 * @param playerCharacters
 	 *            P1とP2のキャラクターデータを格納した配列
 	 */
-	private void drawEnergyGaugeImage(Character[] playerCharacters) {
+	private void drawEnergyGaugeImage(Character[] playerCharacters, boolean shouldRender) {
 		if (FlagSetting.limitHpFlag) {
 			float[] red = { 1.0f, 1.0f };
 			float[] green = { 0.0f, 0.0f };
@@ -203,38 +191,38 @@ public class ResourceDrawer {
 			int p1Energy = (int) ((float) playerCharacters[0].getEnergy() / LaunchSetting.maxEnergy[0] * 300 * -1);
 			int p2Energy = (int) ((float) playerCharacters[1].getEnergy() / LaunchSetting.maxEnergy[1] * 300);
 
-			GraphicManager.getInstance().drawQuad(480 - 50, 75 + 20, p1Energy, 8, red[0], green[0], blue[0], 0.0f, render);
-			GraphicManager.getInstance().drawQuad(480 + 50, 75 + 20, p2Energy, 8, red[1], green[1], blue[1], 0.0f, render);
+			GraphicManager.getInstance().drawQuad(480 - 50, 75 + 20, p1Energy, 8, red[0], green[0], blue[0], 0.0f, shouldRender);
+			GraphicManager.getInstance().drawQuad(480 + 50, 75 + 20, p2Energy, 8, red[1], green[1], blue[1], 0.0f, shouldRender);
 		}
 	}
-
+	
 	/**
 	 * Draws time.
 	 *
 	 * @param remainingTime
 	 *            the remaining time
 	 */
-	private void drawTimeImage(int remainingTime) {
+	private void drawTimeImage(int remainingTime, boolean shouldRender) {
 		if (FlagSetting.trainingModeFlag) {
-			GraphicManager.getInstance().drawString("Training Mode", GameSetting.STAGE_WIDTH / 2 - 80, 10, render);
+			GraphicManager.getInstance().drawString("Training Mode", GameSetting.STAGE_WIDTH / 2 - 80, 10, shouldRender);
 		} else {
-			GraphicManager.getInstance().drawString(String.format("%.3f", remainingTime / 1000.0), GameSetting.STAGE_WIDTH / 2 - 35, 10, render);
+			GraphicManager.getInstance().drawString(String.format("%.3f", remainingTime / 1000.0), GameSetting.STAGE_WIDTH / 2 - 35, 10, shouldRender);
 		}
 	}
 
-	private void drawPlayerDetail(Character[] playerCharacters) {
+	private void drawPlayerDetail(Character[] playerCharacters, boolean shouldRender) {
 		if (FlagSetting.limitHpFlag) {
-			GraphicManager.getInstance().drawString("P1 HP: " + Math.max(0, playerCharacters[0].getHp()), 130 + 30, 45, render);
-			GraphicManager.getInstance().drawString("Energy: " + playerCharacters[0].getEnergy(), 260 + 30, 45, render);
+			GraphicManager.getInstance().drawString("P1 HP: " + Math.max(0, playerCharacters[0].getHp()), 130 + 30, 45, shouldRender);
+			GraphicManager.getInstance().drawString("Energy: " + playerCharacters[0].getEnergy(), 260 + 30, 45, shouldRender);
 			
-			GraphicManager.getInstance().drawString("P2 HP: " + Math.max(0, playerCharacters[1].getHp()), 590 - 30, 45, render);
-			GraphicManager.getInstance().drawString("Energy: " + playerCharacters[1].getEnergy(), 720 - 30, 45, render);
+			GraphicManager.getInstance().drawString("P2 HP: " + Math.max(0, playerCharacters[1].getHp()), 590 - 30, 45, shouldRender);
+			GraphicManager.getInstance().drawString("Energy: " + playerCharacters[1].getEnergy(), 720 - 30, 45, shouldRender);
 		} else {
-			GraphicManager.getInstance().drawString("P1 HP: " + playerCharacters[0].getHp(), 100, 50, render);
-			GraphicManager.getInstance().drawString("P1 Energy: " + playerCharacters[0].getEnergy(), 100, 90, render);
+			GraphicManager.getInstance().drawString("P1 HP: " + playerCharacters[0].getHp(), 100, 50, shouldRender);
+			GraphicManager.getInstance().drawString("P1 Energy: " + playerCharacters[0].getEnergy(), 100, 90, shouldRender);
 			
-			GraphicManager.getInstance().drawString("P2 HP: " + playerCharacters[1].getHp(), 760, 50, render);
-			GraphicManager.getInstance().drawString("P2 Energy: " + playerCharacters[1].getEnergy(), 760, 90, render);
+			GraphicManager.getInstance().drawString("P2 HP: " + playerCharacters[1].getHp(), 760, 50, shouldRender);
+			GraphicManager.getInstance().drawString("P2 Energy: " + playerCharacters[1].getEnergy(), 760, 90, shouldRender);
 		}
 	}
 	
@@ -244,8 +232,8 @@ public class ResourceDrawer {
 	 * @param round
 	 *            現在のラウンド
 	 */
-	private void drawRoundNumber(int round) {
-		GraphicManager.getInstance().drawString("Round: " + round, 850, 10, render);
+	private void drawRoundNumber(int round, boolean shouldRender) {
+		GraphicManager.getInstance().drawString("Round: " + round, 850, 10, shouldRender);
 	}
 
 	/**
@@ -254,16 +242,16 @@ public class ResourceDrawer {
 	 * @param playerCharacters
 	 *            P1とP2のキャラクターデータを格納した配列
 	 */
-	private void drawHitCounter(Character[] playerCharacters) {
+	private void drawHitCounter(Character[] playerCharacters, boolean shouldRender) {
 		for (int i = 0; i < 2; ++i) {
 			int comboState = Math.min(playerCharacters[i].getHitCount(), 9);
 
 			if (comboState > 0) {
 				Image counterImage = GraphicManager.getInstance().getCounterTextImageContainer().get(comboState);
-				GraphicManager.getInstance().drawImage(counterImage, i == 0 ? 100 : 760, 150, Image.DIRECTION_RIGHT, render);
+				GraphicManager.getInstance().drawImage(counterImage, i == 0 ? 100 : 760, 150, Image.DIRECTION_RIGHT, shouldRender);
 
 				Image hitTextImage = GraphicManager.getInstance().getHitTextImageContainer().get(0);
-				GraphicManager.getInstance().drawImage(hitTextImage, i == 0 ? 170 : 830, 150, Image.DIRECTION_RIGHT, render);
+				GraphicManager.getInstance().drawImage(hitTextImage, i == 0 ? 170 : 830, 150, Image.DIRECTION_RIGHT, shouldRender);
 			}
 		}
 	}
@@ -276,7 +264,7 @@ public class ResourceDrawer {
 	 * @param projectiles
 	 *            波動拳のループエフェクトを格納した両端キュー
 	 */
-	private void drawHitArea(Character[] playerCharacters, Deque<LoopEffect> projectiles) {
+	private void drawHitArea(Character[] playerCharacters, Deque<LoopEffect> projectiles, boolean shouldRender) {
 		for (int i = 0; i < 2; ++i) {
 
 			// キャラクターの当たり判定ボックスの描画
@@ -285,14 +273,14 @@ public class ResourceDrawer {
 					playerCharacters[i].getHitAreaTop(),
 					playerCharacters[i].getHitAreaRight() - playerCharacters[i].getHitAreaLeft(),
 					playerCharacters[i].getHitAreaBottom() - playerCharacters[i].getHitAreaTop(), 0.0f + i,
-					1.0f - i * 0.35f, 0.0f, 0.0f, render);
+					1.0f - i * 0.35f, 0.0f, 0.0f, shouldRender);
 
 			// 攻撃の当たり判定ボックスの描画
 			if (playerCharacters[i].getAttack() != null) {
 				HitArea area = playerCharacters[i].getAttack().getCurrentHitArea();
 
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),
-						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f, render);
+						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f, shouldRender);
 			}
 		}
 
@@ -304,7 +292,7 @@ public class ResourceDrawer {
 				HitArea area = temp.getCurrentHitArea();
 
 				GraphicManager.getInstance().drawLineQuad(area.getLeft(), area.getTop(),
-						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f, render);
+						area.getRight() - area.getLeft(), area.getBottom() - area.getTop(), 1.0f, 0.0f, 0.0f, 0.0f, shouldRender);
 			}
 		}
 	}
@@ -316,7 +304,7 @@ public class ResourceDrawer {
 	 * @param hitEffects
 	 *            ヒットエフェクトのリストを格納したリスト
 	 */
-	private void drawHitEffects(LinkedList<LinkedList<HitEffect>> hitEffects) {
+	private void drawHitEffects(LinkedList<LinkedList<HitEffect>> hitEffects, boolean shouldRender) {
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < hitEffects.get(i).size(); ++j) {
 				HitEffect hitEffect = hitEffects.get(i).get(j);
@@ -333,7 +321,7 @@ public class ResourceDrawer {
 					if (hitEffect.getVariationX() == 0 && hitEffect.getVariationY() == 0) {
 						positionX += 30;
 					}
-					GraphicManager.getInstance().drawImage(image, positionX, positionY, i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT, render);
+					GraphicManager.getInstance().drawImage(image, positionX, positionY, i == 0 ? Image.DIRECTION_RIGHT : Image.DIRECTION_LEFT, shouldRender);
 				}
 			}
 		}

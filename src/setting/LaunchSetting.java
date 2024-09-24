@@ -1,13 +1,16 @@
 package setting;
 
 import enumerate.BackgroundType;
-import python.PyGatewayServer;
 
 /**
  * キャラクターの最大HPや試合の繰り返し回数など、試合を行う際に必要な設定を扱うクラス．
  */
 public final class LaunchSetting {
 
+	public final static int LIGHTWEIGHT_MODE = 0;
+	public final static int HEADLESS_MODE = 1;
+	public final static int STANDARD_MODE = 2;
+	
 	/**
 	 * P1,P2の最大HPを格納する配列．
 	 */
@@ -38,11 +41,6 @@ public final class LaunchSetting {
 	public static char[] deviceTypes = { 0, 0 };
 
 	/**
-	 * Pythonを利用するときのポート番号．
-	 */
-	public static int py4jPort = 4242;
-
-	/**
 	 * 試合を繰り返して行う回数．
 	 */
 	public static int repeatNumber = 1;
@@ -66,19 +64,20 @@ public final class LaunchSetting {
 	 * 試合の繰り返し回数のカウンタ．
 	 */
 	public static int repeatedCount = 0;
-
-	/**
-	 * PythonでJavaの処理を行うためのゲートウェイサーバー．
-	 */
-	public static PyGatewayServer pyGatewayServer = null;
+	
+	public static int processingMode = STANDARD_MODE;
 
 	/**
 	 * AI's visual data is disabled or not
 	 */
-
 	public static boolean[] noVisual = {false, false};
+	
 	public static boolean[] nonDelay = {false, false};
 	
-	public static int grpcPort = 50051;
+	public static int serverPort = 31415;
+	
+	public static boolean isExpectedProcessingMode(int expectedProcessingMode) {
+		return processingMode >= expectedProcessingMode;
+	}
 	
 }

@@ -5,13 +5,13 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
-import grpc.GrpcServer;
-import grpc.PlayerAgent;
 import informationcontainer.MenuItem;
 import input.Keyboard;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
+import service.SocketPlayer;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -26,7 +26,7 @@ public class FightingMenu extends GameScene {
 	public static final String DEFAULT_AI_NAME = "Keyboard";
 	public static final String DEFAULT_SOUND_NAME = "Default";
 	public static final int DEFAULT_AI_INDEX = 1;
-	public static final int GRPC_INDEX = 0;
+	public static final int EXTERNAL_AI_INDEX = 0;
 	
 	/**
 	 * 画面に表示する項目数．
@@ -80,11 +80,11 @@ public class FightingMenu extends GameScene {
 	}
 
 	private boolean isGrpcReady() {
-		if (GrpcServer.getInstance().isStart()) {
+		if (SocketServer.getInstance().isOpen()) {
 			return true;
-		} else if (this.playerIndexes[0] == GRPC_INDEX && GrpcServer.getInstance().getPlayer(true).isCancelled()) {
+		} else if (this.playerIndexes[0] == EXTERNAL_AI_INDEX && SocketServer.getInstance().getPlayer(0).isCancelled()) {
 			return false;
-		} else if (this.playerIndexes[1] == GRPC_INDEX && GrpcServer.getInstance().getPlayer(false).isCancelled()) {
+		} else if (this.playerIndexes[1] == EXTERNAL_AI_INDEX && SocketServer.getInstance().getPlayer(1).isCancelled()) {
 			return false;
 		}
 		return true;
@@ -108,12 +108,8 @@ public class FightingMenu extends GameScene {
 		this.soundIndex = 0;
 
 		this.allAiNames = ResourceLoader.getInstance().loadFileNames("./data/ai", ".jar");
-		if (FlagSetting.grpc) {
-			allAiNames.add(GRPC_INDEX, "gRPC");
-			allAiNames.add(DEFAULT_AI_INDEX, DEFAULT_AI_NAME);
-		} else {
-			allAiNames.add(0, DEFAULT_AI_NAME);
-		}
+		allAiNames.add(EXTERNAL_AI_INDEX, "External AI");
+		allAiNames.add(DEFAULT_AI_INDEX, DEFAULT_AI_NAME);
 		
 		this.allSounds = ResourceLoader.getInstance().loadSoundNames();
 		allSounds.add(0, DEFAULT_SOUND_NAME);
@@ -150,9 +146,9 @@ public class FightingMenu extends GameScene {
 
 					if (LaunchSetting.aiNames[i].equals(DEFAULT_AI_NAME)) {
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_KEYBOARD;
-					} else if (this.playerIndexes[i] == GRPC_INDEX && FlagSetting.grpc) {
-						LaunchSetting.aiNames[i] = GrpcServer.getInstance().getPlayer(i == 0).getPlayerName();
-						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_GRPC;
+					} else if (this.playerIndexes[i] == EXTERNAL_AI_INDEX) {
+						LaunchSetting.aiNames[i] = SocketServer.getInstance().getPlayer(i).getName();
+						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_EXTERNAL;
 					} else {
 						LaunchSetting.deviceTypes[i] = InputManager.DEVICE_TYPE_AI;
 					}
@@ -305,11 +301,9 @@ public class FightingMenu extends GameScene {
 	}
 
 	private String getAIName(int i) {
-		if (FlagSetting.grpc) {
-			PlayerAgent player = GrpcServer.getInstance().getPlayer(i == 0);
-			if (this.playerIndexes[i] == GRPC_INDEX && !player.isCancelled()) {
-				return String.format("%s (%s AI)", player.getPlayerName(), player.isBlind() ? "Blind" : "Visual");
-			}
+		SocketPlayer player = SocketServer.getInstance().getPlayer(i);
+		if (this.playerIndexes[i] == EXTERNAL_AI_INDEX && !player.isCancelled()) {
+			return String.format("%s (%s AI)", player.getName(), player.isBlind() ? "Blind" : "Visual");
 		}
 		return this.allAiNames.get(this.playerIndexes[i]);
 	}

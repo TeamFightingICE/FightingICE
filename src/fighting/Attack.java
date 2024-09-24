@@ -1,5 +1,6 @@
 package fighting;
 
+
 import java.util.UUID;
 
 import struct.AttackData;

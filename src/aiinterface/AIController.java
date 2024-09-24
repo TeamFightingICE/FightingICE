@@ -2,9 +2,7 @@ package aiinterface;
 
 import java.util.LinkedList;
 
-import grpc.PlayerAgent;
 import informationcontainer.RoundResult;
-import manager.InputManager;
 import setting.LaunchSetting;
 import struct.AudioData;
 import struct.FrameData;
@@ -15,14 +13,12 @@ import struct.ScreenData;
 /**
  * AIのスレッドや処理を管理するクラス．
  */
-public class AIController extends Thread {
+public class AIController extends Thread implements ControllerInterface {
 
-	private char deviceType;
     /**
      * AIに実装すべきメソッドを定義するインタフェース．
      */
     private AIInterface ai;
-    private PlayerAgent grpc;
     
     //private GameData gameData;
 
@@ -58,14 +54,14 @@ public class AIController extends Thread {
     private ScreenData screenData;
 
     private AudioData audioData;
-    
-    private boolean isRoundEnd;
-    private RoundResult roundResult;
 
     /**
      * 各AIの処理を同時に始めるための同期用オブジェクト．
      */
     private Object waitObj;
+    
+    private boolean roundEndFlag;
+    private RoundResult roundResult;
     
     //private List<Double> durations = new ArrayList<>();
 
@@ -77,12 +73,6 @@ public class AIController extends Thread {
      */
     public AIController(AIInterface ai) {
         this.ai = ai;
-        this.deviceType = InputManager.DEVICE_TYPE_AI;
-    }
-    
-    public AIController(PlayerAgent grpc) {
-    	this.grpc = grpc;
-    	this.deviceType = InputManager.DEVICE_TYPE_GRPC;
     }
     /**
      * 引数で与えられたパラメータをセットし，初期化を行う．
@@ -95,27 +85,14 @@ public class AIController extends Thread {
      */
     public void initialize(Object waitFrame, GameData gameData, boolean playerNumber) {
         this.waitObj = waitFrame;
-        //this.gameData = gameData;
         this.playerNumber = playerNumber;
         this.key = new Key();
         this.framesData = new LinkedList<FrameData>();
         this.clear();
         this.isFighting = true;
-        this.isRoundEnd = false;
-//		boolean isInit = false;
-//		while(!isInit)
+        this.roundEndFlag = false;
         
-//		try {
-        if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-        	this.ai.initialize(gameData, playerNumber);
-        } else if (this.deviceType == InputManager.DEVICE_TYPE_GRPC) {
-        	this.grpc.initialize(gameData, playerNumber);
-        }
-//			isInit = true;
-//		} catch (Py4JException e) {
-//			Logger.getAnonymousLogger().log(Level.SEVERE, "Cannot Initialize AI");
-//			InputManager.getInstance().createAIcontroller();
-//		}
+    	this.ai.initialize(gameData, playerNumber);
     }
     
     public Key input() {
@@ -132,10 +109,12 @@ public class AIController extends Thread {
                     e.printStackTrace();
                 }
             }
-
-            if (isRoundEnd) {
-            	this.grpc.onRoundEnd(roundResult);
-            	this.isRoundEnd = false;
+            
+            if (!isFighting) break;
+            
+            if (this.roundEndFlag) {
+            	this.ai.roundEnd(roundResult);
+            	this.roundEndFlag = false;
             	this.roundResult = null;
             } else {
             	boolean isControl;
@@ -149,26 +128,20 @@ public class AIController extends Thread {
 
                 FrameData frameData = !this.framesData.isEmpty() ? new FrameData(this.framesData.removeFirst()) : new FrameData();
                 
-                if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-                	this.ai.getInformation(frameData, isControl);
-        	        this.ai.getAudioData(this.audioData);
-        	        // screen raw data isn't provided to sound-only AI
-        	        if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
-        	            this.ai.getScreenData(this.screenData);
-        	        } else {
-        	        	frameData.removeVisualData();
-        	        }
-        	        
-        	        this.ai.processing();
-        	        this.setInput(this.ai.input());
-                } else if (this.deviceType == InputManager.DEVICE_TYPE_GRPC) {
-                	if (this.grpc.isReady()) {
-                		this.grpc.setInformation(isControl, frameData, audioData, screenData, this.framesData.getLast());
-                    	this.grpc.onGameUpdate();
-                	}
-                }
+                // screen raw data isn't provided to sound-only AI
+    	        if (!LaunchSetting.noVisual[this.playerNumber ? 0: 1]){
+    	            this.ai.getScreenData(this.screenData);
+    	        } else {
+    	        	frameData.removeVisualData();
+    	        }
+            	this.ai.getInformation(frameData, isControl);
+            	this.ai.getNonDelayFrameData(this.framesData.getLast());
+    	        this.ai.getAudioData(this.audioData);
+    	        this.ai.processing();
+    	        this.setInput(this.ai.input());
             }
-	        ThreadController.getInstance().notifyEndProcess(this.playerNumber);
+	        
+	        ThreadController.getInstance().notifyEndAIProcess(this.playerNumber);
         }
     }
 
@@ -203,9 +176,9 @@ public class AIController extends Thread {
      * @param fd 対戦処理後のフレームデータ
      * @see FrameData
      */
-    public synchronized void setFrameData(FrameData fd) {
-        if (fd != null) {
-            this.framesData.addLast(fd);
+    public synchronized void setFrameData(FrameData fd, ScreenData sd, AudioData ad) {
+        if (!fd.getEmptyFlag()) {
+            this.framesData.addLast(new FrameData(fd));
         } else {
             this.framesData.addLast(new FrameData());
         }
@@ -213,20 +186,9 @@ public class AIController extends Thread {
         while (this.framesData.size() > DELAY) {
             this.framesData.removeFirst();
         }
-    }
 
-    /**
-     * 対戦処理後の画面情報をセットする．<br>
-     *
-     * @param screenData 対戦処理後の画面情報
-     * @see ScreenData
-     */
-    public synchronized void setScreenData(ScreenData screenData) {
-        this.screenData = screenData;
-    }
-
-    public synchronized void setAudioData(AudioData audioData) {
-        this.audioData = audioData;
+        this.screenData = new ScreenData(sd);
+        this.audioData = new AudioData(ad);
     }
 
     /**
@@ -241,6 +203,9 @@ public class AIController extends Thread {
                 this.framesData.add(new FrameData());
             }
         }
+
+        this.screenData = new ScreenData();
+        this.audioData = new AudioData();
     }
     
     /**
@@ -250,12 +215,8 @@ public class AIController extends Thread {
      * @see RoundResult
      */
     public synchronized void informRoundResult(RoundResult roundResult) {
-        if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-        	this.ai.roundEnd(roundResult.getRemainingHPs()[0], roundResult.getRemainingHPs()[1], roundResult.getElapsedFrame());
-        } else if (this.deviceType == InputManager.DEVICE_TYPE_GRPC) {
-        	this.isRoundEnd = true;
-        	this.roundResult = roundResult;
-        }
+    	this.roundEndFlag = true;
+    	this.roundResult = roundResult;
     }
 
     /**
@@ -263,9 +224,7 @@ public class AIController extends Thread {
      */
     public synchronized void gameEnd() {
         this.isFighting = false;
-        if (this.deviceType == InputManager.DEVICE_TYPE_AI) {
-            this.ai.close();
-    	}
+        this.ai.close();
         synchronized (this.waitObj) {
             this.waitObj.notifyAll();
         }

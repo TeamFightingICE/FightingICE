@@ -1,17 +1,16 @@
 package gamescene;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 
 import java.util.ArrayList;
 
 import enumerate.GameSceneName;
-import grpc.GrpcServer;
 import informationcontainer.AIContainer;
 import informationcontainer.RoundResult;
 import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
-import python.PyManager;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -80,30 +79,28 @@ public class Result extends GameScene {
 
 	@Override
 	public void update() {
-		if (FlagSetting.enableWindow) {
-			int[] positionX = new int[] { GameSetting.STAGE_WIDTH / 2 - 70, GameSetting.STAGE_WIDTH / 2 + 10 };
+		int[] positionX = new int[] { GameSetting.STAGE_WIDTH / 2 - 70, GameSetting.STAGE_WIDTH / 2 + 10 };
 
-			for (int i = 0; i < this.roundResults.size(); i++) {
-				String[] score = new String[] { String.valueOf(this.roundResults.get(i).getRemainingHPs()[0]),
-						String.valueOf(this.roundResults.get(i).getRemainingHPs()[1]) };
+		for (int i = 0; i < this.roundResults.size(); i++) {
+			String[] score = new String[] { String.valueOf(this.roundResults.get(i).getRemainingHPs()[0]),
+					String.valueOf(this.roundResults.get(i).getRemainingHPs()[1]) };
 
-				// スコアの描画
-				GraphicManager.getInstance().drawString(score[0], positionX[0], 50 + i * 100);
-				GraphicManager.getInstance().drawString(score[1], positionX[1], 50 + i * 100);
+			// スコアの描画
+			GraphicManager.getInstance().drawString(score[0], positionX[0], 50 + i * 100);
+			GraphicManager.getInstance().drawString(score[1], positionX[1], 50 + i * 100);
 
-				// 勝ちや引き分けに応じてWin !やDrawをスコアの横に印字
-				switch (getWinPlayer(i)) {
-				case 1:
-					GraphicManager.getInstance().drawString("Win !", positionX[0] - 100, 50 + i * 100);
-					break;
-				case -1:
-					GraphicManager.getInstance().drawString("Win !", positionX[1] + 80, 50 + i * 100);
-					break;
-				default:
-					GraphicManager.getInstance().drawString("Draw", positionX[0] - 100, 50 + i * 100);
-					GraphicManager.getInstance().drawString("Draw", positionX[1] + 80, 50 + i * 100);
-					break;
-				}
+			// 勝ちや引き分けに応じてWin !やDrawをスコアの横に印字
+			switch (getWinPlayer(i)) {
+			case 1:
+				GraphicManager.getInstance().drawString("Win !", positionX[0] - 100, 50 + i * 100);
+				break;
+			case -1:
+				GraphicManager.getInstance().drawString("Win !", positionX[1] + 80, 50 + i * 100);
+				break;
+			default:
+				GraphicManager.getInstance().drawString("Draw", positionX[0] - 100, 50 + i * 100);
+				GraphicManager.getInstance().drawString("Draw", positionX[1] + 80, 50 + i * 100);
+				break;
 			}
 		}
 
@@ -150,7 +147,7 @@ public class Result extends GameScene {
 	 */
 	private void endProcess() {
 		// -aや-nを引数にして起動 or Repeat Countを2以上にして起動した場合の処理
-		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag || FlagSetting.py4j || FlagSetting.grpcAuto) {
+		if (FlagSetting.automationFlag || FlagSetting.allCombinationFlag || FlagSetting.enablePyftgMode) {
 			if (++this.displayedTime > 300) {
 				// まだ繰り返し回数が残っている場合
 				if (FlagSetting.automationFlag && LaunchSetting.repeatedCount + 1 < LaunchSetting.repeatNumber) {
@@ -176,19 +173,9 @@ public class Result extends GameScene {
 						this.setGameEndFlag(true);
 					}
 
-				} else if (FlagSetting.py4j) {
-					synchronized (PyManager.python.getCurrentGame().end) {
-						PyManager.python.getCurrentGame().end.notifyAll();
-					}
-					LaunchSetting.pyGatewayServer.close();
-					Python python = new Python();
-					this.setTransitionFlag(true);
-					this.setNextGameScene(python);
-
-					// 指定した繰り返し回数分対戦が終わった場合
-				} else if (FlagSetting.grpcAuto) {
-					GrpcServer.getInstance().close();
-					Grpc grpc = new Grpc();
+				} else if (FlagSetting.enablePyftgMode) {
+					SocketServer.getInstance().notifyTaskFinished();
+					Socket grpc = new Socket();
 					this.setTransitionFlag(true);
 					this.setNextGameScene(grpc);
 				} else {

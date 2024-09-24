@@ -10,7 +10,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 
-import manager.GraphicManager;
+import com.google.protobuf.ByteString;
+
+import protoc.MessageProto.GrpcScreenData;
+import setting.GameSetting;
 
 /**
  * The class dealing with the screen information such as the game screen's image
@@ -23,7 +26,11 @@ public class ScreenData {
 	private BufferedImage displayBufferedImage;
 	
 	public ScreenData() {
-		this.displayBufferedImage = GraphicManager.getInstance().getScreenImage();
+		
+	}
+	
+	public ScreenData(BufferedImage bimg) {
+		this.displayBufferedImage = bimg;
 	}
 
 	/**
@@ -67,7 +74,7 @@ public class ScreenData {
 
 		// Converts it back to array of bytes
 		byte[] dst;
-
+		
 		if (grayScale) {
 			BufferedImage temp = new BufferedImage(resize.getWidth(), resize.getHeight(),
 					BufferedImage.TYPE_BYTE_GRAY);
@@ -93,8 +100,29 @@ public class ScreenData {
 		return dst;
 	}
 	
+	public byte[] getDisplayByteBufferAsBytes() {
+		byte[] dst = new byte[GameSetting.STAGE_WIDTH * GameSetting.STAGE_HEIGHT * 3];
+
+		int[] array = ((DataBufferInt) this.displayBufferedImage.getRaster().getDataBuffer()).getData();
+		for (int x = 0; x < GameSetting.STAGE_WIDTH; x++) {
+			for (int y = 0; y < GameSetting.STAGE_HEIGHT; y++) {
+				int idx = x + y * GameSetting.STAGE_WIDTH;
+				dst[idx * 3] = (byte) ((array[idx] >> 16) & 0xFF); // R
+				dst[idx * 3 + 1] = (byte) ((array[idx] >> 8) & 0xFF); // G
+				dst[idx * 3 + 2] = (byte) ((array[idx]) & 0xFF); // B
+			}
+		}
+		
+		return dst;
+	}
+	
 	public byte[] getCompressedDisplayByteBufferAsBytes(int newWidth, int newHeight, boolean grayScale) {
 		byte[] displayBytes = this.getDisplayByteBufferAsBytes(newWidth, newHeight, grayScale);
+		return this.compressByteData(displayBytes);
+	}
+	
+	public byte[] getCompressedDisplayByteBufferAsBytes() {
+		byte[] displayBytes = this.getDisplayByteBufferAsBytes();
 		return this.compressByteData(displayBytes);
 	}
 	
@@ -111,5 +139,13 @@ public class ScreenData {
 			return new byte[1];
 		}
 	}
+	
+	public GrpcScreenData toProto() {
+  		GrpcScreenData.Builder builder = GrpcScreenData.newBuilder();
+  		if (this.displayBufferedImage != null) {
+  			builder.setDisplayBytes(ByteString.copyFrom(this.getCompressedDisplayByteBufferAsBytes()));
+  		}
+  		return builder.build();
+  	}
 
 }

@@ -7,7 +7,6 @@ import enumerate.GameSceneName;
 import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
-import setting.FlagSetting;
 import setting.GameSetting;
 
 /**
@@ -60,10 +59,9 @@ public class Launcher extends GameScene {
 
 	@Override
 	public void update() {
-		if (this.isFirstUpdate && FlagSetting.enableWindow) {
+		if (this.isFirstUpdate) {
 			GraphicManager.getInstance().drawString("Now loading ...", GameSetting.STAGE_WIDTH / 2 - 80, 200);
 			this.isFirstUpdate = false;
-
 		} else {
 			switch (this.nextGameSceneName.name()) {
 			case "PLAY":
@@ -72,7 +70,6 @@ public class Launcher extends GameScene {
 				this.setTransitionFlag(true);
 				this.setNextGameScene(play);
 				break;
-
 			case "REPLAY":
 				Logger.getAnonymousLogger().log(Level.WARNING, "Transition to REPLAY");
 				Replay replay = new Replay();
@@ -83,11 +80,7 @@ public class Launcher extends GameScene {
 				Logger.getAnonymousLogger().log(Level.WARNING, "This scene does not exist");
 				this.setGameEndFlag(true);
 			}
-
-//			if (FlagSetting.enableWindow) {
-//				// Loads resources
-//				ResourceLoader.getInstance().loadResource();
-//			}
+			
 			ResourceLoader.getInstance().loadResource();
 		}
 	}

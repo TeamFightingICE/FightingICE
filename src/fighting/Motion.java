@@ -11,7 +11,6 @@ import enumerate.State;
 import image.CharacterActionImage;
 import image.Image;
 import manager.GraphicManager;
-import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.HitArea;
 import struct.MotionData;
@@ -225,9 +224,8 @@ public class Motion {
 		this.motionLevel = Integer.valueOf(data[30]);
 		this.control = Boolean.valueOf(data[31]);
 		this.landingFlag = Boolean.valueOf(data[32]);
-		// data[33]は読み込む画像が入ったディレクトリ名
-		//
-		if (FlagSetting.enableWindow) {
+		
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
 			setMotionImage(characterName, playerIndex);
 		}
 	}

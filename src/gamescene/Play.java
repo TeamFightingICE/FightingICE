@@ -12,10 +12,9 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import fighting.Fighting;
-import grpc.GrpcServer;
-import grpc.ObserverAgent;
 import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
@@ -23,10 +22,9 @@ import loader.ResourceLoader;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
-import py4j.Py4JException;
-import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
+import setting.LaunchSetting;
 import struct.AudioData;
 import struct.AudioSource;
 import struct.FrameData;
@@ -66,6 +64,7 @@ public class Play extends GameScene {
 	 * 各ラウンドの開始時かどうかを表すフラグ．
 	 */
 	private boolean roundStartFlag;
+	private boolean roundEndFlag;
 
 	/**
 	 * 対戦処理後のキャラクターデータなどのゲーム情報を格納したフレームデータ．
@@ -129,6 +128,7 @@ public class Play extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.currentRound = 1;
 		this.roundStartFlag = true;
+		this.roundEndFlag = false;
 		this.endFrame = -1;
 		this.roundStartTime = 0;
 		this.currentFrameTime = 0;
@@ -157,30 +157,12 @@ public class Play extends GameScene {
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
 		
-		if (FlagSetting.grpc) {
-			GrpcServer.getInstance().getObserver().onInitialize(gameData);
-		}
+		InputManager.getInstance().initialize();
 
-		try {
-			InputManager.getInstance().createAIcontroller();
-			InputManager.getInstance().startAI(gameData);
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-	        Logger.getAnonymousLogger().log(Level.INFO, "AI controller is ready");
-		} catch (Py4JException e) {
-			Logger.getAnonymousLogger().log(Level.SEVERE, "Fail to Initialize AI");
-			Launcher launch = new Launcher(GameSceneName.PLAY);
-			this.setTransitionFlag(true);
-			this.setNextGameScene(launch);
-		}
-
-		SocketServer.getInstance().initialize(gameData);
+		ThreadController.getInstance().createAIController();
+		ThreadController.getInstance().createSoundController();
+		ThreadController.getInstance().createStreamControllers();
+		ThreadController.getInstance().startAllThreads(gameData);
 	}
 
 	@Override
@@ -195,12 +177,13 @@ public class Play extends GameScene {
 				processingBreakTime();
 				this.elapsedBreakTime++;
 
+			} else if (this.roundEndFlag) {
+				// round end
+				processingRoundEnd();
 			} else {
 				// processing
 				processingGame();
-				if (this.endFrame == -1) {
-					this.nowFrame++;
-				} else if (this.endFrame % 30 == 0) {
+				if (this.endFrame == -1 || this.endFrame % 30 == 0) {
 					this.nowFrame++;
 				}
 			}
@@ -214,21 +197,22 @@ public class Play extends GameScene {
 			this.setNextGameScene(result);
 		}
 
-		if (Keyboard.getKeyDown(GLFW_KEY_SPACE)) {
-			System.out.println("P1 x:" + this.frameData.getCharacter(true).getCenterX() + "\n" + "P2 x:"
-					+ this.frameData.getCharacter(false).getCenterX() + "\n" + "P1 Left:"
-					+ this.frameData.getCharacter(true).getLeft() + "\n" + "P1 Right:"
-					+ this.frameData.getCharacter(true).getRight() + "\n" + "P2 Left:"
-					+ this.frameData.getCharacter(false).getLeft() + "\n" + "P2 Right:"
-					+ this.frameData.getCharacter(false).getRight() + "\n");
-		}
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
+			if (Keyboard.getKeyDown(GLFW_KEY_SPACE)) {
+				System.out.println("P1 x:" + this.frameData.getCharacter(true).getCenterX() + "\n" + "P2 x:"
+						+ this.frameData.getCharacter(false).getCenterX() + "\n" + "P1 Left:"
+						+ this.frameData.getCharacter(true).getLeft() + "\n" + "P1 Right:"
+						+ this.frameData.getCharacter(true).getRight() + "\n" + "P2 Left:"
+						+ this.frameData.getCharacter(false).getLeft() + "\n" + "P2 Right:"
+						+ this.frameData.getCharacter(false).getRight() + "\n");
+			}
 
-		if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
-			HomeMenu homeMenu = new HomeMenu();
-			this.setTransitionFlag(true);
-			this.setNextGameScene(homeMenu);
+			if (Keyboard.getKeyDown(GLFW_KEY_ESCAPE)) {
+				HomeMenu homeMenu = new HomeMenu();
+				this.setTransitionFlag(true);
+				this.setNextGameScene(homeMenu);
+			}
 		}
-
 	}
 
 	/**
@@ -241,10 +225,7 @@ public class Play extends GameScene {
 		this.elapsedBreakTime = 0;
 		this.keyData = new KeyData();
 
-		InputManager.getInstance().clear();
-		InputManager.getInstance().setFrameData(new FrameData(), new ScreenData(), new AudioData());
-		
-		SocketServer.getInstance().initRound();
+		ThreadController.getInstance().clear();
 		
 		String fileName = LogWriter.getInstance().createOutputFileName("./log/sound/", this.timeInfo + "_" + this.currentRound + ".wav");
 		WaveFileWriter.getInstance().initializeWaveFile(fileName);
@@ -254,10 +235,10 @@ public class Play extends GameScene {
 	 * 各ラウンド開始時における, インターバル処理を行う．
 	 */
 	private void processingBreakTime() {
-		if (FlagSetting.enableWindow) {
-			GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
-			GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
-		}
+		this.roundStartTime = System.nanoTime();
+
+		GraphicManager.getInstance().resetScreen();
+		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 	}
 	
 	/**
@@ -273,15 +254,21 @@ public class Play extends GameScene {
 	 * 8. ラウンドが終了しているか判定する.<br>
 	 */
 	private void processingGame() {
+		this.currentFrameTime = System.nanoTime();
+		
 		if (this.nowFrame == 0) {
-			this.roundStartTime = System.currentTimeMillis();
 			this.audioData = new AudioData();
 			
-			SoundManager.getInstance().play2(audioSource,
+			SoundManager.getInstance().play2(audioSource, 
 					SoundManager.getInstance().getBackGroundMusicBuffer(), GameSetting.STAGE_WIDTH / 2, GameSetting.STAGE_HEIGHT / 2, true);
+		} else if (FlagSetting.enableBuiltinSound) {
+			this.audioData = new AudioData(SoundManager.getInstance().getVirtualRenderer().sampleAudio());
 		} else {
-			this.currentFrameTime = System.currentTimeMillis();
 			this.audioData = InputManager.getInstance().getAudioData();
+		}
+		
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+			this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 		}
 		
 		if (this.endFrame != -1) {
@@ -295,6 +282,19 @@ public class Play extends GameScene {
 		}
 
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		
+		// AIにFrameDataをセット
+		ThreadController.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
+		
+		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
+		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
+		
+		GraphicManager.getInstance().resetScreen();
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) {
+			// 画面をDrawerクラスで描画
+			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
+					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound, FlagSetting.visualVisibleOnRender);
+		}
 
 		// リプレイログ吐き出し
 		if (!FlagSetting.trainingModeFlag) {
@@ -309,31 +309,10 @@ public class Play extends GameScene {
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().countPlayerAction(this.fighting.getCharacters());
 		}
-
+		
 		// 体力が0orタイムオーバーならラウンド終了処理
 		if (isBeaten() || isTimeOver()) {
-			processingRoundEnd();
-			return;
-		}
-
-		if (FlagSetting.enableWindow) {
-			// 画面をDrawerクラスで描画
-			ResourceDrawer.getInstance().drawResource(this.fighting.getCharacters(), this.fighting.getProjectileDeque(),
-					this.fighting.getHitEffectList(), this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
-		}
-
-		this.screenData = new ScreenData();
-		
-		SoundManager.getInstance().playback(this.audioSource, this.audioData.getRawShortDataAsBytes());
-		WaveFileWriter.getInstance().addSample(this.audioData.getRawShortDataAsBytes());
-		
-		// AIにFrameDataをセット
-		InputManager.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
-		SocketServer.getInstance().processingGame(this.frameData, this.screenData, this.audioData);
-		
-		if (FlagSetting.grpc) {
-			ObserverAgent observer = GrpcServer.getInstance().getObserver();
-			observer.onGameUpdate(this.frameData, this.screenData, this.audioData);
+			this.roundEndFlag = true;
 		}
 	}
 
@@ -342,7 +321,7 @@ public class Play extends GameScene {
 	 */
 	private void processingRoundEnd() {
 		Logger.getAnonymousLogger().log(Level.INFO, String.format("Round Duration: %.3f seconds (Expected %.3f)", 
-				(double) (currentFrameTime - roundStartTime) / 1e3, (double) (this.frameData.getFramesNumber() + 1) / 60));
+				(double) (currentFrameTime - roundStartTime) / 1e9, (double) this.nowFrame / 60));
 		
 		SoundManager.getInstance().stopAll();
 		SoundManager.getInstance().stopPlayback(this.audioSource);
@@ -355,16 +334,11 @@ public class Play extends GameScene {
 				this.roundResults.add(roundResult);
 
 				// AIに結果を渡す
-				InputManager.getInstance().sendRoundResult(roundResult);
-				SocketServer.getInstance().roundEnd(roundResult);
-				
-				if (FlagSetting.grpc) {
-					ObserverAgent observer = GrpcServer.getInstance().getObserver();
-					observer.onRoundEnd(roundResult);
-				}
+				ThreadController.getInstance().sendRoundResult(roundResult);
 				
 				this.currentRound++;
 				this.roundStartFlag = true;
+				this.roundEndFlag = false;
 				this.endFrame = -1;
 
 				// P1とP2の行った各アクションの数のデータをCSVに出力する
@@ -382,16 +356,11 @@ public class Play extends GameScene {
 			this.roundResults.add(roundResult);
 
 			// AIに結果を渡す
-			InputManager.getInstance().sendRoundResult(roundResult);
-			SocketServer.getInstance().roundEnd(roundResult);
-			
-			if (FlagSetting.grpc) {
-				ObserverAgent observer = GrpcServer.getInstance().getObserver();
-				observer.onRoundEnd(roundResult);
-			}
+			ThreadController.getInstance().sendRoundResult(roundResult);
 			
 			this.currentRound++;
 			this.roundStartFlag = true;
+			this.roundEndFlag = false;
 			this.endFrame = -1;
 
 			// P1とP2の行った各アクションの数のデータをCSVに出力する
@@ -402,8 +371,7 @@ public class Play extends GameScene {
 	}
 	
 	private void processingGameEnd() {
-		InputManager.getInstance().gameEnd();
-		SocketServer.getInstance().gameEnd();
+		ThreadController.getInstance().gameEnd();
 	}
 
 	/**
@@ -449,7 +417,8 @@ public class Play extends GameScene {
 		this.keyData = null;
 		this.roundResults.clear();
 		
-		InputManager.getInstance().closeAI();
+		InputManager.getInstance().close();
+		ThreadController.getInstance().close();
 
 		if (FlagSetting.debugActionFlag) {
 			DebugActionData.getInstance().closeAllWriters();

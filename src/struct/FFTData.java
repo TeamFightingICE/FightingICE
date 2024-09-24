@@ -1,6 +1,9 @@
 package struct;
 
 
+import com.google.protobuf.ByteString;
+
+import protoc.MessageProto.GrpcFftData;
 import util.NumberConverter;
 
 /**
@@ -64,4 +67,12 @@ public class FFTData {
     public byte[] getImagAsBytes() {
         return imagAsBytes;
     }
+    
+    public GrpcFftData toProto() {
+  		return GrpcFftData.newBuilder()
+  				.setRealDataAsBytes(ByteString.copyFrom(this.realAsBytes))
+  				.setImaginaryDataAsBytes(ByteString.copyFrom(this.imagAsBytes))
+  				.build();
+  	}
+    
 }

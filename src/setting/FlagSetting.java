@@ -21,11 +21,6 @@ public class FlagSetting {
     public static boolean enableBackground = true;
 
     /**
-     * Pythonを使用するかどうかのフラグ．
-     */
-    public static boolean py4j = false;
-
-    /**
      * アクションを行った回数をログに出力するかどうかのフラグ．
      */
     public static boolean debugActionFlag = false;
@@ -63,21 +58,15 @@ public class FlagSetting {
     /**
      * FastModeで起動するかどうかのフラグ．
      */
-    public static boolean fastModeFlag = false;
-
-    /**
-     * ゲームウィンドウを生成するかどうかのフラグ．
-     */
-    public static boolean enableWindow = true;
+    public static boolean inputSyncFlag = false;
 
     /**
      * ラウンド終了時にスローモーションを発生させるかどうかのフラグ
      */
     public static boolean slowmotion = false;
     
-    public static boolean grpc = true;
-    public static boolean grpcAuto = false;
-    public static boolean isGrpcAutoReady = false;
+    public static boolean enablePyftgMode = false;
+    public static boolean isPyftgReady = false;
     
     public static boolean visualVisibleOnRender = true;
     public static boolean enableBuiltinSound = false;

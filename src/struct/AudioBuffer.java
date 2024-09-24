@@ -7,15 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.util.WaveData;
-
-import manager.SoundManager;
 
 /**
  * The class representing audio buffer in multiple devices.
@@ -51,38 +44,24 @@ public class AudioBuffer {
         return buffers;
     }
     
-    public void registerSound(String filePath) {
-    	int format, samplerate;
-    	ByteBuffer data;
-    	
-    	try {
-	        BufferedInputStream e = new BufferedInputStream(new FileInputStream(new File(filePath)));
-	        WaveData waveFile = WaveData.create(e);
-	        
-	        format = waveFile.format;
-	        samplerate = waveFile.samplerate;
-	        
-	        data = BufferUtils.createByteBuffer(waveFile.data.limit());
-	        data.order(ByteOrder.LITTLE_ENDIAN);
-	        data.put(waveFile.data);
-	        
-	        e.close();
-	        waveFile.dispose();
-    	} catch (FileNotFoundException e1) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Sound file not found at " + filePath);
-            return;
-        } catch (IOException e2) {
-            e2.printStackTrace();
-            return;
+    private void registerSound(int bufferId, String filePath) {
+        try {
+            BufferedInputStream e = new BufferedInputStream(new FileInputStream(new File(filePath)));
+            WaveData waveFile = WaveData.create(e);
+            alBufferData(bufferId, waveFile.format, waveFile.data, waveFile.samplerate);
+            e.close();
+            waveFile.dispose();
+        } catch (FileNotFoundException arg1) {
+            arg1.printStackTrace();
+        } catch (IOException arg2) {
+            arg2.printStackTrace();
         }
-    	
-		for (int i = 0; i < buffers.length; i++) {
-			SoundManager.getInstance().getSoundRenderers().get(i).set();
-    		int bufferId = buffers[i];
-    		
-    		data.flip();
-    		alBufferData(bufferId, format, data, samplerate);
-		}
+    }
+    
+    public void registerSound(String filePath) {
+    	for (int i = 0; i < buffers.length; i++) {
+    		registerSound(buffers[i], filePath);
+    	}
     }
     
 }

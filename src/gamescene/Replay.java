@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aiinterface.ThreadController;
 import enumerate.GameSceneName;
 import fighting.Fighting;
 import informationcontainer.RoundResult;
@@ -18,7 +19,6 @@ import input.Keyboard;
 import manager.GraphicManager;
 import manager.InputManager;
 import manager.SoundManager;
-import service.SocketServer;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -144,7 +144,9 @@ public class Replay extends GameScene {
 		this.audioBuffer = SoundManager.getInstance().createAudioBuffer();
 
 		GameData gameData = new GameData(this.fighting.getCharacters());
-		SocketServer.getInstance().initialize(gameData);
+		
+		ThreadController.getInstance().createSoundController();
+		ThreadController.getInstance().startAllThreads(gameData);
 		
 		try {
 			String replayPath = "./log/replay/" + LaunchSetting.replayName + ".dat";
@@ -158,6 +160,8 @@ public class Replay extends GameScene {
 
 	@Override
 	public void update() {
+		GraphicManager.getInstance().resetScreen();
+		
 		if (this.currentRound <= GameSetting.ROUND_MAX) {
 			// ラウンド開始時に初期化
 			if (this.roundStartFlag) {
@@ -190,10 +194,9 @@ public class Replay extends GameScene {
 							this.fighting.getProjectileDeque(), this.fighting.getHitEffectList(),
 							this.frameData.getRemainingTimeMilliseconds(), this.currentRound);
 
-					GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50,
-							550);
-
-					this.screenData = new ScreenData();
+					GraphicManager.getInstance().drawString("PlaySpeed:" + this.playSpeedArray[this.playSpeedIndex], 50, 550);
+					
+					this.screenData = new ScreenData(GraphicManager.getInstance().getScreenImage());
 				}
 			}
 
@@ -216,20 +219,22 @@ public class Replay extends GameScene {
 		this.frameData = null;
 		this.screenData = null;
 		this.keyData = null;
+		
+		InputManager.getInstance().close();
+		ThreadController.getInstance().close();
 
 		try {
 			this.dis.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
 	 * 各ラウンド開始時における, インターバル処理を行う．
 	 */
 	private void processingBreakTime() {
-		GraphicManager.getInstance().drawQuad(0, 0, GameSetting.STAGE_WIDTH, GameSetting.STAGE_HEIGHT, 0, 0, 0, 0);
+		this.roundStartTime = System.nanoTime();
 		GraphicManager.getInstance().drawString("Waiting for Round Start", 350, 200);
 	}
 
@@ -241,8 +246,12 @@ public class Replay extends GameScene {
 	 * 3. 対戦後のFrameDataを取得する.<br>
 	 */
 	private void processingGame() {
+		this.currentFrameTime = System.nanoTime();
+		this.keyData = createKeyData();
+		
+		if (this.isFinished) return;
+		
 		if (this.nowFrame == 0) {
-			this.roundStartTime = System.currentTimeMillis();
 			this.audioData = new AudioData();
 
 			SoundManager.getInstance().play2(audioSource,
@@ -251,18 +260,13 @@ public class Replay extends GameScene {
 				SoundManager.getInstance().play(this.audioSource, this.audioBuffer);
 			}
 		} else {
-			this.currentFrameTime = System.currentTimeMillis();
 			this.audioData = InputManager.getInstance().getAudioData();
 		}
-		
-		this.keyData = createKeyData();
-		
-		if (this.isFinished) return;
 
 		this.fighting.processingFight(this.nowFrame, this.keyData);
 		this.frameData = this.fighting.createFrameData(this.nowFrame, this.currentRound);
+		ThreadController.getInstance().setFrameData(this.frameData, this.screenData, this.audioData);
 		
-		SocketServer.getInstance().processingGame(frameData, null, null);
 		SoundManager.getInstance().playback(audioSource, audioData.getRawShortDataAsBytes());
 	}
 
@@ -275,10 +279,10 @@ public class Replay extends GameScene {
 		this.roundStartFlag = true;
 		
 		Logger.getAnonymousLogger().log(Level.INFO, String.format("Round Duration: %.3f seconds (Expected %.3f)", 
-				(double) (currentFrameTime - roundStartTime) / 1e3, (double) (this.frameData.getFramesNumber() + 1) / 60));
+				(double) (currentFrameTime - roundStartTime) / 1e9, (double) (this.nowFrame + 1) / 60));
 		
 		RoundResult roundResult = new RoundResult(this.frameData);
-		SocketServer.getInstance().roundEnd(roundResult);
+		ThreadController.getInstance().sendRoundResult(roundResult);
 
 		SoundManager.getInstance().stopAll();
 		SoundManager.getInstance().stopPlayback(audioSource);
@@ -289,7 +293,7 @@ public class Replay extends GameScene {
 	}
 	
 	private void processingGameEnd() {
-		SocketServer.getInstance().gameEnd();
+		ThreadController.getInstance().gameEnd();
 	}
 
 	/**
@@ -320,8 +324,6 @@ public class Replay extends GameScene {
 		this.roundStartFlag = false;
 		this.elapsedBreakTime = 0;
 		this.isFinished = false;
-		
-		SocketServer.getInstance().initRound();
 		
 		if (FlagSetting.enableReplaySound) {
 			String soundPath = "./log/sound/" + LaunchSetting.replayName + "_" + this.currentRound + ".wav";

@@ -1,5 +1,6 @@
 package informationcontainer;
 
+import protoc.MessageProto.GrpcRoundResult;
 import setting.FlagSetting;
 import struct.FrameData;
 
@@ -91,4 +92,14 @@ public class RoundResult {
 	public int getElapsedFrame() {
 		return this.elapsedFrame;
 	}
+	
+	public GrpcRoundResult toProto() {
+		return GrpcRoundResult.newBuilder()
+    			.setCurrentRound(this.currentRound)
+    			.addRemainingHps(this.remainingHPs[0])
+    			.addRemainingHps(this.remainingHPs[1])
+    			.setElapsedFrame(this.elapsedFrame)
+    			.build();
+	}
+	
 }

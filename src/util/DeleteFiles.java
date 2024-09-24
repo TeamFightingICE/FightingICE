@@ -14,7 +14,7 @@ public class DeleteFiles {
 	private DeleteFiles() {
 		System.out.println("delete files...");
 		// 削除するフォルダ名
-		this.foldersName = new String[] { "log/point", "log/replay" };
+		this.foldersName = new String[] { "log/point", "log/replay", "log/sound" };
 	}
 
 	/**

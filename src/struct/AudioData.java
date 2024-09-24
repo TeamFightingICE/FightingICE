@@ -3,7 +3,12 @@ package struct;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.google.protobuf.ByteString;
+
+import protoc.MessageProto.GrpcAudioData;
 import setting.GameSetting;
 import util.FFT;
 import util.MFCC;
@@ -70,7 +75,7 @@ public class AudioData {
         this.fftData[0] = new FFTData(fft.getReal(), fft.getImag());
         fft.process(Arrays.copyOf(this.rawFloatData[1], this.rawFloatData[1].length));
         this.fftData[1] = new FFTData(fft.getReal(), fft.getImag());
-        
+       
         if (this.rawShortDataAsBytes == null)
         	this.rawShortDataAsBytes = NumberConverter.getInstance().getByteArray(this.rawShortData);
         
@@ -91,10 +96,12 @@ public class AudioData {
         int bufferSize = (audioData.getRawData() != null && audioData.getRawData()[0].length > 0) ? audioData.getRawData()[0].length : 0;
         this.init();
         if (bufferSize > 0) {
+        	this.rawShortData = audioData.getRawShortData();
             this.rawFloatData = audioData.getRawData();
+            this.rawFloatDataAsBytes = audioData.getRawDataAsBytes();
+            this.rawShortDataAsBytes = audioData.getRawShortDataAsBytes();
             this.fftData = audioData.getFftData();
             this.spectrogramData = audioData.getSpectrogramData();
-            this.rawFloatDataAsBytes = audioData.getRawDataAsBytes();
             this.spectrogramDataAsBytes = audioData.getSpectrogramDataAsBytes();
         }
     }
@@ -106,12 +113,22 @@ public class AudioData {
     public AudioData(float[][] rawData) {
         this.init();
         this.rawFloatData = rawData;
+        for (int i = 0; i < 2; i++) {
+        	for (int j = 0; j < GameSetting.SOUND_RENDER_SIZE; j++) {
+    			this.rawShortData[i][j] = (short) (rawFloatData[i][j] * 32767);
+        	}
+		}
 
         this.tranformRawData();
     }
     
     public AudioData(byte[] rawDataAsBytes) {
     	this.init();
+    	
+    	if (rawDataAsBytes.length != 3200 && rawDataAsBytes.length != 6400) {
+    		rawDataAsBytes = new byte[6400];
+			Logger.getAnonymousLogger().log(Level.WARNING, "Audio data format mismatch");
+		}
     	
     	if (rawDataAsBytes.length == 3200) {
     		this.rawShortDataAsBytes = rawDataAsBytes;
@@ -146,6 +163,10 @@ public class AudioData {
      */
     public float[][] getRawData() {
         return rawFloatData;
+    }
+    
+    public short[][] getRawShortData() {
+    	return rawShortData;
     }
 
     /**
@@ -185,5 +206,13 @@ public class AudioData {
     public byte[] getRawShortDataAsBytes() {
     	return rawShortDataAsBytes;
     }
+    
+    public GrpcAudioData toProto() {
+  		return GrpcAudioData.newBuilder()
+  				.setRawDataAsBytes(ByteString.copyFrom(this.rawFloatDataAsBytes))
+  				.addAllFftData(Arrays.stream(this.fftData).map(x -> x.toProto()).toList())
+  				.setSpectrogramDataAsBytes(ByteString.copyFrom(this.spectrogramDataAsBytes))
+  				.build();
+  	}
     
 }

@@ -1,6 +1,11 @@
 package aiinterface;
 
-import struct.*;
+import informationcontainer.RoundResult;
+import struct.AudioData;
+import struct.FrameData;
+import struct.GameData;
+import struct.Key;
+import struct.ScreenData;
 
 /**
  * The interface that defines the methods to implement in AI.
@@ -48,11 +53,7 @@ public interface AIInterface {
 	 * @see FrameData
 	 */
 
-	default void getInformation(FrameData fd, boolean isControl) {
-		getInformation(fd);
-	}
-	
-	void getInformation(FrameData fd);
+	void getInformation(FrameData fd, boolean isControl);
 
 	/**
 	 * Processes the data from AI. <br>
@@ -86,7 +87,13 @@ public interface AIInterface {
 	 * @param frames
 	 *            the elapsed frames from the start to the end of the round
 	 */
-	void roundEnd(int p1Hp, int p2Hp, int frames);
+	default void roundEnd(RoundResult r) {
+		roundEnd(r.getRemainingHPs()[0], r.getRemainingHPs()[1], r.getElapsedFrame());
+	}
+	
+	default void roundEnd(int p1Hp, int p2Hp, int frames) {
+		
+	}
 
 	/**
 	 * Gets the screen information in each frame.
@@ -95,7 +102,8 @@ public interface AIInterface {
 	 *            the screen information such as the pixel data, it will be empty in blind mode.
 	 */
 	default void getScreenData(ScreenData sd) {
-	};
+		
+	}
 
 	/**
 	 * Gets the audio information in each frame.<br>
@@ -105,7 +113,11 @@ public interface AIInterface {
 	 * 			the audio information.
 	 *
 	 */
-	default void getAudioData(AudioData ad){
-
+	default void getAudioData(AudioData ad) {
+		
+	}
+	
+	default void getNonDelayFrameData(FrameData fd) {
+		
 	};
 }

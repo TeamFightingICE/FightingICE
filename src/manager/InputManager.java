@@ -21,22 +21,18 @@ import java.util.logging.Logger;
 
 import aiinterface.AIController;
 import aiinterface.AIInterface;
+import aiinterface.SoundController;
 import aiinterface.ThreadController;
 import enumerate.GameSceneName;
-import grpc.GrpcServer;
 import informationcontainer.AIContainer;
-import informationcontainer.RoundResult;
 import input.KeyData;
 import input.Keyboard;
 import loader.ResourceLoader;
-import py4j.Py4JException;
+import service.SocketServer;
 import setting.FlagSetting;
 import setting.LaunchSetting;
 import struct.AudioData;
-import struct.FrameData;
-import struct.GameData;
 import struct.Key;
-import struct.ScreenData;
 
 /**
  * AIやキーボード等の入力関連のタスクを管理するマネージャークラス．
@@ -54,24 +50,14 @@ public class InputManager {
 	private Keyboard keyboard;
 
 	/**
-	 * AIコントローラを格納する配列．
-	 */
-	private AIController[] ais;
-
-	/**
 	 * ゲームのシーン名．
 	 */
 	private GameSceneName sceneName;
 
 	/**
-	 * Python側で定義されたAI名とAIInterfaceをセットで管理するマップ.
-	 */
-	private HashMap<String, AIInterface> predifinedAIs;
-
-	/**
 	 * Default number of devices.
 	 */
-	private final static int DEFAULT_DEVICE_NUMBER = 3;
+	public final static int DEFAULT_DEVICE_NUMBER = 2;
 
 	/**
 	 * デバイスタイプとしてキーボードを指定する場合の定数．
@@ -83,19 +69,12 @@ public class InputManager {
 	 */
 	public final static char DEVICE_TYPE_AI = 1;
 	
-	public final static char DEVICE_TYPE_GRPC = 2;
+	public final static char DEVICE_TYPE_EXTERNAL = 2;
 
 	/**
 	 * 入力デバイスを指定する配列．
 	 */
 	private char[] deviceTypes;
-
-	/**
-	 * 1フレーム分のゲームの処理が終わったことを示すオブジェクト．
-	 */
-	private Object endFrame;
-	
-	private AudioData audioData;
 
 	/**
 	 * InputManagerクラスのクラスコンストラクタ．<br>
@@ -104,17 +83,16 @@ public class InputManager {
 	private InputManager() {
 		Logger.getAnonymousLogger().log(Level.INFO, "Create instance: " + InputManager.class.getName());
 
-		keyboard = new Keyboard();
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
+			keyboard = new Keyboard();
+		}
+		
 		deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
 		sceneName = GameSceneName.HOME_MENU;
-		this.predifinedAIs = new HashMap<String, AIInterface>();
 
 		for (int i = 0; i < this.deviceTypes.length; i++) {
 			this.deviceTypes[i] = DEVICE_TYPE_KEYBOARD;
 		}
-
-		this.endFrame = ThreadController.getInstance().getEndFrame();
-		this.audioData = new AudioData();
 	}
 
 	/**
@@ -141,19 +119,11 @@ public class InputManager {
 	public Keyboard getKeyboard() {
 		return this.keyboard;
 	}
-
-	/**
-	 * Pythonでの処理のために用意されたAI名とAIインタフェースをマップに追加する．
-	 *
-	 * @param name
-	 *            AI名
-	 * @param ai
-	 *            AIインタフェース
-	 */
-	public void registerAI(String name, AIInterface ai) {
-		this.predifinedAIs.put(name, ai);
+	
+	public void initialize() {
+		this.deviceTypes = LaunchSetting.deviceTypes.clone();
 	}
-
+	
 	/**
 	 * 毎フレーム実行され，キーボード入力及びAIの入力情報を取得する．
 	 */
@@ -165,8 +135,9 @@ public class InputManager {
 				keys[i] = getKeyFromKeyboard(i == 0);
 				break;
 			case DEVICE_TYPE_AI:
-			case DEVICE_TYPE_GRPC:
-				keys[i] = getKeyFromAI(this.ais[i]);
+			case DEVICE_TYPE_EXTERNAL:
+				AIController ai = ThreadController.getInstance().getAIController(i == 0);
+				keys[i] = getKeyFromAI(ai);
 				break;
 			default:
 				break;
@@ -187,85 +158,37 @@ public class InputManager {
 	 */
 	private Key getKeyFromKeyboard(boolean playerNumber) {
 		Key key = new Key();
-
-		if (playerNumber) {
-			key.A = Keyboard.getKeyDown(GLFW_KEY_Z);
-			key.B = Keyboard.getKeyDown(GLFW_KEY_X);
-			key.C = Keyboard.getKeyDown(GLFW_KEY_C);
-			key.U = Keyboard.getKeyDown(GLFW_KEY_UP);
-			key.D = Keyboard.getKeyDown(GLFW_KEY_DOWN);
-			key.R = Keyboard.getKeyDown(GLFW_KEY_RIGHT);
-			key.L = Keyboard.getKeyDown(GLFW_KEY_LEFT);
-		} else {
-			key.A = Keyboard.getKeyDown(GLFW_KEY_T);
-			key.B = Keyboard.getKeyDown(GLFW_KEY_Y);
-			key.C = Keyboard.getKeyDown(GLFW_KEY_U);
-			key.U = Keyboard.getKeyDown(GLFW_KEY_I);
-			key.D = Keyboard.getKeyDown(GLFW_KEY_K);
-			key.R = Keyboard.getKeyDown(GLFW_KEY_L);
-			key.L = Keyboard.getKeyDown(GLFW_KEY_J);
+		
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE)) {
+			if (playerNumber) {
+				key.A = Keyboard.getKeyDown(GLFW_KEY_Z);
+				key.B = Keyboard.getKeyDown(GLFW_KEY_X);
+				key.C = Keyboard.getKeyDown(GLFW_KEY_C);
+				key.U = Keyboard.getKeyDown(GLFW_KEY_UP);
+				key.D = Keyboard.getKeyDown(GLFW_KEY_DOWN);
+				key.R = Keyboard.getKeyDown(GLFW_KEY_RIGHT);
+				key.L = Keyboard.getKeyDown(GLFW_KEY_LEFT);
+			} else {
+				key.A = Keyboard.getKeyDown(GLFW_KEY_T);
+				key.B = Keyboard.getKeyDown(GLFW_KEY_Y);
+				key.C = Keyboard.getKeyDown(GLFW_KEY_U);
+				key.U = Keyboard.getKeyDown(GLFW_KEY_I);
+				key.D = Keyboard.getKeyDown(GLFW_KEY_K);
+				key.R = Keyboard.getKeyDown(GLFW_KEY_L);
+				key.L = Keyboard.getKeyDown(GLFW_KEY_J);
+			}
 		}
 
 		return key;
 	}
 
 	/**
-	 * AIの情報を格納したコントローラをInputManagerクラスに取り込む．
-	 */
-	public void createAIcontroller() {
-		String[] aiNames = LaunchSetting.aiNames.clone();
-
-		if (FlagSetting.allCombinationFlag) {
-			if (AIContainer.p1Index == AIContainer.p2Index) {
-				AIContainer.p1Index++;
-			}
-			aiNames[0] = AIContainer.allAINameList.get(AIContainer.p1Index);
-			aiNames[1] = AIContainer.allAINameList.get(AIContainer.p2Index);
-		}
-
-		this.deviceTypes = LaunchSetting.deviceTypes.clone();
-		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
-		for (int i = 0; i < this.deviceTypes.length; i++) {
-			if (this.deviceTypes[i] == DEVICE_TYPE_AI) {
-				if (this.predifinedAIs.containsKey(aiNames[i])) {
-					this.ais[i] = new AIController(this.predifinedAIs.get(aiNames[i]));
-				} else {
-					this.ais[i] = ResourceLoader.getInstance().loadAI(aiNames[i]);
-				}
-			} else if (this.deviceTypes[i] == DEVICE_TYPE_GRPC) {
-				this.ais[i] = new AIController(GrpcServer.getInstance().getPlayer(i == 0));
-			} else {
-				this.ais[i] = null;
-			}
-		}
-	}
-
-	/**
-	 * AIコントローラの動作を開始させる．<br>
-	 * 引数のGameDataクラスのインスタンスを用いてAIコントローラを初期化し，AIの動作を開始する．
-	 *
-	 * @param gameData
-	 *            GameDataクラスのインスタンス
-	 * @see GameData
-	 */
-	public void startAI(GameData gameData) throws Py4JException{
-		for (int i = 0; i < this.deviceTypes.length; i++) {
-			if (this.ais[i] != null) {
-		        Logger.getAnonymousLogger().log(Level.INFO, String.format("Initialize AI controller for P%s", i == 0 ? "1" : "2"));
-				this.ais[i].initialize(ThreadController.getInstance().getAIsObject(i == 0), gameData, i == 0);
-				this.ais[i].start();// start the thread
-			}
-		}
-	}
-
-	/**
 	 * AIの動作を停止させる．
 	 */
-	public void closeAI() {
+	public void close() {
 		this.buffer = new KeyData();
 		
 		this.deviceTypes = new char[DEFAULT_DEVICE_NUMBER];
-		this.ais = new AIController[DEFAULT_DEVICE_NUMBER];
 	}
 
 	/**
@@ -284,90 +207,17 @@ public class InputManager {
 		return new Key(ai.getInput());
 	}
 	
-	public void setAudioData(AudioData audioData) {
-		this.audioData = audioData;
-	}
-	
 	public AudioData getAudioData() {
-		return this.audioData;
-	}
-
-	/**
-	 * 引数のフレームデータ及びScreenDataを各AIコントローラにセットする．
-	 *
-	 * @param frameData
-	 *            フレームデータ
-	 * @param screenData
-	 *            スクリーンデータ
-	 * @param audioData
-	 *
-	 * @see FrameData
-	 * @see ScreenData
-	 * @see AudioData
-	 */
-	public void setFrameData(FrameData frameData, ScreenData screenData, AudioData audioData) {
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				if (!frameData.getEmptyFlag()) {
-					ai.setFrameData(new FrameData(frameData));
-				} else {
-					ai.setFrameData(new FrameData());
-				}
-				ai.setScreenData(new ScreenData(screenData));
-				ai.setAudioData(new AudioData(audioData));
-			}
-		}
-
-		ThreadController.getInstance().resetAllAIsObj();
-		if (FlagSetting.fastModeFlag) {
-			synchronized (this.endFrame) {
-				try {
-					this.endFrame.wait(20);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		SoundController sound = ThreadController.getInstance().getSoundController();
+		if (sound == null)
+			return new AudioData();
+		return new AudioData(sound.getAudioData());
 	}
 	
 	public void setInput(boolean playerNumber, Key input) {
-		AIController ai = this.ais[playerNumber ? 0 : 1];
+		AIController ai = ThreadController.getInstance().getAIController(playerNumber);
 		if (ai != null) {
 			ai.setInput(input);
-		}
-	}
-
-	/**
-	 * AIコントローラに現在のラウンドの結果を送信する．
-	 *
-	 * @param roundResult
-	 *            現在のラウンドの結果
-	 * @see RoundResult
-	 */
-	public void sendRoundResult(RoundResult roundResult) {
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.informRoundResult(roundResult);
-			}
-		}
-	}
-	
-	public void gameEnd() {
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.gameEnd();
-			}
-		}
-	}
-
-	/**
-	 * 各AIコントローラ内に保持されているフレームデータをクリアする.
-	 */
-	public void clear() {
-		for (AIController ai : this.ais) {
-			if (ai != null) {
-				ai.clear();
-			}
 		}
 	}
 

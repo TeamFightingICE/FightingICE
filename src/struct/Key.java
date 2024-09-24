@@ -1,5 +1,7 @@
 package struct;
 
+import protoc.MessageProto.GrpcKey;
+
 /**
  * The class dealing with all possible keys used in the game.
  */
@@ -110,4 +112,17 @@ public class Key {
 
 		return lever;
 	}
+	
+	public GrpcKey toProto() {
+		return GrpcKey.newBuilder()
+    			.setA(this.A)
+    			.setB(this.B)
+    			.setC(this.C)
+    			.setD(this.D)
+    			.setL(this.L)
+    			.setR(this.R)
+    			.setU(this.U)
+    			.build();
+	}
+	
 }
