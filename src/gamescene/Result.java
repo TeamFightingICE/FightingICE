@@ -174,6 +174,7 @@ public class Result extends GameScene {
 					}
 
 				} else if (FlagSetting.enablePyftgMode) {
+					LaunchSetting.repeatedCount = 0;
 					SocketServer.getInstance().notifyTaskFinished();
 					Socket grpc = new Socket();
 					this.setTransitionFlag(true);
