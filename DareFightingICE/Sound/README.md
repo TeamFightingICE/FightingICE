@@ -95,7 +95,7 @@ The awards for the first, second, and third place winners will include a monetar
   
 1. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
-1. Zhang Menghan, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Menghan Zhang, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Yuchen Tian, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
 
