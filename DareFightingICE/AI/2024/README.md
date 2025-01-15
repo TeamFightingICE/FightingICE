@@ -1,6 +1,6 @@
-# <div align="center"> 2025 DareFightingICE AI Competition</div>
+# <div align="center"> 2024 DareFightingICE AI Competition</div>
 ----
-<div align = "center"> Welcome to the 2025 DareFightingICE AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
+<div align = "center"> Welcome to the 2024 DareFightingICE AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
 
 
@@ -118,7 +118,7 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
    - RAM: 188 GB
    - GPU: NVIDIA A100 80GB VRAM
 
-### <b>Prizes: (updated on January 15, 2025) </b>
+### <b>Prizes: (updated on March 26, 2024) </b>
 ---
 IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
@@ -137,15 +137,16 @@ IEEE CIS will award the qualified first-place, second-place, and third-place win
 Please submit your entry via this [page](https://forms.gle/fCRiRUPvVxYjaT5b9). Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your AI to us by the final deadline.)
-- June 7, 2025 (AoE)
+- June 7, 2024 (AoE)
 
 Final deadline
-- July 7, 2025 (AoE)(no extension!!)
+- July 29, 2024 (AoE)(no extension!!)
 
 #### Note that all the submissions will be made publicly available after the competition.
 
-### 2025 Results (TBA):
+### 2024 Results (updated on August 12, 2024):
 ---
+[link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-R.html)
 
 ### <b>Contact Us:</b>
 ---
