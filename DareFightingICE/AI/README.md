@@ -140,7 +140,7 @@ Midterm deadline (We recommend you do midterm submission, but if you miss it, yo
 - June 7, 2025 (AoE)
 
 Final deadline
-- July 7, 2025 (AoE)(no extension!!)
+- August 7, 2025 (AoE)(no extension!!)
 
 #### Note that all the submissions will be made publicly available after the competition.
 
