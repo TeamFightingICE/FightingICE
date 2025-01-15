@@ -66,10 +66,10 @@ Evaluation of your sound designs will be done as follows: <br>
 Players with vision will test your sound design while wearing a blindfold. The total number of players testing your sound design is not fixed. If the total number of sound designs is more than 10, the sound designs will go through the Pre-Screening process and the top 5 will be selected. The top 5 will then go through the screening process. If the number is 10 or lower, the pre-screening process will be skipped.<br>
 
 Pre-screening:
-- For each submitted sound design, a video of our sample AI agents playing one game ( three rounds) of DareFightingICE will be recorded. Then a sound aesthetic survey of these videos will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
+- For each submitted sound design, a video of our sample AI agents playing one game (three rounds) of DareFightingICE will be recorded. Then a sound aesthetic survey of these videos will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
 
 Screening:
-- The blindfolded players will play against a weak AI (a weak form of MCTS AI, the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
+- The blindfolded players will play against a weak AI (a weak form of MCTS AI), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
 - For a sound design, each player will play against the AI for three games (three rounds per game, with an initial HP of 400 and a maximum round time of 60 seconds), and the score will be calculated by the health point (HP) difference between the player and the AI as well as the win ratio relative to playing without being blindfolded.
 - After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
 -  In addition, [our deep reinforcement learning blind AI](https://github.com/TeamFightingICE/BlindAI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
