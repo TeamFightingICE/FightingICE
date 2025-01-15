@@ -1,6 +1,6 @@
 
 
-# <div align ="center"> 2024 DareFightingICE Sound-Design Competition </div>
+# <div align ="center"> 2025 DareFightingICE Sound-Design Competition </div>
 
 ----
 <div align = "center"> Welcome to the DareFightingICE sound design competition. Here, you will be provided all the necessary information needed to participate in the sound design competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
@@ -24,9 +24,9 @@ You are provided with our new generative sound AI interface that already has a s
 
 You will submit:
 - The sound effects.
-- The source code files.
+- The source code files (if changed).
 -  A slide file(ppt) explaining the changes and the reasoning behind them. 
--  A tutorial video (maximum length of video is 3 min) featuring the important features of your sound design.
+-  A tutorial video (maximum length of video is 3 min) featuring the important features of your sound design (optional).
 -  Keep in mind that editing the source code is not required. You can just change the sounds, but give them the same name as the sounds already in the sound folder. To change the background music just overwrite the “BGM0” audio file with your own background music (name should remain the same). 
 -  You are allowed to add new source code files and any technique like procedural content generation to generate sounds. The programming language you are allowed to use is Python or any other language (for languages other than Python the participant will have to implement the interface themselves). <br>
 
@@ -36,11 +36,12 @@ Directory for sound effects:
 -	Generative-Sound-AI\data\sounds <br>
 ~~~
 For this competition, you will only need to come up with the sound design for a single character (Zen).
+The sound effects should be in mono audio format unless you have changed the source code.
 ~~~
 
 ### Sample Sound Design:
 ---
-The sample sound design (available in the Generative-Sound-AI/data/sounds [here](https://github.com/TeamFightingICE/Generative-Sound-AI/tree/main/data/sounds)) is the winner sound design from 2023 competition. There is a total of 51 sound effects in the sounds folder including the background music. For the sample sound design, some sound effects are the same for similar moves. To know in detail what the moves look like visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/ZEN_action_animations.htm).<br>
+The sample sound design (available in the Generative-Sound-AI/data/sounds [here](https://github.com/TeamFightingICE/Generative-Sound-AI/tree/main/data/sounds)) is the winner sound design from 2024 competition. There is a total of 51 sound effects in the sounds folder including the background music. For the sample sound design, some sound effects are the same for similar moves. To know in detail what the moves look like visit this [link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/ZEN_action_animations.htm).<br>
 There are a few special sound effects added into the DareFightingICE.
 -	<b>Heartbeat:</b> This sound effect is played when the player’s health is below 50. For player 1 the sound effect is played on the left speaker and for player 2 on the right.
 -	<b>Energy Increase:</b> This sound effect is played when the player’s energy goes +50 from the previous value. For player 1 the sound effect is played on the left speaker and for player 2 on the right.
@@ -62,14 +63,14 @@ These three special sounds are in place to help visually impaired players be awa
 ### Evaluation:
 ---
 Evaluation of your sound designs will be done as follows: <br>
-Players with vision will test your sound design while wearing a blindfold. The total number of players testing your sound design is not static, but rest assured it will not be a very small number, like 3,4, etc. If the total number of sound designs is more than 5, the sound designs will go through the Pre-Screening process and the top 5 will be selected. The top 5 will then go through the screening process. If the number is 5 or lower, the pre-screening process will be skipped.<br>
+Players with vision will test your sound design while wearing a blindfold. The total number of players testing your sound design is not fixed. If the total number of sound designs is more than 10, the sound designs will go through the Pre-Screening process and the top 5 will be selected. The top 5 will then go through the screening process. If the number is 10 or lower, the pre-screening process will be skipped.<br>
 
 Pre-screening:
-- Two most capable test players (players with vision) will play against each other for one round using the default sound design. The replay of the same round will be played using all the submitted sound designs – all videos will be of the same match but different sound designs. Then a sound aesthetic survey of those replay videos will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
+- For each submitted sound design, a video of our sample AI agents playing one game ( three rounds) of DareFightingICE will be recorded. Then a sound aesthetic survey of these videos will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
 
 Screening:
 - The blindfolded players will play against a weak AI (a weak form of MCTS AI, the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
-- Each player will play against the AI 3 games (3 rounds per game, with initial HP of 400 and the maximum round time of 60 seconds) for a sound design, and the score will be calculated by health point (HP) difference between the player and the AI, in relative to the HP difference when playing without being blindfolded.
+- For a sound design, each player will play against the AI for three games (three rounds per game, with an initial HP of 400 and a maximum round time of 60 seconds), and the score will be calculated by the health point (HP) difference between the player and the AI as well as the win ratio relative to playing without being blindfolded.
 - After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
 -  In addition, [our deep reinforcement learning blind AI](https://github.com/TeamFightingICE/BlindAI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
 -  The sample blind AI's win-lose ratio and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
@@ -85,36 +86,31 @@ Screening:
 - To install our sound generative AI, please visit this [link](https://github.com/TeamFightingICE/Generative-Sound-AI)
 - To run DareFightingICE with sound and for sound to transmit to AI agents, please boot the sound generative AI after DareFightingICE.
 
-### <b>Prizes: (updated on March 26, 2024) </b>
+### <b>Prizes</b>
 ---
-IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
+The awards for the first, second, and third place winners will include a monetary prize, with the amount to be announced later, pending the acceptance of our competition in the 2025 IEEE Conference on Games.
 
 ### Organizers:
 ---
   
 1. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
-1. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
-1. Kantinan Plupattanakit, Graduate School of Information Science and Engineering, Ritsumeikan University
-1. Boyu Chuang, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Zhang Menghan, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Yuchen Tian, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
 
 
 ### Submission:
 ---
-Please submit your entry via this [page](https://forms.gle/UY929AVVS2xq2t9z8). Below are the deadlines.
+Please submit your entry via this [page available soon]. Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your sound design to us by the final deadline.)
-- June 7, 2024 (AoE)
+- June 7, 2025 (AoE)
 
 Final deadline
-- July 29, 2024 (AoE)(no extension!!)
+- August 7, 2025 (AoE)(no extension!!)
 
 #### Note that all the submissions will be made publicly available after the competition.
-
-### 2024 Results (updated on August 12, 2024):
----
-[link](https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-R.html)
 
 ### <b>Contact Us:</b>
 ---
