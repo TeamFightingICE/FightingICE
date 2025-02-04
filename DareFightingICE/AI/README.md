@@ -126,10 +126,9 @@ IEEE CIS will award the qualified first-place, second-place, and third-place win
 ---
 1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
 2. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
-3. Chollakorn Nimpattanavong, Graduate School of Information Science and Engineering, Ritsumeikan University
-4. Kantinan Plupattanakit, Graduate School of Information Science and Engineering, Ritsumeikan University
-5. Boyu Chuang, Graduate School of Information Science and Engineering, Ritsumeikan University
-6. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
+3. Boyu Chuang, Graduate School of Information Science and Engineering, Ritsumeikan University
+4. Shouchen Ye, College of Information Science and Engineeringitsumeikan University
+5. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
 
 ### Submission:
 ---
