@@ -82,7 +82,7 @@ Screening:
 
 ### Installation Guide:
 ---
-- To install DareFightingICE please visit this [link](https://github.com/TeamFightingICE/FightingICE/releases).
+- To install DareFightingICE please visit this [link](https://github.com/TeamFightingICE/FightingICE/releases). (<b>Make sure to download the resources along with DareFightingICE</b>)
 - To install our sound generative AI, please visit this [link](https://github.com/TeamFightingICE/Generative-Sound-AI)
 - To run DareFightingICE with sound and for sound to transmit to AI agents, please boot the sound generative AI after DareFightingICE.
 
