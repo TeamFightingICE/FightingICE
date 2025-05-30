@@ -86,9 +86,12 @@ Screening:
 - To install our sound generative AI, please visit this [link](https://github.com/TeamFightingICE/Generative-Sound-AI)
 - To run DareFightingICE with sound and for sound to transmit to AI agents, please boot the sound generative AI after DareFightingICE.
 
-### <b>Prizes</b>
+
+### <b>Prizes: (updated on May 30, 2025) </b>
 ---
-The awards for the first, second, and third place winners will include a monetary prize, with the amount to be announced later, pending the acceptance of our competition in the 2025 IEEE Conference on Games.
+<b>We are pleased to announce that we have successfully secured competition funding from IEEE CIS.</b>
+
+IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### Organizers:
 ---
