@@ -1,6 +1,6 @@
 # <div align="center"> 2025 DareFightingICE AI Competition</div>
 ----
-<div align = "center"> Welcome to the 2025 DareFightingICE AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
+<div align = "center"> Welcome to the 2025 DareFightingICE AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>Update README.md
 <br>
 
 
@@ -121,6 +121,7 @@ In each of the two leagues (in this order: Zen Standard, Zen Speedrunning), the 
 ### <b>Prizes: (updated on May 30, 2025) </b>
 ---
 <b>We are pleased to announce that we have successfully secured competition funding from IEEE CIS.</b>
+
 IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### Organizers:
