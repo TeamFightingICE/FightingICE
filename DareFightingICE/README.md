@@ -19,8 +19,8 @@ See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</
 ### <b>DareFightingICE Sound Design Competition:</b>
 See <a href="https://tinyurl.com/DareFightingICE/Sound" target="_blank">this page</a> for the details of this competition.<br>
 
-### <b>Prizes: (updated on March 26, 2024) </b>
-IEEE CIS will award the qualified first-place, second-place, and third-place winners of each competition a monetory prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
+### <b>Prizes: (updated on May 30, 2025) </b>
+Good news! IEEE CIS will award the qualified first-place, second-place, and third-place winners of each competition a monetory prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### <b>Results:</b>
 Previous competition results are avialable on this <a href="https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index-R.html" target="_blank">page</a>.
