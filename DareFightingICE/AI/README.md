@@ -135,7 +135,7 @@ IEEE CIS will award the qualified first-place, second-place, and third-place win
 ### Submission:
 ---
 
-Please submit your entry via this [page](https://forms.gle/fCRiRUPvVxYjaT5b9). Below are the deadlines.
+Please submit your entry via this [page](https://forms.gle/Kq1qmRgvJAR4fJLeA). Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your AI to us by the final deadline.)
 - June 7, 2025 (AoE)
