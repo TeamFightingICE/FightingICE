@@ -105,7 +105,7 @@ IEEE CIS will award the qualified first-place, second-place, and third-place win
 
 ### Submission:
 ---
-Please submit your entry via this [page](https://forms.gle/UY929AVVS2xq2t9z8). Below are the deadlines.
+Please submit your entry via this [page](https://forms.gle/TeEHB5bma7jjdgyJ8). Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your sound design to us by the final deadline.)
 - June 7, 2025 (AoE)
