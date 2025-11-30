@@ -2,6 +2,8 @@ package twitch;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import manager.InputManager;
+import struct.Key;
 
 import java.net.URISyntaxException;
 
@@ -19,6 +21,11 @@ public class socket {
 
             socket.on("Jump", args -> {
                 System.out.println("Jump!");
+                Key key = new Key();
+                key.A = true;
+
+                // needs to be changed
+                InputManager.getInstance().setInput(false, key);
             });
 
             socket.connect();
