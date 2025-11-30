@@ -5,10 +5,10 @@ import io.socket.client.Socket;
 
 import java.net.URISyntaxException;
 
-static int SOCKET_PORT = 3001;
-static String SERVER_CONNECTION = "Connected to Server!";
-
 public class socket {
+    private static final int SOCKET_PORT = 3001;
+    private static final String SERVER_CONNECTION = "Connected to Server!";
+
     static {
         try {
             Socket socket = IO.socket("http://localhost:" + SOCKET_PORT);
