@@ -15,6 +15,10 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Y;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,7 +123,7 @@ public class InputManager {
 	public Keyboard getKeyboard() {
 		return this.keyboard;
 	}
-	
+
 	public void initialize() {
 		this.deviceTypes = LaunchSetting.deviceTypes.clone();
 	}

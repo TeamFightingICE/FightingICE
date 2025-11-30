@@ -1,5 +1,6 @@
 import core.Game;
 import manager.DisplayManager;
+import twitch.socket;
 
 /**
  * FightingICEのメインメソッドを持つクラス．
@@ -17,6 +18,7 @@ public class Main {
 		Game game = new Game();
 		game.setOptions(options);
 		DisplayManager displayManager = new DisplayManager();
+        new socket();
 
 		// ゲームの開始
 		displayManager.start(game);
