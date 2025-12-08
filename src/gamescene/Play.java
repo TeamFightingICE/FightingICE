@@ -319,6 +319,11 @@ public class Play extends GameScene {
 	/**
 	 * ラウンド終了時の処理を行う.
 	 */
+
+	private void onRoundEnd(RoundResult roundResult) {
+        System.out.println("[Twitch] Round ended. Winner: " + roundResult.getWinner());
+    }
+	
 	private void processingRoundEnd() {
 		Logger.getAnonymousLogger().log(Level.INFO, String.format("Round Duration: %.3f seconds (Expected %.3f)", 
 				(double) (currentFrameTime - roundStartTime) / 1e9, (double) this.nowFrame / 60));
@@ -333,6 +338,8 @@ public class Play extends GameScene {
 				RoundResult roundResult = new RoundResult(this.frameData);
 				this.roundResults.add(roundResult);
 
+				onRoundEnd(roundResult);
+				
 				// AIに結果を渡す
 				ThreadController.getInstance().sendRoundResult(roundResult);
 				
@@ -354,6 +361,8 @@ public class Play extends GameScene {
 			this.fighting.processingRoundEnd();
 			RoundResult roundResult = new RoundResult(this.frameData);
 			this.roundResults.add(roundResult);
+			
+			onRoundEnd(roundResult);
 
 			// AIに結果を渡す
 			ThreadController.getInstance().sendRoundResult(roundResult);
