@@ -219,11 +219,15 @@ public class Game extends GameManager {
 
             Launcher launcher = new Launcher(GameSceneName.PLAY);
             this.startGame(launcher);
-        } else {
-            // 上記以外の場合, メニュー画面からゲームを開始する
-            HomeMenu homeMenu = new HomeMenu();
-            this.startGame(homeMenu);
+		} else {
+            FlagSetting.limitHpFlag = true;
+            LaunchSetting.maxHp[0] = 100;
+            LaunchSetting.maxHp[1] = 100;
+
+            Launcher launcher = new Launcher(GameSceneName.PLAY);
+            this.startGame(launcher);
         }
+
 
     }
 
