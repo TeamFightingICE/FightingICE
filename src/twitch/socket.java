@@ -1,5 +1,7 @@
 package twitch;
 
+import command.CommandTable;
+import enumerate.Action;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import manager.InputManager;
@@ -19,13 +21,16 @@ public class socket {
                 System.out.println(SERVER_CONNECTION);
             });
 
-            socket.on("Jump", args -> {
-                System.out.println("Jump!");
-                Key key = new Key();
-                key.A = true;
+            socket.on("jump", args ->{
+                CommandTable.performOneTimeAction(Action.JUMP, true);
+            });
 
-                // needs to be changed
-                InputManager.getInstance().setInput(false, key);
+            socket.on("attack", args ->{
+                CommandTable.performOneTimeAction(Action.STAND_FA, true);
+            });
+
+            socket.on("defence", args ->{
+                CommandTable.performOneTimeAction(Action.STAND_GUARD, true);
             });
 
             socket.connect();
