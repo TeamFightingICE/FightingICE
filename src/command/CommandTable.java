@@ -97,6 +97,15 @@ public class CommandTable {
 
         // Twitch からのモードを mode.txt から読み込んで反映
         updateModeFromFile();
+
+        /*
+        Can override actions like this:
+
+         if (character.isPlayerNumber()){
+            base = Action.BACK_STEP;
+        }
+        */
+
         return adjustByMode(character, base, character.getState());
     }
 
@@ -149,6 +158,7 @@ public class CommandTable {
                                          character.getState(), character.isFront());
 
         updateModeFromFile();
+
         return adjustByMode(character, base, character.getState());
     }
 
@@ -175,6 +185,7 @@ public class CommandTable {
     private Action adjustByMode(Character character, Action baseAction, State state) {
         // ★ P1（人間側）はそのまま、P2（AI側）だけモード補正をかける
         if (character.isPlayerNumber()) {
+            System.out.println(baseAction.toString());
             return baseAction; // P1は元の行動のまま
         }
 

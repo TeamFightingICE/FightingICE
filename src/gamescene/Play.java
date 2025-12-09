@@ -321,7 +321,7 @@ public class Play extends GameScene {
 	 */
 
 	private void onRoundEnd(RoundResult roundResult) {
-        System.out.println("[Twitch] Round ended. Winner: " + roundResult.getWinner());
+        // System.out.println("[Twitch] Round ended. Winner: " + roundResult.getWinner());
     }
 	
 	private void processingRoundEnd() {
