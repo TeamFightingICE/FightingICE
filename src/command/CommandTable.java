@@ -34,11 +34,27 @@ public class CommandTable {
     /** escape モードで「連続して BACK_STEP を出したフレーム数」 */
     private int escapeBackStepCount = 0;
 
+    static private Action forcedActionP1 = null;
+    static private Action forcedActionP2 = null;
+
     /**
      * クラスコンストラクタ．
      */
     public CommandTable() {
 
+    }
+
+    /**
+     * Forces the character to perform a specific action once in the next available frame.
+     * * @param action   The action to perform (e.g., Action.STAND_FA)
+     * @param isPlayerOne True for Player 1, False for Player 2
+     */
+    static public void performOneTimeAction(Action action, boolean isPlayerOne) {
+        if (isPlayerOne) {
+            CommandTable.forcedActionP1 = action;
+        } else {
+            CommandTable.forcedActionP2 = action;
+        }
     }
 
     /**
@@ -53,6 +69,24 @@ public class CommandTable {
      * @see KeyData
      */
     public Action interpretationCommandFromKeyData(Character character, Deque<KeyData> input) {
+        // --- NEW CODE START ---
+        // Check if there is a forced action queued for this player
+        if (character.isPlayerNumber()) {
+            // Player 1 logic
+            if (CommandTable.forcedActionP1 != null) {
+                Action act = CommandTable.forcedActionP1;
+                CommandTable.forcedActionP1 = null; // Reset to null so it only plays once
+                return act;
+            }
+        } else {
+            // Player 2 logic
+            if (CommandTable.forcedActionP2 != null) {
+                Action act = CommandTable.forcedActionP2;
+                CommandTable.forcedActionP2 = null; // Reset to null so it only plays once
+                return act;
+            }
+        }
+
         Key nowKeyData;
         boolean pushA = false;
         boolean pushB = false;
@@ -93,7 +127,7 @@ public class CommandTable {
         }
 
         Action base = convertKeyToAction(pushA, pushB, pushC, nowKeyData, commandList,
-                                         character.getState(), character.isFront());
+                character.getState(), character.isFront());
 
         // Twitch からのモードを mode.txt から読み込んで反映
         updateModeFromFile();
@@ -155,7 +189,7 @@ public class CommandTable {
         }
 
         Action base = convertKeyToAction(pushA, pushB, pushC, nowKey, commandList,
-                                         character.getState(), character.isFront());
+                character.getState(), character.isFront());
 
         updateModeFromFile();
 
@@ -185,7 +219,6 @@ public class CommandTable {
     private Action adjustByMode(Character character, Action baseAction, State state) {
         // ★ P1（人間側）はそのまま、P2（AI側）だけモード補正をかける
         if (character.isPlayerNumber()) {
-            System.out.println(baseAction.toString());
             return baseAction; // P1は元の行動のまま
         }
 
@@ -231,12 +264,12 @@ public class CommandTable {
                     }
                 }
 
-            // =====================================================
-            // defense：ひたすらその場ガード
-            //   - 空中なら AIR_GUARD
-            //   - 地上なら基本 STAND_GUARD
-            //   - しゃがみ系は CROUCH_GUARD
-            // =====================================================
+                // =====================================================
+                // defense：ひたすらその場ガード
+                //   - 空中なら AIR_GUARD
+                //   - 地上なら基本 STAND_GUARD
+                //   - しゃがみ系は CROUCH_GUARD
+                // =====================================================
             case "defense":
                 if (state == State.AIR) {
                     // 空中にいるときはとりあえず空中ガード
@@ -258,13 +291,13 @@ public class CommandTable {
                     }
                 }
 
-            // =====================================================
-            // escape：動き回って逃げる
-            //   - 通常：BACK_STEP で下がりつつ、たまに BACK_JUMP
-            //   - 一定時間 BACK_STEP し続けたら：
-            //       → FOR_JUMP で逆向きに飛び越える
-            //       → 向きが変わった状態で、また BACK_STEP 逃げを再開
-            // =====================================================
+                // =====================================================
+                // escape：動き回って逃げる
+                //   - 通常：BACK_STEP で下がりつつ、たまに BACK_JUMP
+                //   - 一定時間 BACK_STEP し続けたら：
+                //       → FOR_JUMP で逆向きに飛び越える
+                //       → 向きが変わった状態で、また BACK_STEP 逃げを再開
+                // =====================================================
             case "escape":
                 // 毎フレーム、クールダウンを1減らす
                 if (escapeJumpCooldown > 0) {
@@ -319,10 +352,10 @@ public class CommandTable {
                     return result;
                 }
 
-                
-            // =====================================================
-            // other：何もしないモード（棒立ち）
-            // =====================================================
+
+                // =====================================================
+                // other：何もしないモード（棒立ち）
+                // =====================================================
             case "other": // ★ 追加
                 // 空中にいるときは「何もしない空中行動」、地上では棒立ち
                 if (state == State.AIR) {
@@ -330,7 +363,7 @@ public class CommandTable {
                 } else {
                     return Action.STAND; // 地上で棒立ち
                 }
-            
+
             default:
                 return baseAction;
         }
