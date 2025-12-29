@@ -1452,6 +1452,15 @@ public class Character {
     }
 
     /**
+     * キャラクターがヒットストン状態にあるかどうかを返す．
+     *
+     * @return {@code true} if the character is in hitstun, {@code false} otherwise.
+     */
+    public boolean isInHitstun() {
+        return this.state != State.DOWN && this.remainingFrame > 0;
+    }
+
+    /**
      * シミュレータ内での処理かどうかを返す．
      *
      * @return {@code true} if the process is executed in the simulator,

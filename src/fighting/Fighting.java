@@ -16,6 +16,9 @@ import struct.AttackData;
 import struct.CharacterData;
 import struct.FrameData;
 import struct.Key;
+import styletrackers.CharacterStyleTracker;
+import styletrackers.RushdownTracker;
+import styletrackers.GrapplerTracker;
 
 /**
  * 対戦処理及びそれに伴う攻撃やキャラクターのパラメータの更新処理を扱うクラス．
@@ -59,6 +62,12 @@ public class Fighting {
 	 */
 	protected CommandTable commandTable;
 
+	/** 
+	 * Style tracker for the character
+	 * 
+	 * @see CharacterStyleTracker
+	 */
+	private CharacterStyleTracker styleTracker; 
 
 	/**
 	 * Class constructor．
@@ -79,6 +88,21 @@ public class Fighting {
 		this.playerCharacters[1].setInputCommand(new LinkedList<Key>());
 		this.playerCharacters[0].resetEnergyCount();
 		this.playerCharacters[1].resetEnergyCount();
+
+		// Print style tracker results for testing
+		if (styleTracker != null) {
+			System.out.println("=== Style Tracker Results ===");
+			if (styleTracker instanceof RushdownTracker rushdown) {
+				System.out.println("Combo Score: " + rushdown.getComboCount());
+				System.out.println("Proximity Score: " + rushdown.getProximityScore());
+				System.out.println("Cornered Frames: " + rushdown.getCorneredFrames());
+			} else if (styleTracker instanceof GrapplerTracker grappler) {
+				System.out.println("Throw Score: " + grappler.getThrowScore());
+				System.out.println("Proximity Score: " + grappler.getProximityScore());
+				System.out.println("Hard Knockdown Score: " + grappler.getHardKnockdownScore());
+			}
+			System.out.println("=============================");
+		}
 	}
 	
 	/**
@@ -89,6 +113,14 @@ public class Fighting {
 			this.playerCharacters[i] = new Character();
 			this.playerCharacters[i].initialize(LaunchSetting.characterNames[i], i == 0);
 			this.hitEffects.add(new LinkedList<HitEffect>());
+			if(i == 0)
+			{
+                styleTracker = switch (LaunchSetting.characterNames[i]) {
+                    case "GARNET" -> new RushdownTracker();
+                    case "LUD" -> new GrapplerTracker();
+                    default -> null;
+                };
+			}
 		}
 	}
 
@@ -116,6 +148,10 @@ public class Fighting {
 		updateAttackParameter();
 		// 4. キャラクターの状態の更新
 		updateCharacter();
+		// 5. Update style tracker
+		if (styleTracker != null) {
+			styleTracker.update(playerCharacters[0], playerCharacters[1]);
+		}
 
 	}
 
@@ -211,7 +247,7 @@ public class Fighting {
 				this.playerCharacters[i].destroyAttackInstance();
 			}
 
-			if (!playerCharacters[i].isComboValid(currentFrame)) {
+			if (!playerCharacters[i].isComboValid(currentFrame) || !playerCharacters[i].isInHitstun()) {
 				playerCharacters[i].setHitCount(0);
 			}
 		}
@@ -471,6 +507,10 @@ public class Fighting {
 
 		this.projectileDeque.clear();
 		this.inputCommands.clear();
+
+		if (styleTracker != null) {
+			styleTracker.reset();
+		}
 	}
 
 	/**
