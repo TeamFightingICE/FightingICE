@@ -14,6 +14,7 @@ import styletrackers.RushdownTracker;
 public class StyleCSVLogger {
     private PrintWriter writer;
     private boolean headerWritten = false;
+    private boolean dualHeaderWritten = false;
 
     /**
      * Creates a new logger for the given file path.
@@ -42,6 +43,31 @@ public class StyleCSVLogger {
     }
 
     /**
+     * Writes the CSV header for two trackers (P1 and P2) if both exist.
+     */
+    public void writeDualHeader(CharacterStyleTracker tracker1, CharacterStyleTracker tracker2) {
+        if (dualHeaderWritten) return;
+        StringBuilder sb = new StringBuilder();
+        if (tracker1 instanceof RushdownTracker) {
+            sb.append("P1_comboCount,P1_proximityScore,P1_corneredFrames");
+        } else if (tracker1 instanceof GrapplerTracker) {
+            sb.append("P1_throwScore,P1_proximityScore,P1_hardKnockdownScore");
+        } else {
+            sb.append("P1_styleMetric1,P1_styleMetric2,P1_styleMetric3");
+        }
+        sb.append(",");
+        if (tracker2 instanceof RushdownTracker) {
+            sb.append("P2_comboCount,P2_proximityScore,P2_corneredFrames");
+        } else if (tracker2 instanceof GrapplerTracker) {
+            sb.append("P2_throwScore,P2_proximityScore,P2_hardKnockdownScore");
+        } else {
+            sb.append("P2_styleMetric1,P2_styleMetric2,P2_styleMetric3");
+        }
+        writer.println(sb.toString());
+        dualHeaderWritten = true;
+    }
+
+    /**
      * Writes the current style information to the CSV.
      * @param tracker The style tracker instance.
      */
@@ -53,6 +79,29 @@ public class StyleCSVLogger {
         } else {
             writer.println("0,0,0");
         }
+    }
+
+    /**
+     * Logs both trackers' style information in a single row.
+     */
+    public void logBoth(CharacterStyleTracker tracker1, CharacterStyleTracker tracker2) {
+        StringBuilder sb = new StringBuilder();
+        if (tracker1 instanceof RushdownTracker rush) {
+            sb.append(rush.getComboCount()).append(",").append(rush.getProximityScore()).append(",").append(rush.getCorneredFrames());
+        } else if (tracker1 instanceof GrapplerTracker grappler) {
+            sb.append(grappler.getThrowScore()).append(",").append(grappler.getProximityScore()).append(",").append(grappler.getHardKnockdownScore());
+        } else {
+            sb.append("0,0,0");
+        }
+        sb.append(",");
+        if (tracker2 instanceof RushdownTracker rush2) {
+            sb.append(rush2.getComboCount()).append(",").append(rush2.getProximityScore()).append(",").append(rush2.getCorneredFrames());
+        } else if (tracker2 instanceof GrapplerTracker grappler2) {
+            sb.append(grappler2.getThrowScore()).append(",").append(grappler2.getProximityScore()).append(",").append(grappler2.getHardKnockdownScore());
+        } else {
+            sb.append("0,0,0");
+        }
+        writer.println(sb.toString());
     }
 
     public String GetCSVFilePath(String timeInfo) {

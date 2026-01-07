@@ -72,6 +72,12 @@ public class Fighting {
 	protected CharacterStyleTracker styleTracker; 
 
 	/**
+	 * Style tracker for player 2 (P2)
+	 * @see CharacterStyleTracker
+	 */
+	protected CharacterStyleTracker styleTrackerP2;
+
+	/**
 	 * Class constructor．
 	 */
 	public Fighting() {
@@ -100,13 +106,19 @@ public class Fighting {
 			this.playerCharacters[i] = new Character();
 			this.playerCharacters[i].initialize(LaunchSetting.characterNames[i], i == 0);
 			this.hitEffects.add(new LinkedList<HitEffect>());
-			if(i == 0)
-			{
-                styleTracker = switch (LaunchSetting.characterNames[i]) {
-                    case "GARNET" -> new RushdownTracker();
-                    case "LUD" -> new GrapplerTracker();
-                    default -> null;
-                };
+			if(i == 0){
+				styleTracker = switch (LaunchSetting.characterNames[i]) {
+					case "GARNET" -> new RushdownTracker();
+					case "LUD" -> new GrapplerTracker();
+					default -> null;
+				};
+			} 
+			else if(i == 1) {
+				styleTrackerP2 = switch (LaunchSetting.characterNames[i]) {
+					case "GARNET" -> new RushdownTracker();
+					case "LUD" -> new GrapplerTracker();
+					default -> null;
+				};
 			}
 		}
 	}
@@ -135,9 +147,12 @@ public class Fighting {
 		updateAttackParameter();
 		// 4. キャラクターの状態の更新
 		updateCharacter();
-		// 5. Update style tracker
+		// 5. Update style trackers
 		if (styleTracker != null) {
 			styleTracker.update(playerCharacters[0], playerCharacters[1]);
+		}
+		if (styleTrackerP2 != null) {
+			styleTrackerP2.update(playerCharacters[1], playerCharacters[0]);
 		}
 
 	}
@@ -462,6 +477,14 @@ public class Fighting {
 	}
 
 	/**
+	 * Returns the style tracker for player 2 (P2), if any.
+	 */
+	public CharacterStyleTracker getCharacterStyleTrackerP2() {
+		return this.styleTrackerP2;
+	}
+	
+
+	/**
 	 * 現在のフレームにおけるゲーム情報を格納したフレームデータを作成する．<br>
 	 * 両キャラクターの情報, 現在のフレーム数, 現在のラウンド, 波動拳の情報を格納したリスト, 両キャラクターのキー情報を持つ．
 	 *
@@ -501,6 +524,9 @@ public class Fighting {
 
 		if (styleTracker != null) {
 			styleTracker.reset();
+		}
+		if (styleTrackerP2 != null) {
+			styleTrackerP2.reset();
 		}
 	}
 

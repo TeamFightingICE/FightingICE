@@ -25,7 +25,7 @@ public class GameSetting {
     /**
      * ゲームで使うことができるキャラクターを格納する配列．
      */
-    public static final String[] CHARACTERS = {"ZEN", "GARNET", "LUD"};
+    public static final String[] CHARACTERS = {"GARNET","ZEN", "LUD"};
 
     /**
      * ゲームの既定繰り返し回数を格納する配列．

@@ -1,18 +1,17 @@
 package core;
 
+import enumerate.BackgroundType;
+import enumerate.GameSceneName;
+import gamescene.HomeMenu;
+import gamescene.Launcher;
+import gamescene.Socket;
+import image.LetterImage;
+import informationcontainer.AIContainer;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import enumerate.BackgroundType;
-import enumerate.GameSceneName;
-import gamescene.Socket;
-import gamescene.HomeMenu;
-import gamescene.Launcher;
-import image.LetterImage;
-import informationcontainer.AIContainer;
 import loader.ResourceLoader;
 import manager.GameManager;
 import manager.GraphicManager;
@@ -241,7 +240,7 @@ public class Game extends GameManager {
             }
         }
         Logger.getAnonymousLogger().log(Level.WARNING, characterName + " is does not exist. Please check the set character name.");
-        return "ZEN"; // Default character
+        return "GARNET"; // Default character
     }
 
     /**

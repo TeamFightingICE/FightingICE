@@ -189,13 +189,35 @@ public class Play extends GameScene {
 			} else if (this.roundEndFlag) {
 				// Log style tracker results at the end of the round
 				CharacterStyleTracker styleTracker = fighting.getCharacterStyleTracker();
-				if (styleTracker != null) {
+				CharacterStyleTracker styleTrackerP2 = fighting.getCharacterStyleTrackerP2();
+				if (styleTracker != null && styleTrackerP2 != null) {
 					try {
 						if (styleLogger == null) {
-							styleLogger = new StyleCSVLogger(timeInfo);
+							styleLogger = new StyleCSVLogger(this.timeInfo);
+							styleLogger.writeDualHeader(styleTracker, styleTrackerP2);
+						}
+						styleLogger.logBoth(styleTracker, styleTrackerP2);
+					} catch (IOException e) {
+						System.err.println("Failed to write style log: " + e.getMessage());
+					}
+				} else if (styleTracker != null) {
+					try {
+						if (styleLogger == null) {
+							styleLogger = new StyleCSVLogger(this.timeInfo);
 							styleLogger.writeHeader(styleTracker);
 						}
 						styleLogger.log(styleTracker);
+					} catch (IOException e) {
+						System.err.println("Failed to write style log: " + e.getMessage());
+					}
+				}
+				else if (styleTrackerP2 != null) {	
+					try {
+						if (styleLogger == null) {
+							styleLogger = new StyleCSVLogger(this.timeInfo);
+							styleLogger.writeHeader(styleTrackerP2);
+						}
+						styleLogger.log(styleTrackerP2);
 					} catch (IOException e) {
 						System.err.println("Failed to write style log: " + e.getMessage());
 					}

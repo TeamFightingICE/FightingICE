@@ -30,7 +30,7 @@ public final class LaunchSetting {
 	/**
 	 * P1,P2のキャラクター名．
 	 */
-	public static String[] characterNames = { "ZEN", "ZEN" };
+	public static String[] characterNames = { "GARNET", "GARNET" };
 	
 	public static String soundName = "Default";
 
