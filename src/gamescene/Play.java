@@ -34,6 +34,8 @@ import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
 import util.WaveFileWriter;
+import util.StyleCSVLogger;
+import styletrackers.CharacterStyleTracker;
 
 /**
  * 対戦中のシーンを扱うクラス．
@@ -185,20 +187,21 @@ public class Play extends GameScene {
 				this.elapsedBreakTime++;
 
 			} else if (this.roundEndFlag) {
-				// round end
-				processingRoundEnd();
 				// Log style tracker results at the end of the round
-				if (fighting.styleTracker != null) {
+				CharacterStyleTracker styleTracker = fighting.getCharacterStyleTracker();
+				if (styleTracker != null) {
 					try {
 						if (styleLogger == null) {
 							styleLogger = new StyleCSVLogger(timeInfo);
-							styleLogger.writeHeader(fighting.styleTracker);
+							styleLogger.writeHeader(styleTracker);
 						}
-						styleLogger.log(fighting.styleTracker);
+						styleLogger.log(styleTracker);
 					} catch (IOException e) {
 						System.err.println("Failed to write style log: " + e.getMessage());
 					}
 				}
+				// round end
+				processingRoundEnd();
 			} else {
 				// processing
 				processingGame();
@@ -453,6 +456,9 @@ public class Play extends GameScene {
 
 		if (FlagSetting.jsonFlag) {
 			LogWriter.getInstance().finalizeJson();
+		}
+		if (styleLogger != null) {
+			styleLogger.close();
 		}
 	}
 

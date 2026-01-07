@@ -457,6 +457,10 @@ public class Fighting {
 		return this.playerCharacters.clone();
 	}
 
+	public CharacterStyleTracker getCharacterStyleTracker() {
+		return this.styleTracker;
+	}
+
 	/**
 	 * 現在のフレームにおけるゲーム情報を格納したフレームデータを作成する．<br>
 	 * 両キャラクターの情報, 現在のフレーム数, 現在のラウンド, 波動拳の情報を格納したリスト, 両キャラクターのキー情報を持つ．
@@ -521,8 +525,5 @@ public class Fighting {
 	public void close(){
 		for (Character character: this.getCharacters())
 			character.close();
-		if (styleLogger != null) {
-			styleLogger.close();
-		}
 	}
 }

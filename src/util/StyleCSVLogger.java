@@ -1,12 +1,12 @@
 package util;
 
-import styletrackers.CharacterStyleTracker;
-import styletrackers.RushdownTracker;
-import styletrackers.GrapplerTracker;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import settings.LaunchSettings;
+import setting.LaunchSetting;
+import styletrackers.CharacterStyleTracker;
+import styletrackers.GrapplerTracker;
+import styletrackers.RushdownTracker;
 
 /**
  * Logger for writing style tracker information to a CSV file.
@@ -56,8 +56,8 @@ public class StyleCSVLogger {
     }
 
     public String GetCSVFilePath(String timeInfo) {
-        filePath = "./log/style/style_log_ + "  + LaunchSetting.aiNames[0] + "_" + LaunchSetting.aiNames[1] + "_" + timeInfo;
-        return "style_log.csv";
+        String filePath = "./log/style/style_log_"  + LaunchSetting.aiNames[0] + "_" + LaunchSetting.aiNames[1] + "_" + timeInfo + ".csv";
+        return filePath;
     }
 
     /**
