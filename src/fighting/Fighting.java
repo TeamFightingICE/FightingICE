@@ -19,6 +19,8 @@ import struct.Key;
 import styletrackers.CharacterStyleTracker;
 import styletrackers.RushdownTracker;
 import styletrackers.GrapplerTracker;
+import util.StyleCSVLogger;
+import java.io.IOException;
 
 /**
  * 対戦処理及びそれに伴う攻撃やキャラクターのパラメータの更新処理を扱うクラス．
@@ -70,6 +72,11 @@ public class Fighting {
 	private CharacterStyleTracker styleTracker; 
 
 	/**
+	 * Logger for style information.
+	 */
+	private StyleCSVLogger styleLogger;
+
+	/**
 	 * Class constructor．
 	 */
 	public Fighting() {
@@ -89,19 +96,17 @@ public class Fighting {
 		this.playerCharacters[0].resetEnergyCount();
 		this.playerCharacters[1].resetEnergyCount();
 
-		// Print style tracker results for testing
+		// Log style tracker results to CSV
 		if (styleTracker != null) {
-			System.out.println("=== Style Tracker Results ===");
-			if (styleTracker instanceof RushdownTracker rushdown) {
-				System.out.println("Combo Score: " + rushdown.getComboCount());
-				System.out.println("Proximity Score: " + rushdown.getProximityScore());
-				System.out.println("Cornered Frames: " + rushdown.getCorneredFrames());
-			} else if (styleTracker instanceof GrapplerTracker grappler) {
-				System.out.println("Throw Score: " + grappler.getThrowScore());
-				System.out.println("Proximity Score: " + grappler.getProximityScore());
-				System.out.println("Hard Knockdown Score: " + grappler.getHardKnockdownScore());
+			try {
+				if (styleLogger == null) {
+					styleLogger = new StyleCSVLogger("./log/point/style_log.csv");
+					styleLogger.writeHeader(styleTracker);
+				}
+				styleLogger.log(styleTracker);
+			} catch (IOException e) {
+				System.err.println("Failed to write style log: " + e.getMessage());
 			}
-			System.out.println("=============================");
 		}
 	}
 	
@@ -534,5 +539,8 @@ public class Fighting {
 	public void close(){
 		for (Character character: this.getCharacters())
 			character.close();
+		if (styleLogger != null) {
+			styleLogger.close();
+		}
 	}
 }

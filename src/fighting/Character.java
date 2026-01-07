@@ -512,15 +512,24 @@ public class Character {
         }
 
         if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
-            if (motionList.get(this.action.ordinal()).isLandingFlag()) {
+            // If in AIR, force LANDING or STAND immediately
+            if (this.state == State.AIR) {
+                if (motionList.get(Action.LANDING.ordinal()).isLandingFlag()) {
+                    runAction(Action.LANDING, true);
+                } else {
+                    runAction(Action.STAND, true);
+                }
+                setSpeedY(0);
+                if (!this.isSimulateProcess) {
+                    SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffer("LANDING.wav"), this.x, this.y, false);
+                }
+            } else if (motionList.get(this.action.ordinal()).isLandingFlag()) {
                 runAction(Action.LANDING, true);
                 setSpeedY(0);
-
                 if (!this.isSimulateProcess) {
                     SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffer("LANDING.wav"), this.x, this.y, false);
                 }
             }
-
             moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
         }
 
