@@ -69,12 +69,7 @@ public class Fighting {
 	 * 
 	 * @see CharacterStyleTracker
 	 */
-	private CharacterStyleTracker styleTracker; 
-
-	/**
-	 * Logger for style information.
-	 */
-	private StyleCSVLogger styleLogger;
+	protected CharacterStyleTracker styleTracker; 
 
 	/**
 	 * Class constructor．
@@ -95,19 +90,6 @@ public class Fighting {
 		this.playerCharacters[1].setInputCommand(new LinkedList<Key>());
 		this.playerCharacters[0].resetEnergyCount();
 		this.playerCharacters[1].resetEnergyCount();
-
-		// Log style tracker results to CSV
-		if (styleTracker != null) {
-			try {
-				if (styleLogger == null) {
-					styleLogger = new StyleCSVLogger("./log/point/style_log.csv");
-					styleLogger.writeHeader(styleTracker);
-				}
-				styleLogger.log(styleTracker);
-			} catch (IOException e) {
-				System.err.println("Failed to write style log: " + e.getMessage());
-			}
-		}
 	}
 	
 	/**

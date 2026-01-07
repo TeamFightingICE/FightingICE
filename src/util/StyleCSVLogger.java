@@ -6,6 +6,7 @@ import styletrackers.GrapplerTracker;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import settings.LaunchSettings;
 
 /**
  * Logger for writing style tracker information to a CSV file.
@@ -19,7 +20,8 @@ public class StyleCSVLogger {
      * @param filePath Path to the CSV file to write.
      * @throws IOException if file cannot be opened.
      */
-    public StyleCSVLogger(String filePath) throws IOException {
+    public StyleCSVLogger(String timeInfo) throws IOException {
+        String filePath = GetCSVFilePath(timeInfo);
         this.writer = new PrintWriter(new FileWriter(filePath, false));
     }
 
@@ -51,6 +53,11 @@ public class StyleCSVLogger {
         } else {
             writer.println("0,0,0");
         }
+    }
+
+    public String GetCSVFilePath(String timeInfo) {
+        filePath = "./log/style/style_log_ + "  + LaunchSetting.aiNames[0] + "_" + LaunchSetting.aiNames[1] + "_" + timeInfo;
+        return "style_log.csv";
     }
 
     /**

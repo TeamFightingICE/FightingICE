@@ -104,6 +104,13 @@ public class Play extends GameScene {
 	private AudioData audioData;
 	
 	private AudioSource audioSource;
+
+	
+	/**
+	 * Logger for style information.
+	 */
+	private StyleCSVLogger styleLogger;
+
 	
 	/**
 	 * クラスコンストラクタ．
@@ -180,6 +187,18 @@ public class Play extends GameScene {
 			} else if (this.roundEndFlag) {
 				// round end
 				processingRoundEnd();
+				// Log style tracker results at the end of the round
+				if (fighting.styleTracker != null) {
+					try {
+						if (styleLogger == null) {
+							styleLogger = new StyleCSVLogger(timeInfo);
+							styleLogger.writeHeader(fighting.styleTracker);
+						}
+						styleLogger.log(fighting.styleTracker);
+					} catch (IOException e) {
+						System.err.println("Failed to write style log: " + e.getMessage());
+					}
+				}
 			} else {
 				// processing
 				processingGame();
