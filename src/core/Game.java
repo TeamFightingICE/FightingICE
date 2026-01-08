@@ -251,6 +251,7 @@ public class Game extends GameManager {
         new File("log/point").mkdir();
         new File("log/replay").mkdir();
         new File("log/sound").mkdir();
+        new File("log/style").mkdir();
     }
 
     @Override
