@@ -36,7 +36,7 @@ public class RushdownTracker implements CharacterStyleTracker {
     public void update(Character player, Character opponent) {
         // Update combo count 10 points per 4+ hit combo
         if (player.getHitCount() >= 4 && prevHitCount < 4) {
-            comboCount += 10;
+            comboCount += 3;
         }
         prevHitCount = player.getHitCount();
 
@@ -91,6 +91,14 @@ public class RushdownTracker implements CharacterStyleTracker {
      */
     public int getCorneredFrames() {
         return corneredFrames;
+    }
+
+    public void normalizeScore(int actualFrames) {
+        if (actualFrames == 0) return; // Avoid division by zero
+        double factor = 3600.0 / actualFrames;
+        comboCount = (int)(comboCount * factor);
+        proximityScore = (int)(proximityScore * factor);
+        corneredFrames = (int)(corneredFrames * factor);
     }
 
     /**

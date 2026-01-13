@@ -193,6 +193,8 @@ public class Play extends GameScene {
 				if (styleTracker != null && styleTrackerP2 != null) {
 					try {
 						if (styleLogger == null) {
+							styleTracker.normalizeScore(this.nowFrame);
+							styleTrackerP2.normalizeScore(this.nowFrame);
 							styleLogger = new StyleCSVLogger(this.timeInfo);
 							styleLogger.writeDualHeader(styleTracker, styleTrackerP2);
 						}
@@ -203,6 +205,7 @@ public class Play extends GameScene {
 				} else if (styleTracker != null) {
 					try {
 						if (styleLogger == null) {
+							styleTracker.normalizeScore(this.nowFrame);
 							styleLogger = new StyleCSVLogger(this.timeInfo);
 							styleLogger.writeHeader(styleTracker);
 						}
@@ -214,6 +217,7 @@ public class Play extends GameScene {
 				else if (styleTrackerP2 != null) {	
 					try {
 						if (styleLogger == null) {
+							styleTrackerP2.normalizeScore(this.nowFrame);
 							styleLogger = new StyleCSVLogger(this.timeInfo);
 							styleLogger.writeHeader(styleTrackerP2);
 						}

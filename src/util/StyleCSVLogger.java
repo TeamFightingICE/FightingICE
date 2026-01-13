@@ -7,6 +7,7 @@ import setting.LaunchSetting;
 import styletrackers.CharacterStyleTracker;
 import styletrackers.GrapplerTracker;
 import styletrackers.RushdownTracker;
+import styletrackers.ZonerTracker;
 
 /**
  * Logger for writing style tracker information to a CSV file.
@@ -33,9 +34,11 @@ public class StyleCSVLogger {
     public void writeHeader(CharacterStyleTracker tracker) {
         if (headerWritten) return;
         if (tracker instanceof RushdownTracker) {
-            writer.println("comboCount,proximityScore,corneredFrames");
+            writer.println("comboCount,ProximityScore,corneredFrames");
         } else if (tracker instanceof GrapplerTracker) {
-            writer.println("throwScore,proximityScore,hardKnockdownScore");
+            writer.println("throwScore,ProximityScore,hardKnockdownScore");
+        } else if (tracker instanceof ZonerTracker) {
+            writer.println("ProjectileScore,ProximityScore,AntiAirCount");
         } else {
             writer.println("styleMetric1,styleMetric2,styleMetric3");
         }
@@ -49,17 +52,21 @@ public class StyleCSVLogger {
         if (dualHeaderWritten) return;
         StringBuilder sb = new StringBuilder();
         if (tracker1 instanceof RushdownTracker) {
-            sb.append("P1_comboCount,P1_proximityScore,P1_corneredFrames");
+            sb.append("P1_comboCount,P1_ProximityScore,P1_corneredFrames");
         } else if (tracker1 instanceof GrapplerTracker) {
-            sb.append("P1_throwScore,P1_proximityScore,P1_hardKnockdownScore");
+            sb.append("P1_throwScore,P1_ProximityScore,P1_hardKnockdownScore");
+        } else if (tracker1 instanceof ZonerTracker) {
+            sb.append("P1_ProjectileScore,P1_ProximityScore,P1_AntiAirCount"); 
         } else {
             sb.append("P1_styleMetric1,P1_styleMetric2,P1_styleMetric3");
         }
         sb.append(",");
         if (tracker2 instanceof RushdownTracker) {
-            sb.append("P2_comboCount,P2_proximityScore,P2_corneredFrames");
+            sb.append("P2_comboCount,P2_ProximityScore,P2_corneredFrames");
         } else if (tracker2 instanceof GrapplerTracker) {
-            sb.append("P2_throwScore,P2_proximityScore,P2_hardKnockdownScore");
+            sb.append("P2_throwScore,P2_ProximityScore,P2_hardKnockdownScore");
+        } else if (tracker2 instanceof ZonerTracker) {
+            sb.append("P2_ProjectileScore,P2_ProximityScore,P2_AntiAirCount");
         } else {
             sb.append("P2_styleMetric1,P2_styleMetric2,P2_styleMetric3");
         }
@@ -76,6 +83,8 @@ public class StyleCSVLogger {
             writer.printf("%d,%d,%d\n", rush.getComboCount(), rush.getProximityScore(), rush.getCorneredFrames());
         } else if (tracker instanceof GrapplerTracker grappler) {
             writer.printf("%d,%d,%d\n", grappler.getThrowScore(), grappler.getProximityScore(), grappler.getHardKnockdownScore());
+        } else if (tracker instanceof ZonerTracker zoner) {
+            writer.printf("%d,%d,%d\n", zoner.getProjectileScore(), zoner.getProximityScore(), zoner.getAntiAirCount());
         } else {
             writer.println("0,0,0");
         }
@@ -90,6 +99,8 @@ public class StyleCSVLogger {
             sb.append(rush.getComboCount()).append(",").append(rush.getProximityScore()).append(",").append(rush.getCorneredFrames());
         } else if (tracker1 instanceof GrapplerTracker grappler) {
             sb.append(grappler.getThrowScore()).append(",").append(grappler.getProximityScore()).append(",").append(grappler.getHardKnockdownScore());
+        } else if (tracker1 instanceof ZonerTracker zoner) {
+            sb.append(zoner.getProjectileScore()).append(",").append(zoner.getProximityScore()).append(",").append(zoner.getAntiAirCount());
         } else {
             sb.append("0,0,0");
         }
@@ -98,6 +109,8 @@ public class StyleCSVLogger {
             sb.append(rush2.getComboCount()).append(",").append(rush2.getProximityScore()).append(",").append(rush2.getCorneredFrames());
         } else if (tracker2 instanceof GrapplerTracker grappler2) {
             sb.append(grappler2.getThrowScore()).append(",").append(grappler2.getProximityScore()).append(",").append(grappler2.getHardKnockdownScore());
+        } else if (tracker2 instanceof ZonerTracker zoner2) {
+            sb.append(zoner2.getProjectileScore()).append(",").append(zoner2.getProximityScore()).append(",").append(zoner2.getAntiAirCount());
         } else {
             sb.append("0,0,0");
         }

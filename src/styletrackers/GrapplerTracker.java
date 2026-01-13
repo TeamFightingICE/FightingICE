@@ -39,7 +39,7 @@ public class GrapplerTracker implements CharacterStyleTracker {
         // +10 on throws trigger only once per throw 
         boolean isThrowAction = (player.getAction() == Action.THROW_A || player.getAction() == Action.THROW_B);
         if (isThrowAction && player.getHitCount() > prevHitCount) {
-            throwScore += 10;
+            throwScore += 3;
         }
 
         // Track distance for proximity reward/penalty 
@@ -97,6 +97,14 @@ public class GrapplerTracker implements CharacterStyleTracker {
      */
     public int getHardKnockdownScore() {
         return hardKnockdownScore;
+    }
+
+    public void normalizeScore(int actualFrames) {
+        if (actualFrames == 0) return; // Avoid division by zero
+        double factor = 3600.0 / actualFrames;
+        throwScore = (int)(throwScore * factor);
+        proximityScore = (int)(proximityScore * factor);
+        hardKnockdownScore = (int)(hardKnockdownScore * factor);
     }
 
     /**

@@ -19,6 +19,7 @@ import struct.Key;
 import styletrackers.CharacterStyleTracker;
 import styletrackers.RushdownTracker;
 import styletrackers.GrapplerTracker;
+import styletrackers.ZonerTracker;
 import util.StyleCSVLogger;
 import java.io.IOException;
 
@@ -110,6 +111,7 @@ public class Fighting {
 				styleTracker = switch (LaunchSetting.characterNames[i]) {
 					case "GARNET" -> new RushdownTracker();
 					case "LUD" -> new GrapplerTracker();
+					case "NEZ" -> new ZonerTracker();
 					default -> null;
 				};
 			} 
@@ -117,6 +119,7 @@ public class Fighting {
 				styleTrackerP2 = switch (LaunchSetting.characterNames[i]) {
 					case "GARNET" -> new RushdownTracker();
 					case "LUD" -> new GrapplerTracker();
+					case "NEZ" -> new ZonerTracker();
 					default -> null;
 				};
 			}

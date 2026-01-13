@@ -516,6 +516,9 @@ public class ResourceLoader {
 			case "GARNET":
 				tempPath += "GARNET/";
 				break;
+			case "NEZ":
+				tempPath += "NEZ/";
+				break;
 			default:
 				tempPath += "LUD/";
 			}
