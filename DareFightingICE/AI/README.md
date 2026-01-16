@@ -107,7 +107,7 @@ The ranking rules are defined as follows. In the Standard League, AIs are ranked
    - RAM: 188 GB
    - GPU: NVIDIA A100 80GB VRAM
 
-### <b>Prizes: (updated on May 30, 2026) (TBA) </b>
+### <b>Prizes: (TBA) </b>
 
 ### Organizers:
 ---
