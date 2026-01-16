@@ -1,13 +1,13 @@
 # <div align="center"> 2026 DareFightingICE AI Competition</div>
 ----
-<div align = "center"> Welcome to the 2025 DareFightingICE LLM AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
+<div align = "center"> Welcome to the 2026 DareFightingICE LLM AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
 
 
 
 ### What is the DareFightingICE LLM AI Competition:
 ----
-In this competition, you are tasked with making an LLM AI that plays game in DareFightingICE platform. You will be provided with the interface that allows access to frame data and a sample AI. **Click the image below to watch our promotional video.**
+In this competition, you are tasked with prompting or fine-tuning an LLM to play the DareFightingICE game. You will be provided with the interface that allows access to frame data and a sample AI. **Click the image below to watch our promotional video.**
 
 [![Watch the video](./Logo.png)](https://youtu.be/CHaf0vfYkvM)
 
@@ -36,8 +36,8 @@ For submission, please create a zip file containing:
 
 Please also attach a PowerPoint (or OpenOffice) file describing the following information:
 
-- AI Name, Developer's Name(s) and Affiliation(s)
-- AI's Outline
+- LLM Name, Developer's Name(s) and Affiliation(s)
+- LLM's Outline
 
 ### Sample AIs:
 ---
@@ -87,9 +87,9 @@ The above rules are based on the Ms Pac-Man vs Ghosts League 2012 Competition.
 ### Evaluation:
 ---
 Two leagues (Standard and Style) in this competition are described as follows:
-The Standard League considers the winner of a round as the one with the HP above zero at the time its opponent's HP has reached zero. Both AIs will be given the initial HP of 400. The league for a given character type is conducted in a round-robin fashion with two games for any pair of entry AIs switching P1 and P2. The AI with highest number of winning rounds becomes the league winner; If necessary, remaining HPs are used for breaking ties. In this league, our weakened sample MctsAi with limited to 23 iterations per frame, played in the non-blind mode or with FrameData, and our [sample LLM AI](https://github.com/TeamFightingICE/FightingLLM) will also be participating as baseline AIs. **ZEN** will be used in this league.
+The Standard League considers the winner of a round as the one with the HP above zero at the time its opponent's HP has reached zero. Both AIs will be given the initial HP of 400. The league for a given character type and style is conducted in a round-robin fashion with two games for any pair of entry AIs switching P1 and P2. The AI with highest number of winning rounds becomes the league winner; If necessary, remaining HPs are used for breaking ties. In this league, our weakened sample MctsAi with limited to 23 iterations per frame, played in the non-blind mode or with FrameData, and our [sample LLM AI](https://github.com/TeamFightingICE/FightingLLM) will also be participating as baseline AIs. **NEZ** is used for the Zoning, while **GARNET** serves as the Rushdown.
 
-In the Style League, each entry competes against our MctsAi while adhering to a specified fighting style. Two styles are evaluated: RushDown and Zoning. For each style and each entry, five games are played with the entry AI as P1 and MctsAi as P2, followed by another five games with the roles reversed. Both AIs start with an initial HP of 400. In addition to overall performance, compliance with the designated fighting style is also assessed. **NEZ** is used as the Zoning benchmark, while **GARNET** serves as the RushDown benchmark.
+In the Style League, each entry competes against our MctsAi while adhering to a specified fighting style. Two styles are evaluated: Rushdown and Zoning. For each style and each entry, five games are played with the entry AI as P1 and MctsAi as P2, followed by another five games with the roles reversed. Both AIs start with an initial HP of 400. In addition to overall performance, compliance with the designated fighting style is also assessed. **NEZ** is used as the Zoning benchmark, while **GARNET** serves as the Rushdown benchmark.
 
 The ranking rules are as follows:
 The ranking rules are defined as follows. In the Standard League, AIs are ranked based on the number of winning rounds. In the Style League, both the number of winning rounds and the fighting-style score are considered. If ties occur, the total remaining HP is used as the tiebreaker. After rankings are determined for each league, league points are awarded according to finishing positions using **[the 2018 Formula-1 scoring system ](https://en.wikipedia.org/wiki/2018_Formula_One_World_Championship#Scoring_system)**. The overall competition winner is determined by the sum of league points across the two leagues.
@@ -107,11 +107,7 @@ The ranking rules are defined as follows. In the Standard League, AIs are ranked
    - RAM: 188 GB
    - GPU: NVIDIA A100 80GB VRAM
 
-### <b>Prizes: (updated on May 30, 2025) </b>
----
-<b>We are pleased to announce that we have successfully secured competition funding from IEEE CIS.</b>
-
-IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
+### <b>Prizes: (updated on May 30, 2026) (TBA) </b>
 
 ### Organizers:
 ---
