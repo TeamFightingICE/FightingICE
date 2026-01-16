@@ -1,4 +1,4 @@
-# <div align="center"> 2025 DareFightingICE AI Competition</div>
+# <div align="center"> 2026 DareFightingICE AI Competition</div>
 ----
 <div align = "center"> Welcome to the 2025 DareFightingICE LLM AI Competition. Here you will be provided all the necessary information needed to participate in the competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
 <br>
