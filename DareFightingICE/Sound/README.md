@@ -90,7 +90,7 @@ Previous research from the lead organizer has established that the Blind AI's pe
 
 #### Human-Moderated Automatic Evaluation
 
-The evaluation is a human-moderated process. While the scoring is automated for scalability and objectivity, human experts oversee the pipeline to validate the technical integrity of the results and ensure that automated judges maintain strict grounding in the provided perceptual rubrics.
+The evaluation is a human-moderated process. While the scoring is automated for scalability and objectivity, human experts oversee the pipeline to validate the technical integrity of the results and ensure that automated judges maintain strict grounding in the provided perceptual rubrics. In the end, the sound design with the highest overall score will win. 
 
 ### Details and Tips:
 ---
