@@ -1,6 +1,6 @@
 
 
-# <div align ="center"> 2025 DareFightingICE Sound-Design Competition </div>
+# <div align ="center"> 2026 DareFightingICE Sound-Design Competition </div>
 
 ----
 <div align = "center"> Welcome to the DareFightingICE sound design competition. Here, you will be provided all the necessary information needed to participate in the sound design competition. Please remember to read carefully and thoroughly before contacting us for any questions you might have. </div>
