@@ -49,6 +49,11 @@ There are a few special sound effects added into the DareFightingICE.
 <br>
 These three special sounds are in place to help visually impaired players be aware of their and their opponent’s health and energy status. Also, it will help make them aware of their surroundings.
 
+An example code for how to implement the adaptive background music is given [here](./AdaptiveBGM/BGMUtil.java).
+
+### Sample Generative Sound Design:
+---
+Details regarding how sample generative sound design and how to create your own will be provided here soon.
 
 ### Rules
 ---
@@ -59,22 +64,33 @@ These three special sounds are in place to help visually impaired players be awa
 - If you add any new sound (special sound effect) which is not in the sample sound design. You are asked to give a reason for the addition.
 - If any sound effect is found not to be copyright free you will be contacted to change and resubmit before the deadline. If you are not able to resubmit before the deadline, your submission will be discarded. Your submission will also be discarded if your sounds are found not to be copyright free at any stage of the competition, even if the results are out and the participant below you will take your place. 
 - Your sound design will be made publicly available and by submitting you will have agreed to this.
+- In case of AI-generated sound effects, please make sure that they do not resemble any copyrighted sound effects. 
 
 ### Evaluation:
 ---
-Evaluation of your sound designs will be done as follows: <br>
-Players with vision will test your sound design while wearing a blindfold. The total number of players testing your sound design is not fixed. If the total number of sound designs is more than 10, the sound designs will go through the Pre-Screening process and the top 5 will be selected. The top 5 will then go through the screening process. If the number is 10 or lower, the pre-screening process will be skipped.<br>
+Evaluation of the submitted sound designs is conducted through a human-moderated automated pipeline. This approach replaces traditional human-only judging with a combination of Large Audio Models (LAMs) for aesthetic assessment and Reinforcement Learning (RL) agents for functional validation.
 
-Pre-screening:
-- For each submitted sound design, a video of our sample AI agents playing one game (three rounds) of DareFightingICE will be recorded. Then a sound aesthetic survey of these videos will be conducted targeting general respondents. The result of this survey will determine the top five sound designs.
+#### Perceptual Assessment via Automated Judges
 
-Screening:
-- The blindfolded players will play against a weak AI (a weak form of MCTS AI), the reason for the AI being weak is that these players are not visually impaired and are not used to playing a game blindfolded.
-- For a sound design, each player will play against the AI for three games (three rounds per game, with an initial HP of 400 and a maximum round time of 60 seconds), and the score will be calculated by the health point (HP) difference between the player and the AI as well as the win ratio relative to playing without being blindfolded.
-- After the play, they (the players) will be asked to complete a sound aesthetic survey. The results of this survey will also be counted in the final score of your sound design.
--  In addition, [our deep reinforcement learning blind AI](https://github.com/TeamFightingICE/BlindAI) will be newly trained with each sound design and then play the game (30 games or 90 rounds per sound design) against the same weak MCTS AI.
--  The sample blind AI's win-lose ratio and HP difference will also be used in the total score. In the end, the sound design with the highest overall score will win. <br>
+Each submission is evaluated by three state-of-the-art LAMs on a scale of 0–10 across three specific metrics:
 
+**Production Quality (PQ):** Focuses on technical fidelity and mix quality, including clarity, dynamics, frequency balance, and the absence of technical artifacts.
+
+**Content Enjoyment (CE):** Measures aesthetic impact and enjoyment, evaluating aspects such as energy, timbre suitability, and the overall "feel" of the sound.
+
+**Content Informativeness (CI):** Assesses semantic discriminability, determining if the audio communicates intended gameplay actions clearly enough to support non-visual play.
+
+To ensure the highest correlation with human expertise, we employ the LAMs that achieved an exact rank-match rate of 100\% when compared against a study of 21 domain experts on a set of 8 sound designs.
+
+#### Functional Validation via Blind AI
+
+The functional utility of each sound design is measured by training a [Deep Reinforcement Learning Blind AI agent](https://github.com/TeamFightingICE/BlindAI). The agent receives audio-only observations and is trained from scratch on the submitted sound designs.
+
+Previous research from the lead organizer has established that the Blind AI's performance is equivalent to that of blindfolded sighted human players in audio-only conditions. Consequently, the agent serves as a reliable objective proxy for human judges, with its win ratio and health point (HP) difference contributing to the total score.
+
+#### Human-Moderated Automatic Evaluation
+
+The evaluation is a human-moderated process. While the scoring is automated for scalability and objectivity, human experts oversee the pipeline to validate the technical integrity of the results and ensure that automated judges maintain strict grounding in the provided perceptual rubrics.
 
 ### Details and Tips:
 ---
@@ -87,19 +103,19 @@ Screening:
 - To run DareFightingICE with sound and for sound to transmit to AI agents, please boot the sound generative AI after DareFightingICE.
 
 
-### <b>Prizes: (updated on May 30, 2025) </b>
+### <b>Prizes: </b>
 ---
-<b>We are pleased to announce that we have successfully secured competition funding from IEEE CIS.</b>
-
-IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
+TBA
 
 ### Organizers:
 ---
   
 1. Ibrahim Khan, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Van Thai Nguyen, Graduate School of Information Science and Engineering, Ritsumeikan University
-1. Menghan Zhang, Graduate School of Information Science and Engineering, Ritsumeikan University
-1. Yuchen Tian, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Yi Xia, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Luke Anthony Ankeny, Graduate School of Information Science and Engineering, Ritsumeikan University
+1. Chuang Boyu, Graduate School of Information Science and Engineering, Ritsumeikan University
+1.  Liu Yiyang, Graduate School of Information Science and Engineering, Ritsumeikan University
 1. Ruck Thawonmas, College of Information Science and Engineering, Ritsumeikan University
 
 
@@ -108,10 +124,10 @@ IEEE CIS will award the qualified first-place, second-place, and third-place win
 Please submit your entry via this [page](https://forms.gle/TeEHB5bma7jjdgyJ8). Below are the deadlines.
 
 Midterm deadline (We recommend you do midterm submission, but if you miss it, you can still submit your sound design to us by the final deadline.)
-- June 7, 2025 (AoE)
+- June 7, 2026 (AoE)
 
 Final deadline
-- August 7, 2025 (AoE)(no extension!!)
+- August 7, 2026 (AoE)(no extension!!)
 
 #### Note that all the submissions will be made publicly available after the competition.
 
