@@ -133,7 +133,9 @@ Final deadline
 
 ### <b>Contact Us:</b>
 ---
-d-ice-sdc at ice dot ci dot ritsumei dot ac dot jp
+Email: d-ice-sdc at ice dot ci dot ritsumei dot ac dot jp
+
+[Discord](https://discord.gg/BPp5546NZw)
 
 ### <b>DareFightingICE Project Page:</b>
 ---
