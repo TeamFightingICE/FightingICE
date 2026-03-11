@@ -107,7 +107,9 @@ The ranking rules are defined as follows. In the Standard League, AIs are ranked
    - RAM: 188 GB
    - GPU: NVIDIA A100 80GB VRAM
 
-### <b>Prizes: (TBA) </b>
+### <b>Prizes: (updated on March 12, 2026) </b>
+---
+IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
 
 ### Organizers:
 ---
