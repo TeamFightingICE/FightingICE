@@ -103,9 +103,10 @@ The evaluation is a human-moderated process. While the scoring is automated for 
 - To run DareFightingICE with sound and for sound to transmit to AI agents, please boot the sound generative AI after DareFightingICE.
 
 
-### <b>Prizes: </b>
+### <b>Prizes: (updated on March 12, 2026) </b>
 ---
-TBA
+IEEE CIS will award the qualified first-place, second-place, and third-place winners a monetary prize of $500, $300, and $200, respectively. For more details on the prize distribution policy, please see this <a href="https://cis.ieee.org/images/files/Documents/competitions/prize-dist-policy.pdf" target="_blank">page</a>.
+
 
 ### Organizers:
 ---
