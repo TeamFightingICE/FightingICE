@@ -1,5 +1,6 @@
 package fighting;
 
+import core.Game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -689,7 +690,12 @@ public class Character {
             } else {
                 setHp(this.hp - attack.getHitDamage() - opponent.getExtraDamage());
                 setEnergy(this.energy + attack.getGiveEnergy());
+                if (this.x <= -180 || this.x >= 720 && attack.isProjectile() == false) {
+                    setSpeedX(0);
+                    opponent.setSpeedX(-direction * attack.getImpactX());
+                } else {
                 setSpeedX(direction * attack.getImpactX());
+                }
                 setSpeedY(attack.getImpactY());
                 opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
 
