@@ -34,6 +34,8 @@ import util.DebugActionData;
 import util.LogWriter;
 import util.ResourceDrawer;
 import util.WaveFileWriter;
+import util.StyleCSVLogger;
+import styletrackers.CharacterStyleTracker;
 
 /**
  * 対戦中のシーンを扱うクラス．
@@ -104,6 +106,13 @@ public class Play extends GameScene {
 	private AudioData audioData;
 	
 	private AudioSource audioSource;
+
+	
+	/**
+	 * Logger for style information.
+	 */
+	private StyleCSVLogger styleLogger;
+
 	
 	/**
 	 * クラスコンストラクタ．
@@ -178,6 +187,45 @@ public class Play extends GameScene {
 				this.elapsedBreakTime++;
 
 			} else if (this.roundEndFlag) {
+				// Log style tracker results at the end of the round
+				CharacterStyleTracker styleTracker = fighting.getCharacterStyleTracker();
+				CharacterStyleTracker styleTrackerP2 = fighting.getCharacterStyleTrackerP2();
+				if (styleTracker != null && styleTrackerP2 != null) {
+					try {
+						if (styleLogger == null) {
+							styleTracker.normalizeScore(this.nowFrame);
+							styleTrackerP2.normalizeScore(this.nowFrame);
+							styleLogger = new StyleCSVLogger(this.timeInfo);
+							styleLogger.writeDualHeader(styleTracker, styleTrackerP2);
+						}
+						styleLogger.logBoth(styleTracker, styleTrackerP2);
+					} catch (IOException e) {
+						System.err.println("Failed to write style log: " + e.getMessage());
+					}
+				} else if (styleTracker != null) {
+					try {
+						if (styleLogger == null) {
+							styleTracker.normalizeScore(this.nowFrame);
+							styleLogger = new StyleCSVLogger(this.timeInfo);
+							styleLogger.writeHeader(styleTracker);
+						}
+						styleLogger.log(styleTracker);
+					} catch (IOException e) {
+						System.err.println("Failed to write style log: " + e.getMessage());
+					}
+				}
+				else if (styleTrackerP2 != null) {	
+					try {
+						if (styleLogger == null) {
+							styleTrackerP2.normalizeScore(this.nowFrame);
+							styleLogger = new StyleCSVLogger(this.timeInfo);
+							styleLogger.writeHeader(styleTrackerP2);
+						}
+						styleLogger.log(styleTrackerP2);
+					} catch (IOException e) {
+						System.err.println("Failed to write style log: " + e.getMessage());
+					}
+				}
 				// round end
 				processingRoundEnd();
 			} else {
@@ -434,6 +482,9 @@ public class Play extends GameScene {
 
 		if (FlagSetting.jsonFlag) {
 			LogWriter.getInstance().finalizeJson();
+		}
+		if (styleLogger != null) {
+			styleLogger.close();
 		}
 	}
 

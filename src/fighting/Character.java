@@ -1,5 +1,6 @@
 package fighting;
 
+import core.Game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -512,15 +513,24 @@ public class Character {
         }
 
         if (getHitAreaBottom() >= GameSetting.STAGE_HEIGHT) {
-            if (motionList.get(this.action.ordinal()).isLandingFlag()) {
+            // If in AIR, force LANDING or STAND immediately
+            if (this.state == State.AIR) {
+                if (motionList.get(Action.LANDING.ordinal()).isLandingFlag()) {
+                    runAction(Action.LANDING, true);
+                } else {
+                    runAction(Action.STAND, true);
+                }
+                setSpeedY(0);
+                if (!this.isSimulateProcess) {
+                    SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffer("LANDING.wav"), this.x, this.y, false);
+                }
+            } else if (motionList.get(this.action.ordinal()).isLandingFlag()) {
                 runAction(Action.LANDING, true);
                 setSpeedY(0);
-
                 if (!this.isSimulateProcess) {
                     SoundManager.getInstance().play2(sourceLanding, SoundManager.getInstance().getSoundBuffer("LANDING.wav"), this.x, this.y, false);
                 }
             }
-
             moveY(GameSetting.STAGE_HEIGHT - this.getHitAreaBottom());
         }
 
@@ -680,7 +690,12 @@ public class Character {
             } else {
                 setHp(this.hp - attack.getHitDamage() - opponent.getExtraDamage());
                 setEnergy(this.energy + attack.getGiveEnergy());
+                if (this.x <= -180 || this.x >= 720 && attack.isProjectile() == false) {
+                    setSpeedX(0);
+                    opponent.setSpeedX(-direction * attack.getImpactX());
+                } else {
                 setSpeedX(direction * attack.getImpactX());
+                }
                 setSpeedY(attack.getImpactY());
                 opponent.setEnergy(opponent.getEnergy() + attack.getHitAddEnergy());
 
@@ -1449,6 +1464,15 @@ public class Character {
      */
     public boolean isComboValid(int nowFrame) {
         return (nowFrame - this.lastHitFrame) <= GameSetting.COMBO_LIMIT;
+    }
+
+    /**
+     * キャラクターがヒットストン状態にあるかどうかを返す．
+     *
+     * @return {@code true} if the character is in hitstun, {@code false} otherwise.
+     */
+    public boolean isInHitstun() {
+        return this.state != State.DOWN && this.remainingFrame > 0;
     }
 
     /**
