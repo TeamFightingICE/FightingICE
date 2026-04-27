@@ -53,7 +53,8 @@ An example code for how to implement the adaptive background music is given [her
 
 ### Sample Generative Sound Design:
 ---
-Details regarding the sample generative sound design and how to create your own are available on this** [link](https://github.com/TeamFightingICE/GenerativeSoundDesign)**.
+Details regarding the sample generative sound design and how to create your own are available on this [link](https://github.com/TeamFightingICE/GenerativeSoundDesign).
+
 **Note: The above link also contains information regarding the automated evaluation of the sound designs.**
 
 ### Rules
