@@ -13,7 +13,7 @@ effects combined with the source code that implements their timing-control algor
 To know more about FightingICE, visit the website of <a href="https://www.ice.ci.ritsumei.ac.jp/~ftgaic/index.htm" target="_blank">FightingICE.</a>
 <br>
 
-### <b>DareFightingICE AI Competition:</b>
+### <b>DareFightingICE LLM AI Competition:</b>
 See <a href="https://tinyurl.com/DareFightingICE/AI" target="_blank">this page</a> for the details of this competition.<br>
 
 ### <b>DareFightingICE Sound Design Competition:</b>
