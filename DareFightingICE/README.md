@@ -1,6 +1,6 @@
 # <div align="center" ><b>DareFightingICE Project</b> (since 2022) </div>
 ## <div align="center"><b>A game research project for promoting the sound design of fighting games, targeting visually impaired players</b></div>
-**We hope research findings from this competition could contribute to Sustainable Development Goals:**
+**We hope research findings from our competitions could contribute to Sustainable Development Goals:**
 <p align="center">
 <a href="https://sdgs.un.org/goals/goal9" target="_blank"><img src="E_GIF_09.gif" width="150" ></a> 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
